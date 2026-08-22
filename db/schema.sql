@@ -253,8 +253,11 @@ CREATE TABLE ingestion.raw_artifacts (
     fetched_at          TIMESTAMPTZ NOT NULL DEFAULT now(),
     metadata            JSONB NOT NULL DEFAULT '{}'::jsonb
                         CHECK (jsonb_typeof(metadata) = 'object'),
-    UNIQUE (artifact_id, fetch_run_id),
-    UNIQUE (fetch_run_id, artifact_kind, sha256)
+    UNIQUE (artifact_id, fetch_run_id)
+    -- NOTE: no UNIQUE (fetch_run_id, artifact_kind, sha256): distinct
+    -- attachments may serve byte-identical bytes; each download event keeps
+    -- its own lineage row and dedup happens via the shared content_objects
+    -- registration (idempotency keys keep re-runs from duplicating rows).
 );
 CREATE INDEX idx_raw_artifacts_run ON ingestion.raw_artifacts (fetch_run_id);
 CREATE INDEX idx_raw_artifacts_sha ON ingestion.raw_artifacts (sha256);
