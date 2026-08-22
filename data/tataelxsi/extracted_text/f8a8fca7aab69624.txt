@@ -1,0 +1,88 @@
+May 27, 2026
+BSE Limited National Stock Exchange of India Ltd.
+Phiroze Jeejeebhoy Towers Exchange Plaza, Plot No. C-1, Block G
+Dalal Street Bandra – Kurla Complex Bandra (East)
+Mumbai – 400 001 Mumbai – 400 051
+Scrip Code: 500408 Scrip Code: TATAELXSI
+Dear Sirs/Madam,
+Sub: Press Release - “Tata Elxsi Launches AnaTel™, an AI-Native Software Development Platform
+for Healthcare and Med-Tech Powered by OpenAna”
+Please find enclosed the Press Release dated May 27, 2026, titled “Tata Elxsi Launches AnaTel™, an
+AI-Native Software Development Platform for Healthcare and Med-Tech Powered by OpenAna”.
+This disclosure is made in compliance with Regulation 30 of SEBI (Listing Obligations and Disclosure
+Requirements) Regulations, 2015.
+This is for your information and records.
+Yours faithfully,
+For Tata Elxsi Limited
+Sneha V
+Company Secretary & Compliance Officer
+Encl.: As above
+
+Tata Elxsi Launches AnaTel™, an AI-Native Software Development Platform for
+Healthcare and Med-Tech Powered by OpenAna
+AnaTel™ helps medical device and SaMD companies accelerate software development, generate
+regulatory-grade documentation, and reduce development cycle times by up to 60%
+Bengaluru, India, May 27, 2026: Tata Elxsi, a global leader in design and technology services, today
+announced the launch of AnaTel™, an AI-native software development platform for healthcare and
+medical technology companies, co-developed with OpenAna, a provider of autonomous AI engineering
+platforms. AnaTel™ makes its debut at DeviceTalks Boston 2026, where Tata Elxsi is presenting its latest
+advances in AI-powered MedTech engineering and compliance.
+Healthcare and medtech software teams face a growing operational challenge. Regulatory expectations
+for AI-enabled device software are rising, with the FDA's 2025 draft guidance on AI-Enabled Device
+Software Functions and Europe's MDCG 2025-26 both requiring rigorous lifecycle documentation,
+traceability, and validation evidence as part of core engineering workflows, not submission
+afterthoughts. The result is a familiar bottleneck: requirements, test cases, traceability matrices, and
+regulatory artifacts are assembled manually across disconnected tools. Every software change becomes
+a documentation exercise. Every submission cycle starts from scratch.
+AnaTel™ addresses this by embedding autonomous AI agents directly into the engineering workflow.
+Unlike developer productivity tools that focus on code generation alone, AnaTel™ operates across the
+full AI-Driven Software Delivery Lifecycle, from requirements and architecture through deployment,
+verification and validation, and continuous optimization, making it a true end-to-end engineering
+execution platform for regulated environments. Operating as a configurable AI software team, AnaTel™
+generates code, documentation, test cases, and regulatory artifacts, drawing on a dedicated Healthcare
+and Life Sciences expert agent fine-tuned for medtech regulatory and engineering contexts. Human
+engineers and regulatory experts remain in control at every critical review and decision point. The
+platform supports eSTAR-aligned submission preparation, requirements traceability matrices,
+verification and validation evidence, and audit-trail documentation as part of day-to-day engineering. It
+is expected to reduce SaMD development and change assessment timelines from eight weeks to 72
+hours, with productivity improvements of up to 60%.
+AnaTel™ draws on Tata Elxsi's extensive experience building software in highly regulated medical device
+environments, engineering depth that has shaped how the platform reasons about traceability,
+validation, and compliance, not just how it is deployed.
+Tata Elxsi brings design-led and AI-first engineering, deep domain expertise, and access to global
+healthcare and medtech enterprises; OpenAna brings platform and technology innovation.
+Sreevatsa Sahasranaman, Senior Vice President and Head, Healthcare and Life Sciences, Tata Elxsi:
+“AnaTel™ accelerates regulatory-ready software engineering by bringing autonomous AI agents directly
+into the development workflows that shape compliance and submission readiness, while keeping our
+customers' engineering and regulatory experts firmly in control."
+
+Rajiv Sondhi, Chief Executive Officer, OpenAna: “Our mission at OpenAna is to provide autonomous AI
+agents that work as reliable co-engineers alongside human teams. Partnering with Tata Elxsi on AnaTel™
+brings this capability into one of the most demanding domains, regulated healthcare and medtech,
+where lifecycle traceability, safety, and compliance are as important as speed. Tata Elxsi's domain
+expertise and AI-first engineering ensure the platform is genuinely contextualized for the regulatory
+realities medtech teams face every day.”
+Muthusamy Selvaraj, VP, Innovation and Partnerships, Healthcare and Life Sciences, Tata Elxsi: “The
+question that led to AnaTel™ was a simple one: what could the world's best autonomous engineering
+capability become if it truly understood healthcare? That question is how this partnership with OpenAna
+was born, and it is how STEP.UP works in practice. We are accountable for the outcome. That is what
+makes this model different.”
+AnaTel™ is co-developed through STEP.UP, Tata Elxsi's co-innovation program for high-potential deep-
+tech companies.
+About Tata Elxsi
+Tata Elxsi is a global design and technology services company supporting customers across industries
+including healthcare and life sciences. In Med-Tech, Tata Elxsi works with medical device companies
+across product engineering, digital health, regulatory support, connected devices, and lifecycle
+transformation. The Healthcare and Life Sciences practice is ISO 13485 certified.
+For more information, please visit: www.tataelxsi.com
+About OpenAna
+OpenAna is the creator of Ana, a Platform of Autonomous Engineers spanning software engineering,
+security, DevOps/SRE, and AI/ML, designed to transform how software is built and delivered at
+enterprise scale. Ana operates autonomously across the full engineering lifecycle, from design and
+coding to testing, deployment, and documentation, enabling enterprises to ship faster, reduce manual
+effort, and maintain quality and governance at scale.
+Learn more at www.openana.ai
+Media Contact
+Hari Balan / Ayushi Moudgil
+Corporate Communications
+Email: media@tataelxsi.com

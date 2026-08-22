@@ -1,0 +1,12 @@
+.env
+venv/
+__pycache__/
+*.pyc
+.DS_Store
+
+# Raw PDFs are re-downloadable from exchanges; keep them out of git history
+data/*/pdfs/
+data/*/pdf_test/
+
+# Session cookies / auth artifacts
+cookies.txt

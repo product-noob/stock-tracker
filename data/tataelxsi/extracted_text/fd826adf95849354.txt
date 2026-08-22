@@ -1,0 +1,106 @@
+June 24, 2026
+BSE Limited National Stock Exchange of India Limited
+Phiroze Jeejeebhoy Towers Exchange Plaza, Plot No. C-1, Block G
+Dalal Street Bandra – Kurla Complex Bandra (East)
+Mumbai – 400 001 Mumbai – 400 051
+Scrip Code: 500408 NSE Symbol: TATAELXSI
+Dear Sirs/Madam,
+Sub: Press Release - “Tata Elxsi and Sky Mark a Major Milestone in AI-led Autonomous Network
+Transformation with NEURON”
+Please find enclosed the Press Release dated June 24, 2026, titled “Tata Elxsi and Sky Mark a Major
+Milestone in AI-led Autonomous Network Transformation with NEURON”.
+This disclosure is made in compliance with Regulation 30 of SEBI (Listing Obligations and Disclosure
+Requirements) Regulations, 2015.
+This is for your information and records.
+Yours faithfully,
+For Tata Elxsi Limited
+Sneha V
+Company Secretary & Compliance Officer
+Encl.: As above
+
+Tata Elxsi and Sky Mark a Major Milestone in AI-led Autonomous
+Network Transformation with NEURON
+Bengaluru, India, June 24, 2026: Tata Elxsi, a global leader in design and technology services,
+and Sky, one of Europe’s leading media and telecommunications companies, have marked a
+major milestone in their partnership, accelerating the adoption of AI-led autonomous networks
+through Tata Elxsi’s NEURON platform portfolio.
+Under this strategic partnership, Tata Elxsi is working with Sky to modernize network
+provisioning, cross-domain inventory and operations, improve service agility, and build a
+scalable foundation for autonomous networks.
+Central to this collaboration is Tata Elxsi’s NEURON platform portfolio, an AI-led suite of platforms
+designed to accelerate autonomous network transformation. By bringing together telco cloud
+lifecycle automation, multi-domain network engineering, service-aware inventory, and
+observability, NEURON enables communications service providers to streamline operations,
+improve agility, and advance towards Autonomous Networks.
+The NEURON platform portfolio comprises:
+• Telco Cloud Automation – End-to-end 4G/5G lifecycle management across Day 0 to Day
+2 operations
+• Digital Network Engineering (DNE) – Multi-domain automation across metro, CDN,
+broadband, and ISP networks
+• Service-Aware Inventory (PlanNet) – Cloud-native, unified visibility across network and
+service domains
+Together, these capabilities enable standardization, intent-driven automation, and orchestration
+across hybrid and multi-domain environments, accelerating the journey toward autonomous
+networks.
+
+The deployment of the NEURON platform portfolio has been delivering measurable business
+outcomes for Sky, including:
+• Up to 30% improvement in operational efficiency through advanced automation
+• Enhanced cybersecurity and regulatory compliance by embedding automation across
+critical processes
+• Intent-driven automation and modernised network inventory, delivering 60–70% cost
+efficiencies
+• Reduction in network change lead times by up to 50%, accelerating service delivery
+• Reduction in network change failure rates by up to 30%, improving reliability from
+intent to deployment
+Laurent Lavallee, Group Director of Networks, Sky: “NEURON is helping to transform how our
+networks operate – improving visibility, simplifying processes and accelerating service delivery. In
+doing so, it enables a more reliable, seamless experience for our customers as we move towards
+more intelligent, automated network operations.”
+Rajagopalan Rajappa, CTO, Communication Technologies & Platforms, Tata Elxsi: “Through
+NEURON, we are enabling Sky to transition toward autonomous operations by combining AI-
+driven automation with inventory-led network intelligence, delivering measurable efficiency and
+agility.
+Across our engagements with telecom operators in Europe, the Middle East, and other global
+markets, we see a common set of challenges—legacy network environments, fragmented multi-
+domain inventory, and increasing cost pressures—driving a shift toward platform-led
+transformation. Our work with Sky demonstrates how NEURON provides a clear pathway to
+modernizing operations, automation at scale, improving efficiency, and enabling AI-led
+autonomous networks.”
+Tata Elxsi embeds AI across its platforms and services—enabling intelligent automation, predictive
+operations, and data-driven decision-making across the network lifecycle.
+Join our CTO and the Tata Elxsi network technology team at DTW Ignite hosted by TM Forum in
+Copenhagen from 23-25 June to interact and learn more on how we are helping global
+operators transform network operations.
+Schedule meetings with our industry experts to make the most of the event.
+
+About Tata Elxsi
+Tata Elxsi is amongst the world’s leading providers of design and technology services across
+industries including Automotive, Broadcast, Communications, Healthcare and Transportation.
+Tata Elxsi is helping customers reimagine their products and services through design thinking and
+application of digital technologies such as IoT (Internet of Things), Generative AI, Cloud, IoT, Data
+Analytics and Virtual Reality.
+In telecom, Tata Elxsi helps operators transform network operations and services through AI-
+driven automation, cloud-native platforms, and advanced engineering solutions. With deep
+domain expertise, a strong partner ecosystem, and global delivery capabilities, Tata Elxsi enables
+enterprises to accelerate innovation, improve operational efficiency, and create new business
+models in an increasingly software-defined and AI-powered world.
+For more information, please visit: https://www.tataelxsi.com/industries/communications
+About Sky
+Sky is a leading entertainment and connectivity company, serving customers in the UK, Ireland
+and Italy. In TV, we offer the best sports coverage, unmissable entertainment and the smartest
+ways to stream the TV you love. In broadband, we power homes and businesses, with a fast,
+reliable connection. In mobile, we bring people closer, with fair and flexible plans at unbeatable
+value. And our range of smart home products keep people close to home, wherever they are.
+That’s how we do better for customers. And we believe in better for society too. We power the
+cultural economy in the UK and beyond, contributing billions to UK GDP, supporting thousands
+of jobs and making award-winning original sport, entertainment and news with the best
+homegrown talent. We broadcast both our journalism and our coverage of the arts, free to air.
+We are cutting our emissions and making recyclable, energy-efficient products. We give back,
+through free internet access for under-served communities and through skills programmes for
+over 2 million young people and counting.
+Sky is owned by Comcast Corporation, a global media and technology company.
+Media Contact
+Hari Balan / Ayushi Moudgil
+Corporate Communications
+Email: media@tataelxsi.com

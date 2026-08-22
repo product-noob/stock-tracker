@@ -1,0 +1,628 @@
+[
+  {
+    "sha256": "56e3de67c30ef22f70ac98324b46242e5580d440a62dff28d2f1b2f6f14b86d6",
+    "source_records": [
+      {
+        "exchange": "NSE",
+        "subject": "Copy of Newspaper Publication",
+        "published_at": "2026-08-11T17:17:19"
+      },
+      {
+        "exchange": "BSE",
+        "subject": "Company Update",
+        "published_at": "2026-08-11T17:19:55.333"
+      }
+    ],
+    "pdf_path": "/Users/prince.jain/AI_Projects/Stock Market/data/tataelxsi/pdfs/NSE_106736951.pdf",
+    "text_path": "/Users/prince.jain/AI_Projects/Stock Market/data/tataelxsi/extracted_text/56e3de67c30ef22f.txt",
+    "n_pages": 3,
+    "total_chars": 25004,
+    "low_confidence_pages": 0,
+    "image_only": false,
+    "error": null
+  },
+  {
+    "sha256": "eb609343a09c2cd0d5c9572cf1efa9146ca7bc883fb78bac2a46a810106d7bc0",
+    "source_records": [
+      {
+        "exchange": "NSE",
+        "subject": "Press Release",
+        "published_at": "2026-07-27T12:02:47"
+      },
+      {
+        "exchange": "BSE",
+        "subject": "Company Update",
+        "published_at": "2026-07-27T12:00:38.04"
+      }
+    ],
+    "pdf_path": "/Users/prince.jain/AI_Projects/Stock Market/data/tataelxsi/pdfs/NSE_106711506.pdf",
+    "text_path": "/Users/prince.jain/AI_Projects/Stock Market/data/tataelxsi/extracted_text/eb609343a09c2cd0.txt",
+    "n_pages": 3,
+    "total_chars": 5586,
+    "low_confidence_pages": 0,
+    "image_only": false,
+    "error": null
+  },
+  {
+    "sha256": "3945db0ea74c106956f7d723944837896dab4d84d12a4567f0ae258a2a2cab22",
+    "source_records": [
+      {
+        "exchange": "NSE",
+        "subject": "Updates",
+        "published_at": "2026-07-20T15:04:16"
+      },
+      {
+        "exchange": "BSE",
+        "subject": "Company Update",
+        "published_at": "2026-07-20T14:57:57.323"
+      }
+    ],
+    "pdf_path": "/Users/prince.jain/AI_Projects/Stock Market/data/tataelxsi/pdfs/NSE_106703387.pdf",
+    "text_path": "/Users/prince.jain/AI_Projects/Stock Market/data/tataelxsi/extracted_text/3945db0ea74c1069.txt",
+    "n_pages": 2,
+    "total_chars": 2014,
+    "low_confidence_pages": 0,
+    "image_only": false,
+    "error": null
+  },
+  {
+    "sha256": "1a82381d6a0df7407643f0af904e2d016b4abf5cddbf6ec2aa4afcf9cf184de5",
+    "source_records": [
+      {
+        "exchange": "NSE",
+        "subject": "Analysts/Institutional Investor Meet/Con. Call Updates",
+        "published_at": "2026-07-17T16:27:04"
+      },
+      {
+        "exchange": "BSE",
+        "subject": "Company Update",
+        "published_at": "2026-07-17T16:22:24.76"
+      }
+    ],
+    "pdf_path": "/Users/prince.jain/AI_Projects/Stock Market/data/tataelxsi/pdfs/NSE_106701587.pdf",
+    "text_path": "/Users/prince.jain/AI_Projects/Stock Market/data/tataelxsi/extracted_text/1a82381d6a0df740.txt",
+    "n_pages": 19,
+    "total_chars": 52467,
+    "low_confidence_pages": 0,
+    "image_only": false,
+    "error": null
+  },
+  {
+    "sha256": "e03aae4a726735a4a8a289b1df709d85c6312849e083e3801184837b3361b335",
+    "source_records": [
+      {
+        "exchange": "NSE",
+        "subject": "Copy of Newspaper Publication",
+        "published_at": "2026-07-15T12:38:20"
+      },
+      {
+        "exchange": "BSE",
+        "subject": "Company Update",
+        "published_at": "2026-07-15T12:36:17.52"
+      }
+    ],
+    "pdf_path": "/Users/prince.jain/AI_Projects/Stock Market/data/tataelxsi/pdfs/NSE_106698361.pdf",
+    "text_path": "/Users/prince.jain/AI_Projects/Stock Market/data/tataelxsi/extracted_text/e03aae4a726735a4.txt",
+    "n_pages": 3,
+    "total_chars": 970,
+    "low_confidence_pages": 2,
+    "image_only": false,
+    "error": null
+  },
+  {
+    "sha256": "f2b56b6ebc1de02ca8a8908e3315f8513ede22627f9b662e25b07616e06120b7",
+    "source_records": [
+      {
+        "exchange": "NSE",
+        "subject": "Analysts/Institutional Investor Meet/Con. Call Updates",
+        "published_at": "2026-07-14T20:41:16"
+      },
+      {
+        "exchange": "BSE",
+        "subject": "Company Update",
+        "published_at": "2026-07-14T20:45:04.893"
+      }
+    ],
+    "pdf_path": "/Users/prince.jain/AI_Projects/Stock Market/data/tataelxsi/pdfs/NSE_106697727.pdf",
+    "text_path": "/Users/prince.jain/AI_Projects/Stock Market/data/tataelxsi/extracted_text/f2b56b6ebc1de02c.txt",
+    "n_pages": 1,
+    "total_chars": 855,
+    "low_confidence_pages": 0,
+    "image_only": false,
+    "error": null
+  },
+  {
+    "sha256": "16ff2c0556122a40ad02a52e9b470819ad39cf3ad5af5d0fa2cc90462f4ffe24",
+    "source_records": [
+      {
+        "exchange": "NSE",
+        "subject": "Investor Presentation",
+        "published_at": "2026-07-14T18:34:47"
+      },
+      {
+        "exchange": "BSE",
+        "subject": "Company Update",
+        "published_at": "2026-07-14T18:33:33.347"
+      }
+    ],
+    "pdf_path": "/Users/prince.jain/AI_Projects/Stock Market/data/tataelxsi/pdfs/NSE_106697502.pdf",
+    "text_path": "/Users/prince.jain/AI_Projects/Stock Market/data/tataelxsi/extracted_text/16ff2c0556122a40.txt",
+    "n_pages": 29,
+    "total_chars": 25915,
+    "low_confidence_pages": 4,
+    "image_only": false,
+    "error": null
+  },
+  {
+    "sha256": "6b6cabc5821c107d36b42777e820c290220dd553e2ec7358d92a17171b736115",
+    "source_records": [
+      {
+        "exchange": "NSE",
+        "subject": "Press Release",
+        "published_at": "2026-07-14T18:27:14"
+      },
+      {
+        "exchange": "BSE",
+        "subject": "Company Update",
+        "published_at": "2026-07-14T18:29:32.27"
+      }
+    ],
+    "pdf_path": "/Users/prince.jain/AI_Projects/Stock Market/data/tataelxsi/pdfs/NSE_106697478.pdf",
+    "text_path": "/Users/prince.jain/AI_Projects/Stock Market/data/tataelxsi/extracted_text/6b6cabc5821c107d.txt",
+    "n_pages": 3,
+    "total_chars": 6170,
+    "low_confidence_pages": 0,
+    "image_only": false,
+    "error": null
+  },
+  {
+    "sha256": "54abf3a35e3911f795560aed9ccb9c094042903c232b28f0df74f28770638ac1",
+    "source_records": [
+      {
+        "exchange": "NSE",
+        "subject": "Outcome of Board Meeting",
+        "published_at": "2026-07-14T18:18:31"
+      },
+      {
+        "exchange": "BSE",
+        "subject": "Result",
+        "published_at": "2026-07-14T18:13:17.563"
+      }
+    ],
+    "pdf_path": "/Users/prince.jain/AI_Projects/Stock Market/data/tataelxsi/pdfs/NSE_106697464.pdf",
+    "text_path": "/Users/prince.jain/AI_Projects/Stock Market/data/tataelxsi/extracted_text/54abf3a35e3911f7.txt",
+    "n_pages": 6,
+    "total_chars": 15186,
+    "low_confidence_pages": 0,
+    "image_only": false,
+    "error": null
+  },
+  {
+    "sha256": "e2dc08de55c52ee3c5e9fe5487b3cc6c87f90ca14f9824b773f2013505268095",
+    "source_records": [
+      {
+        "exchange": "NSE",
+        "subject": "Copy of Newspaper Publication",
+        "published_at": "2026-07-10T17:54:53"
+      },
+      {
+        "exchange": "BSE",
+        "subject": "Company Update",
+        "published_at": "2026-07-10T17:52:37.797"
+      }
+    ],
+    "pdf_path": "/Users/prince.jain/AI_Projects/Stock Market/data/tataelxsi/pdfs/NSE_106693883.pdf",
+    "text_path": "/Users/prince.jain/AI_Projects/Stock Market/data/tataelxsi/extracted_text/e2dc08de55c52ee3.txt",
+    "n_pages": 3,
+    "total_chars": 1028,
+    "low_confidence_pages": 2,
+    "image_only": false,
+    "error": null
+  },
+  {
+    "sha256": "a7ad25dbdbff0925924e397087e241064764f247c7602046a6ee498abcd22235",
+    "source_records": [
+      {
+        "exchange": "NSE",
+        "subject": "Certificate under SEBI (Depositories and Participants) Regulations, 2018",
+        "published_at": "2026-07-08T17:11:16"
+      },
+      {
+        "exchange": "BSE",
+        "subject": "Company Update",
+        "published_at": "2026-07-08T17:07:06.993"
+      }
+    ],
+    "pdf_path": "/Users/prince.jain/AI_Projects/Stock Market/data/tataelxsi/pdfs/NSE_106690759.pdf",
+    "text_path": "/Users/prince.jain/AI_Projects/Stock Market/data/tataelxsi/extracted_text/a7ad25dbdbff0925.txt",
+    "n_pages": 2,
+    "total_chars": 2638,
+    "low_confidence_pages": 0,
+    "image_only": false,
+    "error": null
+  },
+  {
+    "sha256": "a96bf131f367a03e9d10ca70c4b5565db3810b0f697c4f92e48acc7c49d473fa",
+    "source_records": [
+      {
+        "exchange": "NSE",
+        "subject": "Analysts/Institutional Investor Meet/Con. Call Updates",
+        "published_at": "2026-07-06T18:53:21"
+      },
+      {
+        "exchange": "BSE",
+        "subject": "Company Update",
+        "published_at": "2026-07-06T18:50:42.98"
+      }
+    ],
+    "pdf_path": "/Users/prince.jain/AI_Projects/Stock Market/data/tataelxsi/pdfs/NSE_106687973.pdf",
+    "text_path": "/Users/prince.jain/AI_Projects/Stock Market/data/tataelxsi/extracted_text/a96bf131f367a03e.txt",
+    "n_pages": 2,
+    "total_chars": 2860,
+    "low_confidence_pages": 0,
+    "image_only": false,
+    "error": null
+  },
+  {
+    "sha256": "ffefb84478dedef600addcbde389fbd4c69ba36fe9096d1e05c328c30aded13f",
+    "source_records": [
+      {
+        "exchange": "NSE",
+        "subject": "Updates",
+        "published_at": "2026-07-01T16:13:14"
+      },
+      {
+        "exchange": "BSE",
+        "subject": "Company Update",
+        "published_at": "2026-07-01T16:10:31.293"
+      }
+    ],
+    "pdf_path": "/Users/prince.jain/AI_Projects/Stock Market/data/tataelxsi/pdfs/NSE_106683314.pdf",
+    "text_path": "/Users/prince.jain/AI_Projects/Stock Market/data/tataelxsi/extracted_text/ffefb84478dedef6.txt",
+    "n_pages": 1,
+    "total_chars": 951,
+    "low_confidence_pages": 0,
+    "image_only": false,
+    "error": null
+  },
+  {
+    "sha256": "fc1544d1cf6695c091f2cb2ace9b795a2000a02e4c4bf5f3a87fec43d86254ee",
+    "source_records": [
+      {
+        "exchange": "NSE",
+        "subject": "Updates",
+        "published_at": "2026-06-29T17:43:36"
+      },
+      {
+        "exchange": "BSE",
+        "subject": "Company Update",
+        "published_at": "2026-06-29T17:40:16.76"
+      }
+    ],
+    "pdf_path": "/Users/prince.jain/AI_Projects/Stock Market/data/tataelxsi/pdfs/NSE_106679798.pdf",
+    "text_path": "/Users/prince.jain/AI_Projects/Stock Market/data/tataelxsi/extracted_text/fc1544d1cf6695c0.txt",
+    "n_pages": 2,
+    "total_chars": 2050,
+    "low_confidence_pages": 0,
+    "image_only": false,
+    "error": null
+  },
+  {
+    "sha256": "0debcc4f168216cb33138bd5ef26021fef831419cc7fff31c5242758894775ac",
+    "source_records": [
+      {
+        "exchange": "NSE",
+        "subject": "Shareholders meeting",
+        "published_at": "2026-06-24T18:40:38"
+      },
+      {
+        "exchange": "BSE",
+        "subject": "AGM/EGM",
+        "published_at": "2026-06-24T18:38:07.29"
+      }
+    ],
+    "pdf_path": "/Users/prince.jain/AI_Projects/Stock Market/data/tataelxsi/pdfs/NSE_106673183.pdf",
+    "text_path": "/Users/prince.jain/AI_Projects/Stock Market/data/tataelxsi/extracted_text/0debcc4f168216cb.txt",
+    "n_pages": 14,
+    "total_chars": 17647,
+    "low_confidence_pages": 0,
+    "image_only": false,
+    "error": null
+  },
+  {
+    "sha256": "1c88455ae9006127c5fe938324c7f64060dd5b61c9f407394d62ffc8ca81bc51",
+    "source_records": [
+      {
+        "exchange": "NSE",
+        "subject": "Shareholders meeting",
+        "published_at": "2026-06-24T16:48:58"
+      },
+      {
+        "exchange": "BSE",
+        "subject": "AGM/EGM",
+        "published_at": "2026-06-24T16:44:39.21"
+      }
+    ],
+    "pdf_path": "/Users/prince.jain/AI_Projects/Stock Market/data/tataelxsi/pdfs/NSE_106672767.pdf",
+    "text_path": "/Users/prince.jain/AI_Projects/Stock Market/data/tataelxsi/extracted_text/1c88455ae9006127.txt",
+    "n_pages": 3,
+    "total_chars": 5995,
+    "low_confidence_pages": 0,
+    "image_only": false,
+    "error": null
+  },
+  {
+    "sha256": "fd826adf958493544361a1a0b14d5b727cf374d95dfb2fd807f1fd116ba6a77e",
+    "source_records": [
+      {
+        "exchange": "NSE",
+        "subject": "Press Release",
+        "published_at": "2026-06-24T15:02:12"
+      },
+      {
+        "exchange": "BSE",
+        "subject": "Company Update",
+        "published_at": "2026-06-24T14:57:24.883"
+      }
+    ],
+    "pdf_path": "/Users/prince.jain/AI_Projects/Stock Market/data/tataelxsi/pdfs/NSE_106672487.pdf",
+    "text_path": "/Users/prince.jain/AI_Projects/Stock Market/data/tataelxsi/extracted_text/fd826adf95849354.txt",
+    "n_pages": 4,
+    "total_chars": 6787,
+    "low_confidence_pages": 0,
+    "image_only": false,
+    "error": null
+  },
+  {
+    "sha256": "a71e13e598f2668d990092c6fc7771af921a42f5707fbfa569ad08d49bceafd3",
+    "source_records": [
+      {
+        "exchange": "NSE",
+        "subject": "Trading Window",
+        "published_at": "2026-06-19T18:10:32"
+      },
+      {
+        "exchange": "BSE",
+        "subject": "Insider Trading / SAST",
+        "published_at": "2026-06-19T18:13:37.667"
+      }
+    ],
+    "pdf_path": "/Users/prince.jain/AI_Projects/Stock Market/data/tataelxsi/pdfs/NSE_106668211.pdf",
+    "text_path": "/Users/prince.jain/AI_Projects/Stock Market/data/tataelxsi/extracted_text/a71e13e598f2668d.txt",
+    "n_pages": 1,
+    "total_chars": 1166,
+    "low_confidence_pages": 0,
+    "image_only": false,
+    "error": null
+  },
+  {
+    "sha256": "d788ea26fcb9bb848f9d731b868435d734f57b8ee676f6ab64d9d6b16a8b2d4c",
+    "source_records": [
+      {
+        "exchange": "NSE",
+        "subject": "Updates",
+        "published_at": "2026-06-16T17:54:59"
+      },
+      {
+        "exchange": "BSE",
+        "subject": "Company Update",
+        "published_at": "2026-06-16T17:52:08.62"
+      }
+    ],
+    "pdf_path": "/Users/prince.jain/AI_Projects/Stock Market/data/tataelxsi/pdfs/NSE_106664707.pdf",
+    "text_path": "/Users/prince.jain/AI_Projects/Stock Market/data/tataelxsi/extracted_text/d788ea26fcb9bb84.txt",
+    "n_pages": 4,
+    "total_chars": 6908,
+    "low_confidence_pages": 0,
+    "image_only": false,
+    "error": null
+  },
+  {
+    "sha256": "71158cd5bfc776011d1d4007dea59a3e87efd63d6f50cfb5098242a5d2e52eac",
+    "source_records": [
+      {
+        "exchange": "NSE",
+        "subject": "Copy of Newspaper Publication",
+        "published_at": "2026-06-02T17:22:54"
+      },
+      {
+        "exchange": "BSE",
+        "subject": "Company Update",
+        "published_at": "2026-06-02T17:19:30.827"
+      }
+    ],
+    "pdf_path": "/Users/prince.jain/AI_Projects/Stock Market/data/tataelxsi/pdfs/NSE_106652619.pdf",
+    "text_path": "/Users/prince.jain/AI_Projects/Stock Market/data/tataelxsi/extracted_text/71158cd5bfc77601.txt",
+    "n_pages": 3,
+    "total_chars": 46786,
+    "low_confidence_pages": 0,
+    "image_only": false,
+    "error": null
+  },
+  {
+    "sha256": "fc3b3325a6b9f5cd0f18af01fd3ccf705234090c0986f37e2160e5ffb7f138e9",
+    "source_records": [
+      {
+        "exchange": "NSE",
+        "subject": "Updates",
+        "published_at": "2026-06-01T18:34:46"
+      },
+      {
+        "exchange": "BSE",
+        "subject": "Company Update",
+        "published_at": "2026-06-01T18:33:15.247"
+      }
+    ],
+    "pdf_path": "/Users/prince.jain/AI_Projects/Stock Market/data/tataelxsi/pdfs/NSE_106651440.pdf",
+    "text_path": "/Users/prince.jain/AI_Projects/Stock Market/data/tataelxsi/extracted_text/fc3b3325a6b9f5cd.txt",
+    "n_pages": 2,
+    "total_chars": 1197,
+    "low_confidence_pages": 1,
+    "image_only": false,
+    "error": null
+  },
+  {
+    "sha256": "db6f0eaeeae294f75f5c19b928e4553aeaff956c439a1aabaed2cabda13eabee",
+    "source_records": [
+      {
+        "exchange": "NSE",
+        "subject": "Updates",
+        "published_at": "2026-06-01T17:03:30"
+      },
+      {
+        "exchange": "BSE",
+        "subject": "Others",
+        "published_at": "2026-06-01T17:01:02.06"
+      }
+    ],
+    "pdf_path": "/Users/prince.jain/AI_Projects/Stock Market/data/tataelxsi/pdfs/NSE_106651240.pdf",
+    "text_path": "/Users/prince.jain/AI_Projects/Stock Market/data/tataelxsi/extracted_text/db6f0eaeeae294f7.txt",
+    "n_pages": 60,
+    "total_chars": 118800,
+    "low_confidence_pages": 0,
+    "image_only": false,
+    "error": null
+  },
+  {
+    "sha256": "0ee7c38f1a179a23ebab0d4f9bf52d4e0c62b4163fb6a4fd509f707043f9e315",
+    "source_records": [
+      {
+        "exchange": "NSE",
+        "subject": "Shareholders meeting",
+        "published_at": "2026-06-01T16:30:24"
+      },
+      {
+        "exchange": "BSE",
+        "subject": "Others",
+        "published_at": "2026-06-01T16:47:04.347"
+      },
+      {
+        "exchange": "BSE",
+        "subject": "AGM/EGM",
+        "published_at": "2026-06-01T16:26:15.817"
+      }
+    ],
+    "pdf_path": "/Users/prince.jain/AI_Projects/Stock Market/data/tataelxsi/pdfs/NSE_106651186.pdf",
+    "text_path": "/Users/prince.jain/AI_Projects/Stock Market/data/tataelxsi/extracted_text/0ee7c38f1a179a23.txt",
+    "n_pages": 152,
+    "total_chars": 644156,
+    "low_confidence_pages": 1,
+    "image_only": false,
+    "error": null
+  },
+  {
+    "sha256": "7e2dbc9b12ba9117220da889e21d82031508cbc83430cad8edc936d1d7c89cb0",
+    "source_records": [
+      {
+        "exchange": "NSE",
+        "subject": "Record Date",
+        "published_at": "2026-06-01T16:12:10"
+      },
+      {
+        "exchange": "NSE",
+        "subject": "Updates",
+        "published_at": "2026-06-01T16:05:36"
+      },
+      {
+        "exchange": "BSE",
+        "subject": "Corp. Action",
+        "published_at": "2026-06-01T16:10:46.52"
+      },
+      {
+        "exchange": "BSE",
+        "subject": "AGM/EGM",
+        "published_at": "2026-06-01T16:03:23.943"
+      }
+    ],
+    "pdf_path": "/Users/prince.jain/AI_Projects/Stock Market/data/tataelxsi/pdfs/NSE_106651126.pdf",
+    "text_path": "/Users/prince.jain/AI_Projects/Stock Market/data/tataelxsi/extracted_text/7e2dbc9b12ba9117.txt",
+    "n_pages": 1,
+    "total_chars": 2016,
+    "low_confidence_pages": 0,
+    "image_only": false,
+    "error": null
+  },
+  {
+    "sha256": "30bdc89152010a82ff44d5f755bf453546a67ec8a506dd8c90fa3bb99ab22460",
+    "source_records": [
+      {
+        "exchange": "NSE",
+        "subject": "Updates",
+        "published_at": "2026-05-30T10:32:04"
+      },
+      {
+        "exchange": "BSE",
+        "subject": "Company Update",
+        "published_at": "2026-05-30T10:28:14.303"
+      }
+    ],
+    "pdf_path": "/Users/prince.jain/AI_Projects/Stock Market/data/tataelxsi/pdfs/NSE_106648828.pdf",
+    "text_path": "/Users/prince.jain/AI_Projects/Stock Market/data/tataelxsi/extracted_text/30bdc89152010a82.txt",
+    "n_pages": 1,
+    "total_chars": 1348,
+    "low_confidence_pages": 0,
+    "image_only": false,
+    "error": null
+  },
+  {
+    "sha256": "f8a8fca7aab69624e6f1201ef7b9d70d22e49957ae76b1037116b5cf5212e4f1",
+    "source_records": [
+      {
+        "exchange": "NSE",
+        "subject": "Press Release",
+        "published_at": "2026-05-27T16:14:36"
+      },
+      {
+        "exchange": "BSE",
+        "subject": "Company Update",
+        "published_at": "2026-05-27T16:12:42.733"
+      }
+    ],
+    "pdf_path": "/Users/prince.jain/AI_Projects/Stock Market/data/tataelxsi/pdfs/NSE_106643488.pdf",
+    "text_path": "/Users/prince.jain/AI_Projects/Stock Market/data/tataelxsi/extracted_text/f8a8fca7aab69624.txt",
+    "n_pages": 3,
+    "total_chars": 6353,
+    "low_confidence_pages": 0,
+    "image_only": false,
+    "error": null
+  },
+  {
+    "sha256": "b156ae64c733c4f0659f9abc161712017d82580d9e37481c876773ee62fdce9c",
+    "source_records": [
+      {
+        "exchange": "NSE",
+        "subject": "Press Release",
+        "published_at": "2026-05-26T16:19:25"
+      },
+      {
+        "exchange": "BSE",
+        "subject": "Company Update",
+        "published_at": "2026-05-26T16:19:07.517"
+      }
+    ],
+    "pdf_path": "/Users/prince.jain/AI_Projects/Stock Market/data/tataelxsi/pdfs/NSE_106641407.pdf",
+    "text_path": "/Users/prince.jain/AI_Projects/Stock Market/data/tataelxsi/extracted_text/b156ae64c733c4f0.txt",
+    "n_pages": 3,
+    "total_chars": 5330,
+    "low_confidence_pages": 0,
+    "image_only": false,
+    "error": null
+  },
+  {
+    "sha256": "9dd36c730a2bd613c16cd7819b4f7109e74c0be53ef128f7860bc39feadb6a8a",
+    "source_records": [
+      {
+        "exchange": "BSE",
+        "subject": "Board Meeting",
+        "published_at": "2026-07-06T16:20:38.43"
+      }
+    ],
+    "pdf_path": "/Users/prince.jain/AI_Projects/Stock Market/data/tataelxsi/pdfs/BSE_6a39c34e-5562-4685-82c8-39ceb6b2f5fb.pdf",
+    "text_path": "/Users/prince.jain/AI_Projects/Stock Market/data/tataelxsi/extracted_text/9dd36c730a2bd613.txt",
+    "n_pages": 1,
+    "total_chars": 1188,
+    "low_confidence_pages": 0,
+    "image_only": false,
+    "error": null
+  }
+]

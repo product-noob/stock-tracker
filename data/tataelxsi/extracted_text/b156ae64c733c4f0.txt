@@ -1,0 +1,78 @@
+May 26, 2026
+BSE Limited National Stock Exchange of India Ltd.
+Phiroze Jeejeebhoy Towers Exchange Plaza, Plot No. C-1, Block G
+Dalal Street Bandra – Kurla Complex Bandra (East)
+Mumbai – 400 001 Mumbai – 400 051
+Scrip Code: 500408 Scrip Code: TATAELXSI
+Dear Sirs/Madam,
+Sub: Press Release - “Tata Elxsi Launches ViTel™, a Material Intelligence Solution for Med-Tech
+Powered by Viridium AI”
+Please find enclosed the Press Release dated May 26, 2026, titled “Tata Elxsi Launches ViTel™, a Material
+Intelligence Solution for Med-Tech Powered by Viridium AI”.
+This disclosure is made in compliance with Regulation 30 of SEBI (Listing Obligations and Disclosure
+Requirements) Regulations, 2015.
+This is for your information and records.
+Yours faithfully,
+For Tata Elxsi Limited
+Sneha V
+Company Secretary & Compliance Officer
+Encl.: As above
+
+Tata Elxsi Launches ViTel™, a Material Intelligence Solution for
+Med-Tech Powered by Viridium AI
+ViTel™ helps medical device manufacturers protect margins, accelerate sourcing and engineering
+decisions, and stay ahead of compliance through AI-powered material intelligence
+Bengaluru, India, May 26, 2026: Tata Elxsi, a global leader in design and technology services, today
+announced the launch of ViTel™, a Material Intelligence solution for Medical Device manufacturers, co-
+developed with Viridium AI, a material intelligence platform company. ViTel™ is being formally
+introduced at DeviceTalks Boston 2026, where Tata Elxsi is presenting its latest advances in AI-powered
+MedTech engineering and compliance.
+Medical device manufacturers are facing a new operating reality. Material decisions now affect margin,
+resilience, product velocity, and market access, yet critical product knowledge remains buried across
+BOMs, supplier documents, ERP and PLM systems, and expert teams. This makes every new regulation
+or customer requirement a costly manual exercise.
+ViTel™ addresses this by creating a reusable Material Intelligence layer across the enterprise, helping
+teams identify material and supplier dependencies, assess country-of-origin and sourcing exposure,
+evaluate alternatives, and understand where product or material risks affect cost, continuity, or market
+access. Powered by Viridium AI's Knowledge Cloud, Chemical Digital Twin, and science-constrained AI
+models, ViTel™ transforms scattered enterprise data into a living product-material knowledge graph
+connecting products, parts, materials, chemicals, suppliers, regulations, and evidence.
+ViTel™ draws on Tata Elxsi's three decades of Med-Tech engineering and regulatory expertise,
+knowledge that has been embedded into how the solution reasons about material risk, compliance, and
+sourcing decisions, not just how it is deployed.
+Tata Elxsi brings design-led and AI-first engineering, deep domain expertise, and access to global
+healthcare and medtech enterprises; Viridium AI brings platform and technology innovation.
+Sreevatsa Sahasranaman, Senior Vice President and Head, Healthcare and Life Sciences, Tata Elxsi:
+“ViTel™ brings Material Intelligence directly into the product and compliance workflows that matter
+most, helping our customers make faster, more confident decisions across sourcing, engineering, quality,
+and regulatory readiness.”
+Niraj Deo, Chief Executive Officer, Viridium AI: “Viridium AI was built to help manufacturers understand
+the material DNA of their products. In Med-Tech, that intelligence creates a strategic foundation for the
+manufacturer. Once product and material knowledge are digitized, it becomes a reusable enterprise
+asset for margin, sourcing, engineering, quality, and regulatory decisions. Partnering with Tata Elxsi
+through ViTel™ brings that capability directly into the hands of the teams who need it most.”
+
+Muthusamy Selvaraj, VP, Innovation and Partnerships, Healthcare and Life Sciences, Tata Elxsi: “The
+question that led to ViTel™ was a simple one: what could the world's best material intelligence capability
+become if it truly understood healthcare? That question is how this partnership with Viridium AI was
+born, and how STEP UP works in practice. We are accountable for the outcome. That is what makes this
+model different.”
+ViTel™ is co-developed through STEP UP, Tata Elxsi's co-innovation program for high-potential deep-tech
+companies.
+About Tata Elxsi
+Tata Elxsi is a global design and technology services company supporting customers across industries
+including healthcare and life sciences. In Med-Tech, Tata Elxsi works with medical device companies
+across product engineering, digital health, regulatory support, connected devices, and lifecycle
+transformation. The Healthcare and Life Sciences practice is ISO 13485 certified.
+For more information, please visit: www.tataelxsi.com
+About Viridium
+AI Viridium AI is a Material Intelligence company helping manufacturers transform fragmented product,
+material, chemical, and supplier data into decision-ready intelligence. Its platform combines Knowledge
+Cloud, Chemical Digital Twin, science-constrained AI models, and domain-specific agent workflows to
+support sourcing, engineering, quality, compliance, and risk decisions across complex manufacturing
+environments.
+For more information, visit: www.viridium.ai
+Media Contact
+Hari Balan / Ayushi Moudgil
+Corporate Communications
+Email: media@tataelxsi.com

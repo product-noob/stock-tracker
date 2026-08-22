@@ -1,0 +1,715 @@
+July 17, 2026
+BSE Limited National Stock Exchange of India Limited
+Phiroze Jeejeebhoy Towers Exchange Plaza, Plot No. C-1, Block G
+Dalal Street Bandra – Kurla Complex Bandra (East)
+Mumbai – 400 001 Mumbai – 400 051
+Scrip Code: 500408 NSE Symbol: TATAELXSI
+Dear Sirs/Madam,
+Sub: Transcript of the Investors’ Conference Call for the quarter ended June 30, 2026
+Pursuant to Regulation 30 of the SEBI (Listing Obligations and Disclosure Requirements) Regulations 2015,
+please find enclosed the transcript of the Investors’ Conference Call held on July 14, 2026, on the
+Audited Financial Results of the Company for the quarter ended June 30, 2026.
+The transcript of the earnings conference call is also available on the Company’s website at www.tataelxsi.com.
+This is for your information and records.
+Thanking you,
+Yours faithfully,
+For Tata Elxsi Limited
+Sneha V
+Company Secretary & Compliance Officer
+Encl: As above
+
+“Tata Elxsi Limited
+Q1 FY ‘26-27 Earnings Conference Call”
+July 14, 2026
+MANAGEMENT: MR. MANOJ RAGHAVAN – MANAGING DIRECTOR AND
+CHIEF EXECUTIVE OFFICER – TATA ELXSI LIMITED
+MR. NITIN PAI – CHIEF MARKETING AND CHIEF
+STRATEGY OFFICER – TATA ELXSI LIMITED
+MR. NALIN RANA – CHIEF FINANCIAL OFFICER –
+TATA ELXSI LIMITED
+MS. SNEHA V – COMPANY SECRETARY – TATA ELXSI
+LIMITED
+MODERATOR: MR. SHASHANK GANESH – ERNST & YOUNG
+
+Tata Elxsi Limited
+July 14, 2026
+Moderator: Ladies and gentlemen, good day and welcome to the Q1 FY 26-27 Earnings Conference Call
+of Tata Elxsi Limited, hosted by E&Y. As a reminder, all participant lines will be in the listen-
+only mode and there will be an opportunity for you to ask questions after the presentation
+concludes. Should you need assistance during the conference call, please signal an operator by
+pressing '*' and then '0' on your touchtone phone. Please note that this conference is being
+recorded. I now hand the conference over to Mr. Shashank Ganesh from E&Y. Thank you and
+over to you, sir.
+Shashank Ganesh: Thank you very much. Good evening to all the participants on the call. Good morning if you're
+logging in from the western side. Before we proceed to the call, let me remind you that this
+discussion may contain forward-looking statements that may involve known or unknown risks,
+uncertainties and other factors. Therefore, it must be viewed in conjunction with the business
+risks that could cause further results, performance or achievements that differ significantly
+from what is expressed or implied by such forward-looking statements.
+To take us through the results and answer your questions today, we have the senior
+management of Tata Elxsi represented by Mr. Manoj Raghavan, Managing Director and CEO,
+Mr. Nitin Pai, Chief Marketing and Chief Strategy Officer, Mr. Nalin Rana, Chief Financial
+Officer, and Ms. Neha V., Company Secretary. We will start the call with a brief overview of
+the past quarter by Mr. Raghavan, followed by a Q&A session.
+We would appreciate your cooperation in restricting yourself to two questions to allow
+participants an opportunity to interact. If you have any further questions, you may join the
+queue and we will be happy to respond to them if time permits. With that, I would like to hand
+over the call to Mr. Manoj Raghavan. Over to you, Manoj.
+Manoj Raghavan: Thank you, Shashank. Very good evening to everybody who's joined us today for the Q1 FY
+27 investor call. I hope all of you are fine and doing well. I'm pleased to announce that Tata
+Elxsi has passed a key milestone of crossing more than INR1,000 crores of quarterly reporting
+operating revenues by delivering INR1,021.1 crores in the first quarter of FY 27. In constant
+currency terms, our revenue grew by 6.5% year-on-year and 1.3% quarter-on-quarter.
+The growth was led by our major verticals, transportation and media and communication,
+which grew 6.7% and 11.5% respectively year-on-year in constant currency. We see this
+performance as a reflection of the strength and relevance of our unique design-led and AI-
+enabled engineering capabilities, supported by large strategic engagements in our chosen
+industries. We posted an EBITDA of INR216 crores, which grew at 15.7% year-on-year and
+an EBITDA margin of 21.2%.
+The media and communication business delivered robust growth of 4.7% quarter-on-quarter in
+natural currencies and 2.9% quarter-on-quarter in constant currencies, which translate to a
+year-on-year growth of 22.2% in natural currencies and 11.5% in constant currencies. The
+strong performance was enabled by the ramp-up of key engagements which we announced in
+the previous quarters and large programs with global operators and broadcasters.
+Page 2 of 18
+
+Tata Elxsi Limited
+July 14, 2026
+Our transportation business, which contributes more than 55% of the SDS segment revenue,
+reported a resilient performance in an otherwise challenged macro environment with a growth
+of 6.7% year-on-year in constant currency and 13.3% year-on-year in natural currency. This
+was led by large automotive OEM engagements and strategic off-road and aerospace deal
+wins. We continue to strengthen our pivots towards OEM and today 78% of our automotive
+revenues is from our OEM customers.
+The healthcare business exited near flat with a -0.3% quarter-on-quarter in constant currency,
+reflecting the muted global healthcare business environment. The anticipated momentum was
+staggered by delayed deal awards from some of our key customers. We however remain
+excited about the long-term prospects of this segment.
+We continue to invest through scaling our newly launched platforms such as ViTel, and
+AnaTel, reimagining our offerings with AI, GenAI and taking center stage in medtech and
+healthcare events, setting ourselves to capture emerging opportunities. In the quarter gone by,
+we have accelerated our efforts to expand platform-led offerings. Our Neuron platform
+portfolio has enabled Sky in Europe to transition towards zero-touch network operations with
+enhanced cybersecurity, delivering upto 30% to 70% efficiencies in various parameters.
+Our AI-led material intelligence platform ViTel also inked a strategic deal with a global
+medtech company. We are executing upon our future-focused strategy and will continue to
+intensify our investments in specialized talent, rigorous upskilling, AI-powered platforms,
+tools and infrastructure that strengthens our human plus AI plus domain proposition. These
+forward-looking investments will enable us to stay at leading edge of technology
+advancements while accelerating value creation for our customers.
+The US region performed well for us across verticals led by new deal wins and deal ramp-ups.
+Some of these strategic programs demand quick ramp-up at onshore for transition support and
+initial stabilization. We have incurred additional cost of deploying forward teams as well as
+specialist third-party contractors to help accelerate transitions and mitigate visa delays for our
+engineers.
+This is partly reflected in our onsite-offshore ratio and bottom-line performance and should
+ease over the next two to three quarters. We are firmly focused on sustainable growth,
+deepening our engagements with key customers and positioning ourselves to shape and win
+strategic long-term deals and add marquee customers. We look forward to carrying the growth
+momentum to subsequent quarters while remaining steadfast on our operational rigor and
+business discipline. Thank you and over to Shashank for the Q&A session.
+Moderator: Thank you very much. We will now begin with the question-and-answer session. Your first
+question comes from the line of Bhavik Mehta with JP Morgan. Please go ahead.
+Bhavik Mehta: Hi, thank you. So, a couple of questions. Firstly, Manoj, if you can give some outlook on your
+three verticals given, you know, the Middle East conflict still remains in place. So, you know,
+how are the discussions with clients evolving on spending intentions for the next few quarters?
+Page 3 of 18
+
+Tata Elxsi Limited
+July 14, 2026
+And if you can, you know, segregate it across the three verticals, how they're different. And
+secondly is on margins. You did talk about some onshore investments and subcontractors as
+well. So how should we think about the margin trajectory going forward? I mean, is this like a
+one-time thing which is in the base now or it will just continue for the next few quarters? So
+any color on the margin outlook as well for the year?
+Manoj Raghavan: Sure. I think, I mean, upfront let me tell you, I think it was a reasonable quarter for us because
+two of our larger businesses, which is transportation and the media and communication
+vertical, had a pretty decent performance. I think media and communication vertical had been
+sort of underperforming for quite some time and I think with some of the deals that we closed
+in the previous quarters, we've finally been able to ramp up fully.
+So, I think as we speak, there are deals that we are chasing, there are some pretty large
+consolidation deals in the media and telecom space and some of these we are very, very
+confident we should be able to swing in our favor. So, I think over the next two to three
+quarters, we strongly believe that we will be able to continue our growth in the media and
+communication vertical.
+From the transportation vertical, yes, I think the Europe situation is a little we have to wait and
+watch, given the challenges in the German market and so on. We have not been affected as
+much and the deals that we have closed, we continue to execute. There is some slowdown in
+the new deals. But having said that, I think for us, the US market, we were able to really grow,
+not just the automotive revenues but also the adjacency revenues including the off-road and
+farm and equipment, as well as the aerospace and defense segment.
+So overall when we look at it from a transportation business, yes, there is softness in Germany
+in particular, but we strongly believe that all the other adjacencies and the efforts that we're
+putting in other markets including Asia, including India, I think we've seen some pretty very
+good deals that we've closed, over the last, couple of quarters and these ramp-ups are
+happening as we speak.
+So, I strongly believe that for both our media communication and transportation, we should
+see, growth, over the next two to three quarters. That visibility is coming in as we speak.
+Healthcare again, it's a little bit of a moving target. It's a smaller business for us, less than 10%
+of our revenues come from healthcare, but it's a very, very important business for us because
+we strongly believe we have built fantastic capabilities including a lot of AI, GenAI related
+tools that we have built for this particular market.
+As you know, in this particular industry, the deal pipelines, the deal closures, would take some
+time. There's some very good conversations happening. I wish we had a better, story to say and
+we were really hoping that look, Q1 would be a growth story. Unfortunately, some of the deals
+that we have, we have been discussing, we've still not been able to close it and complete the
+paperwork and so on.
+Page 4 of 18
+
+Tata Elxsi Limited
+July 14, 2026
+So having said that, in the mid-term to long-term, this is an area that we're investing in. We
+have built fantastic capabilities and we strongly believe that this will eventually, in this
+financial year, we will see growth in the healthcare and life cycle, life sciences space. So, this
+is somewhere we’re definitely continuing our investments.
+On the margin side, I will request Nalin to give you an overview. I think we have had some
+one-timers that have hit us in the quarter, but definitely we have a plan to grow back and if you
+look at it over the four quarters, really look at how we can get back to our margin profile. So, I
+will hand it over to Nalin to answer that question.
+Nalin Rana: Thanks, Manoj. So, if we look at our EBIT margin, so our EBIT margin has decreased 330 bps
+on a sequential basis and increased 80 bps on Y-o-Y basis. So, looking at the change in margin
+in three buckets, right, to give you some color.
+So, the first bucket is cross-currency gains that we have got in the quarter. That's about 40 bps
+to 50 bps. Then we have in this quarter around 150 bps of one-off costs or short-term costs.
+And there's a third bucket of 220 bps which is towards investments in people, go-to-market
+and capabilities. Now taking these, the second and third buckets one by one, right? So, 150
+bps. So, 150 bps this quarter, we had to incur some transition costs for some of our large
+consolidation deals that are taking place. Second one is there was some one-time costs that we
+also took towards retention of select employees who we believe are sort of critical for the
+business.
+Third one here, there were costs in relation to a particular customer that we had to incur in this
+particular, in this quarter, which we do not anticipate going forward. And the fourth is
+upfronting of certain annual costs. So, these are absolutely standard costs, pretty much fixed on
+an annual basis, but we had to for various reasons upfront some of these costs in this quarter.
+So, this bucket, the way we should think about it is most of these would go away in the next
+quarter. Some of these will transition over the next couple of quarters.
+Then there's this third bucket of about 220 bps to 230 bps. Now this is on account of few
+factors. One is investment in onsite sales and delivery. In this quarter we saw, significant
+ramp-up in some of our US-based deals. So, we had to ramp up our delivery there. Lot of this
+ramp-up we had to do through subcontractors because of A, the short timelines, B, also visa
+restrictions that are existing in the industry.
+In addition to this, we've applied for visas of our own people who are, who will sort of
+supplement these contractors or replace them over a period of time, right? Then there were
+costs again for these deals, there were costs related to ramp-up of these deals. Then we are, as
+mentioned by Manoj earlier, ramping up our investments in specialized talent, AI tools and
+infrastructure.
+Lastly, we had, very recently a Chapter 11 in one of our customers, which sort of led to higher
+provisions for the quarter, which you'll be able to see in the financials.
+Page 5 of 18
+
+Tata Elxsi Limited
+July 14, 2026
+Then the second bucket, the way I would think about it is, these are little stickier, but also
+should go away over a period of time. So subcontractors, we'll look to make optimize those by
+moving some workstreams offshore or our own employees replacing the subcontractors over a
+period of time and finally leave only the critical sort of resources that are there. And similarly,
+customer-related ramp-up costs, as sort of our deals get ramped up and stabilized, I think these
+should also stabilize over a period of time.
+So, just to recap, the first bucket around 150 bps, they should go away more quickly. Second
+bucket should improve over a period of time.
+Bhavik Mehta: Okay, got it. That’s helpful. Thank you.
+Moderator: Thank you. Your next question comes from the line of Vimal Jamnadas Gohil with Alchemy
+Capital Management Private Limited. Please go ahead.
+Vimal Jamnadas Gohil: Yes, thank you so much. Sir, just one follow-up on the margin question. In the other expenses
+line item, which is about INR135-odd crores, are there any forex losses also that are being, that
+are built in this particular quarter?
+Nalin Rana: Yes, so this is what actually I referred to. Other expenses’ large increase can be attributed to
+two items. One is a Chapter 11 at one of our customers where we had to provide for the
+receivables on a conservative basis. The second one related to upfronting of certain sort of
+annual costs. So not, I would say not a big forex item, but these were sort of the two main
+drivers.
+Vimal Jamnadas Gohil: Okay. Fair enough, sir. Sir, I missed on, missed out on the auto OEM contribution in this
+quarter. How much was that?
+Manoj Raghavan: 78%.
+Vimal Jamnadas Gohil: 78. All right. And sir, lastly, we've been talking about revenues from adjacencies. When can
+we see some sort of quantification of disclosure as to how much are we getting from these
+adjacencies?
+Manoj Raghavan: I think in this financial year at some point in time, we will definitely be able to disclose.
+Hopefully, by end of the financial year, we should be in a position to tell you exactly.
+Vimal Jamnadas Gohil: All right. Awaiting that, sir. Thank you so much and all the best.
+Manoj Raghavan: Thank you.
+Moderator: Thank you. Your next question comes from the line of Ravi Menon with Axis Capital. Please
+go ahead.
+Ravi Menon: Thanks for the opportunity and congrats on a really good performance in the media and
+communication segment. Just wanted to check what's the pipeline like in transportation and are
+you seeing automakers especially look at new hybrid platforms? What sort of role can you play
+Page 6 of 18
+
+Tata Elxsi Limited
+July 14, 2026
+in that? And in the media and communication segment, one of your top customers, it's
+undergoing a corporate restructuring. Any changes to your engagement that might come either
+positively or negatively from that?
+Manoj Raghavan: I think coming to the MCV, we are discussing with our customers at this point in time. There
+is, there is no clarity in terms of is it going to affect our business or not. If you ask me, I would
+say that it'll only help us. It could be positive because we have not deeply penetrated the
+NBCU piece. So that is an opportunity for us to really go there. So at this point in time, there's
+nothing to inform in terms of ‘Is it going to affect us or not’. We are keenly watching that
+space.
+From an automotive customer's perspective, we've already discussed. I think globally, yes,
+both in the US and in APAC, Japan and India, I think we've seen a, we've seen traction. There
+are a lot of large deals that we are bidding for. Continental Europe is a little bit of a wait and
+watch, as we speak. Though there are opportunities that we are bidding for and there are large
+deals that we have placed, given the uncertainty in the market we're not sure on the pace at
+which some of these decisions will happen. So, I think there's a little bit of a wait and watch
+there. But otherwise, overall automotive industry, I think, we should see some good growth
+coming in, minus Europe.
+Ravi Menon: Thank you so much, sir. And the overall headcount is down a little bit. So what's the hiring
+plan, especially for fresh college graduates this year? And how does that compare to the last
+year's fresh college graduate hiring?
+Manoj Raghavan: I think we'll, we are on a wait and watch, right? I think our utilization is just above 75% or so
+right now. We still have some leeway to go. We have been hiring freshers as we speak, but the
+numbers have been pretty small. So I think, hiring fresh grads, we will only look at it as our
+growth momentum picks up.
+So, it'll be very, very moderated the way we go ahead and hire, especially with now AI and
+GenAI also coming in, we wouldn't want and go and hire a huge bunch of freshers. So it's a, as
+I said, it's a wait and watch. We are hiring freshers, but it's at a very moderated level. I think
+last quarter we would have added about 100 or 150 engineers from the colleges. So, it's a small
+number that we add.
+Ravi Menon: Thanks. And given the current market, you think it's actually preferable to hire laterals because
+it's still fairly easy?
+Manoj Raghavan: Yes, laterals only very, very specific, where there is a need, right? Most of our focus is
+utilizing our bench and utilizing our existing team members. And of course, focusing on
+retaining our key talent.
+Ravi Menon: And could you talk a bit about the sales investment that you made?
+Manoj Raghavan: So I think both in US as well as in Europe, we have added sales headcount. We've also added
+advisors to support us in some of the large deal pursuits. Apart from that, we've also spent in
+Page 7 of 18
+
+Tata Elxsi Limited
+July 14, 2026
+terms of events that we participated in to build our brand and also to gain visibility in the
+larger market space. These are specialized events. We're not going after those large events and
+so on. For each of our industry verticals, there are specialized events and that's something that
+we have focused on and spending money.
+Ravi Menon: Thank you so much, sir. Best of luck.
+Manoj Raghavan: Yes, thank you.
+Moderator: Thank you. Your next question comes from the line of Moez Chandani from Ambit Capital.
+Moez Chandani: Yes, hi. Good evening and thank you for taking my question. My first question was on your
+overall growth expectations for FY27. I think you've said last quarter that you probably would
+be aspiring for a high-single-digit sort of a number. Is that something which is still the
+aspiration given issues that you've outlined in transportation? Or do you think it would be
+more, say, closer to the mid-single-digit number for the year?
+Manoj Raghavan: No, so our aspiration continues to be the same. We just need our healthcare business also to
+fire up, and then I'm sure that we will be able to get to that sort of a growth rate that we are
+aspiring. So I think we're not changing our aspirations.
+Moez Chandani: Okay. Understood. And then secondly, just broadly on, I think in a previous question you
+briefly touched upon AI and that's impacting some of your hiring, but how have your
+conversations with clients been on the AI implementation? What are your clients saying and is
+that impacting, say, your volume growth or your T&M projects going forward?
+Nitin Pai: So maybe I'll take that question, Moez. This is Nitin here. I think AI, in general, on one hand
+in product engineering, given the fact that the industries that we operate in are largely mission-
+critical, especially automotive and healthcare, has been very careful and measured in the first
+place, especially when it comes to implementing it into the SDLC process, into products that
+will deploy in the future, so there is a certain amount of care and caution that is being
+exercised.
+But having said that, I think we are driving a very strong path of providing a path of
+transformation aided by two parts. One is the platform-led offerings that we're building. So
+what we're saying is it's not so much about AI for itself. Each of these industries require
+solutions that are tailor-made to their context that provide for coverage of certain aspects of
+cybersecurity, of FMEA and so on that are very specific to those industries.
+So to that extent, I think what we're doing is we're taking a very domain plus AI, if I may, view
+of each of these industries and we're saying, look, you don't have to transform all at once, but
+we will provide a platform-led approach that allows you to take your SDLC part by part and
+still connect it up at the end.
+So what we're actually seeing is that kind of a measured, calculated adoption. And I think
+we're doing very well there. So to that extent, I don't see deflation, I don't see shrinkage, I don't
+Page 8 of 18
+
+Tata Elxsi Limited
+July 14, 2026
+see any of that, we rather see opportunities. But having said that, I think the overriding
+problem is and point is the spend that is being earmarked for AI unfortunately is also kind of
+curtailing R&D spend, if I may. So I think that's the larger perspective rather than anything
+else.
+Moez Chandani: Got it. Thank you. That's all my questions.
+Moderator: Thank you. Your next question comes from the line of Amit Chandra with HDFC Securities.
+Please go ahead.
+Amit Chandra: Yes, thanks for the opportunity. So my question is on the increased investments that we have
+been doing. So if you can elaborate a bit more on what are the investments around? So these
+are mostly like platform investments or you're spending more on R&D or is it more related to
+client-specific engagements that we have? As you said, we are investing more in
+subcontracting, investing more in onsite and is it fair to say that the new deals that we are
+taking, they are like initially low margin deals?
+Manoj Raghavan: Yes, so these investments definitely are around building specialized talent pool, that is
+definitely there. We talked about the AI infrastructure that is needed that we are building. So
+and also all the tools and the cloud investments that are needed to deliver value to our
+customers. So it's a combination of all of that which are the investments.
+And, of course, in some of the large deals that we have taken, there is also the transition cost.
+There is some bubbling of costs that happens because these are typically 3 year or 5 year deals
+wherein in the first quarter of commencement of the deal, there is some amount of bubble cost
+that, that comes in. So these are all the investments that we are doing and that is sort of
+affected our margins in this quarter.
+Amit Chandra: Okay. And in the transportation vertical, obviously OEM is now 78% of the automotive
+revenue. So like within the OEM bucket, how are you seeing the top client and the non-top
+client moving? And also if you're seeing some softness in some of the OEM accounts,
+especially what is happening in the European region? So if you can provide the commentary
+on what is happening with the OEMs?
+Manoj Raghavan: Yes, so the top, top customer has been pretty steady for us. So that's definitely a positive. And
+I've already indicated the softness in the OEMs in Germany. I mean, we have, there are large
+deals that we've already closed. Those ramp-ups are going a little slow there, as a result of
+which we have not been able to achieve what we expected to achieve in Q1. But I'm hopeful
+that over the coming quarters, we will be able to ramp up to the expectations. The good part is
+we've had a good recovery in the US as well as in the APAC region. And all that has actually
+contributed to the growth in the automotive segment for us.
+Amit Chandra: Okay. And lastly on the subcontracting part, if you can quantify the subcontracting cost and
+what is it as a percentage of revenue in this quarter versus last quarter?
+Manoj Raghavan: I'm not sure whether we can give specific details of the subcontracting cost.
+Page 9 of 18
+
+Tata Elxsi Limited
+July 14, 2026
+Nitin Pai: Amit, maybe this is Nitin here. I can just provide one slice which is if you look at our onsite-
+offshore ratio, you'll see that the ratio has shifted by about a percent about 90 basis points,
+0.9%. So you can kind of and this all happened within one quarter. So you can look at that part
+and assume that a fair part of that is what we contracted out. And that has an associated impact
+on margins.
+Amit Chandra: Okay, sir. Thank you and all the best.
+Nitin Pai: Thank you.
+Moderator: Thank you. Your next question comes from the line of Karthik with RK Investments. Please go
+ahead.
+Karthik: Yes, okay. Thank you. I was talking about this whole (inaudible) impact of using AI
+autonomous tools on the software coding and the fact that it might hit the engineering R&D
+higher than traditional IT services. So I wanted to understand how Tata Elxsi is protecting their
+margin if in such impact like this. And the second question is on, on the slide on transitioning
+to platform-led engineering. So wanted to understand how aggressively you're deploying these
+platforms like Neuron in terms of addressing this pricing pressure. Anything more on how the
+clients are using these proprietary platforms?
+Nitin Pai: So Karthik, this is Nitin here again. Maybe I'll take those two questions. From the first part, as
+far as the impact of AI on the SDLC, I think the point I was trying to make is when you're
+working with B2B customers in the chosen industries that we operate in, which is healthcare,
+media telecom, as well as automotive and transportation, you tend to have one, very large
+codebases. Two, these have been built over many, many, many years, so this is not fresh code.
+Three, these are fairly complex and built by multiple teams. So first you have to understand the
+scale, size and complexity of the problem. Like they say, a car has a hundred times more code
+than a Boeing 777-747 does. So that's the complexity we're talking of. part two, while we tend
+to think of software coding as the biggest part of what work is done, the reality is that product
+planning, feature planning, architecture, requirements capture, requirements mapping,
+regulatory alignment to the multiple countries that these products would be deployed in,
+actually is a bigger part of the problem than actual coding.
+Coding is just one part of the whole cycle. And that is where we believe that while AI can
+come in and you can say that look, software code I can write C++ code 20% faster, 30% faster
+and so on, but the net impact of that part of saving in the entire lifecycle is not too high. That is
+part one.
+Part two is customers are not as much focused on cost savings as they are on whether it
+delivers productivity or quality. Because in the ranking of CTQ, cost, time and quality - I think
+for the industries that we operate, the metric is inverted. It's quality, time and then cost comes
+last. So to that extent, I think the proposition stays strong, which is Tata Elxsi, leading-edge
+technology capabilities, deep domain expertise, now backed by AI.
+Page 10 of 18
+
+Tata Elxsi Limited
+July 14, 2026
+And I think that is the proposition that we're offering, all of course, delivered from India at
+scale. I think this is the real, if I may, tagline that we're delivering on. And I believe that is still
+very, very relevant now and going forward.
+Your second question was to do with our own platforms. If you think about it, there are two
+types of investments that we're making. One is in platforms like TETHER and NEURON and
+so on, which go into the customer products and services because it's transforming their
+products and services. And I think NEURON, that's why we took a lot of time to craft the, the
+value that our customer is deriving. So the press release that we made with Sky, I think clearly
+calls out multiple dimensions on which we're delivering value, whether it's efficiencies,
+whether it is autonomous operations, whether it is customer experience and so on.
+The same is with our connectivity platforms, right? Because these are customer-facing.
+Investments that we're making in platforms like ViTel, AnaTel or DevStudio are more to do
+with how do you accelerate the software development lifecycle of the customer. So this is
+something that end consumers will not see. This is something that provides efficiencies but
+more focused on quality and time saving for rather than on cost, right?
+So that is the view we're taking. Traction is fantastic. Reception is fantastic. Adoption, we
+believe will be thoughtful and calibrated simply because customers are not going to jump on
+the first platform they see. I think they're taking a very careful long-term view of what are we
+doing, who are we working with, how do we make sure that what we are taking on and
+adopting is supported for the long term. So I think these are decisions that customers take very
+thoughtfully and carefully and hopefully the proposition that Tata Elxsi provides both as a
+brand and as a capability stands us well.
+Karthik: So if I have to summarize, you're saying the first one, there is not much of a deflatory impact
+as such because the cost of the R&D stuff is much, much lesser in the whole pipeline. And for
+the second one, you're saying it's a long-term view, it doesn't have anything to do with the
+billing rates right now, it's a really a long-term view?
+Nitin Pai: Correct. But it definitely is making a positive impact on our win ratios and winnability because
+it is definitely having a halo effect even as we speak on what we offer to customers and what
+customers believe we are capable of for their long-term transformation.
+Karthik: Okay. Yes. Thank you, Nitin.
+Nitin Pai: Thank you so much, Karthik.
+Moderator: Thank you. Your next question comes from the line of Sulabh Govila with Morgan Stanley.
+Please go ahead.
+Sulabh Govila: Yes, thank you for taking my question. So I had two questions, both on the investments that
+we made in the quarter. So one is on the onsite investments in delivery that you spoke about.
+So historically we've excelled at an offshore-centric delivery model. So should we see that this
+investment on the onsite front as a change in the nature of demand versus what we used to do
+Page 11 of 18
+
+Tata Elxsi Limited
+July 14, 2026
+earlier and this is more structural or you would say that this is more tactical and specific to a
+few projects?
+Manoj Raghavan: Yes, I think, you know, as I said, right, some of the large consolidation deals that we've won
+needed, you know, onsite resources to be available. But over the long term, the business model
+is to, you know, move a lot of that work offshore. So we're not, we're not moving away from a
+business model perspective. You know, we would be in that, you know, 75/25, 75 being
+offshore and 25 being onsite. Today I think it is 74/26 or so, it's just a 1% that we've moved,
+but we will over the, over the subsequent few quarters as Nalin explained, you know, we will
+be able to, you know, move a lot of this work back offshore and, you know, we're not changing
+our business model if that is the question.
+Sulabh Govila: Okay, okay. Understood. And secondly, you know, a large part of the costs that you
+mentioned, they were either transition-related or ramp-up related. So is this specific to a
+particular vertical or is this broad-based? And the benefit of this investment on revenue, have
+we already seen that in this quarter or should we see that in the coming quarter?
+Manoj Raghavan: We've seen, you know, partially we've seen the uptick in revenue both in our media and
+communication vertical as well as in the transportation vertical, primarily if you look at it from
+a US geography perspective. I think our US geography has grown pretty well and I think that
+is one of the reasons over the subsequent quarters, you will see us, moving back to offshore-
+based execution.
+Sulabh Govila: Understood. Understood. Thanks for taking my question.
+Manoj Raghavan: Thank you.
+Moderator: Thank you. Your next question comes from the line of Karan Uppal with PhillipCapital India.
+Please go ahead.
+Karan Uppal: Yes, hi. Thanks for the opportunity. Just a question on the transportation vertical. So last
+quarter US OEMs have commented pretty strongly in terms of R&D investment either on
+SDVs or investment in hybrid platforms. So are you seeing any traction on, on these areas
+from, from the US OEMs? And secondly, do you expect the transport vertical to start growing
+from Q2 onwards sustainably?
+Manoj Raghavan: A lot of the deals that we are discussing and a lot of the deal pipeline is based on SDV, so that
+continues. As I've explained, you know, earlier, you know, both US and APAC regions, we are
+seeing good deal pipeline and good conversions as we speak. Europe is a little moderated right
+now. We would wait and watch in terms of specifically Continental Europe given all the
+troubles that the OEMs there are facing. But having said that, I think overall both automotive
+and adjacencies, we see growth happening in, in subsequent quarters.
+Karan Uppal: Okay. Got it. Manoj, can you just help us with the broad split of the transport vertical within
+US, Europe and APAC, if that is something which you can share?
+Page 12 of 18
+
+Tata Elxsi Limited
+July 14, 2026
+Manoj Raghavan: I think for us still it is Europe heavy. If I'm not mistaken, close to, close to slightly more than
+40% of our revenues would come from Europe and about roughly, roughly about 25%, 30%
+coming from US and remaining from APAC. So Europe is still the number one geography for
+us from an automotive perspective.
+Karan Uppal: Got it. So despite pressures in Europe, you are still expecting the US and APAC to basically
+offset that and help?
+Manoj Raghavan: Yes, Yes.
+Karan Uppal: Thanks. And just on margins, so shall we expect 19% EBIT margins as, as the floor from here
+on we should expect improvement in margins? How should we think about it from a next three
+quarters perspective?
+Nalin Rana: Sure. So Karan, as mentioned, you know, there is one bucket of costs which we would see for
+which we are, which should go away, you know, in the next one or two quarters, around 150
+bps or so. Although this will be partially offset by, or this will be offset by, you know, wage
+hikes that we have planned. So, you know, we had done a cycle of wage hikes last year in
+October for juniors and in Jan for seniors.
+We are implementing a company-wide revision in Q2 to remain competitive in retaining our
+talent, right, that we are investing in and that we want to retain who have done projects,
+valuable projects, etcetera. So next for the next quarter I would say the margins will be sort of
+a combination of two things, impact of wage hikes coming in, but also impact of some of these
+one-offs going away.
+So it will be sort of a balance of these two things. Post that, you know, once the wage hikes are
+fully sort of baked in, we should sort of see a ramp-up in margins as we go through the rest of
+the year as sort of our revenues pick up and wage hike is sort of already built in. So there
+should be a sequential ramp-up as we move towards Q4.
+Karan Uppal: Got it. Thanks a lot and all the best.
+Nalin Rana: Thank you.
+Moderator: Thank you. Your next question comes from the line of Abhishek Shindadkar with InCred
+Capital. Please go ahead.
+Abhishek Shindadkar: Hi, thanks for the opportunity. My first question is regarding this one-time cost that we had to
+bear for a customer. Probably I missed the customer vertical, but I presume it is US and
+transportation. But what I wanted to understand, is this a generic trend that customers are
+asking, you know, the vendors to onboard subcontractors because we heard a similar trend in
+one of the other IT companies as well? And, you know, just wanted to understand what could
+be our reaction in case, you know, there are other customers who come back with some similar
+demands? That's the first question.
+Page 13 of 18
+
+Tata Elxsi Limited
+July 14, 2026
+The second question is on the wage hikes from 2Q. Can you just quantify given that we are
+doing it for a company-wide versus staggered last year? And the third one is for Nitin. Nitin,
+you mentioned that the AI spend is curtailing ER&D. I mean, that was a comment you made.
+Can you just elaborate in terms of what are the clients thinking given that, you know, the
+perception was that ER&D is something, that would given its revenue generating may not be
+paused immediately? Thank you for taking my question.
+Manoj Raghavan: Yes, I think I'll answer the first question in terms of contractors. Customers are not asking us
+to take on contractors. What is happening in the US with H-1B visas, hard to come and so on,
+when we win a large deal, for transition and so on, we need to have our own people out there
+maybe for one quarter or a couple of quarters and then move work offshore and so on.
+So, at any given point of time, we have a limited set of visas that are available. So we need to
+augment the team with contractors so that we do due diligence and we do the transition within
+the timelines and so on. So that is what this increase in one-time costs are. We have never seen
+customers asking us specifically to onboard specific consultants or contractors. So that's not
+something that we have seen.
+Nalin Rana: On the wage hikes. So, wage hikes, you know, I would say that at this stage we are still sort of,
+you know, working through it, right? And there are couple of elements there. So, while we are
+doing it, it's a company-wide hike for all eligible employees. And given we have a lot of
+employees who have sort of joined us at different points of time, there's a set of employees
+who are not eligible for a wage hike as of now. Again, this wage hike is a combination, the
+hike is a combination of variable and, you know, fixed, etcetera.
+Manoj Raghavan: I think we'll get back at the end of Q2, right? We don't want to give you a number at this point
+in time.
+Nitin Pai: And on the last question, Abhishek, on the point about whether AI has an impact on curtailing
+R&D spend, I meant it in the context of where budgets get allocated. So ultimately R&D, some
+of it is strategic, some of it is discretionary.
+So, when you are spending money and you have to now decide where you want to spend
+money, I think you see certain companies prioritizing AI because obviously it seems like the
+flavor of the day, the need of the day, the priority of the day. So, to that extent, it does have a
+little bit of an impact on how much budget is being allocated to R&D, right? So that is the
+point that I was trying to make.
+Abhishek Shindadkar: So, this is more about right shifting of the budgets rather than deferment or let's say perpetual
+deferment, right?
+Nitin Pai: That's correct.
+Abhishek Shindadkar: Got it. Thank you. That was all my questions.
+Nitin Pai: Thanks, Abhishek.
+Page 14 of 18
+
+Tata Elxsi Limited
+July 14, 2026
+Moderator: Thank you. Your next follow-up question comes from Sulabh Govila with Morgan Stanley.
+Please go ahead.
+Sulabh Govila: Yes, hi. Thanks for the opportunity again. So, my question was on the wage hike. You also
+mentioned when you talked about the investments, you also mentioned that there were certain
+interventions that you had to do for retention of select employees during the quarter. And now
+we are also talking about, you know, preponement of wage hikes. I'm just trying to understand
+- the attrition in the industry right now doesn't appear to be high. So, I'm just trying to
+understand, you know, what you're seeing differently which is, you know, leading to some of
+these initiatives at your end.
+Manoj Raghavan: Yes, so, our attrition is around 16% today. So it's not about how much your attrition is, it's also
+about - are you able to ensure that all your key critical talent are taken care of, right? So, I
+think with the, with the number of GCCs coming into India and aggressive hiring and so on,
+especially for AI-ready talent that really understands domain and digital technologies, you
+know, there is still a huge demand.
+Though you might say at an overall level in the industry the demand is muted, but for very,
+very niche specific talent that we carry, I think there is a still a huge demand. So we need to
+ensure that we take care of that talent and, and whatever we're doing is to ensure that, you
+know, while our revenue, clock picks up and we are seeing traction in the market, we don't
+want to be in a situation where we are struggling to service them and, you know, we have to go
+out and hire, right? So, we really want to retain the key talent that we have.
+Sulabh Govila: Understood, sir. Thank you. Thank you for taking my question.
+Moderator: Thank you. Your next question comes from Rishi Mody with Mody Advisory. Please go
+ahead.
+Rishi Mody: A couple of quick questions. On the media and communications piece, in the previous quarter
+you mentioned that the industry growth had not yet picked up. We've done well in this quarter.
+At least wanted to know whether the broader industry has picked up or it's largely us
+outperforming. And if it's not the industry pick up, when do you see the industry picking up
+and how much delta can we capture just from the industry growth?
+Manoj Raghavan: I think the media and communication industry in general and the vertical for ours, I think over
+the last few quarters have been going through, a very turbulent sort of ups and downs, but I
+think, you know, over the last two quarters, what we've seen is we've seen some large
+consolidation deals from, some of our customers. And this industry is also going through a lot
+of M&As, right, as we speak, and there are a lot of strategic decisions that customers are
+taking and so on.
+Now what has helped us is in two such transactions is that we were the incumbent and we
+were, you know, providing significant engineering outsourcing, we were the prime vendors in
+a couple of these deals, right, couple of these customers, there were significant M&As that
+have happened.
+Page 15 of 18
+
+Tata Elxsi Limited
+July 14, 2026
+And as a result of which, suddenly we had access to a much larger pool of, you know, projects
+to focus on. And when an M&A happens, of course the customer is trying to see how to
+optimize and how to move work to vendors that are lot more offshore-centric so that their
+overall cost can come down. So, I think our value proposition in terms of domain, you know,
+digital as well as offshore-centric really clicked with some of these, you know, customers
+which have gone through these M&As and so on. And I think that has helped us really win
+some deals which means essentially, we have been able to eat into our competition’s pie of
+business by showing superior execution and superior offshoring and offshore capabilities. And
+that has helped us in this business.
+Rishi Mody: Right. So, Manoj, just to get my understanding right, we were already onboarded with the
+companies which acquired other companies and rather than got acquired by other companies
+and hence the new target company we were able to replicate the same thing. So, on the larger
+front, would you say more of our customers have been acquirers in this consolidation phase or
+now do we see our companies getting acquired and hence we have to get re-evaluated by the
+acquirer?
+Manoj Raghavan: It is both, right? In many cases our customers were the acquirer, but there were one or two
+cases where our customers have also been acquired. But that also has, so the acquiring
+company did not have a footprint in India. Okay? So that helped us because they looked at our
+operations, they looked at how we are delivering and suddenly they realized that Yes, Tata
+Elxsi is a valuable partner which they want to engage with.
+Rishi Mody: Okay. So, we are not being re-evaluated largely any of these acquisition-led re-evaluations that
+normally happen.
+Manoj Raghavan: Yes.
+Rishi Mody: That's great news.
+Manoj Raghavan: All that has happened, we were able to show a superior value, right, through our offshoring.
+Rishi Mody: Got it, got it. One on the recent, all of these immigration changes that keep happening, right?
+Visa fees keep getting altered, H1B quotas keep getting altered. Do we have provisions in our
+contracts with our customers that say if there's an unreasonable amount of change, and that you
+have to bear or like, who absorbs the hit on these externalities, and if you could just give me an
+understanding how that shapes up?
+Manoj Raghavan: No, the, the usual visa fees that go up and so on, right, not just in US but in UK and Germany
+and many other places, right, that that we have to absorb, right? When I say absorb, of course
+there is a COLA increase that we negotiate year-on-year and so on. So, in some way, we do
+get, I mean, in quite a few customers we manage to get some amount of increase and so on.
+It is not as if that oh, okay your visa fees have gone up by $2,000, so hey customer, customer
+will pay exactly that $2,000 to us, right? It's more an overall, it is bundled into our cost of
+operations and it's bundled into our hourly rate, and that's how we manage it. But, when you
+Page 16 of 18
+
+Tata Elxsi Limited
+July 14, 2026
+talk about H1B like $100,000 and so on, no customer is willing to pay that. So that is
+something we can't go back to customers.
+Rishi Mody: Right. So, then we will have to increase our onshore mix as we go ahead, right? If we get
+higher growth out of the US market.
+Manoj Raghavan: Yes, so that is where, if we don't have the visas, we depend on third-party contractors and so
+on. We have MOUs and partnerships with a set of companies. We depend on them to really
+help us in the short term.
+Rishi Mody: And these US contracts that we currently have, I'm assuming, the new contracts you could
+price in a higher onshore mix, but the existing ones I don't think you can alter. Would these be
+largely long-term contracts, and hence our profitability on these existing contracts reduces
+versus our estimate when we bid in?
+Nitin Pai: No, so just to clarify, existing contracts where you already have onsite people deployed, there
+is no change in cost. Right? It is only where you are trying to win new contracts or you have
+winning new projects which then demand new people to be sent for the transition phases. That
+is the only point where you would have all these questions raised. I'm not very clear what the
+question is about?
+Rishi Mody: I'll just explain it quickly. We assume let's say 80% of our offshore mix, 20% would be onsite
+for a contract, for example, but because of say these visa issues, you are required to have more
+onsite employees and the mix turns from 80/20 to 75/25. Does that happen?
+Nitin Pai: No, no, Rishi, I think you're getting it wrong. First of all, we operate 90/10. We have the best
+offshoring metrics anywhere. Our intent is always to keep it there because that is the
+proposition. So, for a given contract, ratios will not increase. It's not that customers are starting
+to prefer more onsite. Please understand, this is not a Covid reversal where I'm saying
+customers are now starting to prefer more onsite. Nobody is. The need for onsite is determined
+by the kind of deal that you're taking up, the complexity of what you're trying to take on, the
+transition time that it takes to capture knowledge, whether from the customer itself or from
+somebody else and the ability to architect and bring it back. Just to be clear.
+Rishi Mody: Okay. All right. Finally, just a quick one, utilization rate, if you could just spell it out for this
+quarter.
+Manoj Raghavan: 74.7%. Just getting to 75.
+Rishi Mody: Okay. All right. Fine. Yes, that's it from my end. Thank you.
+Nitin Pai: Thank you, Rishi.
+Moderator: Thank you. Your next question comes from the line of Randhir Kumar Singh with Randhir
+HUF. Please go ahead.
+Randhir Singh: Hello.
+Page 17 of 18
+
+Tata Elxsi Limited
+July 14, 2026
+Manoj Raghavan: Yes, sir. Please proceed.
+Randhir Singh: Thanks for taking my question, sir. In Q2 also, due to wage hikes, there could be an impact on
+margins and from H2, margins will ramp up properly. Am I understanding correctly, sir?
+Nalin Rana: So, Randhir, a small difference to what you're saying. Q2 we'll see a wage hike impact, but
+that will also be offset to a large extent because of some of the one-time or the higher costs that
+we saw in this quarter going away. So, there is an offsetting element to a large part of that cost.
+Now how much gets offset where exactly we land up is a function of what exactly the wage
+hike numbers end up being, how much sort of costs go away, our own revenue growth. So, it
+will be a combination of few things.
+Randhir Singh: Thank you, sir.
+Nalin Rana: Thank you.
+Moderator: Thank you. Ladies and gentlemen, we will take this as our last question for today. I now hand
+the conference over to the management for closing comments.
+Manoj Raghavan: Yes, dear investors, thank you, thank you for the time. Interesting times, and I think at least
+from our major markets and major verticals that we have, I'm very happy that we have been
+able to show growth, a decent growth especially in the media and communication business. If
+you compare with competition and what we hear commentary from lot of our competition, I
+think our automotive or transportation business has also done reasonably well.
+So, our focus is to really continue growth on both of these large verticals for us. At the same
+time, focusing on our healthcare business to see, how to get it back to a growth path, right? So
+that's the focus for us and of course margin improvement, and seeing how we can digest the
+wage hike at the same time, and also look at seeing how we can remove all the one-timers, and
+still show a, a profitable quarter in, in Q2, right?
+So that's going to be the focus for us in Q2 and subsequent quarters Q3 and Q4. So, I think, Q1
+has gone reasonably well for us, even if you look at comparatively Q1 of last financial year, I
+think we have done pretty well, and I hope that we'll be able to continue this growth path in the
+subsequent quarters. So, thank you and look forward to talking to you again in, in Q2. Yes,
+bye-bye.
+Moderator: Thank you. On behalf of Tata Elxsi Limited, that concludes this conference. Thank you
+everyone for joining us and you may now disconnect your lines. Thank you.
+Page 18 of 18

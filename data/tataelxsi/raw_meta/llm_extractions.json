@@ -1,0 +1,936 @@
+[
+  {
+    "sha256": "56e3de67c30ef22f70ac98324b46242e5580d440a62dff28d2f1b2f6f14b86d6",
+    "source_records": [
+      {
+        "exchange": "NSE",
+        "subject": "Copy of Newspaper Publication",
+        "published_at": "2026-08-11T17:17:19"
+      },
+      {
+        "exchange": "BSE",
+        "subject": "Company Update",
+        "published_at": "2026-08-11T17:19:55.333"
+      }
+    ],
+    "n_pages": 3,
+    "document_kind": "other",
+    "facts": {
+      "amount_inr": null,
+      "counterparty": null,
+      "pledge_pct_after": null,
+      "holding_delta_pct": null,
+      "officer_role": "Company Secretary & Compliance Officer",
+      "action": "newspaper advertisements published",
+      "effective_date": "August 11, 2026",
+      "audit_opinion": null
+    },
+    "summary_one_line": "Disclosure of newspaper advertisements for duplicate securities issue.",
+    "supporting_quote": "we enclose herewith copies of the newspaper advertisements published on August 11, 2026, pertaining to the proposed issue of duplicate securities, in the following newspapers: 1. Financial Express (All Edition) 2. Udayakala - Bengaluru (Kannada Edition)",
+    "extraction_confidence": 0.95,
+    "language": "en",
+    "truncated_input": true,
+    "quote_verified": false
+  },
+  {
+    "sha256": "eb609343a09c2cd0d5c9572cf1efa9146ca7bc883fb78bac2a46a810106d7bc0",
+    "source_records": [
+      {
+        "exchange": "NSE",
+        "subject": "Press Release",
+        "published_at": "2026-07-27T12:02:47"
+      },
+      {
+        "exchange": "BSE",
+        "subject": "Company Update",
+        "published_at": "2026-07-27T12:00:38.04"
+      }
+    ],
+    "n_pages": 3,
+    "document_kind": "press_release",
+    "facts": {
+      "amount_inr": null,
+      "counterparty": "Sree Chitra Tirunal Institute for Medical Sciences and Technology (SCTIMST)",
+      "pledge_pct_after": null,
+      "holding_delta_pct": null,
+      "officer_role": "Company Secretary & Compliance Officer",
+      "action": "signed a Memorandum of Understanding (MoU)",
+      "effective_date": "July 27, 2026",
+      "audit_opinion": null
+    },
+    "summary_one_line": "Tata Elxsi and SCTIMST have signed a MoU to collaborate on healthcare solutions.",
+    "supporting_quote": "Sree Chitra Tirunal Institute for Medical Sciences and Technology (SCTIMST), Thiruvananthapuram, has signed a Memorandum of Understanding (MoU) with Tata Elxsi, a global leader in design and technology services, to collaborate on the development of next-generation healthcare solutions.",
+    "extraction_confidence": 0.95,
+    "language": "en",
+    "truncated_input": false,
+    "quote_verified": false
+  },
+  {
+    "sha256": "3945db0ea74c106956f7d723944837896dab4d84d12a4567f0ae258a2a2cab22",
+    "source_records": [
+      {
+        "exchange": "NSE",
+        "subject": "Updates",
+        "published_at": "2026-07-20T15:04:16"
+      },
+      {
+        "exchange": "BSE",
+        "subject": "Company Update",
+        "published_at": "2026-07-20T14:57:57.323"
+      }
+    ],
+    "n_pages": 2,
+    "document_kind": "governance",
+    "facts": {
+      "amount_inr": 6729774,
+      "counterparty": "Commissioner of Income Tax (Appeals) [CIT(A)]",
+      "pledge_pct_after": null,
+      "holding_delta_pct": null,
+      "officer_role": "Company Secretary & Compliance Officer",
+      "action": "received the order",
+      "effective_date": "July 20, 2026",
+      "audit_opinion": null
+    },
+    "summary_one_line": "Tata Elxsi Limited received an order from the Commissioner of Income Tax (Appeals) regarding a penalty.",
+    "supporting_quote": "The Company has received the order from the Commissioner of Income Tax (Appeals) [CIT(A)] in respect of its appeal against the penalty levied under Section 271(1) of the Income Tax Act, amounting to Rs. 67,29,774/-",
+    "extraction_confidence": 0.95,
+    "language": "en",
+    "truncated_input": false,
+    "quote_verified": false
+  },
+  {
+    "sha256": "1a82381d6a0df7407643f0af904e2d016b4abf5cddbf6ec2aa4afcf9cf184de5",
+    "source_records": [
+      {
+        "exchange": "NSE",
+        "subject": "Analysts/Institutional Investor Meet/Con. Call Updates",
+        "published_at": "2026-07-17T16:27:04"
+      },
+      {
+        "exchange": "BSE",
+        "subject": "Company Update",
+        "published_at": "2026-07-17T16:22:24.76"
+      }
+    ],
+    "n_pages": 19,
+    "document_kind": "results",
+    "facts": {
+      "amount_inr": 1021.1,
+      "counterparty": null,
+      "pledge_pct_after": null,
+      "holding_delta_pct": null,
+      "officer_role": "Managing Director and Chief Executive Officer",
+      "action": null,
+      "effective_date": "2026-07-14",
+      "audit_opinion": null
+    },
+    "summary_one_line": "Tata Elxsi Limited reported quarterly operating revenues of INR 1,021.1 crores for Q1 FY 26-27.",
+    "supporting_quote": "Tata Elxsi has passed a key milestone of crossing more than INR1,000 crores of quarterly reporting operating revenues by delivering INR1,021.1 crores in the first quarter of FY 27.",
+    "extraction_confidence": 0.95,
+    "language": "en",
+    "truncated_input": true,
+    "quote_verified": false
+  },
+  {
+    "sha256": "e03aae4a726735a4a8a289b1df709d85c6312849e083e3801184837b3361b335",
+    "source_records": [
+      {
+        "exchange": "NSE",
+        "subject": "Copy of Newspaper Publication",
+        "published_at": "2026-07-15T12:38:20"
+      },
+      {
+        "exchange": "BSE",
+        "subject": "Company Update",
+        "published_at": "2026-07-15T12:36:17.52"
+      }
+    ],
+    "n_pages": 3,
+    "document_kind": "results",
+    "facts": {
+      "amount_inr": null,
+      "counterparty": null,
+      "pledge_pct_after": null,
+      "holding_delta_pct": null,
+      "officer_role": "Company Secretary & Compliance Officer",
+      "action": "published",
+      "effective_date": "July 15, 2026",
+      "audit_opinion": null
+    },
+    "summary_one_line": "Publication of Audited Financial Results for the quarter ended June 30, 2026.",
+    "supporting_quote": "newspaper advertisement regarding extract of the Audited Financial Results of the Company for the quarter ended June 30, 2026, published in \u2018Financial Express\u2019 and \u2018Udayakala\u2019 on July 15, 2026.",
+    "extraction_confidence": 0.95,
+    "language": "en",
+    "truncated_input": false,
+    "quote_verified": false
+  },
+  {
+    "sha256": "f2b56b6ebc1de02ca8a8908e3315f8513ede22627f9b662e25b07616e06120b7",
+    "source_records": [
+      {
+        "exchange": "NSE",
+        "subject": "Analysts/Institutional Investor Meet/Con. Call Updates",
+        "published_at": "2026-07-14T20:41:16"
+      },
+      {
+        "exchange": "BSE",
+        "subject": "Company Update",
+        "published_at": "2026-07-14T20:45:04.893"
+      }
+    ],
+    "n_pages": 1,
+    "document_kind": "results",
+    "facts": {
+      "amount_inr": null,
+      "counterparty": null,
+      "pledge_pct_after": null,
+      "holding_delta_pct": null,
+      "officer_role": "Company Secretary & Compliance Officer",
+      "action": "Audio recording of Conference Call pertaining to the Financial Results for quarter ended June 30, 2026",
+      "effective_date": "July 14, 2026",
+      "audit_opinion": null
+    },
+    "summary_one_line": "Audio recording of Conference Call for Financial Results for quarter ended June 30, 2026 announced.",
+    "supporting_quote": "Audio recording of Conference Call pertaining to the Financial Results for quarter ended June 30, 2026",
+    "extraction_confidence": 1,
+    "language": "en",
+    "truncated_input": false,
+    "quote_verified": false
+  },
+  {
+    "sha256": "16ff2c0556122a40ad02a52e9b470819ad39cf3ad5af5d0fa2cc90462f4ffe24",
+    "source_records": [
+      {
+        "exchange": "NSE",
+        "subject": "Investor Presentation",
+        "published_at": "2026-07-14T18:34:47"
+      },
+      {
+        "exchange": "BSE",
+        "subject": "Company Update",
+        "published_at": "2026-07-14T18:33:33.347"
+      }
+    ],
+    "n_pages": 29,
+    "document_kind": "press_release",
+    "facts": {
+      "amount_inr": 1021.1,
+      "counterparty": null,
+      "pledge_pct_after": null,
+      "holding_delta_pct": null,
+      "officer_role": "Company Secretary & Compliance Officer",
+      "action": null,
+      "effective_date": "2026-07-14",
+      "audit_opinion": null
+    },
+    "summary_one_line": "Tata Elxsi Limited reported operating revenue of Rs. 1,021.1 Cr for Q1 FY27, reflecting a 14.5% YoY growth.",
+    "supporting_quote": "Tata Elxsi delivered a healthy growth of 14.5% YoY, supported by strong deal execution and continued momentum in large strategic engagements. We also crossed a key milestone of reporting operating revenue of more than Rs. 1,000 crores in the current quarter.",
+    "extraction_confidence": 0.95,
+    "language": "en",
+    "truncated_input": true,
+    "quote_verified": false
+  },
+  {
+    "sha256": "6b6cabc5821c107d36b42777e820c290220dd553e2ec7358d92a17171b736115",
+    "source_records": [
+      {
+        "exchange": "NSE",
+        "subject": "Press Release",
+        "published_at": "2026-07-14T18:27:14"
+      },
+      {
+        "exchange": "BSE",
+        "subject": "Company Update",
+        "published_at": "2026-07-14T18:29:32.27"
+      }
+    ],
+    "n_pages": 3,
+    "document_kind": "results",
+    "facts": {
+      "amount_inr": 1021.1,
+      "counterparty": null,
+      "pledge_pct_after": null,
+      "holding_delta_pct": null,
+      "officer_role": "Company Secretary & Compliance Officer",
+      "action": "reported",
+      "effective_date": "2026-07-14",
+      "audit_opinion": null
+    },
+    "summary_one_line": "Tata Elxsi reported Q1 FY27 financial results with operating revenue of Rs. 1,021.1 Cr.",
+    "supporting_quote": "For the first quarter of financial year 2026-27, the company reported operating revenue of Rs. 1,021.1 Cr., reporting a growth of 2.8% over the previous quarter.",
+    "extraction_confidence": 0.95,
+    "language": "en",
+    "truncated_input": false,
+    "quote_verified": false
+  },
+  {
+    "sha256": "54abf3a35e3911f795560aed9ccb9c094042903c232b28f0df74f28770638ac1",
+    "source_records": [
+      {
+        "exchange": "NSE",
+        "subject": "Outcome of Board Meeting",
+        "published_at": "2026-07-14T18:18:31"
+      },
+      {
+        "exchange": "BSE",
+        "subject": "Result",
+        "published_at": "2026-07-14T18:13:17.563"
+      }
+    ],
+    "n_pages": 6,
+    "document_kind": "results",
+    "facts": {
+      "amount_inr": null,
+      "counterparty": null,
+      "pledge_pct_after": null,
+      "holding_delta_pct": null,
+      "officer_role": "Company Secretary & Compliance Officer",
+      "action": "approved and taken on record",
+      "effective_date": "July 14, 2026",
+      "audit_opinion": "unmodified"
+    },
+    "summary_one_line": "Tata Elxsi Limited reported its audited financial results for the quarter ended June 30, 2026.",
+    "supporting_quote": "The Auditors\u2019 Report with an unmodified opinion on the said financial results is also attached herewith.",
+    "extraction_confidence": 0.95,
+    "language": "en",
+    "truncated_input": true,
+    "quote_verified": true
+  },
+  {
+    "sha256": "e2dc08de55c52ee3c5e9fe5487b3cc6c87f90ca14f9824b773f2013505268095",
+    "source_records": [
+      {
+        "exchange": "NSE",
+        "subject": "Copy of Newspaper Publication",
+        "published_at": "2026-07-10T17:54:53"
+      },
+      {
+        "exchange": "BSE",
+        "subject": "Company Update",
+        "published_at": "2026-07-10T17:52:37.797"
+      }
+    ],
+    "n_pages": 3,
+    "document_kind": "other",
+    "facts": {
+      "amount_inr": null,
+      "counterparty": null,
+      "pledge_pct_after": null,
+      "holding_delta_pct": null,
+      "officer_role": "Company Secretary & Compliance Officer",
+      "action": "opening of another \u201cSpecial Window for Transfer and Dematerialization of Physical Securities\u201d",
+      "effective_date": "July 10, 2026",
+      "audit_opinion": null
+    },
+    "summary_one_line": "Disclosure regarding the opening of a special window for transfer and dematerialization of physical securities.",
+    "supporting_quote": "regarding the opening of another \u201cSpecial Window for Transfer and Dematerialization of Physical Securities\u201d",
+    "extraction_confidence": 0.95,
+    "language": "en",
+    "truncated_input": false,
+    "quote_verified": false
+  },
+  {
+    "sha256": "a7ad25dbdbff0925924e397087e241064764f247c7602046a6ee498abcd22235",
+    "source_records": [
+      {
+        "exchange": "NSE",
+        "subject": "Certificate under SEBI (Depositories and Participants) Regulations, 2018",
+        "published_at": "2026-07-08T17:11:16"
+      },
+      {
+        "exchange": "BSE",
+        "subject": "Company Update",
+        "published_at": "2026-07-08T17:07:06.993"
+      }
+    ],
+    "n_pages": 2,
+    "document_kind": "compliance_certificate",
+    "facts": {
+      "amount_inr": null,
+      "counterparty": "M/s. MUFG Intime India Private Limited (formerly known as Link Intime India Private Limited)",
+      "pledge_pct_after": null,
+      "holding_delta_pct": null,
+      "officer_role": "Company Secretary & Compliance Officer",
+      "action": "submitted the Confirmation Certificate",
+      "effective_date": "June 30, 2026",
+      "audit_opinion": null
+    },
+    "summary_one_line": "Tata Elxsi Limited submitted a Confirmation Certificate under Regulation 74(5) for the quarter ended June 30, 2026.",
+    "supporting_quote": "we hereby submit the Confirmation Certificate received from M/s. MUFG Intime India Private Limited (formerly known as Link Intime India Private Limited), the Registrar and Share Transfer Agent of the Company, for the quarter ended June 30, 2026.",
+    "extraction_confidence": 0.95,
+    "language": "en",
+    "truncated_input": false,
+    "quote_verified": false
+  },
+  {
+    "sha256": "a96bf131f367a03e9d10ca70c4b5565db3810b0f697c4f92e48acc7c49d473fa",
+    "source_records": [
+      {
+        "exchange": "NSE",
+        "subject": "Analysts/Institutional Investor Meet/Con. Call Updates",
+        "published_at": "2026-07-06T18:53:21"
+      },
+      {
+        "exchange": "BSE",
+        "subject": "Company Update",
+        "published_at": "2026-07-06T18:50:42.98"
+      }
+    ],
+    "n_pages": 2,
+    "document_kind": "press_release",
+    "facts": {
+      "amount_inr": null,
+      "counterparty": null,
+      "pledge_pct_after": null,
+      "holding_delta_pct": null,
+      "officer_role": "Company Secretary & Compliance Officer",
+      "action": "announce",
+      "effective_date": "July 14, 2026",
+      "audit_opinion": null
+    },
+    "summary_one_line": "Tata Elxsi Limited will announce its financial results for Q1 FY27 on July 14, 2026.",
+    "supporting_quote": "Tata Elxsi to announce Q1 FY27 Results on July 14, 2026",
+    "extraction_confidence": 0.95,
+    "language": "en",
+    "truncated_input": false,
+    "quote_verified": true
+  },
+  {
+    "sha256": "ffefb84478dedef600addcbde389fbd4c69ba36fe9096d1e05c328c30aded13f",
+    "source_records": [
+      {
+        "exchange": "NSE",
+        "subject": "Updates",
+        "published_at": "2026-07-01T16:13:14"
+      },
+      {
+        "exchange": "BSE",
+        "subject": "Company Update",
+        "published_at": "2026-07-01T16:10:31.293"
+      }
+    ],
+    "n_pages": 1,
+    "document_kind": "corporate_action",
+    "facts": {
+      "amount_inr": 622995610,
+      "counterparty": null,
+      "pledge_pct_after": null,
+      "holding_delta_pct": null,
+      "officer_role": "Company Secretary & Compliance Officer",
+      "action": "allotment of equity shares",
+      "effective_date": "2026-07-01",
+      "audit_opinion": null
+    },
+    "summary_one_line": "Tata Elxsi Limited allotted 2,497 equity shares on July 01, 2026.",
+    "supporting_quote": "the Board of Directors of the Company has allotted 2,497 equity shares on July 01, 2026",
+    "extraction_confidence": 1,
+    "language": "en",
+    "truncated_input": false,
+    "quote_verified": false
+  },
+  {
+    "sha256": "fc1544d1cf6695c091f2cb2ace9b795a2000a02e4c4bf5f3a87fec43d86254ee",
+    "source_records": [
+      {
+        "exchange": "NSE",
+        "subject": "Updates",
+        "published_at": "2026-06-29T17:43:36"
+      },
+      {
+        "exchange": "BSE",
+        "subject": "Company Update",
+        "published_at": "2026-06-29T17:40:16.76"
+      }
+    ],
+    "n_pages": 2,
+    "document_kind": "compliance_certificate",
+    "facts": {
+      "amount_inr": 15800000,
+      "counterparty": "Centralized Processing Center, Income Tax Department, Bengaluru",
+      "pledge_pct_after": null,
+      "holding_delta_pct": null,
+      "officer_role": "Company Secretary & Compliance Officer",
+      "action": "Notice of demand under section 156 of the Income Tax Act, 1961",
+      "effective_date": "June 29, 2026",
+      "audit_opinion": null
+    },
+    "summary_one_line": "Tata Elxsi Limited received a demand notice from the Income Tax Department for Assessment Year 2025-26.",
+    "supporting_quote": "Total Demand amount is Rs. 1.58 crore.",
+    "extraction_confidence": 0.95,
+    "language": "en",
+    "truncated_input": false,
+    "quote_verified": true
+  },
+  {
+    "sha256": "0debcc4f168216cb33138bd5ef26021fef831419cc7fff31c5242758894775ac",
+    "source_records": [
+      {
+        "exchange": "NSE",
+        "subject": "Shareholders meeting",
+        "published_at": "2026-06-24T18:40:38"
+      },
+      {
+        "exchange": "BSE",
+        "subject": "AGM/EGM",
+        "published_at": "2026-06-24T18:38:07.29"
+      }
+    ],
+    "n_pages": 14,
+    "document_kind": "agm_egm",
+    "facts": {
+      "amount_inr": 75,
+      "counterparty": "Jaguar Land Rover Limited, UK",
+      "pledge_pct_after": null,
+      "holding_delta_pct": null,
+      "officer_role": "Company Secretary & Compliance Officer",
+      "action": "Approval of Material Related Party Transactions",
+      "effective_date": "June 24, 2026",
+      "audit_opinion": null
+    },
+    "summary_one_line": "Voting results and Scrutinizer's report for the 37th AGM of Tata Elxsi Limited.",
+    "supporting_quote": "The 37th Annual General Meeting (\u201cAGM\u201d) of the Company was held on Wednesday, June 24, 2026 at 10.30 a.m. (IST) and concluded at 1.00 p.m. (IST) through Video Conference (VC) / Other Audio Visual Means (OAVM).",
+    "extraction_confidence": 0.95,
+    "language": "en",
+    "truncated_input": true,
+    "quote_verified": false
+  },
+  {
+    "sha256": "1c88455ae9006127c5fe938324c7f64060dd5b61c9f407394d62ffc8ca81bc51",
+    "source_records": [
+      {
+        "exchange": "NSE",
+        "subject": "Shareholders meeting",
+        "published_at": "2026-06-24T16:48:58"
+      },
+      {
+        "exchange": "BSE",
+        "subject": "AGM/EGM",
+        "published_at": "2026-06-24T16:44:39.21"
+      }
+    ],
+    "n_pages": 3,
+    "document_kind": "agm_egm",
+    "facts": {
+      "amount_inr": 75,
+      "counterparty": "Jaguar Land Rover Limited, UK",
+      "pledge_pct_after": null,
+      "holding_delta_pct": null,
+      "officer_role": "Chairman of the Board",
+      "action": "held",
+      "effective_date": "June 24, 2026",
+      "audit_opinion": null
+    },
+    "summary_one_line": "The 37th Annual General Meeting of Tata Elxsi Limited was held on June 24, 2026, where key resolutions were voted on.",
+    "supporting_quote": "The 37th Annual General Meeting (AGM) of the Members of Tata Elxsi Limited was held on Wednesday, June 24, 2026, at 10:30 A.M. (IST) through Video Conference (VC) / Other Audio-Visual Means (OAVM).",
+    "extraction_confidence": 0.95,
+    "language": "en",
+    "truncated_input": false,
+    "quote_verified": false
+  },
+  {
+    "sha256": "fd826adf958493544361a1a0b14d5b727cf374d95dfb2fd807f1fd116ba6a77e",
+    "source_records": [
+      {
+        "exchange": "NSE",
+        "subject": "Press Release",
+        "published_at": "2026-06-24T15:02:12"
+      },
+      {
+        "exchange": "BSE",
+        "subject": "Company Update",
+        "published_at": "2026-06-24T14:57:24.883"
+      }
+    ],
+    "n_pages": 4,
+    "document_kind": "press_release",
+    "facts": {
+      "amount_inr": null,
+      "counterparty": "Sky",
+      "pledge_pct_after": null,
+      "holding_delta_pct": null,
+      "officer_role": "Company Secretary & Compliance Officer",
+      "action": "Press Release",
+      "effective_date": "June 24, 2026",
+      "audit_opinion": null
+    },
+    "summary_one_line": "Tata Elxsi and Sky announce a major milestone in AI-led autonomous network transformation with NEURON.",
+    "supporting_quote": "Tata Elxsi and Sky Mark a Major Milestone in AI-led Autonomous Network Transformation with NEURON",
+    "extraction_confidence": 0.95,
+    "language": "en",
+    "truncated_input": false,
+    "quote_verified": false
+  },
+  {
+    "sha256": "a71e13e598f2668d990092c6fc7771af921a42f5707fbfa569ad08d49bceafd3",
+    "source_records": [
+      {
+        "exchange": "NSE",
+        "subject": "Trading Window",
+        "published_at": "2026-06-19T18:10:32"
+      },
+      {
+        "exchange": "BSE",
+        "subject": "Insider Trading / SAST",
+        "published_at": "2026-06-19T18:13:37.667"
+      }
+    ],
+    "n_pages": 1,
+    "document_kind": "governance",
+    "facts": {
+      "amount_inr": null,
+      "counterparty": null,
+      "pledge_pct_after": null,
+      "holding_delta_pct": null,
+      "officer_role": "Company Secretary & Compliance Officer",
+      "action": "closure of trading window",
+      "effective_date": "June 24, 2026",
+      "audit_opinion": null
+    },
+    "summary_one_line": "Intimation of closure of trading window for Tata Elxsi Limited.",
+    "supporting_quote": "the Trading Window for dealing in the Securities of the Company by its Designated Persons and their Immediate Relatives will remain closed from Wednesday, June 24, 2026.",
+    "extraction_confidence": 0.95,
+    "language": "en",
+    "truncated_input": false,
+    "quote_verified": false
+  },
+  {
+    "sha256": "d788ea26fcb9bb848f9d731b868435d734f57b8ee676f6ab64d9d6b16a8b2d4c",
+    "source_records": [
+      {
+        "exchange": "NSE",
+        "subject": "Updates",
+        "published_at": "2026-06-16T17:54:59"
+      },
+      {
+        "exchange": "BSE",
+        "subject": "Company Update",
+        "published_at": "2026-06-16T17:52:08.62"
+      }
+    ],
+    "n_pages": 4,
+    "document_kind": "compliance_certificate",
+    "facts": {
+      "amount_inr": null,
+      "counterparty": null,
+      "pledge_pct_after": null,
+      "holding_delta_pct": null,
+      "officer_role": "Company Secretary & Compliance Officer",
+      "action": "updating KYC details",
+      "effective_date": "June 16, 2026",
+      "audit_opinion": null
+    },
+    "summary_one_line": "Disclosure regarding KYC details update for shareholders holding shares in physical form.",
+    "supporting_quote": "regarding updation of their KYC details i.e., PAN, contact details, choice of nomination (optional), Bank account details and specimen signature, in compliance with the SEBI Circulars.",
+    "extraction_confidence": 0.95,
+    "language": "en",
+    "truncated_input": false,
+    "quote_verified": false
+  },
+  {
+    "sha256": "71158cd5bfc776011d1d4007dea59a3e87efd63d6f50cfb5098242a5d2e52eac",
+    "source_records": [
+      {
+        "exchange": "NSE",
+        "subject": "Copy of Newspaper Publication",
+        "published_at": "2026-06-02T17:22:54"
+      },
+      {
+        "exchange": "BSE",
+        "subject": "Company Update",
+        "published_at": "2026-06-02T17:19:30.827"
+      }
+    ],
+    "n_pages": 3,
+    "document_kind": "agm_egm",
+    "facts": {
+      "amount_inr": null,
+      "counterparty": null,
+      "pledge_pct_after": null,
+      "holding_delta_pct": null,
+      "officer_role": "Company Secretary & Compliance Officer",
+      "action": "scheduled",
+      "effective_date": "June 24, 2026",
+      "audit_opinion": null
+    },
+    "summary_one_line": "The 37th Annual General Meeting of Tata Elxsi Limited is scheduled for June 24, 2026.",
+    "supporting_quote": "the 37th Annual General Meeting (AGM) of the Company is scheduled to be held on Wednesday, June 24, 2026, through Video Conferencing / Other Audio Visual Means.",
+    "extraction_confidence": 0.95,
+    "language": "en",
+    "truncated_input": true,
+    "quote_verified": false
+  },
+  {
+    "sha256": "fc3b3325a6b9f5cd0f18af01fd3ccf705234090c0986f37e2160e5ffb7f138e9",
+    "source_records": [
+      {
+        "exchange": "NSE",
+        "subject": "Updates",
+        "published_at": "2026-06-01T18:34:46"
+      },
+      {
+        "exchange": "BSE",
+        "subject": "Company Update",
+        "published_at": "2026-06-01T18:33:15.247"
+      }
+    ],
+    "n_pages": 2,
+    "document_kind": "governance",
+    "facts": {
+      "amount_inr": null,
+      "counterparty": null,
+      "pledge_pct_after": null,
+      "holding_delta_pct": null,
+      "officer_role": "Company Secretary & Compliance Officer",
+      "action": "dispatched letters to Shareholders",
+      "effective_date": "June 01, 2026",
+      "audit_opinion": null
+    },
+    "summary_one_line": "Tata Elxsi Limited has dispatched letters to shareholders regarding the Integrated Annual Report for FY 2025-26.",
+    "supporting_quote": "Tata Elxsi Limited ('the Company') has dispatched letters to those Shareholders whose e-mail addresses are not registered with Company/Registrar & Transfer Agent/Depository Participants, providing the weblink of Company\u2019s website and QR Code from where the Integrated Annual Report for FY 2025-26 can be accessed.",
+    "extraction_confidence": 0.95,
+    "language": "en",
+    "truncated_input": false,
+    "quote_verified": false
+  },
+  {
+    "sha256": "db6f0eaeeae294f75f5c19b928e4553aeaff956c439a1aabaed2cabda13eabee",
+    "source_records": [
+      {
+        "exchange": "NSE",
+        "subject": "Updates",
+        "published_at": "2026-06-01T17:03:30"
+      },
+      {
+        "exchange": "BSE",
+        "subject": "Others",
+        "published_at": "2026-06-01T17:01:02.06"
+      }
+    ],
+    "n_pages": 60,
+    "document_kind": "governance",
+    "facts": {
+      "amount_inr": null,
+      "counterparty": null,
+      "pledge_pct_after": null,
+      "holding_delta_pct": null,
+      "officer_role": "Company Secretary & Compliance Officer",
+      "action": null,
+      "effective_date": "April 01, 2025, to March 31, 2026",
+      "audit_opinion": "Reasonable assurance from third-party"
+    },
+    "summary_one_line": "Submission of Business Responsibility and Sustainability Report for FY 2025-26.",
+    "supporting_quote": "we are submitting herewith the Business Responsibility and Sustainability Report for FY 2025-26, along with an Independent Reasonable Assurance Opinion Statement provided by ISOQAR (India) Private Limited",
+    "extraction_confidence": 0.95,
+    "language": "en",
+    "truncated_input": true,
+    "quote_verified": false
+  },
+  {
+    "sha256": "0ee7c38f1a179a23ebab0d4f9bf52d4e0c62b4163fb6a4fd509f707043f9e315",
+    "source_records": [
+      {
+        "exchange": "NSE",
+        "subject": "Shareholders meeting",
+        "published_at": "2026-06-01T16:30:24"
+      },
+      {
+        "exchange": "BSE",
+        "subject": "Others",
+        "published_at": "2026-06-01T16:47:04.347"
+      },
+      {
+        "exchange": "BSE",
+        "subject": "AGM/EGM",
+        "published_at": "2026-06-01T16:26:15.817"
+      }
+    ],
+    "n_pages": 152,
+    "document_kind": "agm_egm",
+    "facts": {
+      "amount_inr": null,
+      "counterparty": null,
+      "pledge_pct_after": null,
+      "holding_delta_pct": null,
+      "officer_role": "Company Secretary & Compliance Officer",
+      "action": "Notice convening the 37th Annual General Meeting",
+      "effective_date": "June 24, 2026",
+      "audit_opinion": null
+    },
+    "summary_one_line": "Notice for the 37th Annual General Meeting of Tata Elxsi Limited scheduled for June 24, 2026.",
+    "supporting_quote": "The 37th Annual General Meeting (\u2018AGM\u2019) of the Company will be held on Wednesday, June 24, 2026, at 10:30 a.m. (IST) through Video Conferencing (\u201cVC\u201d)/Other Audio Visual Means (\u201cOAVM\u201d).",
+    "extraction_confidence": 0.95,
+    "language": "en",
+    "truncated_input": true,
+    "quote_verified": false
+  },
+  {
+    "sha256": "7e2dbc9b12ba9117220da889e21d82031508cbc83430cad8edc936d1d7c89cb0",
+    "source_records": [
+      {
+        "exchange": "NSE",
+        "subject": "Record Date",
+        "published_at": "2026-06-01T16:12:10"
+      },
+      {
+        "exchange": "NSE",
+        "subject": "Updates",
+        "published_at": "2026-06-01T16:05:36"
+      },
+      {
+        "exchange": "BSE",
+        "subject": "Corp. Action",
+        "published_at": "2026-06-01T16:10:46.52"
+      },
+      {
+        "exchange": "BSE",
+        "subject": "AGM/EGM",
+        "published_at": "2026-06-01T16:03:23.943"
+      }
+    ],
+    "n_pages": 1,
+    "document_kind": "agm_egm",
+    "facts": {
+      "amount_inr": 75,
+      "counterparty": null,
+      "pledge_pct_after": null,
+      "holding_delta_pct": null,
+      "officer_role": "Company Secretary and Compliance Officer",
+      "action": "recommended a dividend",
+      "effective_date": "June 30, 2026",
+      "audit_opinion": null
+    },
+    "summary_one_line": "Tata Elxsi Limited announced the 37th AGM and a recommended dividend of Rs. 75 per equity share.",
+    "supporting_quote": "The Board of Directors of the Company at its Meeting held on April 21, 2026, had recommended a dividend of Rs. 75/- per equity share of face value of Rs. 10 each (750%) for approval of Members at the 37th AGM.",
+    "extraction_confidence": 0.95,
+    "language": "en",
+    "truncated_input": false,
+    "quote_verified": false
+  },
+  {
+    "sha256": "30bdc89152010a82ff44d5f755bf453546a67ec8a506dd8c90fa3bb99ab22460",
+    "source_records": [
+      {
+        "exchange": "NSE",
+        "subject": "Updates",
+        "published_at": "2026-05-30T10:32:04"
+      },
+      {
+        "exchange": "BSE",
+        "subject": "Company Update",
+        "published_at": "2026-05-30T10:28:14.303"
+      }
+    ],
+    "n_pages": 1,
+    "document_kind": "governance",
+    "facts": {
+      "amount_inr": null,
+      "counterparty": null,
+      "pledge_pct_after": null,
+      "holding_delta_pct": null,
+      "officer_role": "Managing Director & CEO",
+      "action": "Authorization of Key Managerial Personnel to Determine Materiality of Events or Information",
+      "effective_date": "May 30, 2026",
+      "audit_opinion": null
+    },
+    "summary_one_line": "Authorization of Key Managerial Personnel to determine materiality of events or information.",
+    "supporting_quote": "the following Key Managerial Personnel (KMPs) of the Company have been authorized to determine the Materiality of Events or Information",
+    "extraction_confidence": 0.95,
+    "language": "en",
+    "truncated_input": false,
+    "quote_verified": false
+  },
+  {
+    "sha256": "f8a8fca7aab69624e6f1201ef7b9d70d22e49957ae76b1037116b5cf5212e4f1",
+    "source_records": [
+      {
+        "exchange": "NSE",
+        "subject": "Press Release",
+        "published_at": "2026-05-27T16:14:36"
+      },
+      {
+        "exchange": "BSE",
+        "subject": "Company Update",
+        "published_at": "2026-05-27T16:12:42.733"
+      }
+    ],
+    "n_pages": 3,
+    "document_kind": "press_release",
+    "facts": {
+      "amount_inr": null,
+      "counterparty": null,
+      "pledge_pct_after": null,
+      "holding_delta_pct": null,
+      "officer_role": "Company Secretary & Compliance Officer",
+      "action": "launch",
+      "effective_date": "May 27, 2026",
+      "audit_opinion": null
+    },
+    "summary_one_line": "Tata Elxsi launches AnaTel\u2122, an AI-native software development platform for healthcare and med-tech.",
+    "supporting_quote": "Tata Elxsi Launches AnaTel\u2122, an AI-Native Software Development Platform for Healthcare and Med-Tech Powered by OpenAna",
+    "extraction_confidence": 0.95,
+    "language": "en",
+    "truncated_input": false,
+    "quote_verified": false
+  },
+  {
+    "sha256": "b156ae64c733c4f0659f9abc161712017d82580d9e37481c876773ee62fdce9c",
+    "source_records": [
+      {
+        "exchange": "NSE",
+        "subject": "Press Release",
+        "published_at": "2026-05-26T16:19:25"
+      },
+      {
+        "exchange": "BSE",
+        "subject": "Company Update",
+        "published_at": "2026-05-26T16:19:07.517"
+      }
+    ],
+    "n_pages": 3,
+    "document_kind": "press_release",
+    "facts": {
+      "amount_inr": null,
+      "counterparty": "Viridium AI",
+      "pledge_pct_after": null,
+      "holding_delta_pct": null,
+      "officer_role": "Company Secretary & Compliance Officer",
+      "action": "launch",
+      "effective_date": "May 26, 2026",
+      "audit_opinion": null
+    },
+    "summary_one_line": "Tata Elxsi launches ViTel\u2122, a Material Intelligence solution for Med-Tech powered by Viridium AI.",
+    "supporting_quote": "Tata Elxsi, a global leader in design and technology services, today announced the launch of ViTel\u2122, a Material Intelligence solution for Medical Device manufacturers, co-developed with Viridium AI, a material intelligence platform company.",
+    "extraction_confidence": 0.95,
+    "language": "en",
+    "truncated_input": false,
+    "quote_verified": false
+  },
+  {
+    "sha256": "9dd36c730a2bd613c16cd7819b4f7109e74c0be53ef128f7860bc39feadb6a8a",
+    "source_records": [
+      {
+        "exchange": "BSE",
+        "subject": "Board Meeting",
+        "published_at": "2026-07-06T16:20:38.43"
+      }
+    ],
+    "n_pages": 1,
+    "document_kind": "board_meeting",
+    "facts": {
+      "amount_inr": null,
+      "counterparty": null,
+      "pledge_pct_after": null,
+      "holding_delta_pct": null,
+      "officer_role": "Company Secretary & Compliance Officer",
+      "action": "approve and take on record the Audited Financial Results",
+      "effective_date": "July 14, 2026",
+      "audit_opinion": null
+    },
+    "summary_one_line": "Notice of Board Meeting scheduled for July 14, 2026, to approve financial results.",
+    "supporting_quote": "a meeting of the Board of Directors of Tata Elxsi Limited (\u2018the Company\u2019) is scheduled to be held on Tuesday, July 14, 2026, inter alia, to approve and take on record the Audited Financial Results of the Company for the quarter ended June 30, 2026.",
+    "extraction_confidence": 1,
+    "language": "en",
+    "truncated_input": false,
+    "quote_verified": false
+  }
+]
