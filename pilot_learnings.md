@@ -240,7 +240,12 @@ Schema correction does not close the remaining product experiments:
 
 ---
 
-# Part 4 — Second Company Run: HDFC Bank (NSE: HDFCBANK, BSE: 500180)
+# Part 5 — Second Company Run: HDFC Bank (NSE: HDFCBANK, BSE: 500180)
+
+> Editor's note (2026-08-22): previously mislabeled "Part 4", colliding with the
+> schema-resolution part above. Section numbers restart per part; cite as (Part N §M).
+> The cross-doc references to §19–§23 (NSE/BSE contract changes, TLS impersonation,
+> encoding, quote-verification-at-scale, cluster anchoring) mean this Part 5.
 
 **Date:** 22 August 2026. Scripts: `scripts/companies.py` (new registry), `fetch_announcements.py`, `price_reaction.py`; all Part-1/2 scripts generalized to take a company slug.
 

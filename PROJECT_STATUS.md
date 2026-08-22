@@ -23,13 +23,14 @@ Moving from **docs + pilot scripts** to a working pipeline backed by the real Po
 - Per-company HTML report generator (`scripts/make_report.py`); sample at `data/hdfcbank/report.html`
 - Module requirement specs captured in `docs/modules/`; plain-English schema explainer in `docs/schema-explained.html`
 
-## Next steps (rough order)
+## Next steps (rough order — tracks HLD Phase 0 "reliable capture")
 
 1. ~~Seed the whitelist~~ ✅ done (`seed_core.py`)
-2. Build source fetchers (NSE/BSE RSS, announcements) writing raw bytes + ingestion lineage into the DB
-3. Text extraction → LLM fact extraction → event clustering stages
-4. Market data join (daily bars per listing) and reaction calculation
-5. Ranking + Telegram digest delivery
+2. Object store + ingestion plumbing: partition-aware fetchers writing exact response bytes to immutable storage + `fetch_runs`/`raw_artifacts`/`raw_feed_items`/cursors lineage in the DB, with durable jobs/outbox (per `docs/modules/` specs)
+3. Normalizer (M2) + identity resolver (M3) with fail-closed review flow
+4. Plain resolved-filing Telegram digest + reconciliation harness → Phase 0 gate: 7 unattended days, worker-kill tests, measured coverage
+5. Text extraction → LLM fact extraction → event clustering stages (Phase 1)
+6. Market data join and reaction calculation; ranking + digest delivery (Phase 2)
 
 ## Ops notes
 

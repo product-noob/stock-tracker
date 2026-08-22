@@ -3,6 +3,7 @@ services:
     image: postgres:17.11@sha256:e38411452a464af89e5adadb8d223bf53b898d47d6ef918b2d58c08707350449
     container_name: stocktracker_db
     restart: unless-stopped
+    mem_limit: 2g
     environment:
       POSTGRES_DB: stocktracker
       POSTGRES_USER: stocktracker
