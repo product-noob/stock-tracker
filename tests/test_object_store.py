@@ -51,13 +51,24 @@ def _db_available(url: str) -> bool:
 
 
 class ObjectStoreTestCase(unittest.TestCase):
-    """Base: fresh store rooted in a temp dir."""
+    """Base: fresh store rooted in a temp dir.
+
+    The registry insert is patched to a no-op so filesystem-only tests never
+    write rows to the dev database (``put_bytes`` without ``conn`` would
+    otherwise commit for real). :class:`TestRegistryIntegration` re-enables
+    the real registry and wraps every test in a rolled-back transaction.
+    """
 
     def setUp(self):
         self.tmp = tempfile.TemporaryDirectory()
         self.addCleanup(self.tmp.cleanup)
         self.root = Path(self.tmp.name) / "objects"
         self.store = ObjectStore(root=self.root)
+        self._reg_patcher = mock.patch.object(
+            object_store.ObjectStore, "_register", lambda *a, **k: None
+        )
+        self._reg_patcher.start()
+        self.addCleanup(self._reg_patcher.stop)
 
 
 class TestRoundTrip(ObjectStoreTestCase):
@@ -104,6 +115,8 @@ class TestIdempotency(ObjectStoreTestCase):
         if not url or not _db_available(url):
             self.skipTest("DATABASE_URL unavailable; skipping registry test")
         import psycopg
+
+        self._reg_patcher.stop()  # this test exercises the real registry
 
         data = b"metadata idempotency"
         with psycopg.connect(url) as conn:
@@ -178,6 +191,8 @@ class TestAtomicity(ObjectStoreTestCase):
 
 
 class TestCorruptionDetection(ObjectStoreTestCase):
+    """Pure-filesystem tests (registry patched out by the base class)."""
+
     def test_get_detects_truncated_blob(self):
         data = b"a" * 4096
         sha = hashlib.sha256(data).hexdigest()
@@ -210,7 +225,10 @@ class TestCorruptionDetection(ObjectStoreTestCase):
         # corrupted content was NOT overwritten by the failed re-put
         self.assertEqual(blob.read_bytes(), b"short")
 
-    def test_verify_flags_orphans_and_stale_temps_without_db(self):
+    def test_verify_flags_stale_temps_without_db(self):
+        """skip_db mode consults no registry, so it can only flag stale temp
+        files — orphan detection needs the DB and is deliberately skipped
+        (otherwise every healthy blob would be a false orphan)."""
         self.store.put_bytes(b"registered-looking blob")  # just tree content
         orphan = hashlib.sha256(b"orphan").hexdigest()
         orphan_path = self.store.root / "objects" / orphan[:2] / orphan
@@ -221,9 +239,11 @@ class TestCorruptionDetection(ObjectStoreTestCase):
 
         problems = self.store.verify(skip_db=True)
         joined = "\n".join(problems)
-        self.assertIn(f"orphan blob (not in registry): objects/{orphan[:2]}/{orphan}",
-                      joined)
         self.assertIn(f"stale temp file: objects/{stale_tmp.name}", joined)
+        # blobs are neither hash-checked against a registry nor flagged as
+        # orphans in skip_db mode
+        self.assertNotIn("orphan blob", joined)
+        self.assertNotIn(f"objects/{orphan[:2]}/{orphan}", joined)
 
     def test_verify_clean_store_reports_nothing(self):
         self.store.put_bytes(b"only healthy content here")
@@ -236,6 +256,7 @@ class TestRegistryIntegration(ObjectStoreTestCase):
 
     def setUp(self):
         super().setUp()
+        self._reg_patcher.stop()  # real registry inserts, rolled back below
         url = _database_url()
         if not url or not _db_available(url):
             self.skipTest("DATABASE_URL unavailable; skipping DB tests")
@@ -288,7 +309,28 @@ class TestRegistryIntegration(ObjectStoreTestCase):
             # missing blob
             blob.unlink()
             problems = self.store.verify(conn=self.conn)
-            self.assertIn(f"missing blob for {good.sha256}", problems[0])
+            joined = "\n".join(problems)
+            self.assertIn(f"missing blob for {good.sha256}", joined)
+        finally:
+            self.conn.rollback()
+
+    def test_verify_flags_orphan_blob_with_db(self):
+        """With registry access, a blob on disk with no registry row is
+        flagged as an orphan (this needs the DB — skip_db mode cannot do it)."""
+        result = self.store.put_bytes(b"registered blob", conn=self.conn)
+        try:
+            orphan = hashlib.sha256(b"unregistered").hexdigest()
+            orphan_path = self.store.root / "objects" / orphan[:2] / orphan
+            orphan_path.parent.mkdir(parents=True, exist_ok=True)
+            orphan_path.write_bytes(b"unregistered")
+
+            problems = self.store.verify(conn=self.conn)
+            joined = "\n".join(problems)
+            self.assertIn(
+                f"orphan blob (not in registry): objects/{orphan[:2]}/{orphan}",
+                joined,
+            )
+            self.assertNotIn(result.sha256, joined)  # registered blob is fine
         finally:
             self.conn.rollback()
 

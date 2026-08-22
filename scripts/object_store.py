@@ -287,7 +287,9 @@ class ObjectStore:
         * blobs whose content hash differs from ``sha256`` (corruption)
         * stale ``.tmp-*`` temp files
         * orphan blobs present on disk with no registry row (needs DB;
-          skipped with ``skip_db=True``)
+          with ``skip_db=True`` the registry is not consulted, so orphan
+          detection is skipped entirely — ``skip_db`` mode can only flag
+          stale temp files)
         """
         problems: list[str] = []
 
@@ -332,7 +334,7 @@ class ObjectStore:
             if name.startswith(".tmp-"):
                 problems.append(f"stale temp file: {rel}")
                 continue
-            if check_orphans and rel not in registered_rel:
+            if check_orphans and not skip_db and rel not in registered_rel:
                 problems.append(f"orphan blob (not in registry): {rel}")
 
         return problems
@@ -362,7 +364,8 @@ def main(argv: Optional[list[str]] = None) -> int:
 
     p_verify = sub.add_parser("verify", help="full integrity check")
     p_verify.add_argument("--skip-db", action="store_true",
-                          help="only scan the directory tree (orphans/stale temps)")
+                          help="only scan the directory tree for stale temp "
+                               "files (no registry access, no orphan check)")
 
     args = parser.parse_args(argv)
     store = ObjectStore(root=args.root)

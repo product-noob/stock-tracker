@@ -10,3 +10,6 @@ data/*/pdf_test/
 
 # Session cookies / auth artifacts
 cookies.txt
+
+# Content-addressed object store blobs (immutable, re-derivable from sources)
+data/objects/
