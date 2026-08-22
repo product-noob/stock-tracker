@@ -17,11 +17,15 @@ Moving from **docs + pilot scripts** to a working pipeline backed by the real Po
 - **Screener.in fundamentals utility** (`scripts/fetch_fundamentals.py`): fetches consolidated page + parses all data tables (stdlib-only). Hobby-use only — occasional manual runs
 - **Google News redirect resolver** (`scripts/resolve_news.py`): resolves `news.google.com` opaque tokens to publisher URLs via direct base64 decode or the batchexecute signature flow; cached per token, 100/100 resolved for HDFC Bank
 - **Database live:** dedicated PostgreSQL 17 container (`stocktracker_db`) via `docker-compose.yml`, bound to `127.0.0.1:5433`, creds in `.env`
-- Baseline schema applied from `db/schema.sql`: 7 planes (`core`, `ingestion`, `documents`, `intelligence`, `market`, `platform`, `delivery`) with reference/seed data loaded
+- Baseline schema applied from `db/schema.sql`: 7 planes (`core`, `ingestion`, `documents`, `intelligence`, `market`, `platform`, `delivery`)
+- **Core schema seeded** via `scripts/seed_core.py`: 30 SENSEX-constituent companies, 60 listings, 86 aliases, whitelist + ingestion source partitions (idempotent — re-run inserts nothing)
+- Company registry (`scripts/companies.py`) expanded to all 30 SENSEX constituents with checksum-validated ISINs
+- Per-company HTML report generator (`scripts/make_report.py`); sample at `data/hdfcbank/report.html`
+- Module requirement specs captured in `docs/modules/`; plain-English schema explainer in `docs/schema-explained.html`
 
 ## Next steps (rough order)
 
-1. Seed the whitelist: companies, instruments, listings, aliases for the pilot names
+1. ~~Seed the whitelist~~ ✅ done (`seed_core.py`)
 2. Build source fetchers (NSE/BSE RSS, announcements) writing raw bytes + ingestion lineage into the DB
 3. Text extraction → LLM fact extraction → event clustering stages
 4. Market data join (daily bars per listing) and reaction calculation

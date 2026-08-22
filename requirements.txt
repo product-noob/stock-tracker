@@ -3,3 +3,4 @@
 curl_cffi==0.16.1     # TLS-fingerprint-accurate HTTP for NSE/BSE/news endpoints
 pdfplumber==0.11.10   # PDF text extraction for filings
 openai==3.3.1         # LLM fact extraction / ranking (key in .env)
+psycopg[binary]==3.2.13  # DB writes (seed_core.py, future pipeline stages)
