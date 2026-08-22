@@ -6,672 +6,397 @@
 <title>Product Note — Stock Market Insights Engine</title>
 <style>
   :root {
-    --ink: #1a2332; --muted: #5b6b7f; --accent: #0d6e6e; --accent-soft: #e6f4f4;
-    --line: #dde4ec; --bg: #ffffff; --panel: #f7f9fc;
-    --good: #1a7f37; --warn: #9a6700; --bad: #c0392b;
+    --ink:#1a2332; --muted:#5b6b7f; --accent:#0d6e6e; --accent-soft:#e6f4f4;
+    --line:#dde4ec; --bg:#fff; --panel:#f7f9fc; --good:#1a7f37; --warn:#9a6700; --bad:#c0392b;
   }
-  * { box-sizing: border-box; }
-  body { font-family: Georgia, 'Times New Roman', serif; color: var(--ink); background: var(--bg);
-         max-width: 900px; margin: 0 auto; padding: 40px 28px; line-height: 1.65; font-size: 17px; }
-  h1, h2, h3, h4 { font-family: 'Segoe UI', system-ui, sans-serif; line-height: 1.3; }
-  h1 { font-size: 2rem; border-bottom: 3px solid var(--accent); padding-bottom: 12px; margin-top: 8px; }
-  h2 { font-size: 1.45rem; margin-top: 2.4em; border-bottom: 1px solid var(--line); padding-bottom: 6px; }
-  h3 { font-size: 1.15rem; margin-top: 1.8em; color: var(--accent); }
-  .subtitle { color: var(--muted); font-style: italic; margin-top: -6px; }
-  .meta { font-family: 'Segoe UI', sans-serif; font-size: .85rem; color: var(--muted);
-          background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 10px 16px; margin: 20px 0; }
-  table { border-collapse: collapse; width: 100%; margin: 16px 0; font-size: .92rem; font-family: 'Segoe UI', sans-serif; }
-  th, td { border: 1px solid var(--line); padding: 8px 10px; text-align: left; vertical-align: top; }
-  th { background: var(--panel); font-weight: 600; }
-  code, .mono { font-family: Consolas, 'Courier New', monospace; font-size: .88em; background: var(--panel); padding: 1px 5px; border-radius: 4px; }
-  pre { background: #10241f; color: #d7f0e4; padding: 18px; border-radius: 10px; overflow-x: auto;
-        font-family: Consolas, monospace; font-size: .84rem; line-height: 1.5; }
-  blockquote { border-left: 4px solid var(--accent); margin: 16px 0; padding: 8px 18px; background: var(--accent-soft); border-radius: 0 8px 8px 0; }
-  .badge { display: inline-block; font-family: 'Segoe UI', sans-serif; font-size: .72rem; font-weight: 700;
-           padding: 2px 9px; border-radius: 20px; vertical-align: middle; white-space: nowrap; }
-  .verified { background: #dafbe1; color: var(--good); }
-  .partial  { background: #fff3cd; color: var(--warn); }
-  .blocked  { background: #ffe0dd; color: var(--bad); }
-  .planned  { background: #e7ebf0; color: var(--muted); }
-  .scope-in  { background: #dafbe1; color: var(--good); }
-  .scope-out { background: #ffe0dd; color: var(--bad); }
-  .toc { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 18px 26px; font-family: 'Segoe UI', sans-serif; font-size: .92rem; }
-  .toc a { color: var(--accent); text-decoration: none; }
-  .toc a:hover { text-decoration: underline; }
-  ul li, ol li { margin-bottom: 6px; }
-  .small { font-size: .85rem; color: var(--muted); }
+  * { box-sizing:border-box; }
+  body { font-family:Georgia,'Times New Roman',serif; color:var(--ink); background:var(--bg);
+         max-width:920px; margin:0 auto; padding:40px 28px; line-height:1.65; font-size:17px; }
+  h1,h2,h3,h4 { font-family:'Segoe UI',system-ui,sans-serif; line-height:1.3; }
+  h1 { font-size:2rem; border-bottom:3px solid var(--accent); padding-bottom:12px; }
+  h2 { font-size:1.45rem; margin-top:2.4em; border-bottom:1px solid var(--line); padding-bottom:6px; }
+  h3 { font-size:1.15rem; margin-top:1.8em; color:var(--accent); }
+  .subtitle { color:var(--muted); font-style:italic; margin-top:-6px; }
+  .meta,.toc { font-family:'Segoe UI',sans-serif; font-size:.88rem; color:var(--muted); background:var(--panel);
+               border:1px solid var(--line); border-radius:8px; padding:12px 18px; margin:20px 0; }
+  table { border-collapse:collapse; width:100%; margin:16px 0; font-size:.9rem; font-family:'Segoe UI',sans-serif; }
+  th,td { border:1px solid var(--line); padding:8px 10px; text-align:left; vertical-align:top; }
+  th { background:var(--panel); }
+  code,.mono { font-family:Consolas,'Courier New',monospace; font-size:.88em; background:var(--panel); padding:1px 5px; border-radius:4px; }
+  pre { background:#10241f; color:#d7f0e4; padding:18px; border-radius:10px; overflow-x:auto;
+        font-family:Consolas,monospace; font-size:.82rem; line-height:1.5; }
+  blockquote { border-left:4px solid var(--accent); margin:16px 0; padding:8px 18px; background:var(--accent-soft); border-radius:0 8px 8px 0; }
+  .badge { display:inline-block; font-family:'Segoe UI',sans-serif; font-size:.72rem; font-weight:700;
+           padding:2px 9px; border-radius:20px; white-space:nowrap; }
+  .in { background:#dafbe1; color:var(--good); } .defer { background:#fff3cd; color:var(--warn); }
+  .out { background:#ffe0dd; color:var(--bad); } .small { font-size:.85rem; color:var(--muted); }
+  .toc a { color:var(--accent); text-decoration:none; } li { margin-bottom:6px; }
 </style>
 </head>
 <body>
 
 <h1>Product Note — Stock Market Insights Engine</h1>
-<p class="subtitle">An always-on utility that watches a growing whitelist of Indian listed companies, reads everything they disclose, and tells one investor what matters.</p>
+<p class="subtitle">An always-on personal research utility that captures company disclosures, groups evidence into real business events, and explains what matters.</p>
 
 <div class="meta">
-  <strong>Status:</strong> Draft v0.3 &nbsp;·&nbsp;
+  <strong>Status:</strong> v0.4 — aligned to architecture/database v1.2 &nbsp;·&nbsp;
   <strong>Date:</strong> 22 August 2026 &nbsp;·&nbsp;
-  <strong>Owner:</strong> Prince &nbsp;·&nbsp;
-  <strong>Source study:</strong> <code>nse-bse-rss.md</code> (canonical feed inventory) &nbsp;·&nbsp;
-  <strong>Companion docs (planned):</strong> <code>architecture_doc.html</code> (HLD) → per-module LLDs + API specs
+  <strong>Owner:</strong> Prince<br>
+  <strong>Companions:</strong> <code>docs/architecture-hld.md</code> · <code>docs/database-schema.md</code> ·
+  <code>db/schema.sql</code> · <code>pilot_learnings.md</code> · <code>nse-bse-rss.md</code>
 </div>
 
-<div class="toc">
-  <strong>Contents</strong>
-  <ol>
-    <li><a href="#vision">Vision &amp; Problem Statement</a></li>
-    <li><a href="#user">The User &amp; Jobs-to-be-Done</a></li>
-    <li><a href="#scope">Scope &amp; Cadence</a></li>
-    <li><a href="#product">What the Product Does — Functional Overview</a></li>
-    <li><a href="#sources">Data Sources Register</a></li>
-    <li><a href="#pipeline">Ingestion &amp; Structuring Approach</a></li>
-    <li><a href="#identity">Identity Resolution (Whitelist ↔ Filing)</a></li>
-    <li><a href="#intelligence">Intelligence Layer</a></li>
-    <li><a href="#alerts">Insight Ranking &amp; Telegram Delivery</a></li>
-    <li><a href="#data-architecture">Data Architecture Principles</a></li>
-    <li><a href="#platform">Platform Constraints &amp; Non-Functional Requirements</a></li>
-    <li><a href="#phasing">Delivery Phases</a></li>
-    <li><a href="#future">Future Evolution Hooks (Out of Current Scope)</a></li>
-    <li><a href="#risks">Risks &amp; Mitigations</a></li>
-    <li><a href="#success">Success Criteria</a></li>
-    <li><a href="#open">Open Questions</a></li>
-    <li><a href="#glossary">Glossary</a></li>
-    <li><a href="#changelog">Change Log</a></li>
-  </ol>
-</div>
+<div class="toc"><strong>Contents</strong>
+<ol>
+  <li><a href="#vision">Vision and user</a></li><li><a href="#scope">Scope and cadence</a></li>
+  <li><a href="#sources">Sources</a></li><li><a href="#flow">Product flow</a></li>
+  <li><a href="#identity">Identity and whitelist</a></li><li><a href="#intelligence">Evidence and events</a></li>
+  <li><a href="#market">Market reaction</a></li><li><a href="#delivery">Ranking and Telegram</a></li>
+  <li><a href="#data">Data and reliability principles</a></li><li><a href="#nfr">Non-functional requirements</a></li>
+  <li><a href="#phases">Delivery phases</a></li><li><a href="#risks">Risks</a></li>
+  <li><a href="#success">Success criteria</a></li><li><a href="#open">Open questions</a></li>
+  <li><a href="#glossary">Glossary</a></li><li><a href="#changes">Change log</a></li>
+</ol></div>
 
-<!-- ============================================================ -->
-<h2 id="vision">1. Vision &amp; Problem Statement</h2>
+<h2 id="vision">1. Vision and user</h2>
 
-<p><strong>The vision:</strong> a personal, always-running utility that continuously watches a <strong>whitelist</strong> of Indian listed companies — starting with a handful and growing over time — extracts structured meaning from everything they disclose, and surfaces ranked, explainable invest / disinvest signals where the user actually looks: Telegram.</p>
+<p>The product is a personal research analyst for one engaged investor. It continuously watches a database-backed whitelist of Indian listed companies, captures official disclosures and selected news, extracts evidence, collapses related documents into business events, and delivers a short ranked Telegram briefing.</p>
 
-<p><strong>The problem it solves.</strong> Meaningful information about Indian companies arrives scattered across exchange announcement feeds (thousands of PDFs weekly), news portals, and aggregators. No retail-friendly tool reliably does all four of the following in one place:</p>
-<ul>
-  <li><em>Captures</em> every corporate filing and news item for a tracked set of stocks, continuously;</li>
-  <li><em>Understands</em> them — classifying what happened, to whom, and whether it matters;</li>
-  <li><em>Ranks</em> the day's noise down to the handful of developments worth attention;</li>
-  <li><em>Delivers</em> that digest proactively, so insight finds the user instead of the user hunting for it.</li>
-</ul>
+<blockquote><strong>The value is understanding, not access.</strong> Public filings are abundant. The useful product is a trustworthy chain from fetched source → resolved company → verified evidence → business event → ranked insight → cautious market context.</blockquote>
 
-<blockquote><strong>The moat is understanding, not access.</strong> Raw filings are public. The defensible value is the resolve → extract → classify → rank pipeline built on top of them. Everything in this product is organized around making that pipeline excellent.</blockquote>
-
-<h3>Product identity in one sentence</h3>
-<p>A research analyst that never sleeps: it watches every disclosure and news item for the stocks you care about, and each morning hands you a short, ranked, evidence-linked briefing of what changed — plus an immediate ping when something serious breaks.</p>
-
-<h3>Whitelist-first, not universe-first</h3>
-<p>The tracked set is a <strong>database table, not a constant</strong>. It starts at ~10–25 stocks the owner actually follows and grows toward ~500 as the pipeline proves itself. This is a deliberate design choice with three consequences that shape the whole system:</p>
-<ul>
-  <li><strong>Enrichment cost scales with the whitelist, not the market.</strong> Feeds are market-wide; LLM spend and PDF downloads are whitelist-gated. Adding stock #26 costs pennies, not a re-architecture.</li>
-  <li><strong>Document <em>metadata</em> is captured for every listed company from day one</strong>, regardless of whitelist. It is ~1 MB/day and it means adding a stock later gives instant history back to the ingestion start date. Only PDF download and LLM enrichment are gated.</li>
-  <li><strong>Quality is measured on a set small enough to hand-audit.</strong> With 20 stocks, the owner can verify 100% of a day's output. That validation loop is what earns the right to scale to 500.</li>
-</ul>
-
-<!-- ============================================================ -->
-<h2 id="user">2. The User &amp; Jobs-to-be-Done</h2>
-
-<p>There is exactly one user today: <strong>the owner</strong> — an engaged retail investor who makes his own buy/sell decisions and wants an edge from systematic coverage he cannot do manually.</p>
-
+<h3>Jobs to be done</h3>
 <table>
-  <tr><th>Job to be done</th><th>How the product serves it</th></tr>
-  <tr><td>"Tell me what happened across my stocks overnight / yesterday."</td><td>Daily Telegram digest: ranked insights with one-line rationale, supporting quote, and links to source documents.</td></tr>
-  <tr><td>"Something serious just broke — tell me now, not tomorrow."</td><td>Immediate red-flag alert for severity-5 governance/disclosure events, within 30 minutes of the filing appearing.</td></tr>
-  <tr><td>"Is something happening at company X I hold or am watching?"</td><td>Per-stock queryable history of filings, events, and generated insights, via bot command.</td></tr>
-  <tr><td>"I want to start tracking company Y."</td><td><code>/add</code> command writes to the whitelist; history back to ingestion start becomes available on the next enrichment pass.</td></tr>
-  <tr><td>"Show me the evidence."</td><td>Every insight carries a verbatim quote and links to the original document stored locally — no black-box claims.</td></tr>
+<tr><th>User need</th><th>Product response</th></tr>
+<tr><td>What changed across my stocks?</td><td>07:30 IST ranked digest with one event-level item, evidence and source links.</td></tr>
+<tr><td>Tell me when a serious governance issue breaks.</td><td>Severity-5 Telegram alert targeted within 30 minutes of source appearance.</td></tr>
+<tr><td>Show the evidence.</td><td>Verified source quote/location plus locally retained public source content.</td></tr>
+<tr><td>Why did this insight rank highly?</td><td>Severity rule, red-flag hits, category, freshness score and market-attribution status.</td></tr>
+<tr><td>Track or review a company.</td><td>Bot commands for whitelist membership, company history and unresolved identity review.</td></tr>
 </table>
 
-<!-- ============================================================ -->
-<h2 id="scope">3. Scope &amp; Cadence</h2>
+<p>The product surfaces research evidence. It does not provide investment advice, forecast prices, place orders, or claim that a filing caused a price move.</p>
+
+<h2 id="scope">2. Scope and cadence</h2>
 
 <table>
-  <tr><th>Capability</th><th>Status</th></tr>
-  <tr><td>Whitelist management (DB-backed, grows over time): symbols, ISINs, BSE scripcodes, sectors, added/removed timestamps</td><td><span class="badge scope-in">IN SCOPE</span></td></tr>
-  <tr><td>Security master + alias table for identifier resolution (§7)</td><td><span class="badge scope-in">IN SCOPE</span> — foundational</td></tr>
-  <tr><td>Continuous ingestion of exchange filings/announcements (NSE + BSE RSS), deduplicated</td><td><span class="badge scope-in">IN SCOPE</span></td></tr>
-  <tr><td>Document metadata capture for <em>all</em> listed companies (whitelist-independent, enables retroactive history)</td><td><span class="badge scope-in">IN SCOPE</span></td></tr>
-  <tr><td>Ingestion of news (Google News RSS per whitelisted company + curated feeds)</td><td><span class="badge scope-in">IN SCOPE</span></td></tr>
-  <tr><td>PDF text-layer extraction; table extraction with confidence gating</td><td><span class="badge scope-in">IN SCOPE</span></td></tr>
-  <tr><td><strong>Local embedding model (small, CPU-capable)</strong> for near-duplicate detection and semantic search</td><td><span class="badge scope-in">IN SCOPE</span> — no paid API calls in the dedup path</td></tr>
-  <tr><td>LLM fact extraction &amp; classification via OpenAI API (English only), structured outputs</td><td><span class="badge scope-in">IN SCOPE</span></td></tr>
-  <tr><td>Deterministic severity + ranking rules over extracted facts (§8)</td><td><span class="badge scope-in">IN SCOPE</span></td></tr>
-  <tr><td>Telegram <strong>bot</strong>: daily digest, immediate red-flag alerts, on-demand commands</td><td><span class="badge scope-in">IN SCOPE</span></td></tr>
-  <tr><td>Local PostgreSQL persistence, one database, schema-per-domain</td><td><span class="badge scope-in">IN SCOPE</span></td></tr>
-  <tr><td>Daily price snapshot per whitelisted stock (context for insights)</td><td><span class="badge scope-in">IN SCOPE</span></td></tr>
-  <tr><td>GPU OCR for image-only PDFs</td><td><span class="badge planned">DEFERRED</span> — Phase 4, gated on measuring how many filings actually need it (§16 Q2)</td></tr>
-  <tr><td>Normalized fundamentals (revenue base for "% of revenue" math)</td><td><span class="badge planned">DEFERRED</span> — Phase 4; until then, no ratio claims in insights</td></tr>
-  <tr><td>Portfolio tracking, holdings sync, P&amp;L</td><td><span class="badge scope-out">OUT OF SCOPE</span> — hooks reserved</td></tr>
-  <tr><td>Order placement / auto-trading / broker execution APIs</td><td><span class="badge scope-out">OUT OF SCOPE</span> — future phase</td></tr>
-  <tr><td>Intraday / real-time streaming prices, F&amp;O, other markets</td><td><span class="badge scope-out">OUT OF SCOPE</span></td></tr>
-  <tr><td>Local generative or forecasting ML (LLMs, price models)</td><td><span class="badge scope-out">OUT OF SCOPE</span> — embeddings and OCR are the only local models</td></tr>
-  <tr><td>Backtesting / signal validation harness</td><td><span class="badge scope-out">OUT OF SCOPE</span> — but bronze layer preserves the data to build it later (§13)</td></tr>
-  <tr><td>Multi-user support, web dashboard</td><td><span class="badge scope-out">OUT OF SCOPE</span> — Telegram is the interface</td></tr>
-  <tr><td>Languages other than English</td><td><span class="badge scope-out">OUT OF SCOPE</span> — non-English documents are flagged and skipped, not silently mis-extracted</td></tr>
+<tr><th>Capability</th><th>Scope</th></tr>
+<tr><td>Security master: company → instrument/share class → NSE/BSE listing</td><td><span class="badge in">IN SCOPE</span></td></tr>
+<tr><td>Historical database-backed whitelist membership</td><td><span class="badge in">IN SCOPE</span></td></tr>
+<tr><td>NSE/BSE RSS capture, API-assisted backfill, exact raw artifacts</td><td><span class="badge in">IN SCOPE</span></td></tr>
+<tr><td>News RSS and HTML/text content for whitelisted companies</td><td><span class="badge in">PHASE 2</span></td></tr>
+<tr><td>PDF/HTML text extraction with version history</td><td><span class="badge in">IN SCOPE</span></td></tr>
+<tr><td>LLM facts/summary plus code-level evidence verification</td><td><span class="badge in">IN SCOPE</span></td></tr>
+<tr><td>Separate document classification and business-event classification</td><td><span class="badge in">IN SCOPE</span></td></tr>
+<tr><td>Multi-document event clustering and deterministic severity</td><td><span class="badge in">IN SCOPE</span></td></tr>
+<tr><td>Listing-level daily OHLCV and versioned reaction calculations</td><td><span class="badge in">PHASE 2</span></td></tr>
+<tr><td>PostgreSQL durable jobs/outbox and restart-safe workers</td><td><span class="badge in">IN SCOPE</span></td></tr>
+<tr><td>Telegram digest, red-flag/system notifications and bot commands</td><td><span class="badge in">IN SCOPE</span></td></tr>
+<tr><td>Embedding-based news paraphrase dedup</td><td><span class="badge defer">EXPERIMENT IN PHASE 2</span> — only after real news data exists</td></tr>
+<tr><td>OCR for image-only PDFs</td><td><span class="badge defer">DEFERRED</span> — gated on measured failure rate</td></tr>
+<tr><td>Fundamentals-derived ratios</td><td><span class="badge defer">DEFERRED</span> — requires a compliant and reliable base</td></tr>
+<tr><td>Portfolio/P&amp;L, forecasting, backtesting and auto-trading</td><td><span class="badge out">OUT OF SCOPE</span></td></tr>
+<tr><td>Intraday streaming, derivatives, multi-user dashboard</td><td><span class="badge out">OUT OF SCOPE</span></td></tr>
 </table>
 
-<h3>Cadence: continuous ingestion, scheduled thinking</h3>
-<p>The old framing of this note ("daily-cadence system") was wrong and has been replaced. The correct model is three distinct clocks:</p>
+<h3>Three clocks</h3>
+<table>
+<tr><th>Clock</th><th>Target</th><th>Purpose</th></tr>
+<tr><td>Capture</td><td>Main feeds 5 min; category feeds 15 min; news hourly</td><td>Rolling source windows require frequent, overlapping polls.</td></tr>
+<tr><td>Urgent path</td><td>Severity-5 within 30 min</td><td>Only high-confidence official red flags interrupt the owner.</td></tr>
+<tr><td>Habit</td><td>Digest at 07:30 Asia/Kolkata</td><td>One concise briefing; depth behind commands.</td></tr>
+</table>
+
+<h2 id="sources">3. Sources</h2>
 
 <table>
-  <tr><th>Clock</th><th>Cadence</th><th>Why</th></tr>
-  <tr><td><strong>Ingestion</strong> (fetch → store → resolve)</td><td><strong>Continuous, always-on.</strong> Main announcement feeds every 5 min; category feeds every 15 min; news feeds hourly per whitelisted company.</td><td>Feed retention is roughly <em>the current calendar day</em> (measured, §5). A once-daily poll would lose items outright. Cheap: conditional GET (ETag / If-Modified-Since) makes an unchanged poll near-free.</td></tr>
-  <tr><td><strong>Red-flag path</strong></td><td><strong>≤30 min</strong> from filing appearing in a feed to Telegram alert, for severity-5 events only.</td><td>An auditor resignation is worth waking up for. This SLO is what sets the 5-minute poll interval — not the other way round.</td></tr>
-  <tr><td><strong>Digest</strong></td><td><strong>Once daily, 07:30 IST.</strong></td><td>Reading a ranked briefing is a habit, and habits need a fixed time. Depth lives behind bot commands.</td></tr>
+<tr><th>Tier</th><th>Sources</th><th>Role and constraints</th></tr>
+<tr><td>Official</td><td>NSE/BSE RSS feeds</td><td>Primary continuous metadata source. Short rolling windows; every feed URL is an independent polling partition.</td></tr>
+<tr><td>Official/backfill</td><td>NSE/BSE announcement APIs</td><td>Per-symbol/scrip date-window reconciliation and gap filling. NSE session behavior can change; not the sole live path.</td></tr>
+<tr><td>Official content</td><td>Exchange PDFs and attachments</td><td>Primary evidence. Validate bytes/media, because HTTP 200 can contain an HTML error page.</td></tr>
+<tr><td>News</td><td>Google News RSS, Moneycontrol/curated RSS</td><td>Colour and developments that can lead filings. Google links require redirect resolution; Google RSS is not a historical completeness source.</td></tr>
+<tr><td>Market</td><td>NSE bhavcopy or yfinance</td><td>Daily listing-level OHLCV. Provider and adjustment method are explicit series metadata.</td></tr>
 </table>
 
-<blockquote><strong>What we are explicitly not doing:</strong> competing on latency with market participants. Sub-30-minute is a <em>ceiling for one alert class</em>, not a system-wide design target. Nothing in the pipeline assumes second- or sub-second latency, and price data is end-of-day only.</blockquote>
+<p>The canonical feed inventory and observed source behavior remain in <code>nse-bse-rss.md</code> and <code>pilot_learnings.md</code>. Source terms, rate limits and access behavior must be rechecked at implementation time.</p>
 
-<h3>Design-for-the-future rule</h3>
-<p>Trading and portfolio modules are out of scope but not out of mind. The architecture keeps three boundaries clean so they can be added later without rework: (a) the intelligence store is written by ingestion+enrichment only, and read by anything downstream; (b) insights are just ranked events — a future trading module consumes the same stream a human sees; (c) modules communicate through defined interfaces even when running in one process tree.</p>
-
-<!-- ============================================================ -->
-<h2 id="product">4. What the Product Does — Functional Overview</h2>
+<h2 id="flow">4. Product flow</h2>
 
 <pre>
-                 ┌──────────────────────────────────────────────────┐
-   SOURCES       │            INGESTION LAYER (always-on)           │
-   ───────       │                                                  │
-   NSE RSS  ────►│  Pollers ──► Extractors ──► Normalizers          │
-   BSE RSS  ────►│  (HTTP +     (PDF text,     (common Document     │
-   News RSS ────►│   cond. GET)  HTML, tables)  schema)             │
-   Prices   ────►│                                                  │
-                 └──────────────────────┬───────────────────────────┘
-                                        ▼
-                          ┌─────────────────────────┐
-                          │  IDENTITY RESOLVER (§7) │  scripcode / symbol /
-                          │  item ──► ISIN          │  alias ──► ISIN, or
-                          └─────┬──────────────┬────┘  unresolved queue
-                                ▼              ▼
-                     WHITELISTED?         not whitelisted
-                        │  yes                 │
-                        │                      └─► metadata only
-                        ▼                          (cheap, enables backfill)
-              RAW STORE (immutable PDFs/XML)
-              + documents schema (all companies)
-                        ▼
-                 ┌──────────────────────────────────────────────────┐
-                 │              ENRICHMENT LAYER                    │
-                 │  Dedup: hash → simhash → LOCAL embedding cosine  │
-                 │  LLM: extract facts + summary + quote (no scores)│
-                 │  Rules: event type, direction, severity 1–5      │
-                 └──────────────────────┬───────────────────────────┘
-                                        ▼
-                              intelligence schema
-                            (events, facts, embeddings)
-                                        ▼
-                 ┌──────────────────────────────────────────────────┐
-                 │        INSIGHT ENGINE (deterministic)            │
-                 │  score = severity × category_weight × freshness  │
-                 │  + hard rules (red flags, flood caps, dedup)     │
-                 └──────────────────────┬───────────────────────────┘
-                        ┌───────────────┴────────────────┐
-                        ▼                                ▼
-              RED-FLAG ALERT (≤30 min)        DAILY DIGEST (07:30 IST)
-                                              + on-demand bot commands
+SOURCE PARTITION
+  → fetch exact response bytes
+  → register fetch run + immutable raw artifact
+  → parse idempotent raw items
+  → normalize canonical announcement/news record
+  → resolve company (and listing when known), else review
+  → fetch/validate content with immutable attempt history
+  → hash-deduplicate immutable PDF/HTML/text content
+  → append media-specific text version
+  → LLM extracts facts/summary/evidence candidate
+  → code verifies evidence and classifies 0..N business-event mentions
+  → cluster mentions/content into immutable event snapshot
+  → deterministic severity/red-flag rules create insight
+  → listing-level market reaction calculation with attribution gate
+  → digest ranks event-level insights and stores exact composition
+  → render notification once; retry the same payload; record every attempt
 </pre>
 
-<p class="small">Module boundaries shown here are logical; the HLD will formalize process decomposition, interfaces, and supervision.</p>
+<h3>Durable hand-off rule</h3>
+<p>Each successful module transaction writes its canonical result and a PostgreSQL outbox event together. Workers consume durable idempotent jobs. A crash between a database commit and message publication therefore cannot strand a record, and redelivery cannot create a second logical result.</p>
 
-<!-- ============================================================ -->
-<h2 id="sources">5. Data Sources Register</h2>
-
-<p>Access status below reflects live verification performed <strong>22 August 2026</strong> from this environment. Sources are tiered by priority.</p>
-
-<h3>Tier 1 — Official exchange disclosures (primary source)</h3>
-<blockquote><strong>Primary access method: official RSS/XML feeds.</strong> Both exchanges publish working category-specific feeds — NSE: 23 feeds under <code>nsearchives.nseindia.com/content/RSS/</code>; BSE: 10 feeds under <code>beta.bseindia.com/data/xml/</code> and <code>/Data/XML/</code>. Full inventory and item schemas live in <code>nse-bse-rss.md</code>, the canonical source-study note.</blockquote>
-<table>
-  <tr><th>Source</th><th>Content</th><th>Verified access status (22 Aug 2026)</th><th>Planned approach</th></tr>
-  <tr>
-    <td><strong>NSE announcement feeds</strong> (23)</td>
-    <td>Category-specific RSS: online announcements, financial results, insider trading, board meetings, corporate actions, shareholding patterns, SAST, buybacks, voting results, and more</td>
-    <td><span class="badge verified">VERIFIED ✓</span> HTTP 200, valid RSS 2.0. <code>Online_announcements.xml</code>: <strong>340 items, oldest <code>22-Aug-2026 00:21</code></strong> → retention ≈ current calendar day. Fields: <code>title</code> (company name only), <code>link</code> (PDF), <code>description</code>, <code>pubDate</code>. <strong>No symbol, no ISIN, no code</strong> → identity resolution is mandatory (§7).</td>
-    <td>Poll every 5 min (main) / 15 min (category) with conditional GET; persist every item immediately; download PDFs for whitelisted stocks only. JSON API (<code>/api/corporate-announcements?symbol=…</code>) is <em>not</em> a routine path — it is Akamai-protected and reserved for manual gap-filling only. <strong>Dry-run confirmed (22 Aug 2026, RELIANCE):</strong> a plain request with a browser User-Agent returned full per-company history to Dec 2004 (3,336 items) with working <code>from_date</code>/<code>to_date</code> filters — viable as the one-off backfill tool §13 assumes, but its Akamai protection can fail without warning, so it stays manual, not scheduled.</td>
-  </tr>
-  <tr>
-    <td><strong>BSE announcement feeds</strong> (10)</td>
-    <td>Announcements, financial results, insider trading, board meetings, corporate actions, annual reports, shareholding patterns, voting results, notices, Sensex</td>
-    <td><span class="badge verified">VERIFIED ✓</span> All 10 HTTP 200. Main feed: <strong>2,064 items, oldest <code>22-Aug-2026 00:00</code></strong> (same-day retention; ~6× NSE volume as BSE lists far more scrips). <strong>Key advantage: items carry <code>&lt;scripcode&gt;</code></strong> — the anchor for §7. Watch: UTF-8 BOM; multiple securities can share one attachment.</td>
-    <td>Poll as above; preserve scripcode through normalization; cross-exchange dedup vs NSE. <strong>Hosting note:</strong> the main announcements feed is dual-homed — <code>www.bseindia.com/data/xml/announcements.xml</code> returns the identical payload. The <em>category</em> feeds (incl. insider trading) exist on the <code>beta</code> host only — see Risk 3.</td>
-  </tr>
-  <tr>
-    <td><strong>Filing documents themselves</strong></td>
-    <td>PDFs on exchange archives (results, presentations, annual reports)</td>
-    <td><span class="badge partial">PARTIAL</span> Direct PDF URLs generally fetchable once the link is discovered via a feed item.</td>
-    <td>Download → raw store → text/table extraction (§6). Whitelist-gated.</td>
-  </tr>
-</table>
-
-<div class="small"><strong>Verification history:</strong> an early check from this environment returned 404s on remembered feed URLs, producing a temporary and wrong "RSS is dead" conclusion. Dedicated research (<code>nse-bse-rss.md</code>) located the live feeds under <code>nsearchives.nseindia.com/content/RSS/</code> and <code>beta.bseindia.com</code>. RSS polling is the primary Tier-1 mechanism; browser-based fetching is a fallback. <strong>Lesson recorded:</strong> verify against each exchange's official feed directory, never against remembered URLs.</div>
-
-<h3>Tier 2 — Aggregators &amp; structured data</h3>
-<table>
-  <tr><th>Source</th><th>Content</th><th>Verified access status</th><th>Role</th></tr>
-  <tr>
-    <td><strong>Google News RSS (per-company queries)</strong></td>
-    <td>News mapped to each <em>whitelisted</em> company via a query like <code>"&lt;company name&gt; OR &lt;symbol&gt;"</code></td>
-    <td><span class="badge partial">WORKS, UNOFFICIAL</span> Live and free, but undocumented and unversioned. Rate ceiling <strong>unmeasured</strong> (§16 Q3). <strong>Dry-run finding:</strong> item <code>&lt;link&gt;</code> values are obfuscated <code>news.google.com/rss/articles/…</code> redirect tokens, not the source URL — a redirect-resolve step is required before the article is fetchable, and before Tier-1/Tier-2 same-event dedup can compare URLs.</td>
-    <td>News coverage for the whitelist. One query per whitelisted company per hour, staggered. Cost scales with the whitelist — trivial at 25 stocks, needs backoff to 4-hourly beyond ~200. Not a substitute for Tier 1. <strong>Speed-vs-authority gap observed live:</strong> a same-day $300bn RIL/US deal reported by multiple outlets had no matching exchange disclosure yet in the NSE feed as of the same evening — confirms news can lead filings by hours-to-days, so red-flag severity must still wait on Tier 1 confirmation, not news alone.</td>
-  </tr>
-  <tr>
-    <td><strong>Moneycontrol RSS feeds</strong></td>
-    <td>Business/market news categories</td>
-    <td><span class="badge verified">VERIFIED ✓</span> Live.</td>
-    <td>Market-wide narrative; entity-mapped to the whitelist after ingest.</td>
-  </tr>
-  <tr>
-    <td><strong>Screener.in</strong></td>
-    <td>Clean normalized financial statements derived from filings</td>
-    <td><span class="badge partial">PARTIAL</span> Site accessible; no official API; ToS restricts automated access.</td>
-    <td><strong>Deferred to Phase 4.</strong> Would supply the revenue base for "% of revenue" normalization. Until a compliant source is settled, insights state absolute numbers only.</td>
-  </tr>
-  <tr>
-    <td><strong>Daily prices</strong> (NSE bhavcopy or yfinance)</td>
-    <td>Daily OHLCV for whitelisted stocks</td>
-    <td><span class="badge planned">TO VERIFY</span> at build time (§16 Q4)</td>
-    <td>Context layer: same-day price move shown alongside an event, labelled as context, <strong>not</strong> as attributed cause. Daily close only.</td>
-  </tr>
-</table>
-
-<h3>Tier 3 — Later expansion candidates (documented, not built now)</h3>
+<h3>Replay contract</h3>
 <ul>
-  <li><strong>Mutual fund monthly holdings (AMFI)</strong> — institutional entry/exit at stock level.</li>
-  <li><strong>Earnings call transcripts</strong> — quarter-over-quarter tone shift analysis.</li>
-  <li><strong>MCA statutory filings</strong> — governance red flags (charges, auditor changes).</li>
-  <li><strong>FII/DII flows (NSDL/depositories)</strong> — macro context for ranking.</li>
-  <li><strong>Alternative signals</strong> (job postings, app ranks, Google Trends) — exploratory.</li>
+<li>Exact response/content bytes are retained in immutable object storage with SHA-256 registration.</li>
+<li>Parsed JSONB is a query aid, not the raw source of truth.</li>
+<li>Text, model extraction, event clustering, severity and reaction calculations are versioned.</li>
+<li>The system promises explainable replay from retained inputs; it does not promise identical output from a model vendor after model drift.</li>
 </ul>
 
-<blockquote><strong>Priority opinion baked into this note:</strong> official disclosures outrank news sentiment. Insider-trade disclosures, auditor resignations, pledge changes, and guidance shifts carry far more signal per byte than news commentary. Tier 1 exists to catch those first; news adds colour and speed.</blockquote>
-
-<!-- ============================================================ -->
-<h2 id="pipeline">6. Ingestion &amp; Structuring Approach</h2>
-
-<p>Every source flows through the same six-stage pipeline. Uniformity is deliberate: adding a source means implementing adapters for the first two stages only.</p>
-
-<table>
-  <tr><th>Stage</th><th>Purpose</th><th>Key rules</th></tr>
-  <tr>
-    <td><strong>1. FETCH</strong></td>
-    <td>Retrieve raw bytes/XML/HTML/PDF</td>
-    <td>Per-source rate limits; conditional GET (ETag / If-Modified-Since) so unchanged polls cost nothing; retries with backoff. <strong>Save raw bytes before any parsing</strong> — a failed parse must never lose fetched data. Every artifact stamped with a SHA-256 content hash.</td>
-  </tr>
-  <tr>
-    <td><strong>2. EXTRACT</strong></td>
-    <td>Turn bytes into text/tables/fields</td>
-    <td>XML → field mapping · HTML → readable article text · PDF → text layer. Image-only PDFs are <em>flagged and queued</em>, not OCR'd, until Phase 4. Table-heavy financial PDFs get a confidence score; low confidence routes to a review queue rather than a silently wrong number.</td>
-  </tr>
-  <tr>
-    <td><strong>3. RESOLVE</strong></td>
-    <td>Attach the item to a real security</td>
-    <td>See §7. Output is an ISIN with a confidence tier, or the unresolved queue. <strong>Nothing proceeds downstream without a resolved ISIN.</strong></td>
-  </tr>
-  <tr>
-    <td><strong>4. NORMALIZE</strong></td>
-    <td>Map into the common schema</td>
-    <td>All documents become the same shape regardless of origin: ISIN, exchange, document type, event-category hint, timestamps, source metadata, raw-store path, content hash.</td>
-  </tr>
-  <tr>
-    <td><strong>5. ENRICH</strong> <span class="small">(whitelist-gated)</span></td>
-    <td>Add meaning</td>
-    <td>Dedup (content hash → simhash → <strong>local embedding</strong> cosine), LLM fact extraction + summary + verbatim quote, then <strong>rules-based</strong> event typing, direction, and severity (§8). Extractions cached on <code>(content_hash, model_id, prompt_version, schema_version)</code> — never paid for twice, but a prompt fix correctly invalidates.</td>
-  </tr>
-  <tr>
-    <td><strong>6. PERSIST</strong></td>
-    <td>Land in the store</td>
-    <td>Metadata → <code>documents</code>; enriched events → <code>intelligence</code>; scores and deliveries → <code>signals</code>. Every record traceable to its raw artifact.</td>
-  </tr>
-</table>
-
-<h3>Scheduling model</h3>
+<h3>Dedup contract</h3>
 <ul>
-  <li><strong>Exchange feeds:</strong> main announcement feeds every 5 min; the other category feeds every 15 min; around the clock (announcements cluster post-close and on weekends — 2,064 BSE items landed on Saturday 22 Aug 2026).</li>
-  <li><strong>News:</strong> one Google News query per whitelisted company per hour, staggered evenly across the hour.</li>
-  <li><strong>Prices:</strong> once daily, after 16:00 IST close.</li>
-  <li><strong>Enrichment:</strong> queue-driven and continuous, with severity-5 candidates jumping the queue to meet the 30-min alert SLO.</li>
-  <li><strong>Digest:</strong> 07:30 IST daily.</li>
-  <li><strong>Feed-depth watchdog:</strong> every poll records item count and oldest <code>pubDate</code>. If the oldest item is younger than the last poll's newest item, the window has truncated and items were missed → alert. This is how we detect item caps under results-season load (§16 Q1) instead of assuming.</li>
+<li><strong>Polling refetch:</strong> adapter idempotency key within one source partition.</li>
+<li><strong>Canonical source record:</strong> stable dedup scope/key, preserving multiple raw sightings.</li>
+<li><strong>Exact content:</strong> SHA-256.</li>
+<li><strong>Business event:</strong> company/time/fact-aware clustering across distinct content.</li>
+<li><strong>Paraphrase news:</strong> local similarity only if Phase-2 data proves it useful.</li>
 </ul>
 
-<h3>Replayability, not bit-identical reruns</h3>
-<p>The system guarantees two things, and deliberately does not claim a third:</p>
-<ul>
-  <li><strong>Replayable:</strong> any past day can be fully re-processed from the bronze layer with zero re-fetching.</li>
-  <li><strong>Deterministic scoring:</strong> given a fixed set of extracted facts, event typing, severity, and ranking are pure functions — same input, same digest, always.</li>
-  <li><strong>Not claimed:</strong> bit-identical LLM output across runs. Models drift and get deprecated. Every event row therefore records <code>model_id</code> and <code>prompt_version</code>, so an output can always be explained even when it can't be exactly reproduced.</li>
-</ul>
+<h2 id="identity">5. Identity and whitelist</h2>
 
-<h3>Deduplication — why it's a first-class concern</h3>
-<p>The same announcement appears on both exchanges; the same news appears across outlets. Three layers, in cost order: exact content hash (majority case, free) → simhash near-duplicate fingerprinting (free) → <strong>local embedding cosine similarity</strong> for paraphrases (free, small CPU model). Dedup runs entirely before enrichment and consumes <strong>zero paid API calls</strong>, which is the whole point — cross-exchange PDF copies often differ by a few bytes, so hash-only dedup is not sufficient.</p>
+<p>Identity is deliberately three-level:</p>
+<pre>
+company     Tata Elxsi Limited
+instrument Tata Elxsi equity share / ISIN
+listing    NSE:TATAELXSI or BSE:500408
+</pre>
 
-<!-- ============================================================ -->
-<h2 id="identity">7. Identity Resolution (Whitelist ↔ Filing)</h2>
+<p>A company is the owner of a business event. An instrument is the affected security/share class. A listing is where price bars are observed. ISIN is a strong instrument identifier, not a universal company or venue identifier.</p>
 
-<blockquote><strong>This is the highest-risk component in the system.</strong> A silent mis-attribution — an auditor resignation pinned to the wrong company — produces an insight that looks perfectly plausible and is completely wrong. It will not be caught by spot-checking output. It must be prevented by construction.</blockquote>
-
-<p>The problem: <strong>ISIN is the join key across every source, and the NSE feed supplies no identifier at all</strong> — the <code>&lt;title&gt;</code> is a company name string. Name matching alone is unsafe across <code>Ltd / Limited / Ltd.</code> variants, <code>&amp;</code> vs <code>and</code>, renames, demergers, and genuine near-collisions (Bajaj Finance / Bajaj Finserv / Bajaj Holdings; the several "Kotak" entities).</p>
-
-<h3>Resolution ladder (first match wins, confidence recorded)</h3>
-<table>
-  <tr><th>Tier</th><th>Method</th><th>Confidence</th></tr>
-  <tr><td>A</td><td><strong>BSE scripcode</strong> present in the item → direct lookup in the security master.</td><td>Exact</td></tr>
-  <tr><td>B</td><td><strong>Cross-exchange anchor:</strong> an NSE item whose PDF content hash or normalized title+date matches a BSE item inherits that item's scripcode → ISIN. BSE's scripcode is effectively used to identify NSE items.</td><td>Exact</td></tr>
-  <tr><td>C</td><td><strong>Symbol or ISIN found in the document text</strong> (most filings state at least one — commonly scrip code + trading symbol — in the header/letterhead). <span class="small">Dry-run check on two RIL filing PDFs found scrip code and NSE symbol in the letterhead of both, but <strong>no ISIN string in either</strong> — Tier C should not assume ISIN presence.</span></td><td>High</td></tr>
-  <tr><td>D</td><td><strong>Normalized-name exact match</strong> against the security master, after canonicalization (case, suffixes, punctuation, <code>&amp;</code>/and, whitespace).</td><td>High — only if the normalized name is unique in the master</td></tr>
-  <tr><td>E</td><td><strong>Curated alias table</strong> (hand-maintained: former names, common abbreviations, feed-specific spellings).</td><td>High</td></tr>
-  <tr><td>F</td><td>Anything else → <strong>unresolved queue.</strong></td><td>None</td></tr>
-</table>
+<h3>Resolution ladder</h3>
+<ol>
+<li>BSE scrip code or another exact listing identifier.</li>
+<li>Cross-exchange anchor through a byte-identical filing or stable source-record match.</li>
+<li>Exact symbol, ISIN or scrip code found in source content.</li>
+<li>Unique normalized company-name match.</li>
+<li>Curated alias match.</li>
+<li>Manual owner decision.</li>
+</ol>
 
 <h3>Hard rules</h3>
 <ul>
-  <li><strong>No fuzzy matching in the publish path.</strong> Fuzzy/embedding similarity may only <em>propose</em> candidates into the unresolved queue for human confirmation; it can never itself attach a filing to a stock.</li>
-  <li><strong>Ambiguity fails closed.</strong> If a normalized name matches more than one security, the item is unresolved — never assigned to the "most likely" one.</li>
-  <li><strong>Unresolved items are surfaced, not swallowed.</strong> A weekly Telegram line reports unresolved count; confirming one via bot writes a permanent alias-table entry, so the same name is never ambiguous twice. The system gets more accurate with use.</li>
-  <li><strong>Whitelist gating happens after resolution, never before.</strong> Filtering on names before resolving would silently drop the misspellings we most need to catch.</li>
+<li>No fuzzy/embedding assignment in the publish path; similarity can only suggest review candidates.</li>
+<li>Ambiguous aliases may belong to multiple companies and therefore fail closed.</li>
+<li>Every decision is immutable history; a correction supersedes rather than edits it.</li>
+<li>The normalized company fast path is set once in the same transaction as the accepted resolution.</li>
+<li>Whitelist gating occurs after identity resolution. The security master and whitelist are different tables.</li>
 </ul>
 
-<p class="small"><strong>Collision risk confirmed live, not hypothetical:</strong> a same-day dry run for RELIANCE (whitelist target: Reliance Industries Ltd) found "reliance"-substring matches across NSE, BSE, and Google News that are unrelated legal entities — <strong>Reliance Power Ltd</strong> (a different BSE scripcode entirely), several <strong>Reliance/Nippon Mutual Fund NAV declarations</strong> (Nippon Life India AMC, formerly Reliance Mutual Fund), and a news item on <strong>Reliance Entertainment Studios</strong> (Anil Ambani group, insolvency case). Name-substring matching alone would have mis-filed all four against Reliance Industries on the very first day.</p>
+<h2 id="intelligence">6. Evidence and events</h2>
 
-<h3>Security master</h3>
-<p>Seeded from the NSE equity list and the BSE scrip master (symbol, name, ISIN, scripcode, status), refreshed weekly, versioned with effective dates so that a filing from six months ago resolves against the names in force then. Corporate name changes, symbol changes, and delistings are alias-table events, not row overwrites.</p>
+<blockquote>The model extracts. Code verifies and decides. The model never assigns severity, ranking, investment direction or causal market attribution.</blockquote>
 
-<p><strong>Target:</strong> ≥99% of items belonging to whitelisted stocks resolve at Tier A–C; unresolved queue drains to zero weekly; <strong>zero</strong> known mis-attributions. Mis-attribution rate is the one metric in this project with a zero target.</p>
-
-<!-- ============================================================ -->
-<h2 id="intelligence">8. Intelligence Layer</h2>
-
-<h3>Governing principle</h3>
-<blockquote>The LLM produces <strong>facts, summaries, and quotes</strong>. Deterministic rules produce <strong>event type, direction, severity, and rank</strong>. The model never emits a score. This is a stricter line than v0.1 drew — previously severity was LLM-assigned while the note claimed ranking was deterministic, which meant the model was in fact the ranker.</blockquote>
-
-<h3>What the LLM returns (JSON-schema constrained)</h3>
+<h3>Extraction output</h3>
 <pre>
 {
-  "document_kind":      "insider_trading | results | order_win | governance | ...",
-  "facts": {
-     "amount_inr":            1200000000,
-     "counterparty":          "…",
-     "pledge_pct_after":      34.0,
-     "holding_delta_pct":     -0.8,
-     "officer_role":          "Statutory Auditor",
-     "action":                "resignation",
-     "effective_date":        "2026-08-21"
-  },
-  "summary_one_line":   "…",
-  "supporting_quote":   "…verbatim from source…",
-  "extraction_confidence": 0.0-1.0,
-  "language":           "en"
+  "document_kind": "investor_presentation",
+  "summary": "Revenue grew 14.5% YoY ...",
+  "facts": { "revenue": 10211000000, "growth_pct": 14.5 },
+  "supporting_quote": "...exact candidate evidence..."
 }
 </pre>
-<p>No <code>severity</code>, no <code>sentiment</code>, no <code>recommendation</code> field exists in the schema. Missing facts are <code>null</code> — the model is instructed never to infer an unstated number.</p>
 
-<h3>Severity rules (deterministic, over extracted facts)</h3>
+<p>The stored execution also includes exact text-version ID, model/revision, prompt/output-schema/verifier versions, input truncation, usage and cost. Self-reported model confidence is not stored or used.</p>
+
+<h3>Evidence gate</h3>
+<ol>
+<li>Normalize source and candidate quote for whitespace and extraction hyphenation.</li>
+<li>Require source containment and, where available, retain page/character location.</li>
+<li>Retry once with an exact-copy instruction when policy allows.</li>
+<li>If verification still fails, suppress the quote and block or downgrade shipping under deterministic policy.</li>
+</ol>
+
+<h3>Document kind is not event kind</h3>
+<p>A results statement, auditor report, investor presentation and press release are different document kinds that can all support one <code>financial_results</code> business event. Conversely, a combined filing can yield several event mentions such as AGM plus dividend plus record-date implications.</p>
+
+<h3>Event snapshot</h3>
+<p>An event cluster records company, affected instruments, type, direction, timing, exact evidence membership, cluster algorithm/version/confidence and input fingerprint. A correction appends a new event version. Insights reference the immutable snapshot they used.</p>
+
+<h3>Severity</h3>
 <table>
-  <tr><th>Sev</th><th>Trigger (evaluated in order)</th></tr>
-  <tr><td><strong>5</strong></td><td>Auditor resignation or adverse/qualified opinion · regulatory penalty or SEBI order against the company or promoters · forensic audit ordered · insolvency filing · promoter pledge crossing 25% or rising &gt;5pp in one disclosure</td></tr>
-  <tr><td><strong>4</strong></td><td>MD/CEO/CFO exit · credit rating downgrade · promoter/insider transaction ≥0.5% of equity · order win ≥10% of revenue<span class="small"> (Phase 4 — needs a revenue base; until then large absolute orders map to 3)</span> · fundraise via equity dilution · material litigation</td></tr>
-  <tr><td><strong>3</strong></td><td>Results filed · buyback / dividend / split / bonus · rating upgrade · order win of material absolute size · capex or capacity announcement</td></tr>
-  <tr><td><strong>2</strong></td><td>Shareholding pattern change without threshold breach · analyst or media coverage corroborated by a filing on the same stock within 48h</td></tr>
-  <tr><td><strong>1</strong></td><td>Board meeting intimation · trading-window closure · routine compliance certificates · uncorroborated news colour</td></tr>
-</table>
-<p class="small">Direction (positive / negative / neutral) is likewise derived from facts — sign of a holding delta, upgrade vs downgrade, resignation vs appointment. Where the sign is genuinely contested (buybacks, M&amp;A, fundraising), the event is marked <strong>neutral</strong> and the facts are shown. v0.1's "default lean" priors are removed: asserting that buybacks are positive and M&amp;A is structural was an unevidenced directional bet, and with backtesting out of scope there is no loop that would ever correct it.</p>
-
-<h3>Event taxonomy</h3>
-<p>Every event carries: type, direction, severity, affected ISIN(s), effective date, extracted facts, extraction confidence, resolution confidence, and source linkage.</p>
-<table>
-  <tr><th>Category</th><th>Example event types</th><th>Category weight</th></tr>
-  <tr><td>Governance &amp; red flags</td><td>auditor resignation, SEBI order, regulatory action, litigation, management exits</td><td><strong>1.5</strong> — always surfaced regardless of score</td></tr>
-  <tr><td>Ownership &amp; insider</td><td>promoter buy/sell, pledge change, FII stake change</td><td><strong>1.4</strong></td></tr>
-  <tr><td>Earnings &amp; results</td><td>results filed, margin move, guidance change</td><td>1.2</td></tr>
-  <tr><td>Debt &amp; capital</td><td>fundraising, debt recast, rating action</td><td>1.1</td></tr>
-  <tr><td>Growth &amp; operations</td><td>order wins, capex, capacity, new products</td><td>1.0</td></tr>
-  <tr><td>Corporate actions</td><td>buyback, dividend, split/bonus, M&amp;A</td><td>0.9</td></tr>
-  <tr><td>News colour</td><td>analyst views, sector narratives, media investigations</td><td>0.4</td></tr>
+<tr><th>Severity</th><th>Representative deterministic triggers</th></tr>
+<tr><td>5</td><td>Auditor resignation/adverse opinion, severe regulatory order, forensic audit, insolvency, material pledge threshold.</td></tr>
+<tr><td>4</td><td>MD/CEO/CFO exit, rating downgrade, material litigation/fundraise, sufficiently material insider transaction.</td></tr>
+<tr><td>3</td><td>Results, dividend/buyback/split/bonus, material order/capex, rating upgrade.</td></tr>
+<tr><td>2</td><td>Non-threshold ownership change, moderate legal/tax notice, corroborated lower-impact development.</td></tr>
+<tr><td>1</td><td>Routine board/trading-window/compliance item or uncorroborated news colour.</td></tr>
 </table>
 
-<h3>OpenAI usage policy</h3>
+<p>A red-flag ruleset scans structured facts and evidence text independently of category labels. Each insight stores severity basis, rulepack version, input fingerprint and exact patterns that fired.</p>
+
+<h2 id="market">7. Market reaction</h2>
+
+<p>Market context is an active, versioned event-study calculation—not a loose company/date join.</p>
+
 <ul>
-  <li><strong>Tiered routing:</strong> mini-tier models for bulk extraction; stronger models only for long documents (annual reports, transcripts) or <code>extraction_confidence</code> below threshold.</li>
-  <li><strong>Hard budget breaker:</strong> a configurable monthly ceiling enforced in code — <strong>default ₹1,500/month</strong> (§16 Q5). On breach: enrichment pauses, ingestion continues, Telegram says so. Ingestion must never depend on API availability or budget.</li>
-  <li><strong>Whitelist-gated spend:</strong> only whitelisted stocks' documents are ever sent to the API. Cost is a function of the whitelist, not of market volume.</li>
-  <li><strong>Show-your-work rule:</strong> every insight carries a verbatim supporting quote. An insight whose quote does not contain the claimed fact is a bug, and is the single easiest thing for the owner to spot-check.</li>
+<li>Bars belong to a specific listing and price series.</li>
+<li>A series fixes provider symbol, interval, adjustment mode and adjustment version.</li>
+<li>Provider corrections append observations; calculations retain exact bar IDs.</li>
+<li>After-close/weekend/holiday events map to the next valid reaction session.</li>
+<li>The baseline uses only pre-reaction data; no future observations leak into a score.</li>
+<li>Where available, benchmark/sector movement is removed using an explicitly retained benchmark series and exact comparison bars.</li>
+<li>A comparable unexplained anomaly lowers attribution safety.</li>
 </ul>
 
-<!-- ============================================================ -->
-<h2 id="alerts">9. Insight Ranking &amp; Telegram Delivery</h2>
+<p>Stored output includes event cutoff, reaction date, before/reaction bars, baseline window/session count, return and volume z-scores, benchmark/abnormal return, method version, attribution status and reason.</p>
 
-<p>Telegram is the product's face. If the digest isn't worth reading every morning, nothing else matters. The surface is a <strong>bot</strong> (not a channel) — channels cannot receive commands, and on-demand queries are half the product.</p>
+<blockquote><strong>Language rule:</strong> “the stock fell after the filing on abnormal volume” is permitted when supported. “The filing caused the fall” is not. A database value of <code>safe</code> means configured gates passed, not that causality was proven.</blockquote>
 
-<h3>Daily digest format (target)</h3>
-<pre>
-📋 MORNING BRIEFING · Sat 22 Aug 2026 · 07:30
-24 stocks watched · 61 filings resolved · 6 ranked
+<h2 id="delivery">8. Ranking and Telegram</h2>
 
-🔴 HIGH (2)
+<p>Digest-time ranking is:</p>
+<pre>severity × category_weight × freshness_factor</pre>
 
-1. ⬇️ ABC INDUSTRIES · sev 5 · Governance
-   Statutory auditor resigned; promoter pledge now 34%.
-   "…unable to obtain sufficient appropriate audit
-    evidence in respect of trade receivables…"
-   BSE · 21 Aug 18:42 · close 21 Aug: −7.2%
-   📄 filing.pdf
-
-2. ⬆️ XYZ CHEMICALS · sev 4 · Growth
-   Won ₹1,200 cr multi-year export order; third large
-   win disclosed this quarter.
-   "…letter of award dated 20 August 2026…"
-   NSE · 21 Aug 17:10 · close 21 Aug: +4.1%
-   📄 filing.pdf
-
-🟡 MODERATE (4) → /moderate
-🟢 ROUTINE (55) → /routine
-❓ 3 items unresolved this week → /unresolved
-</pre>
-<p class="small">Constraints this mock respects, which v0.1's did not: Telegram has no collapsible sections (depth is a bot command, not a tap-to-expand), messages cap at 4,096 characters (digest budget ≤3,500, auto-split beyond), and price is labelled as the day's close move — <em>context, not attributed causation</em>. Percentage-of-revenue framing is absent until a fundamentals source exists.</p>
+<p>Governance overrides, event deduplication, per-company caps and evidence eligibility are hard rules. Freshness and final score are stored on the digest item because they depend on the digest's coverage window; they are not permanent attributes of an insight.</p>
 
 <h3>Delivery rules</h3>
 <ul>
-  <li><strong>One digest per morning</strong> at 07:30 IST: ranked entries, each with severity, one-line rationale, verbatim quote, source link, and prior-day close move.</li>
-  <li><strong>Immediate red-flag alerts</strong> for severity-5 events, within 30 min of feed appearance, at any hour. This is the only sub-daily path.</li>
-  <li><strong>Bot commands:</strong> <code>/stock &lt;name&gt;</code> recent events · <code>/week</code> week-in-review · <code>/missed</code> replay · <code>/add</code> &amp; <code>/remove</code> whitelist management · <code>/unresolved</code> confirm identity matches · <code>/health</code> ingestion status.</li>
-  <li><strong>Quiet discipline:</strong> top section capped at 10 items; routine items live behind a command; per-stock flood cap of 2 entries per digest.</li>
+<li>One normal 07:30 owner digest, top section capped at ten event-level insights.</li>
+<li>Routine and moderate depth lives behind bot commands.</li>
+<li>Severity-5 official events can create immediate red-flag notifications.</li>
+<li>Each digest stores coverage window, audience, template/rulepack and exact ranked composition.</li>
+<li>A notification stores the exact rendered payload and hash.</li>
+<li>Retries resend that payload and record each provider attempt/message ID.</li>
+<li>Reruns/superseded digests are legal; date alone is not a global uniqueness key.</li>
 </ul>
 
-<h3>Ranking philosophy</h3>
-<p><code>score = severity × category_weight × freshness_factor</code>, plus hard rules: governance red flags always surface, duplicates collapse, single-stock floods are capped. Every term is now deterministic and inspectable (§8). Complexity gets added only when the simple model demonstrably misranks — and "demonstrably" means the owner flagged it via <code>/wrong</code>, which logs the case for review. Explainability beats sophistication at this stage.</p>
-
-<!-- ============================================================ -->
-<h2 id="data-architecture">10. Data Architecture Principles</h2>
-
-<p><strong>Engine choice: PostgreSQL</strong> (decided). Chosen for JSONB (flexible per-source metadata), pgvector (local embeddings in the same engine), full-text search, and Python ecosystem fit. One engine covers relational, document, and vector needs.</p>
-
-<p><strong>Separation model: one database, one schema per domain.</strong> v0.1 called for separate <em>databases</em> per domain with "no ad-hoc joins" — that was microservice ceremony imported into a single-user batch system, and in Postgres it is actively harmful: cross-database joins require <code>dblink</code>/FDW, pgvector must be installed per database, and the single most common query in this product ("events for a whitelisted stock, with its sector and price move") spans three domains. Schemas preserve every boundary that matters — ownership, naming, permissions, and a clean later split via schema-level dump — at zero cost.</p>
-
+<h3>Target item</h3>
 <pre>
-PostgreSQL database: market_intel
-├── universe        security master, alias table, WHITELIST (with added_at/
-│                   removed_at), sectors, index membership history
-├── documents       filing/news metadata for ALL companies, resolution status
-│                   + confidence, dedup keys, raw-artifact pointers
-├── market_data     daily OHLCV for whitelisted stocks
-├── intelligence    events, extracted facts, summaries, quotes, embeddings
-│                   (pgvector), model_id + prompt_version per row
-├── signals         computed scores, ranked insights, delivery log
-└── ops             per-source cursors, poll history, feed-depth watchdog,
-                    run reports, unresolved queue
-                    (future: portfolio, execution)
-
-Raw object store (filesystem, immutable, backed up)
-├── raw/nse/{yyyy-mm-dd}/...      original XML/PDF exactly as fetched
-├── raw/bse/{yyyy-mm-dd}/...
-└── raw/news/{source}/{yyyy-mm-dd}/...
+🔴 TATA ELXSI · sev 3 · Financial results
+Revenue grew 14.5% YoY; shares fell 4.78% in the next
+session on abnormal volume. Attribution remains cautious.
+“...verified source excerpt...”
+NSE/BSE evidence · event snapshot v2 · reaction method v1
 </pre>
 
-<p class="small"><strong>Ownership of overlapping concepts:</strong> corporate actions exist in two forms and the split is explicit — <code>market_data</code> holds the <em>quantitative record</em> used for price adjustment (ex-dates, ratios); <code>intelligence</code> holds the <em>event</em> that gets ranked and delivered. Neither is derived from the other; both point at the same source document.</p>
+<h2 id="data">9. Data and reliability principles</h2>
 
-<h3>Layering rules</h3>
-<table>
-  <tr><th>Layer</th><th>Contains</th><th>Rule</th></tr>
-  <tr><td><strong>Bronze</strong> (raw store)</td><td>Original bytes, untouched</td><td>Immutable. Never edited, only added. Enables full re-runs without re-fetching.</td></tr>
-  <tr><td><strong>Silver</strong> (<code>documents</code>)</td><td>Normalized, resolved document records — all companies</td><td>Metadata only, never blobs. Content-hash keyed. Source of truth for "what have we got".</td></tr>
-  <tr><td><strong>Gold</strong> (<code>intelligence</code>, <code>signals</code>)</td><td>Events, facts, summaries, embeddings, scores</td><td>Fully regenerable from bronze+silver. Model or prompt upgrades re-run over silver — never re-fetch.</td></tr>
-</table>
+<pre>
+PostgreSQL
+├── core          companies, instruments, listings, aliases, whitelist, sources
+├── platform      durable jobs and transactional outbox
+├── ingestion     source partitions, fetch/artifact/item lineage, normalized records
+├── documents     fetch attempts, immutable content objects, text versions
+├── intelligence  extraction, mentions, event versions, insights, reactions
+├── market        listing-level immutable price series observations
+└── delivery      digest composition, rendered notifications, send attempts
 
-<h3>Storage sizing</h3>
-<ul>
-  <li><strong>Metadata, all companies:</strong> ~2,400 items/day × ~1 KB ≈ <strong>1 MB/day</strong>. Negligible, and it is what makes retroactive whitelist additions possible.</li>
-  <li><strong>PDFs, whitelist-gated:</strong> ~250 filings/stock/year × ~400 KB ≈ 100 MB per stock per year. At 25 stocks ≈ 2.5 GB/yr; at 500 stocks ≈ <strong>50 GB/yr</strong>.</li>
-  <li><strong>Backup:</strong> raw store and nightly <code>pg_dump</code> to a second physical disk, with a monthly off-machine copy. A backup that lives only on the ingesting machine is not a backup.</li>
-</ul>
+Immutable object store
+└── exact feed/API/PDF/HTML/text bytes addressed and verified by SHA-256
+</pre>
 
-<!-- ============================================================ -->
-<h2 id="platform">11. Platform Constraints &amp; Non-Functional Requirements</h2>
+<h3>Mutation policy</h3>
+<p>Evidence and derived snapshots reject update/delete at database level. Coordination state—jobs, cursors, running fetches and delivery workflow—is mutable, while payload/identity fields remain guarded. Corrections append superseding resolution/event/calculation rows. The normalized-record company field is a controlled cache: deferred triggers require it to match the explicit current identity assignment, including audited corrections.</p>
 
-<table>
-  <tr><th>Constraint</th><th>Implication for design</th></tr>
-  <tr><td><strong>Single machine, always-on</strong></td><td>Long-running Python workers under OS process supervision (systemd on Linux, Task Scheduler/NSSM on Windows). <strong>No containers, no orchestration</strong> — v0.1's Docker Desktop + WSL2 + GPU-passthrough stack was the most fragile choice in the document for zero benefit at one user. Postgres runs natively.</td></tr>
-  <tr><td><strong>Host is not yet fixed</strong> (Linux server vs Windows laptop with RTX 4050)</td><td>Nothing in the current phases requires a GPU. This decision only gates Phase 4 OCR (§16 Q6), so it does not block the build.</td></tr>
-  <tr><td><strong>Local models: embeddings (now), OCR (Phase 4)</strong></td><td>Embedding model is small and CPU-viable, so dedup and semantic search run anywhere with no API cost. If OCR arrives, it gets a single serialized GPU worker queue so jobs never contend for VRAM.</td></tr>
-  <tr><td><strong>LLM via OpenAI API</strong></td><td>Monthly cost breaker in code; caching keyed on content+model+prompt; tiered routing. <strong>Ingestion never depends on the API</strong> — fetch/store/resolve always succeed, enrichment lags and catches up.</td></tr>
-  <tr><td><strong>Resumability &amp; idempotency</strong></td><td>Every worker restartable from a cursor in <code>ops</code>; duplicate-safe writes keyed by content hash; a crash mid-poll loses nothing but time.</td></tr>
-  <tr><td><strong>Politeness &amp; legality</strong></td><td>Official feeds only, at conditional-GET-friendly intervals well below a browsing human's bandwidth. Public data, personal use, no redistribution. Bot-protected endpoints are not routinely automated — the NSE JSON API stays a manual gap-filling tool, and no source whose terms forbid automated access is put on a schedule.</td></tr>
-  <tr><td><strong>Observability</strong></td><td>Structured logs per worker; per-run report (fetched/resolved/enriched/failed); <strong>alert-on-silence at 2h</strong> during market days (v0.1's 24h was far too coarse for a 5-minute poll loop); feed-depth watchdog; <code>/health</code> command on demand.</td></tr>
-</table>
+<h3>Completeness policy</h3>
+<p>Every independently polled feed/symbol/query is a source partition with its own checkpoint. Polls overlap and writes are idempotent. Fetch/stage lineage and source-window telemetry diagnose gaps. Completeness is finally measured through exchange reconciliation samples; the product never equates an advanced cursor with proof of full coverage.</p>
 
-<!-- ============================================================ -->
-<h2 id="phasing">12. Delivery Phases</h2>
+<h3>Migration policy</h3>
+<p><code>db/schema.sql</code> v1.2 is the final pre-integration fresh-install baseline. Once integration begins, database changes are forward numbered migrations. Prompt, output schema, verifier, classifier, cluster, severity, adjustment and reaction behavior versions are data lineage, not Git archaeology.</p>
 
-<p>Each phase ends in something running and useful. No phase depends on a later one.</p>
+<h2 id="nfr">10. Non-functional requirements</h2>
 
 <table>
-  <tr><th>Phase</th><th>Build</th><th>Done when</th></tr>
-  <tr><td><strong>0 — Walking skeleton</strong><br><span class="small">no LLM, no OCR</span></td><td>NSE + BSE main announcement pollers · raw store · <code>documents</code> + <code>ops</code> schemas · security master + resolution ladder (§7) · whitelist of 10 stocks · plain-text Telegram digest of resolved titles + links</td><td>7 consecutive days running unattended with zero missed filings for the 10 stocks, verified by hand against exchange pages</td></tr>
-  <tr><td><strong>1 — Understanding</strong></td><td>PDF text-layer extraction · LLM fact extraction with structured outputs · deterministic severity + ranking · ranked digest with quotes · red-flag alert path</td><td>Owner reads the digest daily for two weeks; every sampled insight's quote actually supports its claim</td></tr>
-  <tr><td><strong>2 — Breadth</strong></td><td>Local embedding dedup · remaining category feeds · Google News per whitelisted company · daily price context · <code>/stock</code>, <code>/week</code>, <code>/unresolved</code> commands</td><td>Duplicate rate in the digest under 2%; news adds items the filings missed</td></tr>
-  <tr><td><strong>3 — Scale</strong></td><td>Whitelist 25 → 100 → 500 · reconciliation harness · budget breaker · full observability</td><td>Coverage measurement (§15.1) holds at ≥95% at 100 stocks before going further</td></tr>
-  <tr><td><strong>4 — Only if measured need</strong></td><td>GPU OCR (if image-only PDFs prove material) · fundamentals source for ratio math (if a compliant one exists)</td><td>Gated on §16 Q2 and Q7 — both are measurements, not decisions</td></tr>
+<tr><th>Requirement</th><th>Acceptance rule</th></tr>
+<tr><td>Restart safety</td><td>Kill any worker between stages; an expired lease/retry completes the item once logically with no stranded canonical row.</td></tr>
+<tr><td>Raw replay</td><td>Reparse a sampled day from retained exact artifacts without network access.</td></tr>
+<tr><td>Identity safety</td><td>Ambiguity fails to review; zero known published mis-attributions.</td></tr>
+<tr><td>Evidence trust</td><td>Unverified required quotes cannot silently ship; execution/truncation state is queryable.</td></tr>
+<tr><td>Latency</td><td>Severity-5 source-to-Telegram ≤30 min under normal source availability.</td></tr>
+<tr><td>Coverage</td><td>Weekly sampled official-source reconciliation reports numerator and denominator.</td></tr>
+<tr><td>Observability</td><td>Per-partition source silence, queue age/dead jobs, stage funnel/errors, QA rates, spend, stale prices and delivery failures.</td></tr>
+<tr><td>Cost</td><td>Whitelist-gated model spend with configurable monthly breaker; capture continues if enrichment pauses.</td></tr>
+<tr><td>Security</td><td>Secrets in environment/secret store, least-privilege DB roles at deployment, sanitized/escaped untrusted content.</td></tr>
+<tr><td>Backup</td><td>Database and object store backed up together; periodic restore test, not backup existence alone.</td></tr>
 </table>
 
-<!-- ============================================================ -->
-<h2 id="future">13. Future Evolution Hooks (Out of Current Scope)</h2>
+<h2 id="phases">11. Delivery phases</h2>
 
 <table>
-  <tr><th>Future module</th><th>Seam already provided by current design</th></tr>
-  <tr><td><strong>Portfolio tracker</strong></td><td>New <code>portfolio</code> schema; consumes <code>universe</code> + <code>market_data</code>; insights gain "relevant to your holdings" weighting as another deterministic term in the score.</td></tr>
-  <tr><td><strong>Backtesting / signal validation</strong></td><td>Bronze retains dated raw documents; <code>intelligence</code> retains typed, dated, signed events; <code>market_data</code> retains prices. Event-study analysis becomes possible with no data purchase — and it is the only thing that could ever validate the category weights in §8.</td></tr>
-  <tr><td><strong>Paper-trading book</strong></td><td>Every insight already carries direction + severity + timestamp — enough to simulate hypothetical orders retroactively.</td></tr>
-  <tr><td><strong>Auto-execution (broker API)</strong></td><td>Execution is another downstream consumer of the signals stream, gated by a human/risk layer. Signals remain unchanged.</td></tr>
-  <tr><td><strong>Local LLMs</strong></td><td>Extraction is already behind a single interface returning a fixed JSON schema. Swapping the provider is one adapter, not an architecture change.</td></tr>
-  <tr><td><strong>More sources</strong></td><td>New source = fetch adapter + extract adapter. Resolution, dedup, enrichment, ranking, and delivery are unchanged.</td></tr>
+<tr><th>Phase</th><th>Build</th><th>Gate</th></tr>
+<tr><td>0 — Reliable capture</td><td>Schema/object store, jobs/outbox, partitioned NSE/BSE fetch, normalization, security master/listings, resolution/review, basic Telegram digest, reconciliation.</td><td>Seven unattended days plus worker-kill tests and measured official-source reconciliation.</td></tr>
+<tr><td>1 — Trusted evidence</td><td>Text versions, model extraction, quote verifier/retry, two taxonomies, multi-mention classifier, cluster fixtures, severity/red-flag engine.</td><td>Sampled claims have verified evidence; known six-document results case becomes one event.</td></tr>
+<tr><td>2 — Breadth and market context</td><td>Remaining feeds, news redirects/HTML, optional embedding experiment, listing-level prices, no-look-ahead reactions, anomaly/benchmark gate, bot history commands.</td><td>Digest duplicate target met; hand-worked market fixtures reproduce exactly.</td></tr>
+<tr><td>3 — Scale/hardening</td><td>25→100 whitelist, budget breaker, role grants, restore drills, results-season coverage/load test.</td><td>Measured coverage ≥95% at 100 before further growth.</td></tr>
+<tr><td>4 — Measured need</td><td>OCR and compliant fundamentals only if measurements justify them.</td><td>Explicit image-only rate or ratio-product requirement.</td></tr>
 </table>
 
-<!-- ============================================================ -->
-<h2 id="risks">14. Risks &amp; Mitigations</h2>
+<h2 id="risks">12. Risks and mitigations</h2>
 
 <table>
-  <tr><th>#</th><th>Risk</th><th>Severity</th><th>Mitigation</th></tr>
-  <tr><td>1</td><td><strong>Identity mis-attribution</strong> — a filing pinned to the wrong company produces a plausible, wrong, unnoticed insight</td><td><strong>Critical</strong></td><td>§7 in full: scripcode-anchored resolution, no fuzzy matching in the publish path, ambiguity fails closed to a queue, confidence recorded on every row, growing alias table. Zero-tolerance metric.</td></tr>
-  <tr><td>2</td><td><strong>Feed retention is same-day</strong> — measured 22 Aug 2026: both exchanges' feeds reach back only to 00:00 that day. A slow poller loses items permanently</td><td>High</td><td>5-minute polling with conditional GET; persist every item on sight; feed-depth watchdog alerts when the window truncates faster than the poll interval; weekly sampled reconciliation against exchange pages.</td></tr>
-  <tr><td>3</td><td><strong>BSE beta-host dependence</strong> — <em>category</em> feeds (including insider trading, the highest-signal category) exist only on <code>beta.bseindia.com</code></td><td><strong>High</strong> <span class="small">(raised from Medium in v0.1)</span></td><td>Per-feed health checks with Telegram alerts; the main announcements feed is dual-homed on <code>www</code> and is the fallback for everything; monitor the official feed-directory page for path changes; NSE's 23 feeds cover most categories independently.</td></tr>
-  <tr><td>4</td><td><strong>PDF table extraction accuracy</strong> — wrong numbers silently trusted. <span class="small">Reproduced live on RIL's own Q1 FY27 results PDF (text-layer, not scanned): naive linear extraction pulled every row label ("Revenue from Operations", "Profit Before Tax"…) as one block and every numeric column as a separate block further down the page, fully decoupled from their labels and out of the header's stated column order — a naive zip-by-index would silently attach the wrong number to the wrong line item and quarter. The same PDF also has font-encoding corruption in places ("Setvices", "Prollt", "Duly"), which would break header-based column detection too.</span></td><td>High</td><td>Confidence thresholds route low-certainty extractions to a review queue; verbatim quote in every insight; narrative extraction prioritized over perfect table parsing; no derived ratios until a clean fundamentals base exists. <strong>Refined by dry run:</strong> naive text extraction (<code>pypdf</code>/<code>pdftotext</code>) is confirmed insufficient even for a clean, non-scanned large-cap filing — table extraction needs a layout/bbox-aware library (e.g. <code>pdfplumber</code>/<code>camelot</code>) as the baseline, not a fallback for hard cases.</td></tr>
-  <tr><td>5</td><td><strong>Google News RSS is unofficial</strong> and its rate ceiling is unmeasured; it is also the only Tier-2 coverage path</td><td>Medium</td><td>Query volume scales with the whitelist and is trivial early; measure the ceiling before scaling past 100 stocks (§16 Q3); treat news as colour, never as the coverage backbone — Tier 1 is.</td></tr>
-  <tr><td>6</td><td><strong>OpenAI cost creep</strong> as the whitelist grows</td><td>Medium</td><td>Whitelist-gated enrichment; dedup before enrich with zero API cost; content+model+prompt cache; mini-tier default; hard monthly breaker that pauses enrichment without stopping ingestion.</td></tr>
-  <tr><td>7</td><td><strong>Digest becomes spam and gets ignored</strong></td><td>Medium</td><td>≤10 items in the top section; per-stock flood cap; routine behind commands; <code>/wrong</code> logs misranks for review.</td></tr>
-  <tr><td>8</td><td><strong>Retroactive history is bounded by ingestion start</strong> — a stock added in month 6 has no filings from month 1 unless metadata capture was running</td><td>Medium</td><td>Capture metadata for all companies from day one (that is the design point); accept that pre-launch history requires a separate one-off backfill, and document it as such rather than implying full history.</td></tr>
-  <tr><td>9</td><td><strong>Scope creep</strong> toward tracker/trading features too early</td><td>Medium</td><td>The scope table (§3) is the contract; new features enter only via §13 hooks and only after a phase gate (§12) passes.</td></tr>
-  <tr><td>10</td><td><strong>Single-machine fragility</strong> (power, updates, sleep) — worse now that the system is always-on</td><td>Medium</td><td>Process supervision with auto-restart; sleep disabled on the host; idempotent catch-up on boot; alert-on-silence at 2h; backup discipline per §10. Acceptable for a personal tool.</td></tr>
+<tr><th>Risk</th><th>Mitigation</th></tr>
+<tr><td>Wrong company/listing attribution</td><td>Exact ladder, historical identifiers, ambiguous aliases, fail-closed review, immutable decisions and zero-tolerance audit.</td></tr>
+<tr><td>Short/item-capped feed windows</td><td>Per-feed partitions, frequent overlap, exact artifacts, source telemetry, reconciliation and API gap filling.</td></tr>
+<tr><td>HTTP 200 invalid content</td><td>Attempt history, resolved URL, media/magic validation and immutable invalid response evidence.</td></tr>
+<tr><td>LLM omission/hallucination/truncation</td><td>Structured output, exact text-version input, truncation flag, code verification, retry/suppress policy and deterministic red-flag net.</td></tr>
+<tr><td>Event clustering merges/splits incorrectly</td><td>Hand-labelled fixtures, confidence, versioned snapshots and append-only manual correction.</td></tr>
+<tr><td>False market causality</td><td>Session-aware no-look-ahead method, benchmark and unexplained-anomaly comparison, retained reason and cautious copy.</td></tr>
+<tr><td>Queue dual-write or retry duplicates</td><td>Atomic outbox, durable jobs, leases, dead state and result idempotency constraints.</td></tr>
+<tr><td>Provider revision changes prices</td><td>Append price observations; calculations reference exact before/reaction bars, baseline-bar membership and series methodology.</td></tr>
+<tr><td>Telegram retries duplicate delivery</td><td>Stored rendered payload/idempotency plus provider message and attempt history.</td></tr>
+<tr><td>Single-machine loss</td><td>Supervision, source catch-up, second-device/off-machine backup and restore tests.</td></tr>
 </table>
 
-<!-- ============================================================ -->
-<h2 id="success">15. Success Criteria</h2>
-
-<p>Each criterion names its measurement method. A criterion that cannot be measured is not a criterion.</p>
+<h2 id="success">13. Success criteria</h2>
 
 <ol>
-  <li><strong>Coverage — ≥95%, measured.</strong> Weekly, pick 2 random past days and reconcile every whitelisted stock's filings against the exchange announcement listing for those days. Report captured / total in the digest. (v0.1 asserted 95% with no denominator available, which made the number decorative.)</li>
-  <li><strong>Attribution — zero known mis-attributions.</strong> Every insight's stock is traceable to a resolution tier (§7); Tier D/E resolutions are sampled monthly by hand.</li>
-  <li><strong>Trust — quotes support claims.</strong> A 20-item monthly hand audit: does the verbatim quote contain the fact the summary asserts? Target 100%; any failure is a bug with a prompt or schema fix, not a tuning exercise.</li>
-  <li><strong>Habit.</strong> The owner opens the 07:30 briefing on most days and acts on it occasionally. The truest test, and the reason the digest stays short.</li>
-  <li><strong>Timeliness.</strong> Severity-5 alerts delivered within 30 min of feed appearance, measured from <code>pubDate</code> to Telegram timestamp, logged per alert.</li>
-  <li><strong>Resilience.</strong> Any worker can be killed at any moment and restart with no data loss; any past day can be fully re-processed from bronze with no re-fetching; the scoring layer is bit-identical on replay given fixed extractions.</li>
-  <li><strong>Discipline.</strong> Digest top section stays ≤10 items; duplicate rate under 2%.</li>
+<li><strong>Coverage:</strong> ≥95% on weekly sampled NSE/BSE reconciliation with explicit denominator.</li>
+<li><strong>Attribution:</strong> zero known company/listing mis-attributions.</li>
+<li><strong>Trust:</strong> 100% of sampled shipped evidence contains/supports the stated fact; failures are bugs.</li>
+<li><strong>Event quality:</strong> known multi-document fixtures collapse correctly; duplicate digest items &lt;2%.</li>
+<li><strong>Reaction integrity:</strong> exact fixture reproduction with no future data in baselines and explicit unsafe outcomes.</li>
+<li><strong>Resilience:</strong> forced worker termination at every boundary strands no work and creates no duplicate logical output.</li>
+<li><strong>Timeliness:</strong> eligible severity-5 alerts delivered within 30 minutes, measured source-to-provider.</li>
+<li><strong>Habit:</strong> top digest ≤10 items and useful enough that the owner reads it most days.</li>
 </ol>
 
-<!-- ============================================================ -->
-<h2 id="open">16. Open Questions</h2>
+<h2 id="open">14. Open product/vendor questions</h2>
 
 <table>
-  <tr><th>#</th><th>Question</th><th>How it gets answered</th><th>Blocks</th></tr>
-  <tr><td>Q1</td><td>Are the feeds <strong>item-capped</strong> as well as day-limited? 340 NSE vs 2,064 BSE items on the same day suggests different windowing. Results season is 5–10× heavier.</td><td>Feed-depth watchdog logs count + oldest <code>pubDate</code> on every poll from Phase 0. First results season answers it empirically.</td><td>Nothing — instrumentation is built in</td></tr>
-  <tr><td>Q2</td><td>What share of filings are <strong>image-only PDFs</strong> needing OCR? Suspicion: small, and mostly older or regional documents.</td><td>Sample 200 whitelisted-stock PDFs in Phase 1; measure text-layer coverage.</td><td>Phase 4 GPU OCR — do not build until this is measured</td></tr>
-  <tr><td>Q3</td><td>Google News RSS <strong>rate ceiling</strong> at N companies/hour?</td><td>Ramp test during Phase 2, from 25 → 100 stocks, watching for 429s and empty responses.</td><td>Scaling news past ~100 stocks</td></tr>
-  <tr><td>Q4</td><td><strong>Price source:</strong> NSE bhavcopy (official, bulk, adjustment-safe) or yfinance (convenient, unofficial)?</td><td>Verify both at Phase 2 build time; prefer bhavcopy if corporate-action adjustment is clean.</td><td>Price context in the digest</td></tr>
-  <tr><td>Q5</td><td><strong>Monthly LLM budget ceiling.</strong> Default assumed ₹1,500/month — owner to confirm.</td><td>Owner decision. Measure actual spend per stock per month in Phase 1 and extrapolate to 500.</td><td>Nothing early; sets the Phase 3 scaling limit</td></tr>
-  <tr><td>Q6</td><td><strong>Host:</strong> Linux server (always-on, no GPU) or Windows laptop (GPU, less reliable uptime)?</td><td>Owner decision. Note that "always-on" argues for the server and Phases 0–3 need no GPU.</td><td>Phase 4 OCR only</td></tr>
-  <tr><td>Q7</td><td><strong>Fundamentals source</strong> for "% of revenue" normalization that does not violate anyone's terms.</td><td>Investigate own extraction from filed results PDFs first — the data is in the primary source we already hold.</td><td>Severity-4 order-win rule; ratio language in insights</td></tr>
+<tr><th>Question</th><th>Resolution method</th></tr>
+<tr><td>NSE bhavcopy or yfinance as primary daily provider?</td><td>Compare availability, revision and corporate-action semantics in Phase 2; store either as an explicit series.</td></tr>
+<tr><td>How many PDFs truly require OCR?</td><td>Measure at least 200 representative documents before Phase 4.</td></tr>
+<tr><td>Google News rate/redirect stability?</td><td>Ramp 25→100 staggered partitions and retain source telemetry.</td></tr>
+<tr><td>Compliant fundamentals base?</td><td>Prefer own extraction from official results; otherwise obtain a permitted source before ratio claims.</td></tr>
+<tr><td>Monthly model budget?</td><td>Owner sets breaker after measuring cost per company during Phase 1.</td></tr>
+<tr><td>Permanent host?</td><td>Choose on uptime/backup reliability; no current phase requires a GPU.</td></tr>
 </table>
 
-<!-- ============================================================ -->
-<h2 id="glossary">17. Glossary</h2>
-
+<h2 id="glossary">15. Glossary</h2>
 <table>
-  <tr><th>Term</th><th>Meaning</th></tr>
-  <tr><td>Whitelist</td><td>The DB-backed set of stocks actively enriched and delivered on. Starts small, grows over time. Distinct from the security master.</td></tr>
-  <tr><td>Security master</td><td>The full reference list of listed securities (symbol, name, ISIN, scripcode, status) used to resolve identity. Covers everything, whitelisted or not.</td></tr>
-  <tr><td>ISIN</td><td>International Securities Identification Number — unique security ID shared across BSE/NSE; the universal join key in this system.</td></tr>
-  <tr><td>Scripcode</td><td>BSE's numeric security identifier, present in BSE feed items; the anchor of the resolution ladder (§7).</td></tr>
-  <tr><td>Resolution tier</td><td>A–F confidence label recorded on every document, describing <em>how</em> it was matched to a security.</td></tr>
-  <tr><td>Filing / Announcement</td><td>Company disclosure submitted to an exchange (results, insider trades, orders, etc.).</td></tr>
-  <tr><td>SAST / PIT disclosures</td><td>Regulatory disclosures of share acquisitions and insider trading under SEBI rules.</td></tr>
-  <tr><td>Pledge</td><td>Promoter shares pledged as loan collateral; rising pledge = rising risk signal.</td></tr>
-  <tr><td>Corporate action</td><td>Dividend, buyback, split, bonus, merger — structural events affecting shares.</td></tr>
-  <tr><td>Severity</td><td>1–5 importance, computed by deterministic rules over LLM-extracted facts (§8). Never emitted by the model.</td></tr>
-  <tr><td>Bronze / Silver / Gold</td><td>Data layering: raw bytes → normalized resolved records → enriched intelligence.</td></tr>
-  <tr><td>SimHash</td><td>Fingerprinting technique for detecting near-duplicate text without embeddings.</td></tr>
-  <tr><td>pgvector</td><td>PostgreSQL extension storing embedding vectors for semantic search and dedup.</td></tr>
-  <tr><td>Conditional GET</td><td>HTTP <code>ETag</code>/<code>If-Modified-Since</code> request that returns 304 when nothing changed — what makes 5-minute polling polite and cheap.</td></tr>
+<tr><th>Term</th><th>Meaning</th></tr>
+<tr><td>Company</td><td>Legal/business entity that owns events.</td></tr>
+<tr><td>Instrument</td><td>Security/share class, commonly identified by ISIN.</td></tr>
+<tr><td>Listing</td><td>Exchange venue/symbol/code for an instrument; owner of a price series.</td></tr>
+<tr><td>Source partition</td><td>One independently polled feed, symbol, scrip or news query with its own checkpoint.</td></tr>
+<tr><td>Raw artifact</td><td>Exact fetched response bytes registered by SHA-256.</td></tr>
+<tr><td>Source record</td><td>Canonical announcement/news metadata, possibly seen in several feeds.</td></tr>
+<tr><td>Content object</td><td>Immutable PDF/HTML/text bytes deduplicated by SHA-256.</td></tr>
+<tr><td>Document kind</td><td>Artifact role such as presentation, financial statement or press release.</td></tr>
+<tr><td>Event kind</td><td>Business development such as financial results, dividend or auditor change.</td></tr>
+<tr><td>Event version</td><td>Immutable snapshot of event type, timing and evidence membership.</td></tr>
+<tr><td>Outbox</td><td>DB rows committed with canonical data and dispatched to durable work afterward.</td></tr>
+<tr><td>Attribution status</td><td>Whether configured market-association gates passed; never proof of causality.</td></tr>
 </table>
 
-<!-- ============================================================ -->
-<h2 id="changelog">18. Change Log</h2>
-
+<h2 id="changes">16. Change log</h2>
 <table>
-  <tr><th>Version</th><th>Date</th><th>Changes</th></tr>
-  <tr>
-    <td><strong>v0.3</strong></td>
-    <td>22 Aug 2026</td>
-    <td>
-      <ul>
-        <li><strong>First end-to-end dry run against a real stock</strong> (RELIANCE / 500325), spanning NSE + BSE RSS, Google News RSS, Moneycontrol, the NSE manual-backfill API, and PDF extraction. Findings folded in throughout rather than kept as a separate note, per the "changes require updating this note first" rule.</li>
-        <li><strong>§7 identity collisions confirmed live</strong>, not hypothetical: "reliance" substring-matched Reliance Power Ltd, Reliance/Nippon Mutual Fund NAV declarations, and Reliance Entertainment Studios across NSE, BSE, and Google News on the same day — direct evidence for the no-fuzzy-matching-in-publish-path rule.</li>
-        <li><strong>§14 Risk 4 (PDF table extraction) upgraded from theoretical to reproduced.</strong> Naive text extraction on RIL's own Q1 FY27 results PDF decouples row labels from numeric columns entirely and includes font-encoding corruption — confirms layout-aware table parsing is the baseline requirement, not a fallback.</li>
-        <li><strong>§5 NSE manual-backfill API verified usable</strong>: <code>/api/corporate-announcements?symbol=…</code> returned full history to 2004 with working date filters via a plain request + browser User-Agent, despite its Akamai reputation.</li>
-        <li><strong>§5 Google News link format noted</strong>: items carry obfuscated redirect URLs, not source links — a resolve step is required before fetch or cross-source dedup.</li>
-        <li><strong>§7 Tier C softened</strong>: dry run found scrip code + trading symbol in filing letterheads but no ISIN string — Tier C should not assume ISIN is present.</li>
-        <li>Speed-vs-authority gap observed directly: a same-day, widely-reported RIL/US deal had no matching exchange disclosure yet by the same evening — live confirmation that news can lead filings, and severity-5 alerting must still gate on Tier 1.</li>
-      </ul>
-    </td>
-  </tr>
-  <tr>
-    <td><strong>v0.2</strong></td>
-    <td>22 Aug 2026</td>
-    <td>
-      <ul>
-        <li><strong>Reframed from "top ~500 universe" to a growing whitelist</strong> (§1): DB-backed, starts at ~10–25, enrichment whitelist-gated, metadata captured for all companies from day one to enable retroactive history.</li>
-        <li><strong>Cadence corrected</strong> (§3): continuous always-on ingestion + 30-min red-flag SLO + 07:30 daily digest, replacing v0.1's self-contradictory "daily cadence, nothing assumes sub-day latency" alongside "immediate alerts".</li>
-        <li><strong>New §7 Identity Resolution.</strong> v0.1 declared ISIN the universal join key while its primary source supplies only a company-name string. Added the scripcode-anchored resolution ladder, fail-closed ambiguity rule, alias table, and a zero-tolerance mis-attribution metric.</li>
-        <li><strong>Local embeddings moved into scope</strong> (§3, §6): dedup now costs zero API calls, resolving v0.1's contradiction between "embedding dedup saves LLM spend" and "local embeddings out of scope".</li>
-        <li><strong>Severity is now deterministic</strong> (§8): explicit rules table over LLM-extracted facts; the extraction schema has no score field. v0.1 had the LLM assigning severity while claiming ranking was deterministic. Unevidenced "default lean" directional priors removed.</li>
-        <li><strong>Five databases → one database, six schemas</strong> (§10), with the corporate-action ownership overlap resolved and storage sizing added.</li>
-        <li><strong>Reproducibility claim corrected</strong> (§6, §15): replayability + deterministic scoring, not bit-identical LLM reruns. Extraction cache keyed on content+model+prompt+schema.</li>
-        <li><strong>Telegram redesigned for what Telegram does</strong> (§9): bot not channel, commands not tap-to-expand, 3,500-char digest budget, price shown as context not causation.</li>
-        <li><strong>Docker/WSL2 and GPU OCR removed from the critical path</strong> (§3, §11, §12): native processes under OS supervision; OCR deferred behind a measurement.</li>
-        <li><strong>New §12 Delivery Phases and §16 Open Questions.</strong> Success criteria (§15) rewritten with measurement methods. Feed facts re-verified live: NSE 340 items / BSE 2,064 items, same-day retention, BSE main feed dual-homed on <code>www</code>. BSE beta-host risk raised to High. Alert-on-silence tightened 24h → 2h. Corrected date (Feb → Aug 2026), owner name, and typos.</li>
-      </ul>
-    </td>
-  </tr>
-  <tr><td>v0.1</td><td>Feb 2026 (as labelled)</td><td>Initial note: vision, universe-of-500 framing, source register, five-database architecture, daily-cadence pipeline.</td></tr>
+<tr><th>Version</th><th>Changes</th></tr>
+<tr><td><strong>v0.4</strong></td><td>Aligned product requirements to architecture/schema v1.2: company/instrument/listing identity; exact raw artifacts; partition checkpoints and measured coverage; PostgreSQL jobs/outbox; generalized PDF/HTML/text content and fetch attempts; immutable text/extraction/event versions; separate document and event kinds; multi-mention extraction; deterministic verified evidence; no-look-ahead listing-level market reactions; auditable digest/notification attempts; embeddings deferred to a data-backed Phase-2 experiment.</td></tr>
+<tr><td>v0.3</td><td>Added end-to-end source dry runs, collision evidence, PDF extraction findings, Google News redirect limitation and API backfill observations.</td></tr>
+<tr><td>v0.2</td><td>Changed from market-universe enrichment to whitelist-first; made cadence continuous; introduced deterministic severity, identity resolution, one PostgreSQL database and phased delivery.</td></tr>
+<tr><td>v0.1</td><td>Initial product framing.</td></tr>
 </table>
 
 <hr>
-<p class="small">Personal research and information tool for the owner's own use. It surfaces and summarizes public disclosures; it does not constitute investment advice, and nothing it outputs is a recommendation to buy or sell.</p>
-<p class="small">Next documents in sequence: <code>architecture_doc.html</code> (HLD: process decomposition, interfaces, deployment) → module LLDs with API specs. Changes to scope require updating this note first.</p>
-
+<p class="small">Personal research and information tool. It summarizes public information and does not constitute investment advice or a recommendation to buy or sell.</p>
 </body>
 </html>

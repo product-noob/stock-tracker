@@ -93,23 +93,39 @@ Typical BSE item:
 
 BSE fields are usually `title`, `scripcode`, `link`, `description`, and `pubDate`. Multiple securities can point to the same attachment, particularly funds and other instruments.
 
-## Recommended ingestion model
+## Recommended ingestion model (updated for schema v1.2)
 
 ```text
-NSE RSS feeds ──┐
-                ├── fetcher ── normalizer ── identifier mapper ── database ── alerts/UI
-BSE RSS feeds ──┘                         └── PDF downloader/parser
+source partition (one feed URL / symbol / scrip / query)
+  → fetch run + exact raw response artifact
+  → idempotent raw items
+  → canonical source records + all raw sightings
+  → company / instrument / listing resolver
+  → durable content-fetch job
+  → completed attempt + SHA-256 content object
+  → versioned text extraction
 ```
 
-Normalized record:
+Canonical source-record fields include:
 
 ```text
-exchange, company_name, nse_symbol, bse_scripcode, isin,
-announcement_type, subject, description, document_url,
-published_at, ingested_at, raw_feed_item, document_hash
+record_type, dedup_scope, dedup_key, exchange?, external_id?,
+company_name_raw, exchange_symbol_raw, exchange_code_raw, isin_raw,
+title, subject, description, category_raw, content_url?, canonical_url?,
+published_at?, first_seen_at, resolved_company_id?
 ```
 
-Rules: persist every item because feeds are rolling windows; deduplicate by `(exchange, document_url)` plus document hash; preserve BSE `scripcode`; map both exchanges to ISIN/symbol through a maintained security master; store raw XML; poll frequently; periodically reconcile against exchange pages if completeness matters.
+Rules:
+
+- Treat each feed URL or API company query as an independent source partition with its own checkpoint and overlapping poll window.
+- Save exact XML/JSON response bytes before parsing; parsed JSONB is not the replay source of truth.
+- Use a source-native ID as the item/canonical key where one exists. Otherwise use an adapter-documented stable tuple; do **not** deduplicate announcements by document URL because distinct records can share one PDF.
+- Keep M:N links from canonical records to all raw feed sightings and from records to content objects.
+- Deduplicate exact content by SHA-256 only after a completed fetch; persist failed/invalid attempts separately.
+- Resolve company, instrument and exchange listing as distinct identities. ISIN identifies a security/share class, not the company or listing by itself.
+- Poll frequently with overlap, log feed depth, and reconcile sampled dates against exchange pages/APIs. Cursor advancement alone does not prove completeness.
+
+The executable model is documented in `docs/database-schema.md` and `db/schema.sql`.
 
 Minimal parser:
 

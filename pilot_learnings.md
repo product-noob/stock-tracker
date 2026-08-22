@@ -196,6 +196,50 @@ This means a naive rule — "flag any event whose next-session return z-score ex
 
 ---
 
+# Part 4 — Schema v1.2 Architecture Resolution
+
+**Status:** design resolution after the pilot critique. Historical measurements above are unchanged; recommendations superseded below now point to the executable v1.2 model in `db/schema.sql` and `docs/database-schema.md`.
+
+## 19. Pilot finding → durable schema decision
+
+| Pilot finding | v1.2 resolution |
+|---|---|
+| Exact cross-exchange PDF hashing collapsed 58 downloads to 28 contents | `documents.content_objects` is immutable and SHA-256 unique; source records link M:N through `record_contents`. |
+| One PDF can appear through several feed records | Canonical records retain all source sightings through `record_raw_items`; records and contents are M:N. |
+| One document can express several event meanings | One extraction can create multiple `extracted_event_mentions`; an event snapshot links exact mentions and contents. |
+| Six distinct results-day documents describe one business event | Stable `events` plus immutable `event_versions` separate business-event clustering from byte deduplication. |
+| Exchange category labels are unreliable | Raw category remains quarantined metadata; document kind and deterministic business-event kind use separate reference tables. |
+| Naive quote verification failed because of whitespace/hyphenation, while two quotes genuinely dropped clauses | Extractions record verifier version, attempts, verified/suppressed state and exact text-version input; unverified evidence is a shipping gate. |
+| Model self-confidence was uniformly high and useless | No self-reported extraction-confidence column exists. Quality is represented by observable execution and verification fields. |
+| Price reaction needs exact event timing and an anomaly gate | Reactions retain event cutoff, listing-level price series, exact bars, pre-event baseline, method/input versions, benchmark values, unexplained anomaly and attribution reason. |
+| Adjusted/raw prices must not mix | Adjustment mode/version is fixed on `market.price_series`, not chosen independently per bar. |
+| Google News produces RSS/XML, redirects and HTML rather than exchange PDFs | The content lifecycle supports arbitrary media types and text versions; `exchange`/content URL are not universally required. |
+| Rolling feeds can silently lose items | Every feed/symbol/query is a source partition with overlap checkpoints, exact fetch history and reconciliation-based coverage measurement. |
+| Async retries can strand work or duplicate outputs | PostgreSQL durable jobs plus transactional outbox; every derived stage has an idempotency key. |
+| A later audit may prove an accepted identity wrong | Immutable resolution decisions are preserved; an explicit current-assignment pointer and resolver-controlled normalized cache can be corrected atomically. |
+
+## 20. Corrections to earlier wording
+
+- **Completeness:** cursors and feed-depth telemetry detect risk but do not prove no loss. The product reports measured coverage from reconciliation.
+- **Identity:** the durable identity chain is company → instrument/share class → exchange listing. ISIN is an instrument key, not a universal company/listing key.
+- **Reproducibility:** prompt/rulepack labels alone are insufficient. v1.2 retains exact text inputs, event snapshots, fingerprints, price bars and method versions.
+- **Append-only:** evidence and derived snapshots are now database-guarded. Mutable polling/job/delivery state remains explicitly mutable.
+- **Embeddings:** exact hash remains proven for exchange filings. Paraphrase embedding dedup is deferred until Phase-2 news data can validate it.
+
+## 21. Still requires empirical validation
+
+Schema correction does not close the remaining product experiments:
+
+1. identity collision testing across ambiguous company families;
+2. Google News redirect resolution and article extraction;
+3. normalized verifier retry performance across more companies;
+4. automatic cluster quality against a hand-labelled event fixture set;
+5. governance severity paths on real adverse filings;
+6. no-look-ahead, benchmark-aware reaction calculations beyond the Tata Elxsi example;
+7. feed reconciliation through results-season volume.
+
+---
+
 # Part 4 — Second Company Run: HDFC Bank (NSE: HDFCBANK, BSE: 500180)
 
 **Date:** 22 August 2026. Scripts: `scripts/companies.py` (new registry), `fetch_announcements.py`, `price_reaction.py`; all Part-1/2 scripts generalized to take a company slug.

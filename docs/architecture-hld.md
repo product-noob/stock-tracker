@@ -1,299 +1,622 @@
 # High-Level Design — Stock Market Insights Engine
 
-**Status:** Draft v1 · **Date:** 22 Aug 2026
-**Companion docs:** [`product_note.html`](../product_note.html) (product spec), [`pilot_learnings.md`](../pilot_learnings.md) (evidence base), [`nse-bse-rss.md`](../nse-bse-rss.md) (source research)
+**Status:** v1.2 · **Architecture:** modular monolith with durable PostgreSQL work queue
+**Companions:** [`database-schema.md`](database-schema.md) · [`db/schema.sql`](../db/schema.sql) · [`product_note.html`](../product_note.html) · [`pilot_learnings.md`](../pilot_learnings.md)
 
 ---
 
-## 1. Design Principles
+## 1. Product boundary
 
-1. **Every service boundary is pilot-proven.** The Tata Elxsi pilot validated each stage independently; service seams follow those stages exactly.
-2. **Contracts over coordination.** Services communicate through documented JSON schemas (§5). Any two workstreams that agree on a contract can be built in parallel.
-3. **Persist everything, lose nothing.** Raw feed items, raw XML, PDFs, and all intermediate artifacts are immutable and replayable (product note §6).
-4. **LLM output is never trusted at face value.** Code-level verification gates exist wherever an LLM contributes content (quote verification §8, anomaly cross-check §10).
-5. **Async, queue-mediated flow.** Each stage is a consumer of the previous stage's output topic — slow/stages can be retried independently.
+The system watches a database-backed whitelist of Indian listed companies, captures official filings and selected news, extracts evidence, clusters related documents into business events, ranks explainable insights, joins daily market reactions and delivers a short Telegram briefing.
+
+It is a personal research tool. It does not place trades and does not present statistical association as proven causation.
+
+### Scale target
+
+- initial whitelist: 10–25 companies;
+- medium-term: 100 companies after measured coverage holds;
+- eventual aspiration: approximately 500;
+- daily rather than intraday market data;
+- one owner and one Telegram recipient in v1.
+
+The architecture optimizes for correctness, auditability and restart safety—not distributed-system throughput.
 
 ---
 
-## 2. Context Diagram
+## 2. Design principles
+
+1. **Fetched bytes precede parsing.** Exact HTTP/XML/HTML/PDF responses are persisted before an adapter can lose information.
+2. **Measured coverage, not cursor optimism.** Partition checkpoints, overlap polling and reconciliation support a coverage metric; no cursor proves that a rolling source was complete.
+3. **At-least-once work, idempotent results.** PostgreSQL jobs/outbox may redeliver; every stage has a stable idempotency key.
+4. **Content and business events are different.** SHA-256 deduplicates bytes; clustering groups distinct documents about one development.
+5. **Evidence is append-only and versioned.** Reprocessing creates text, extraction, event and reaction versions rather than rewriting history.
+6. **The LLM extracts; code decides.** Model output supplies facts, summaries and evidence candidates. Versioned code performs event classification, quote verification, severity and ranking.
+7. **Company, security and listing are different identities.** Company events can affect one or more instruments; prices belong to exchange listings.
+8. **Causal language is gated.** Event timing, market session, benchmark and unexplained anomalies are retained. Even a “safe” result is phrased as association.
+9. **One deployable first.** Module boundaries and DB contracts enable parallel work without premature microservices.
+10. **No dual-write gap.** Canonical rows and outbox events commit atomically.
+
+---
+
+## 3. System context
 
 ```mermaid
 flowchart LR
-    subgraph External Sources
-        NSE["NSE\nRSS feeds + Corporate Announcements API"]
-        BSE["BSE\nRSS feeds + Announce API"]
-        GN["Google News RSS"]
-        YF["yfinance / market data"]
-        SCR["Screener.in (manual, Phase 4)"]
+    NSE[NSE RSS/API/PDFs]
+    BSE[BSE RSS/API/PDFs]
+    NEWS[Google News and curated RSS]
+    PRICES[NSE bhavcopy or yfinance]
+    USER[Owner]
+    TG[Telegram Bot]
+
+    subgraph ENGINE[Stock Market Insights Engine]
+      FETCH[Source adapters]
+      STORE[(PostgreSQL + object store)]
+      INTEL[Evidence and event pipeline]
+      SIGNAL[Market reaction and ranking]
+      DELIVER[Digest and notifier]
     end
 
-    subgraph System["Stock Market Insights Engine"]
-        CORE((Pipeline))
-    end
-
-    TG["Telegram Bot"]
-    USER["You (whitelist owner)"]
-
-    NSE --> CORE
-    BSE --> CORE
-    GN --> CORE
-    YF --> CORE
-    SCR -.-> CORE
-    CORE --> TG --> USER
+    NSE --> FETCH
+    BSE --> FETCH
+    NEWS --> FETCH
+    PRICES --> FETCH
+    FETCH --> STORE --> INTEL --> SIGNAL --> DELIVER --> TG --> USER
+    USER -->|commands and identity review| TG --> ENGINE
 ```
 
 ---
 
-## 3. Services Overview
+## 4. Runtime architecture
+
+The v1 runtime is a modular Python application with independently supervised worker processes. PostgreSQL is both the canonical database and durable queue. A filesystem/object store holds immutable response bytes and content.
 
 ```mermaid
 flowchart TB
-    subgraph INGESTION["🟦 Ingestion Plane"]
-        FETCHER["S1 · Source Fetcher"]
-        NORM["S2 · Normalizer"]
-        IDRES["S3 · Identity Resolver"]
-    end
+    SCHED[Scheduler]
+    FETCHERS[Source Fetchers]
+    JOBS[(platform.processing_jobs)]
+    OUTBOX[(platform.outbox_events)]
+    PG[(Canonical PostgreSQL tables)]
+    OBJ[(Immutable object store)]
 
-    subgraph DOCS["🟩 Document Plane"]
-        DOCPROC["S4 · Document Processor\n(download · dedup · text extract)"]
-        OBJ["Object Store\n(PDFs, raw XML, text)"]
-    end
+    NORM[Normalizer]
+    RESOLVE[Identity Resolver]
+    CONTENT[Content Fetch/Text Processor]
+    EXTRACT[LLM Extractor + Quote Verifier]
+    CLASSIFY[Deterministic Event Classifier]
+    CLUSTER[Event Clusterer]
+    RANK[Severity/Ranking]
+    MARKET[Market Data/Reaction]
+    DIGEST[Digest Builder]
+    NOTIFY[Telegram Notifier]
 
-    subgraph INTEL["🟨 Intelligence Plane"]
-        EXTRACT["S5 · Extraction Service\n(LLM + quote verifier)"]
-        CLUSTER["S6 · Event Clustering"]
-        RANK["S7 · Severity & Ranking"]
-    end
-
-    subgraph SIGNALS["🟧 Signals Plane"]
-        MKTDATA["S8 · Market Data Service\n(prices · z-scores · anomaly check)"]
-    end
-
-    subgraph DELIVERY["🟥 Delivery Plane"]
-        DIGEST["S9 · Digest Builder"]
-        TELEGRAM["S10 · Telegram Notifier"]
-    end
-
-    subgraph PLATFORM["⬜ Platform (cross-cutting)"]
-        BUS[("Message Bus /\nJob Queue")]
-        PG[("PostgreSQL\ncanonical store")]
-        SM[("Security Master\n& Alias Table")]
-        OBS["Observability\n(logs · metrics · alerting)"]
-    end
-
-    FETCHER -->|raw items| BUS --> NORM
-    NORM -->|normalized records| BUS
-    NORM --> PG
-    IDRES <--> SM
-    NORM -->|unresolved company| IDRES
-    IDRES -->|resolved record| BUS
-    DOCPROC <--> OBJ
-    DOCPROC -->|unique docs + extracted text| BUS
-    EXTRACT -->|facts + verified quotes| BUS
-    CLUSTER -->|events w/ linked documents| BUS
-    RANK -->|ranked insights| BUS
-    MKTDATA <-->|OHLCV| PG
-    RANK <-->|price-reaction join request| MKTDATA
-    DIGEST --> TELEGRAM
+    SCHED --> FETCHERS
+    FETCHERS --> OBJ
+    FETCHERS --> PG
+    PG --> OUTBOX
+    OUTBOX --> JOBS
+    JOBS --> NORM --> PG
+    JOBS --> RESOLVE --> PG
+    JOBS --> CONTENT --> OBJ
+    CONTENT --> PG
+    JOBS --> EXTRACT --> PG
+    JOBS --> CLASSIFY --> PG
+    JOBS --> CLUSTER --> PG
+    JOBS --> RANK --> PG
+    JOBS --> MARKET --> PG
+    JOBS --> DIGEST --> PG
+    JOBS --> NOTIFY --> PG
 ```
 
-> **Reading the flow:** raw announcement → normalized record → resolved to whitelist entity → unique document with text → structured facts → clustered event → scored insight (+ price reaction) → digest.
+### Job claim pattern
+
+Workers claim ready jobs with `SELECT ... FOR UPDATE SKIP LOCKED`, set a lease and commit. On completion they write the canonical result plus an outbox event in one transaction, then mark the job succeeded. On failure they clear the lease, increment attempts and schedule backoff. Exceeding `max_attempts` moves a job to `dead` and raises an operational alert.
+
+The outbox dispatcher itself is restartable. Re-publishing is harmless because downstream jobs/results are idempotent.
 
 ---
 
-## 4. Service Capability Cards
+## 5. Module capability cards
 
-### S1 · Source Fetcher
-| | |
-|---|---|
-| **Owns** | All exchange/API/RSS interaction. Polling schedules. Session management. |
-| **Capabilities** | NSE adapter (Akamai cookie warm-up → API call), BSE adapter (direct API, unwrap `Table`), RSS pollers (both exchanges, Google News), yfinance price puller, per-source rate limiting, magic-byte validation on every download (`%PDF`, not HTTP 200) |
-| **Emits** | `raw_feed_item` (immutable, source-faithful) |
-| **Pilot constraint** | NSE and BSE have *structurally different* auth models — adapters must support per-source session state |
+### M1 · Source adapters
 
-### S2 · Normalizer
-| | |
-|---|---|
-| **Owns** | The canonical normalized record schema. Encoding fixes (UTF-8 BOM). |
-| **Capabilities** | Map heterogeneous fields → one schema; timestamp normalization; dedupe trivially by `(exchange, document_url)` |
-| **Emits** | `normalized_record` |
+**Owns:** source sessions, conditional GET, rate limits, partition scheduling and exact response persistence.
 
-### S3 · Identity Resolver
-| | |
-|---|---|
-| **Owns** | Security master, alias table, resolution ladder (Tiers A–F, product note §7). |
-| **Capabilities** | Match filings ↔ whitelist entities via symbol/scripcode/ISIN/name+alias; confidence scoring; scripcode→ISIN backfill for BSE; collision detection (Bajaj/Kotak-class names) |
-| **Emits** | `resolved_record` (or `unresolved` → review queue) |
-| **Open risk** | Name-only matching untested against real collisions — needs stress test (pilot §7 gap) |
+**Key behavior:**
 
-### S4 · Document Processor
-| | |
-|---|---|
-| **Owns** | PDF lifecycle: download → verify → hash-dedup → text extraction. Object store layout. |
-| **Capabilities** | SHA-256 hash tier dedup (validated: 58→28 docs, zero paraphrase dupes needed); pdfplumber extraction; OCR fallback stub (Phase 4); pdfminer log-noise filtering |
-| **Emits** | `document` (hash, url, page count) + `extracted_text` reference |
+- NSE RSS and API adapters keep independent partitions per feed/symbol;
+- BSE RSS and API adapters preserve scrip codes and the API's `Table` envelope;
+- Google News keeps one staggered partition per company/query and resolves redirect tokens before article fetch;
+- every response body is written to immutable storage and registered by SHA-256 before parsing;
+- PDF/HTML success is validated by media type and magic/content checks, not HTTP 200 alone;
+- rolling windows are polled with overlap.
 
-### S5 · Extraction Service (LLM)
-| | |
-|---|---|
-| **Owns** | Facts-schema extraction, verbatim quote guarantee, cost control. |
-| **Capabilities** | gpt-4o-mini bulk extraction (~₹0.03/doc); **code-level quote verifier** (whitespace + hyphenation-normalized substring match) as a hard gate; retry-once-on-failure → suppress quote + downgrade confidence; self-reported `extraction_confidence` is ignored (proven non-predictive) |
-| **Emits** | `extracted_facts` (facts[], summary, verified_quote, document_kind) |
+**Produces:** C1 fetched source item.
 
-### S6 · Event Clustering
-| | |
-|---|---|
-| **Owns** | Collapsing many documents about one business event into one `event`. |
-| **Capabilities** | Group by (company, tight date window, semantic similarity of summaries/facts); link N→M documents to events; handles the 6-docs-one-results-event case from the pilot |
-| **Emits** | `event` (with linked document IDs) |
-| **Status** | **Top blocking item** — only manually proven so far |
+### M2 · Normalizer
 
-### S7 · Severity & Ranking
-| | |
-|---|---|
-| **Owns** | Deterministic severity ladder, red-flag detection, digest ordering. |
-| **Capabilities** | Keyword/document_kind rules; **red-flag regex safety net runs over facts text directly** (auditor resignation, adverse opinion, SEBI order, insolvency…) overriding category routing; governance split into `red_flag` vs `routine`; per-stock flood cap applied *after* clustering |
-| **Emits** | `ranked_insight` (severity 1–5, cluster-aware) |
+**Owns:** adapter-independent source-record shape and canonical source-record idempotency.
 
-### S8 · Market Data Service
-| | |
-|---|---|
-| **Owns** | Price history, statistical baselines, price-reaction attribution. |
-| **Capabilities** | OHLCV storage; per-stock trailing baseline (return/volume z-scores); reaction join attached to *events*, not documents; **unexplained-anomaly cross-check** — if a comparable/larger move exists elsewhere in the window with no event, causal framing is suppressed or hedged |
-| **Emits** | `reaction_signal` (reaction_pct, return_z, volume_z, attribution_safe flag) |
+**Key behavior:**
 
-### S9 · Digest Builder + S10 · Telegram Notifier
-| | |
-|---|---|
-| **Owns** | Daily ranked digest composition; delivery rules (caps, quiet hours); Telegram formatting. |
-| **Consumes** | Ranked insights + reaction signals |
-| **Emits** | Digest message (target format in product note §9) |
+- creates `exchange_announcement`, `news_article` or generic source records;
+- preserves source metadata without using exchange category as event classification;
+- permits text-only items and missing/unparseable publication timestamps;
+- links every duplicate sighting to one canonical record through `record_raw_items`;
+- uses `(dedup_scope, dedup_key)`, not document URL, as announcement identity.
 
-### Platform (cross-cutting)
-- **Message bus / job queue** — retry semantics per stage; rolling-window sources mean *nothing may be silently dropped*.
-- **PostgreSQL** — canonical normalized store; object URLs point to blob storage.
-- **Security Master** — whitelist entities, symbols/scripcodes/ISINs, aliases.
-- **Observability** — per-stage counters (items in/out, dedup ratio, quote-verify failure rate, unresolved-identity count). Quote-verify failure rate >2% = page.
+**Produces:** unresolved C2 canonical source record.
+
+### M3 · Identity resolver
+
+**Owns:** company/instrument/listing master, aliases, whitelist and fail-closed resolution.
+
+**Resolution ladder:**
+
+1. BSE scrip code/direct listing;
+2. cross-exchange byte/record anchor;
+3. exact document identifier such as symbol, ISIN or scrip code;
+4. normalized unique company name;
+5. curated alias;
+6. manual resolution.
+
+Fuzzy similarity may suggest review candidates but never publishes an assignment. Alias ambiguity resolves to review. Immutable decisions, the explicit current-assignment pointer and the normalized-record company cache must agree in one transaction. A correction appends a superseding decision and atomically repoints the assignment/cache.
+
+**Produces:** resolved or review-state C2 record.
+
+### M4 · Content processor
+
+**Owns:** URL resolution, attempts, content-addressed bytes and text versions.
+
+**Key behavior:**
+
+- pending/retry state remains in the durable job;
+- each completed network attempt is immutable and audit-visible;
+- valid bytes become a content object regardless of PDF/HTML/text format;
+- byte-identical objects deduplicate by SHA-256;
+- records and content are M:N;
+- text extraction is media-specific;
+- image-only/unsupported content is explicitly recorded;
+- a new extractor/config appends a text version.
+
+**Produces:** C3 content and text.
+
+### M5 · Evidence extractor
+
+**Owns:** structured model execution and code-level quote verification.
+
+**Key behavior:**
+
+- reads one exact text version;
+- stores provider/model/revision, prompt, output schema and verifier versions;
+- records truncation, usage and cost;
+- emits a document kind, facts, summary and evidence candidate;
+- verifies whitespace/hyphenation-normalized source containment;
+- retries once when policy allows, then suppresses unverified evidence;
+- never trusts self-reported model confidence;
+- failed/truncated outputs remain visible to QA and cannot silently ship.
+
+**Produces:** extraction portion of C4.
+
+### M6 · Event classifier and clusterer
+
+**Owns:** business-event semantics and immutable cluster snapshots.
+
+**Key behavior:**
+
+- deterministic versioned rules turn extraction facts into zero or more event mentions;
+- document kind and event kind are independent;
+- a combined filing can produce several event mentions;
+- clustering groups by resolved company, time, event-compatible facts and semantic similarity;
+- one event may have several supporting contents; one content may support several events;
+- every membership or classification correction creates a new event version;
+- clustering never mutates a snapshot already used by an insight.
+
+**Produces:** event portion of C5.
+
+### M7 · Severity and insight engine
+
+**Owns:** red-flag safety net, deterministic severity, insight wording and ranking inputs.
+
+**Key behavior:**
+
+- rulepack scans structured facts and evidence text, not only event/document categories;
+- severe governance patterns override category defaults;
+- rulepack and input fingerprint are stored;
+- freshness is evaluated at digest-build time, not baked permanently into an insight;
+- per-stock flood caps apply after event clustering;
+- an insight is blocked if required evidence is unverified unless explicitly rendered without a quote and downgraded by policy.
+
+**Produces:** insight portion of C5.
+
+### M8 · Market data and reaction engine
+
+**Owns:** listing-level daily series, provider corrections and event-study calculations.
+
+**Key behavior:**
+
+- selects the configured primary listing for reaction analysis;
+- fixes provider, interval and adjustment method at price-series level;
+- appends revised bar observations;
+- maps the event cutoff to the correct market session, including after-close filings and holidays;
+- calculates returns using only information available before the reaction session—no future/look-ahead baseline;
+- optionally market/sector-adjusts the move;
+- compares with nearby unexplained anomalies;
+- records exact security and optional benchmark bars, exact baseline-bar membership, method and attribution rationale.
+
+**Produces:** C6 reaction signal.
+
+### M9 · Digest builder
+
+**Owns:** coverage window, ranking, caps and exact composition.
+
+**Key behavior:**
+
+- reads immutable insights and eligible reaction signals;
+- computes `severity × category weight × freshness` under the selected rulepack;
+- records the exact score and selection reason per digest item;
+- stores a versioned digest composition that may be superseded, not overwritten;
+- renders within Telegram limits and emits a notification transactionally.
+
+**Produces:** digest portion of C7.
+
+### M10 · Telegram notifier
+
+**Owns:** application-level notification idempotency and provider-attempt audit.
+
+**Key behavior:**
+
+- sends the exact stored rendered message;
+- does not re-render on retry;
+- records every attempt, Telegram message ID, response or error;
+- detects/reduces duplicates through the notification key and provider history, while acknowledging Telegram cannot eliminate the crash-after-send/before-commit window without a provider idempotency API;
+- supports digest, severity-5 and health/system notification kinds;
+- bot commands query canonical rows and create review/whitelist commands through jobs.
+
+**Produces:** delivery-attempt portion of C7.
 
 ---
 
-## 5. Inter-Service Contracts (the parallelization enablers)
+## 6. Contracts
 
-Five schemas are the entire integration surface. Freeze these first; everything else proceeds independently.
+Queue payloads contain contract version, canonical entity ID and correlation information. They do not copy full documents or facts.
 
-| # | Contract | Producer → Consumer | Status |
-|---|---|---|---|
-| C1 | `normalized_record` — per `nse-bse-rss.md` (exchange, company_name, nse_symbol, bse_scripcode, isin, subject, description, document_url, published_at, …) | S2 → S3/S4 | ✅ Built in pilot (`normalize.py`) |
-| C2 | `document` + `extracted_text` (sha256, page_count, text_ref) | S4 → S5 | ✅ Built in pilot |
-| C3 | `extracted_facts` (facts[], summary, verified_quote, document_kind) — needs widening: `growth_pct`, governance red-flag/routine split | S5 → S6/S7 | ⚠️ Pilot version exists; widen per pilot §17 |
-| C4 | `event` (event_id, company_id, window, linked_document_ids, primary_kind) | S6 → S7/S8 | ❌ To define (blocking) |
-| C5 | `insight` (severity, headline, facts, reaction_signal?, attribution_safe) | S7/S8 → S9 | ❌ To define |
+### C0 · Durable work event
 
----
-
-## 6. Workstreams — Parallel Build Map
-
-```mermaid
-flowchart LR
-    subgraph WS1["WS-1 · Ingestion & Adapters"]
-        A1["NSE/BSE/RSS fetchers"] --> A2["Session mgmt + scheduling"]
-    end
-
-    subgraph WS2["WS-2 · Data Platform & Identity"]
-        B1["Schema + PostgreSQL + object store"] --> B2["Security master + resolver ladder"]
-    end
-
-    subgraph WS3["WS-3 · Document Processing"]
-        D1["Downloader + hash dedup"] --> D2["Text extraction + OCR stub"]
-    end
-
-    subgraph WS4["WS-4 · LLM Intelligence"]
-        E1["Facts schema v2"] --> E2["Quote verifier + retry loop"]
-    end
-
-    subgraph WS5["WS-5 · Clustering & Ranking"]
-        F1["Event clustering"] --> F2["Severity engine + red-flag net"]
-    end
-
-    subgraph WS6["WS-6 · Market Signals"]
-        G1["Price store + z-scores"] --> G2["Anomaly cross-check"]
-    end
-
-    subgraph WS7["WS-7 · Delivery"]
-        H1["Digest builder"] --> H2["Telegram bot"]
-    end
-
-    WS1 -- "C1" --> WS2
-    WS1 -- "C1" --> WS3
-    WS3 -- "C2" --> WS4
-    WS4 -- "C3" --> WS5
-    WS2 -- "company ids" --> WS5
-    WS6 -- "reaction_signal" --> WS5
-    WS5 -- "C5" --> WS7
+```json
+{
+  "contract": "work_event.v1",
+  "event_key": "normalized_record.created:4812",
+  "event_type": "normalized_record.created",
+  "aggregate_type": "normalized_record",
+  "aggregate_id": "4812",
+  "correlation_id": "fetch-run:912"
+}
 ```
 
-### What can start immediately (zero dependencies between them)
+Canonical storage: `platform.outbox_events`, `platform.processing_jobs`.
 
-| Workstream | Scope | Depends on | Key open items from pilot |
-|---|---|---|---|
-| **WS-1** Ingestion | Fetchers for NSE/BSE/RSS/news/prices | Nothing | Cookie-refresh scheduler; AttachLive magic-byte handling |
-| **WS-2** Platform & Identity | DB schemas, object store, security master, resolver | Nothing | Scripcode→ISIN join; name-collision stress test |
-| **WS-3** Doc Processing | Download, dedup, extraction | Contract C1 only | OCR decision deferred (measure more companies first) |
-| **WS-4** LLM Intelligence | Schema v2, extraction, quote gate | Contract C2 only | Retry-on-failure loop (unbuilt); widen growth_pct |
-| **WS-6** Market Signals | Price store, z-scores, anomaly check | Nothing | Implement anomaly cross-check as reusable function |
+### C1 · Fetched source item
 
-### Dependency-gated (start after upstream lands)
+```json
+{
+  "contract": "fetched_source_item.v1",
+  "item_id": 123,
+  "partition_id": 8,
+  "fetch_run_id": 912,
+  "artifact_id": 502,
+  "idempotency_key": "native:NEWSID-..."
+}
+```
 
-| Workstream | Scope | Gate |
-|---|---|---|
-| **WS-5** Clustering & Ranking | Event clustering, severity engine | Needs C3 (facts) — but **contract design can start day 1** since it's the top blocker |
-| **WS-7** Delivery | Digest builder, Telegram | Needs C5 — format mockups can proceed in parallel |
+Canonical storage: `ingestion.fetch_runs`, `raw_artifacts`, `raw_feed_items`.
 
-### Suggested sequencing
+### C2 · Canonical source record
 
-- **Week 1:** Freeze contracts C1–C5 · WS-1/2/3/4/6 all start in parallel
-- **Week 2–3:** WS-5 builds against fixture data (pilot's 28 docs + hand-built clusters); WS-4 delivers verified extraction; WS-6 delivers anomaly check
-- **Week 4:** Integration — full path end-to-end on Tata Elxsi replay · WS-7 ships digest v1
+```json
+{
+  "contract": "canonical_source_record.v1",
+  "record_id": 4812,
+  "record_type": "exchange_announcement",
+  "company_id": 42,
+  "resolution_id": 733,
+  "published_at": "2026-08-22T12:10:00Z"
+}
+```
+
+`company_id` may be null only on unresolved/review flow. Canonical storage: `normalized_records`, `record_raw_items`, `identity_resolutions`, `identity_assignments`.
+
+### C3 · Content and text
+
+```json
+{
+  "contract": "content_text.v1",
+  "record_id": 4812,
+  "content_id": 991,
+  "text_version_id": 1440,
+  "media_type": "application/pdf",
+  "text_status": "ok"
+}
+```
+
+Canonical storage: `content_fetch_attempts`, `content_objects`, `record_contents`, `text_versions`.
+
+### C4 · Extracted evidence
+
+```json
+{
+  "contract": "extracted_evidence.v1",
+  "extraction_id": 602,
+  "text_version_id": 1440,
+  "document_kind": "investor_presentation",
+  "mention_ids": [810],
+  "quote_verified": true
+}
+```
+
+Canonical storage: `extractions`, `extracted_event_mentions`.
+
+### C5 · Event snapshot and insight
+
+```json
+{
+  "contract": "ranked_insight.v1",
+  "event_id": 77,
+  "event_version_id": 79,
+  "event_kind": "financial_results",
+  "insight_id": 201,
+  "severity": 3,
+  "rulepack_version": "severity-2026-08"
+}
+```
+
+Canonical storage: `events`, `event_versions` and memberships, `insights`.
+
+### C6 · Reaction signal
+
+```json
+{
+  "contract": "reaction_signal.v1",
+  "signal_id": 51,
+  "event_version_id": 79,
+  "series_id": 14,
+  "reaction_trade_date": "2026-07-15",
+  "attribution_status": "safe",
+  "method_version": "event-study-v1"
+}
+```
+
+Canonical storage: `price_series`, `price_bars`, `reaction_signals`, `reaction_baseline_bars`.
+
+### C7 · Delivery
+
+```json
+{
+  "contract": "notification.v1",
+  "notification_id": 301,
+  "notification_kind": "digest",
+  "rendered_sha256": "...",
+  "channel": "telegram"
+}
+```
+
+Canonical storage: `digests`, `digest_items`, `notifications`, `delivery_attempts`.
 
 ---
 
-## 7. End-to-End Sequence (one filing's life)
+## 7. End-to-end sequence
 
 ```mermaid
 sequenceDiagram
-    participant F as S1 Fetcher
-    participant N as S2 Normalizer
-    participant I as S3 Identity
-    participant D as S4 DocProc
-    participant L as S5 Extractor
-    participant C as S6 Clusterer
-    participant R as S7 Ranker
-    participant M as S8 MarketData
-    participant T as S10 Telegram
+    participant F as Fetcher
+    participant P as PostgreSQL/Object Store
+    participant N as Normalizer/Resolver
+    participant D as Content Processor
+    participant X as Extractor/Classifier
+    participant C as Clusterer/Ranker
+    participant M as Market Engine
+    participant T as Telegram
 
-    F->>N: raw item (BSE results PDF, 14 Jul 18:05)
-    N->>I: normalized_record
-    I-->>N: resolved → TATAELXSI (isin present, Tier A)
-    N->>D: document task
-    D->>D: download → %PDF ok → sha256 → new unique
-    D->>L: extracted_text
-    L->>L: gpt-4o-mini → facts + quote
-    L->>L: quote verifier FAIL → re-prompt → pass
-    L->>C: extracted_facts
-    C->>C: matches 5 sibling docs → event "Q1 FY27 Results"
-    C->>R: event
-    R->>R: sev-3 (results) · no red flags
-    R->>M: reaction join?
-    M->>M: next session −4.78%, 4.2σ vol · anomaly check: safe
-    M-->>R: reaction_signal (attribution_safe ✓)
-    R->>T: ranked insight
-    T-->>T: daily digest, 09:00 IST
+    F->>P: exact response artifact + fetch run + raw items + outbox
+    P-->>N: idempotent normalization job
+    N->>P: canonical record + raw sightings + resolution + outbox
+    P-->>D: content job
+    D->>P: completed attempt + SHA content + text version + outbox
+    P-->>X: extraction job
+    X->>P: versioned extraction + verified evidence mentions + outbox
+    P-->>C: clustering/ranking jobs
+    C->>P: immutable event version + insight + outbox
+    P-->>M: reaction job
+    M->>P: exact-session reaction calculation + attribution gate
+    P-->>T: stored rendered notification
+    T->>P: immutable provider attempt/result
 ```
+
+Example results-day behavior:
+
+1. Six distinct filings may become six content objects.
+2. Their document kinds differ: results statement, presentation, press release, board outcome.
+3. Mentions classify to one business event kind: `financial_results`.
+4. The clusterer creates one event version linking all evidence.
+5. Severity produces one insight.
+6. The market engine maps an after-close filing to the next trading session and records the exact baseline.
+7. The digest contains one ranked item, not six document-level duplicates.
 
 ---
 
-## 8. Open Questions for HLD Review
+## 8. Timing and completeness
 
-1. Message bus choice for v1 — Redis Streams / RabbitMQ / plain Postgres-backed queue? (Volume is tiny; simplest thing that guarantees no-loss wins.)
-2. One deployable monolith-with-module-boundaries vs. true separate processes? Recommendation: **modular monolith with contract-enforced module boundaries** — same parallelism, none of the ops cost, split later along the same seams.
-3. Who owns contract evolution? Proposal: schema files live in `/contracts`, changes require both producer and consumer workstream sign-off.
+### Polling
+
+- primary exchange feeds: every 5 minutes;
+- category feeds: every 15 minutes;
+- company news queries: hourly and staggered;
+- prices: after market close;
+- digest: 07:30 Asia/Kolkata;
+- severity-5 alert target: within 30 minutes of source appearance.
+
+Every partition keeps an overlap window. A cursor update occurs only after the artifact and parsed items commit. Failed parsing does not advance the successful checkpoint.
+
+### Coverage measurement
+
+The weekly coverage report reconciles sampled dates against exchange pages/APIs and reports captured/expected. Feed-depth telemetry detects suspicious truncation but is not treated as an authoritative denominator.
+
+---
+
+## 9. Reliability and transaction rules
+
+### Producer transaction
+
+A successful stage transaction contains:
+
+1. canonical output row(s);
+2. stage-run metrics;
+3. one outbox event.
+
+Only then is the input job marked succeeded. If the transaction rolls back, neither output nor event exists and the job can retry.
+
+### Consumer idempotency
+
+Each consumer derives a key from immutable inputs and behavior version, for example:
+
+```text
+text:{content_sha}:{extractor}:{extractor_version}:{config_hash}
+llm:{text_sha}:{model_revision}:{prompt_version}:{schema_version}
+cluster:{company}:{sorted_mention_ids}:{cluster_version}
+insight:{event_version}:{rulepack_version}:{insight_type}
+reaction:{event_version}:{series}:{method_version}:{reaction_date}
+digest:{audience}:{coverage_window}:{rulepack}:{template}
+```
+
+Unique constraints reject duplicate results from redelivery.
+
+### Recovery
+
+- expired `running` job leases are returned to queued state by a sweeper;
+- failed jobs use exponential backoff with jitter;
+- dead jobs and source silence trigger a system notification;
+- object writes use temporary names and atomic rename/upload completion before DB registration;
+- backups include PostgreSQL and immutable object storage, with periodic restore tests.
+
+---
+
+## 10. Security and integrity
+
+- API keys and Telegram tokens are environment secrets, never database seed data.
+- Workers receive least-privilege schema grants in deployment; schema organization alone is not a security boundary.
+- Evidence/snapshot tables have database update/delete guards.
+- URLs and source text are untrusted input; HTML is sanitized before rendering.
+- LLM text is data, never executable instructions.
+- Telegram output escapes provider markup and enforces length limits.
+- The system retains public filings/news for personal research; it does not redistribute a bulk archive.
+
+---
+
+## 11. Observability
+
+Required metrics:
+
+- fetch success, 304, latency and source silence by partition;
+- feed item count, oldest/newest publication time and overlap depth;
+- raw→normalized→resolved funnel by stage run;
+- unresolved/review age and resolution tier;
+- content fetch failures and invalid-content rate;
+- text extraction/image-only rate;
+- truncation, quote-verification and extraction-failure rates;
+- cluster size and manual split/merge rate;
+- severity distribution and red-flag alerts;
+- market-data staleness and insufficient reaction baselines;
+- queue age, retry/dead-job count and outbox lag;
+- notification success, retry and duplicate-provider-ID rate;
+- LLM spend by company/model/month.
+
+Operational alerts include two-hour source silence on expected market days, dead jobs, quote-verification failures above the agreed threshold, stale daily prices and failed severity-5 delivery.
+
+---
+
+## 12. Deployment
+
+### v1
+
+- native PostgreSQL;
+- local filesystem/object directory with atomic writes and backups;
+- Python scheduler, dispatcher and worker processes under systemd/NSSM/Task Scheduler;
+- no containers required;
+- no Redis/RabbitMQ required;
+- one repository and one deployable release version.
+
+### Future split seam
+
+A module may become a separate process/service only when operational evidence justifies it. The outbox contracts and canonical-ID payloads already provide that seam. Database ownership/grants would be tightened before any physical split; cross-schema FKs are acceptable inside v1's monolith.
+
+---
+
+## 13. Delivery sequence
+
+### Phase 0 — reliable capture
+
+- PostgreSQL baseline and immutable object store;
+- source partitions, fetch history, overlap checkpoints;
+- durable jobs/outbox;
+- NSE/BSE main feeds;
+- security master/listings/whitelist;
+- normalization and identity review;
+- plain resolved-filing Telegram digest;
+- reconciliation harness.
+
+**Gate:** seven unattended days, restart tests, and measured reconciliation with no known whitelisted filing loss.
+
+### Phase 1 — trusted evidence
+
+- PDF/HTML text versions;
+- versioned LLM extraction;
+- normalized quote verifier and retry/suppression path;
+- separate document/event taxonomies;
+- multi-mention extraction;
+- event cluster fixture set;
+- deterministic severity and red-flag tests.
+
+**Gate:** sampled claims have verified supporting evidence; cluster fixtures collapse known six-document result events correctly.
+
+### Phase 2 — breadth and reactions
+
+- remaining category feeds;
+- Google News redirect/article processing;
+- optional local embedding experiment for news paraphrase dedup;
+- listing-level prices;
+- no-look-ahead reaction method, benchmark and anomaly gate;
+- bot history commands.
+
+**Gate:** duplicate digest rate below target and reaction calculations pass hand-worked fixtures.
+
+### Phase 3 — scale and hardening
+
+- grow 25→100 only after coverage holds;
+- budget breaker;
+- role grants, backup restore drills and operational dashboards;
+- results-season load/reconciliation test.
+
+### Phase 4 — measured needs only
+
+- OCR if image-only rate warrants it;
+- fundamentals source and ratio rules if legally/compliantly available.
+
+---
+
+## 14. Resolved architecture decisions
+
+| Question | Decision |
+|---|---|
+| Monolith or microservices? | Modular monolith with independent workers. |
+| Queue technology? | PostgreSQL jobs + transactional outbox for v1. |
+| Raw payload location? | Exact bytes in immutable object storage; metadata/hash in PostgreSQL. |
+| Universal identity? | Company → instrument → listing; not ISIN alone. |
+| Document/event taxonomy? | Separate vocabularies. |
+| Event correction? | Append immutable event version; never rewrite delivered input. |
+| Price adjustment? | Immutable series-level adjustment definition. |
+| Causal price language? | Gated association with retained rationale, never proof. |
+| Google News? | Phase 2, supported by generalized HTML/text content model. |
+| Embeddings? | Deferred until real cross-source news dedup data exists. |
+
+Open product/vendor questions remain price-provider preference, compliant fundamentals source, host choice and measured OCR/news rate limits. None changes the v1.2 database boundaries.
