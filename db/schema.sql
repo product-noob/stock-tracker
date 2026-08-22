@@ -224,6 +224,8 @@ CREATE TABLE ingestion.fetch_runs (
     newest_published_at TIMESTAMPTZ,
     response_etag       TEXT,
     response_last_modified TEXT,
+    config              JSONB NOT NULL DEFAULT '{}'::jsonb
+                        CHECK (jsonb_typeof(config) = 'object'),
     error_summary       TEXT,
     CHECK ((status = 'running' AND finished_at IS NULL) OR
            (status <> 'running' AND finished_at IS NOT NULL)),

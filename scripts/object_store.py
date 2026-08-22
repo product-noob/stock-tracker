@@ -162,6 +162,7 @@ class ObjectStore:
         metadata: Optional[dict[str, Any]] = None,
         source: Optional[str] = None,
         conn: Optional[psycopg.Connection] = None,
+        magic_valid: Optional[bool] = None,
     ) -> PutResult:
         """Store ``data`` content-addressed and register it.
 
@@ -175,6 +176,10 @@ class ObjectStore:
         caller owns the transaction — recommended for fetchers so the registry
         row commits atomically with the rest of the run lineage). Without
         ``conn``, a short-lived connection is opened and committed.
+
+        ``magic_valid``: optional magic-byte validation stamp stored at insert
+        time (``documents.content_objects.magic_valid``); the table is
+        append-only, so this must be decided before the first registration.
         """
         sha256 = hashlib.sha256(data).hexdigest()
         path = self.path_for(sha256)
@@ -199,7 +204,8 @@ class ObjectStore:
                 raise ValueError("source conflicts with metadata['source']")
             meta["source"] = source
 
-        self._register(sha256, registered_path, media_type, len(data), meta, conn)
+        self._register(sha256, registered_path, media_type, len(data), meta, conn,
+                       magic_valid=magic_valid)
         return PutResult(sha256, registered_path, len(data), created)
 
     def get(self, sha256: str, verify: bool = True) -> bytes:
@@ -257,14 +263,16 @@ class ObjectStore:
         byte_size: int,
         metadata: dict[str, Any],
         conn: Optional[psycopg.Connection],
+        magic_valid: Optional[bool] = None,
     ) -> None:
         sql = """
             INSERT INTO documents.content_objects
-                (sha256, storage_path, media_type, byte_size, metadata)
-            VALUES (%s, %s, %s, %s, %s)
+                (sha256, storage_path, media_type, byte_size, metadata, magic_valid)
+            VALUES (%s, %s, %s, %s, %s, %s)
             ON CONFLICT (sha256) DO NOTHING
         """
-        params = (sha256, storage_path, media_type, byte_size, json.dumps(metadata))
+        params = (sha256, storage_path, media_type, byte_size, json.dumps(metadata),
+                  magic_valid)
         if conn is not None:
             conn.execute(sql, params)
             return

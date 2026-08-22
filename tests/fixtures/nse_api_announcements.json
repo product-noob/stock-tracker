@@ -1,0 +1,32 @@
+[
+  {
+    "seq_id": "900001",
+    "symbol": "TESTFIX",
+    "sm_isin": "INE123A00001",
+    "sm_name": "Test Fix Industries Limited",
+    "desc": "Trading Window|SUBJECT: Trading Window Closure",
+    "attchmntText": "Test Fix Industries Limited has informed the Exchange about trading window closure.",
+    "attchmntFile": "https://nsearchives.nseindia.com/corporate/testfix_900001.pdf",
+    "an_dt": "21-Aug-2026 14:26:26"
+  },
+  {
+    "seq_id": "900002",
+    "symbol": "TESTFIX",
+    "sm_isin": "INE123A00001",
+    "sm_name": "Test Fix Industries Limited",
+    "desc": "Financial Results|SUBJECT: Outcome of Board Meeting",
+    "attchmntText": "Outcome of the board meeting held on August 22, 2026.",
+    "attchmntFile": "",
+    "an_dt": "22-Aug-2026 09:15:00"
+  },
+  {
+    "seq_id": "900003",
+    "symbol": "TESTFIX",
+    "sm_isin": "INE123A00001",
+    "sm_name": "Test Fix Industries Limited",
+    "desc": "Analysts/Institutional Investor Meet/Con. Call Updates|SUBJECT: Intimation of investor call",
+    "attchmntText": "Intimation of conference call with institutional investors.",
+    "attchmntFile": "https://nsearchives.nseindia.com/corporate/testfix_900003.pdf",
+    "an_dt": "not-a-real-date"
+  }
+]
