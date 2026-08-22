@@ -8,9 +8,10 @@ A personal research tool for Indian listed companies (NSE/BSE): fetch official f
 
 ## Start here
 
-1. Read `PROJECT_STATUS.md` — current phase, what's done, and next steps. Update it when a meaningful milestone lands.
-2. For design decisions, read `docs/architecture-hld.md` (authoritative) and `docs/database-schema.md`. `pilot_learnings.md` and `product_note.html` give product context.
-3. Inspect live state before changing anything: `docker compose ps`, DB contents, existing scripts. Do not infer from docs alone.
+1. **Load `docs/ROUTER.md` first** — it is the documentation map: what to read for which task, module inventory with status, and global invariants. `docs/ROADMAP.md` tracks phases and current position.
+2. Read `PROJECT_STATUS.md` — current phase, what's done, and next steps. Update it when a meaningful milestone lands.
+3. For design decisions, read `docs/architecture-hld.md` (authoritative) and `docs/database-schema.md`. `pilot_learnings.md` and `product_note.html` give product context.
+4. Inspect live state before changing anything: `docker compose ps`, DB contents, existing scripts. Do not infer from docs alone.
 
 ## Environment
 
@@ -25,7 +26,7 @@ A personal research tool for Indian listed companies (NSE/BSE): fetch official f
 - `scripts/make_report.py <slug>` renders everything fetched/derived for a company into `data/<slug>/report.html` (throwaway debugging view).
 - Module requirement specs live in `docs/modules/` (capture HLD + NSE/BSE/Google-News/Screener specs); `docs/schema-explained.html` is a plain-English schema walkthrough.
 - Per-company outputs land under `data/<slug>/` (`nse/`, `bse/`, `news/`, `extracted_text/`, `raw_meta/`, `prices/`, `fundamentals/`). Raw PDFs stay out of git; derived sample outputs are committed.
-- **Screener.in guardrail:** `scripts/fetch_fundamentals.py` scrapes Screener.in under an explicit owner risk acceptance (`docs/modules/screener-fundamentals.md` §2). Constraints are mandatory: low cadence (≈weekly + event-triggered), polite sequential client, personal use only, config kill-switch, and the official-results extraction path remains the long-term replacement. Never poll in a loop.
+- **Screener.in guardrail:** `scripts/fetch_fundamentals.py` scrapes Screener.in under an explicit owner risk acceptance (`docs/modules/screener-fundamentals/OVERVIEW.md` §Policy). Constraints are mandatory: low cadence (≈weekly + event-triggered), polite sequential client, personal use only, config kill-switch, and the official-results extraction path remains the long-term replacement. Never poll in a loop.
 - `scripts/resolve_news.py` resolves opaque `news.google.com` redirects to publisher URLs (base64 decode or batchexecute flow), cached per token.
 - Design principles in the HLD are binding: fetched bytes are persisted before parsing, at-least-once with idempotency keys, append-only versioned outputs, "the LLM extracts, code decides."
 - Commit style follows conventional commits (`feat:`, `chore(db):`, `docs:` …).

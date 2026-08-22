@@ -21,12 +21,12 @@ Moving from **docs + pilot scripts** to a working pipeline backed by the real Po
 - **Core schema seeded** via `scripts/seed_core.py`: 30 SENSEX-constituent companies, 60 listings, 86 aliases, whitelist + ingestion source partitions (idempotent — re-run inserts nothing)
 - Company registry (`scripts/companies.py`) expanded to all 30 SENSEX constituents with checksum-validated ISINs
 - Per-company HTML report generator (`scripts/make_report.py`); sample at `data/hdfcbank/report.html`
-- Module requirement specs captured in `docs/modules/`; plain-English schema explainer in `docs/schema-explained.html`
+- Module requirement specs captured as tiered docs (`docs/ROUTER.md` → `docs/modules/<mod>/OVERVIEW.md` → L2 detail); Yahoo market-data module specified (yfinance chosen as primary daily-price provider, ROADMAP decision log); plain-English schema explainer in `docs/schema-explained.html`
 
 ## Next steps (rough order — tracks HLD Phase 0 "reliable capture")
 
 1. ~~Seed the whitelist~~ ✅ done (`seed_core.py`)
-2. Object store + ingestion plumbing: partition-aware fetchers writing exact response bytes to immutable storage + `fetch_runs`/`raw_artifacts`/`raw_feed_items`/cursors lineage in the DB, with durable jobs/outbox (per `docs/modules/` specs)
+2. Object store + ingestion plumbing: partition-aware fetchers writing exact response bytes to immutable storage + `fetch_runs`/`raw_artifacts`/`raw_feed_items`/cursors lineage in the DB, with durable jobs/outbox (per `docs/modules/*/OVERVIEW.md` specs)
 3. Normalizer (M2) + identity resolver (M3) with fail-closed review flow
 4. Plain resolved-filing Telegram digest + reconciliation harness → Phase 0 gate: 7 unattended days, worker-kill tests, measured coverage
 5. Text extraction → LLM fact extraction → event clustering stages (Phase 1)
