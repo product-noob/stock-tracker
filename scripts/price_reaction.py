@@ -52,6 +52,21 @@ def load_extractions():
     return json.loads((DATA / "raw_meta" / "llm_extractions.json").read_text())
 
 
+def parse_dt(s):
+    """fromisoformat on py<3.11 rejects non-3/6-digit fractional seconds (BSE emits e.g. .86)."""
+    s = s.replace("Z", "+00:00")
+    if "." in s:
+        head, frac = s.split(".", 1)
+        tail = ""
+        for ch in ("+", "-"):
+            if ch in frac:
+                frac, _, tail = frac.partition(ch)
+                tail = ch + tail
+                break
+        s = f"{head}.{frac:<06}{tail}"
+    return datetime.fromisoformat(s)
+
+
 def doc_date(doc):
     dates = sorted(r["published_at"][:10] for r in doc["source_records"])
     return dates[0]
@@ -91,7 +106,7 @@ def compute_reaction(prices, cluster_docs):
     dates = sorted(prices.keys())
     sessions = []
     for d in cluster_docs:
-        ts = max(datetime.fromisoformat(r["published_at"].replace("Z", "+00:00"))
+        ts = max(parse_dt(r["published_at"])
                  for r in d["source_records"])
         after = [dt for dt in dates if datetime.fromisoformat(dt).date() > ts.date()]
         if after:
