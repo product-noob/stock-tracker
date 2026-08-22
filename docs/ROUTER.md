@@ -10,6 +10,9 @@ You are an agent working on the Stock Market Insights Engine. **This file is you
 point.** It tells you what to load, in what order, and what to trust. Never load more than
 the task requires; never work from memory when a deeper tier exists.
 
+> **Human?** Resuming after a break — open [`docs/index.html`](index.html) for the visual hub
+> (status badges, next actions, decision log, full doc map). This file remains the machine-facing truth.
+
 ---
 
 ## 1. Tier model

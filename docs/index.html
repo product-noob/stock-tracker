@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Docs Hub — Stock Market Insights Engine</title>
+<style>
+  :root {
+    --ink:#1a2332; --muted:#5b6b7f; --accent:#0d6e6e; --accent-soft:#e6f4f4;
+    --line:#dde4ec; --bg:#fff; --panel:#f7f9fc;
+    --good:#1a7f37; --goodbg:#dafbe1; --warn:#9a6700; --warnbg:#fff3cd;
+    --bad:#c0392b; --badbg:#ffe0dd; --info:#0857a0; --infobg:#dbeafe;
+  }
+  * { box-sizing:border-box; }
+  body { font-family:'Segoe UI',system-ui,sans-serif; color:var(--ink); background:var(--bg);
+         max-width:1020px; margin:0 auto; padding:36px 26px; line-height:1.55; font-size:15px; }
+  h1 { font-size:1.7rem; border-bottom:3px solid var(--accent); padding-bottom:10px; }
+  h2 { font-size:1.25rem; margin-top:2.2em; border-bottom:1px solid var(--line); padding-bottom:5px; }
+  h3 { font-size:1.02rem; margin-top:1.4em; color:var(--accent); }
+  a { color:var(--accent); text-decoration:none; } a:hover { text-decoration:underline; }
+  code { font-family:Consolas,monospace; font-size:.86em; background:var(--panel); padding:1px 5px; border-radius:4px; }
+  .meta { color:var(--muted); font-size:.86rem; background:var(--panel); border:1px solid var(--line);
+          border-radius:8px; padding:10px 16px; margin:16px 0; }
+  table { border-collapse:collapse; width:100%; margin:14px 0; font-size:.88rem; }
+  th,td { border:1px solid var(--line); padding:7px 10px; text-align:left; vertical-align:top; }
+  th { background:var(--panel); }
+  .badge { display:inline-block; font-size:.7rem; font-weight:700; padding:2px 9px; border-radius:20px; white-space:nowrap; }
+  .pilot { background:var(--goodbg); color:var(--good); } .planned { background:var(--badbg); color:var(--bad); }
+  .partial { background:var(--warnbg); color:var(--warn); } .phase { background:var(--infobg); color:var(--info); }
+  .now { outline:3px solid #f0b429; outline-offset:-3px; }
+  .grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(290px,1fr)); gap:14px; margin:16px 0; }
+  .card { border:1px solid var(--line); border-radius:10px; padding:14px 16px; background:var(--bg); }
+  .card h3 { margin-top:0; }
+  .card ul { margin:8px 0 4px; padding-left:18px; font-size:.85rem; color:var(--muted); }
+  ol.steps { background:var(--accent-soft); border-radius:10px; padding:16px 16px 16px 40px; }
+  ol.steps li { margin-bottom:8px; }
+  pre.tree { background:#10241f; color:#d7f0e4; padding:16px 20px; border-radius:10px;
+             font-family:Consolas,monospace; font-size:.8rem; line-height:1.5; overflow-x:auto; }
+  .muted { color:var(--muted); font-size:.85rem; }
+  .kicker { text-transform:uppercase; letter-spacing:.08em; font-size:.72rem; font-weight:700; color:var(--muted); }
+</style>
+</head>
+<body>
+
+<h1>📚 Docs Hub — Stock Market Insights Engine</h1>
+<div class="meta">
+  <strong>Purpose:</strong> human-friendly map of the tiered documentation (L0/L1/L2) — read this when resuming after a break.
+  The machine-facing source of truth is <a href="ROUTER.md"><code>docs/ROUTER.md</code></a>; if they disagree, fix one of them.
+  · <strong>Updated:</strong> 2026-08-22 · Links point to the markdown sources (rendered on GitHub).
+</div>
+
+<!-- ================================================================ -->
+<h2 id="resume">🟢 Resuming work? Start here</h2>
+<ol class="steps">
+  <li><strong>Where are we?</strong> Phase <span class="badge phase">0 — reliable capture</span>, early build.
+      Schema live &amp; seeded; all five sources pilot-proven as file-based scripts; nothing writes to the DB yet.</li>
+  <li><strong>What's next?</strong> Pick the top item from <a href="#next">Next actions</a> below
+      (currently: ingestion skeleton — object store + jobs/outbox).</li>
+  <li><strong>Load context:</strong> open the module's <code>OVERVIEW.md</code> from
+      <a href="#modules">Module cards</a>; follow its “load when” hints into L2 detail only as needed.</li>
+  <li><strong>Rules you must not break:</strong> skim <a href="#invariants">Global invariants</a> —
+      bytes-first, idempotent, append-only, LLM extracts/code decides, identity fails closed.</li>
+</ol>
+
+<!-- ================================================================ -->
+<h2 id="next">🎯 Next actions (ordered)</h2>
+<table>
+<tr><th style="width:2em;">#</th><th>Action</th><th style="width:22%;">Docs to load</th></tr>
+<tr class="now"><td>1</td><td><strong>Ingestion skeleton</strong> — local immutable object store (atomic write + SHA-256 registry) + durable job/outbox worker pattern against <code>platform.processing_jobs</code>/<code>platform.outbox_events</code>. Everything downstream assumes this exists.</td><td>HLD §4–§5, §9; schema §5</td></tr>
+<tr><td>2</td><td><strong>NSE + BSE adapters → DB</strong> — reshape proven <code>fetch_announcements.py</code>/<code>download_pdfs.py</code> into partition-aware fetchers writing C1/C3 lineage</td><td><a href="modules/nse-capture/OVERVIEW.md">nse OVERVIEW</a> + L2, <a href="modules/bse-capture/OVERVIEW.md">bse OVERVIEW</a> + L2</td></tr>
+<tr><td>3</td><td><strong>Normalizer (M2) + identity resolver (M3)</strong> with fail-closed review queue</td><td>HLD M2/M3 cards; schema §3–§4</td></tr>
+<tr><td>4</td><td><strong>Yahoo adapter</strong> — daily bars into <code>market.price_series</code>/<code>price_bars</code></td><td><a href="modules/yahoo-market-data/OVERVIEW.md">yahoo OVERVIEW</a> + L2</td></tr>
+<tr><td>5</td><td><strong>Digest + reconciliation harness</strong> → start the Phase 0 soak clock (7 unattended days + worker-kill tests)</td><td>HLD §13 Phase 0 gate</td></tr>
+</table>
+<p class="muted">Screener snapshots &amp; Google News article-fetch deliberately trail (risk constraints / Phase 2 breadth).</p>
+
+<!-- ================================================================ -->
+<h2 id="modules">🧩 Module cards</h2>
+<p class="muted">Status vocabulary: <span class="badge pilot">pilot-proven</span> works as file-based script, DB integration not built ·
+<span class="badge partial">partial</span> some capability proven · <span class="badge planned">planned</span> spec-complete, no code.
+Each card's title links to its L1 overview; bullets are the L2 details.</p>
+
+<div class="grid">
+  <div class="card">
+    <h3><a href="modules/nse-capture/OVERVIEW.md">NSE capture</a> <span class="badge pilot">pilot-proven</span></h3>
+    NSE announcements: RSS + API + PDF download. Akamai TLS-impersonation required.
+    <ul>
+      <li><a href="modules/nse-capture/source-mechanics.md">source-mechanics</a> — endpoints, warm-up rules R-NSE-1…15, failure modes</li>
+      <li><a href="modules/nse-capture/data-contract.md">data-contract</a> — field maps, keys R-NSE-16…22</li>
+      <li><a href="modules/nse-capture/evidence-log.md">evidence-log</a> — Akamai escalation story, <code>index=equities</code></li>
+    </ul>
+  </div>
+  <div class="card">
+    <h3><a href="modules/bse-capture/OVERVIEW.md">BSE capture</a> <span class="badge pilot">pilot-proven</span></h3>
+    BSE announcements: RSS + API + PDFs. Contract drift risk; AttachHis/AttachLive trap.
+    <ul>
+      <li><a href="modules/bse-capture/source-mechanics.md">source-mechanics</a> — Table envelope, archive-first downloads, R-BSE-1…12</li>
+      <li><a href="modules/bse-capture/data-contract.md">data-contract</a> — NEWSID keys, scrip identity R-BSE-13…17</li>
+      <li><a href="modules/bse-capture/evidence-log.md">evidence-log</a> — the API param rename incident</li>
+    </ul>
+  </div>
+  <div class="card">
+    <h3><a href="modules/google-news-capture/OVERVIEW.md">Google News capture</a> <span class="badge partial">partial</span></h3>
+    Per-company news feeds; resolver proven 100/100; article fetch = Phase 2.
+    <ul>
+      <li><a href="modules/google-news-capture/source-mechanics.md">source-mechanics</a> — query construction, redirect resolution flow</li>
+      <li><a href="modules/google-news-capture/data-contract.md">data-contract</a> — token keys, collision rules R-GN-6…11</li>
+      <li><a href="modules/google-news-capture/evidence-log.md">evidence-log</a> — ~100-item cap finding ×2</li>
+    </ul>
+  </div>
+  <div class="card">
+    <h3><a href="modules/screener-fundamentals/OVERVIEW.md">Screener fundamentals</a> <span class="badge pilot">pilot-proven</span></h3>
+    Weekly page snapshots. ⚠ Risk-accepted source — mandatory constraints R-SC-1…5.
+    <ul>
+      <li><a href="modules/screener-fundamentals/source-mechanics.md">source-mechanics</a> — slug mapping, page regions, no-evasion rule</li>
+      <li><a href="modules/screener-fundamentals/data-contract.md">data-contract</a> — unit-safety, snapshot append semantics R-SC-8…13</li>
+      <li><a href="modules/screener-fundamentals/evidence-log.md">evidence-log</a></li>
+    </ul>
+  </div>
+  <div class="card">
+    <h3><a href="modules/yahoo-market-data/OVERVIEW.md">Yahoo market data</a> <span class="badge planned">planned</span></h3>
+    Daily OHLCV via yfinance (<code>.NS</code>) — chosen primary provider; bhavcopy = later reconciliation.
+    <ul>
+      <li><a href="modules/yahoo-market-data/source-mechanics.md">source-mechanics</a> — TBD checklist for implementation</li>
+      <li><a href="modules/yahoo-market-data/data-contract.md">data-contract</a> — series/bar mapping, revision model R-YF-1…8</li>
+      <li><a href="modules/yahoo-market-data/evidence-log.md">evidence-log</a> — pilot bar-quality observations</li>
+    </ul>
+  </div>
+  <div class="card">
+    <h3><a href="modules/README.md">Capture domain master</a> <span class="badge phase">L1</span></h3>
+    Cross-module rules: terminology binding, parallel fan-out model, convergence points,
+    cadence table, corrections ledger.
+    <ul><li>Read once before implementing any module.</li></ul>
+  </div>
+</div>
+
+<!-- ================================================================ -->
+<h2 id="phases">🗺️ Delivery phases</h2>
+<table>
+<tr><th>Phase</th><th>Build</th><th>Gate to exit</th></tr>
+<tr class="now"><td><span class="badge phase">IN PROGRESS</span> <strong>0 — Reliable capture</strong></td>
+    <td>object store; ingestion lineage; durable jobs/outbox; five capture modules; normalizer + identity review; plain digest; reconciliation harness</td>
+    <td>7 unattended days + worker-kill tests + measured reconciliation, zero filing loss</td></tr>
+<tr><td><strong>1 — Trusted evidence</strong></td>
+    <td>text versions; versioned LLM extraction; quote verifier + retry/suppress; taxonomies; clustering; severity/red-flag engine</td>
+    <td>verified sampled evidence; six-document results case → one event</td></tr>
+<tr><td><strong>2 — Breadth &amp; market context</strong></td>
+    <td>category feeds; news articles; embedding experiment (optional); daily prices; no-look-ahead reactions; bot commands</td>
+    <td>digest dupes &lt;2%; hand-worked market fixtures reproduce</td></tr>
+<tr><td><strong>3 — Scale/hardening</strong></td>
+    <td>whitelist →100; budget breaker; role grants; restore drills; load test</td>
+    <td>measured coverage ≥95%</td></tr>
+<tr><td><strong>4 — Measured need</strong></td>
+    <td>OCR; compliant fundamentals ratios</td><td>explicit measured justification only</td></tr>
+</table>
+
+<!-- ================================================================ -->
+<h2 id="invariants">⚖️ Global invariants (never violate)</h2>
+<table>
+<tr><th>#</th><th>Rule</th></tr>
+<tr><td>1</td><td><strong>Exact bytes before parsing</strong> — persist + SHA-256 register every response first. JSONB is a query aid, never truth.</td></tr>
+<tr><td>2</td><td><strong>Idempotent writes at every stage</strong> — at-least-once delivery must never duplicate logical results.</td></tr>
+<tr><td>3</td><td><strong>Append-only evidence</strong> — corrections supersede via new rows; DB triggers reject update/delete.</td></tr>
+<tr><td>4</td><td><strong>The LLM extracts; code decides</strong> — severity/ranking/classification are deterministic versioned code; model confidence never trusted.</td></tr>
+<tr><td>5</td><td><strong>Identity fails closed</strong> — ambiguity → review queue; fuzzy may suggest, only exact publishes; adapters preserve raw fields.</td></tr>
+<tr><td>6</td><td><strong>Exchange category ≠ event kind</strong> — separate vocabularies.</td></tr>
+<tr><td>7</td><td><strong>Cursors advance only after artifact + items commit</strong>; overlap polling everywhere.</td></tr>
+<tr><td>8</td><td><strong>HTTP 200 proves nothing</strong> — magic-byte validation always (AttachLive trap).</td></tr>
+<tr><td>9</td><td><strong>Causal language gated</strong> — “fell after filing”: yes. “Caused”: never.</td></tr>
+<tr><td>10</td><td><strong>Terminology:</strong> capture/fetch = network retrieval; <em>extraction = LLM stage only</em>.</td></tr>
+<tr><td>11</td><td><strong>UTF-8 explicitly everywhere</strong> — cp1252 broke on <code>₹</code>.</td></tr>
+</table>
+
+<!-- ================================================================ -->
+<h2 id="decisions">📌 Decision log (durable)</h2>
+<table>
+<tr><th>Date</th><th>Decision</th><th>Note</th></tr>
+<tr><td>2026-08-22</td><td>Screener.in automated capture approved under mandatory constraints</td><td>owner risk acceptance; amends PRD §2 scope table</td></tr>
+<tr><td>2026-08-22</td><td><strong>yfinance = primary daily-price provider</strong>; bhavcopy deferred to Phase 2+ reconciliation</td><td>resolves PRD §14 open question; zero access friction vs exchanges</td></tr>
+<tr><td>2026-08-22</td><td>Docs restructured into L0/L1/L2 tiers; this hub added</td><td>agent/human context efficiency</td></tr>
+</table>
+
+<!-- ================================================================ -->
+<h2 id="tree">🗂️ Full document map</h2>
+<pre class="tree">
+docs/
+├── index.html            ← YOU ARE HERE (human hub)
+├── ROUTER.md             ← L0 agent entry point (loading protocol)
+├── ROADMAP.md            ← L0 phases, position, decision log
+│
+├── architecture-hld.md   ← AUTHORITATIVE system design (v1.2, heavy — consult by section)
+├── database-schema.md    ← AUTHORITATIVE storage design companion
+│
+├── modules/
+│   ├── README.md               ← L1 capture-domain master (read once)
+│   ├── nse-capture/            ├── OVERVIEW.md  ├── source-mechanics.md
+│   │                           ├── data-contract.md  └── evidence-log.md
+│   ├── bse-capture/            └── (same 4-file shape)
+│   ├── google-news-capture/    └── (same 4-file shape)
+│   ├── screener-fundamentals/  └── (same 4-file shape)
+│   └── yahoo-market-data/      └── (same 4-file shape)
+│
+├── schema-explained.html ← plain-English DB walkthrough
+│
+├── ../product_note.html  ← PRD v0.4 (product requirements)
+├── ../pilot_learnings.md ← empirical findings Parts 1–5 (cite Part N §M)
+├── ../nse-bse-rss.md     ← verified feed inventory
+├── ../AGENTS.md          ← agent operating instructions
+└── ../PROJECT_STATUS.md  ← milestone log (update when milestones land)
+</pre>
+
+<div class="meta" style="margin-top:28px;">
+  <strong>Maintenance rule:</strong> when module status changes or a decision is made, update
+  <a href="ROADMAP.md">ROADMAP.md</a> + the ROUTER inventory <em>in the same commit as the work</em>,
+  then refresh the badges here. This page is a rendering, not a source.
+</div>
+
+</body>
+</html>

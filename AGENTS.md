@@ -8,7 +8,7 @@ A personal research tool for Indian listed companies (NSE/BSE): fetch official f
 
 ## Start here
 
-1. **Load `docs/ROUTER.md` first** — it is the documentation map: what to read for which task, module inventory with status, and global invariants. `docs/ROADMAP.md` tracks phases and current position.
+1. **Load `docs/ROUTER.md` first** — it is the documentation map: what to read for which task, module inventory with status, and global invariants. `docs/ROADMAP.md` tracks phases and current position. For a human-friendly visual overview, open `docs/index.html`.
 2. Read `PROJECT_STATUS.md` — current phase, what's done, and next steps. Update it when a meaningful milestone lands.
 3. For design decisions, read `docs/architecture-hld.md` (authoritative) and `docs/database-schema.md`. `pilot_learnings.md` and `product_note.html` give product context.
 4. Inspect live state before changing anything: `docker compose ps`, DB contents, existing scripts. Do not infer from docs alone.
