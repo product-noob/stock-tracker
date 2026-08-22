@@ -300,7 +300,7 @@ Immutable object store
 <p>Every independently polled feed/symbol/query is a source partition with its own checkpoint. Polls overlap and writes are idempotent. Fetch/stage lineage and source-window telemetry diagnose gaps. Completeness is finally measured through exchange reconciliation samples; the product never equates an advanced cursor with proof of full coverage.</p>
 
 <h3>Migration policy</h3>
-<p><code>db/schema.sql</code> v1.2 is the final pre-integration fresh-install baseline. Once integration begins, database changes are forward numbered migrations. Prompt, output schema, verifier, classifier, cluster, severity, adjustment and reaction behavior versions are data lineage, not Git archaeology.</p>
+<p>No database exists yet, so <code>db/schema.sql</code> is the single editable solution-design baseline and no migration folder/ledger is maintained. When the first persistent/shared database is created, its baseline will be frozen and migrations introduced from that point onward. Prompt, output schema, verifier, classifier, cluster, severity, adjustment and reaction behavior versions remain data lineage, not Git archaeology.</p>
 
 <h2 id="nfr">10. Non-functional requirements</h2>
 

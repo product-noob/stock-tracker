@@ -12,8 +12,8 @@
 --   * market bars belong to a listing + immutable series definition, not a company
 --   * derived outputs carry input fingerprints and behavioral versions
 --
--- This file intentionally contains no DROP statements. It is a baseline for an empty
--- database, not an in-place v1.1 migration. After first integration, use db/migrations/.
+-- This file intentionally contains no DROP statements. While the product remains in
+-- solutioning and no persistent database exists, this is the single editable baseline.
 -- =============================================================================
 
 BEGIN;
@@ -142,14 +142,8 @@ CREATE UNIQUE INDEX uq_active_whitelist_company
     ON core.whitelist_memberships (company_id) WHERE removed_at IS NULL;
 
 -- =============================================================================
--- PLATFORM — schema ledger, durable work queue and transactional outbox
+-- PLATFORM — durable work queue and transactional outbox
 -- =============================================================================
-
-CREATE TABLE platform.schema_migrations (
-    version             TEXT PRIMARY KEY,
-    description         TEXT NOT NULL,
-    applied_at          TIMESTAMPTZ NOT NULL DEFAULT now()
-);
 
 CREATE TABLE platform.processing_jobs (
     job_id              BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
@@ -1224,7 +1218,6 @@ DECLARE
     target regclass;
 BEGIN
     FOREACH target IN ARRAY ARRAY[
-        'platform.schema_migrations'::regclass,
         'ingestion.raw_artifacts'::regclass,
         'ingestion.raw_feed_items'::regclass,
         'ingestion.record_raw_items'::regclass,
@@ -1261,10 +1254,6 @@ $$;
 -- =============================================================================
 -- SEED — idempotent reference vocabularies
 -- =============================================================================
-
-INSERT INTO platform.schema_migrations (version, description) VALUES
-    ('baseline-1.2', 'Fresh-install schema baseline v1.2')
-ON CONFLICT (version) DO NOTHING;
 
 INSERT INTO core.ref_sources
     (source_code, description, source_kind, default_poll_interval_sec)

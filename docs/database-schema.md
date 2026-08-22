@@ -9,7 +9,7 @@ Run a fresh database with:
 psql -v ON_ERROR_STOP=1 -f db/schema.sql
 ```
 
-> v1.2 is a pre-integration baseline rewrite, not an in-place v1.1 migration. It contains no `DROP` statements. Once integration starts, every change must be a numbered migration under `db/migrations/`; do not edit an already-applied baseline.
+> No database has been created yet. During brainstorming/solutioning, `db/schema.sql` is the single editable design baseline; no migration directory or migration ledger is needed.
 
 ---
 
@@ -422,12 +422,19 @@ These are additive later. They do not justify weakening current lineage or integ
 
 ---
 
-## 14. Migration policy
+## 14. Schema evolution policy
 
-1. `db/schema.sql` is the fresh-install baseline.
-2. Record the applied baseline version in deployment configuration.
-3. After first integration, add `db/migrations/NNNN_description.sql` files.
-4. Migrations are forward-only in production; test restore for rollback.
-5. Reference-data changes are migrations too when behavior depends on them.
-6. Prompt, extraction-schema, classifier, cluster, verifier, rulepack, price-adjustment and reaction-method versions are persisted in their output rows.
-7. Never update immutable historical rows to “make them current”; append a superseding version.
+### While brainstorming (current state)
+
+- `db/schema.sql` is the only database design artifact.
+- Revise it directly as requirements change.
+- Do not create migration files or a migration ledger for databases that do not exist.
+
+### When the first persistent/shared database is created
+
+- Freeze the applied baseline and record its version.
+- Introduce a migration tool/directory from that point onward.
+- Apply future DDL and behavior-bearing reference-data changes through forward migrations.
+- Test backup restoration before relying on a migration in production.
+
+Behavioral lineage is required independently of DDL migrations: prompt, extraction-schema, classifier, cluster, verifier, rulepack, price-adjustment and reaction-method versions remain persisted in their output rows. Immutable historical outputs are superseded, never rewritten.
