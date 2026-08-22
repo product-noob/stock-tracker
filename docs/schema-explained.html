@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stock Market Insights Engine — Database Schema Explained Simply</title>
+<style>
+    :root {
+        --bg: #f6f8fa;
+        --card: #ffffff;
+        --ink: #1f2937;
+        --muted: #6b7280;
+        --accent: #2563eb;
+        --core: #2563eb;
+        --platform: #7c3aed;
+        --ingestion: #0891b2;
+        --documents: #d97706;
+        --intelligence: #dc2626;
+        --market: #059669;
+        --delivery: #db2777;
+        --ok: #16a34a;
+        border-radius-root: 12px;
+    }
+    * { box-sizing: border-box; }
+    body {
+        margin: 0;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        background: var(--bg);
+        color: var(--ink);
+        line-height: 1.6;
+    }
+    header.hero {
+        background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 60%, #0891b2 100%);
+        color: #fff;
+        padding: 48px 24px 40px;
+        text-align: center;
+    }
+    header.hero h1 { margin: 0 0 8px; font-size: 2rem; }
+    header.hero p { margin: 0 auto; max-width: 720px; opacity: .92; }
+    .badge-row { margin-top: 20px; display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
+    .badge {
+        background: rgba(255,255,255,.15);
+        border: 1px solid rgba(255,255,255,.35);
+        padding: 4px 14px; border-radius: 999px; font-size: .85rem;
+    }
+    main { max-width: 1000px; margin: 0 auto; padding: 32px 20px 64px; }
+    h2.section {
+        font-size: 1.5rem;
+        margin: 48px 0 6px;
+        padding-top: 16px;
+        border-top: 3px solid #e5e7eb;
+    }
+    h2.section:first-of-type { border-top: none; margin-top: 8px; }
+    p.lede { color: var(--muted); max-width: 820px; margin-top: 0; }
+    nav.toc {
+        background: var(--card); border: 1px solid #e5e7eb; border-radius: 12px;
+        padding: 16px 24px; margin-bottom: 8px;
+    }
+    nav.toc ol { margin: 8px 0 0; padding-left: 20px; }
+    nav.toc a { color: var(--accent); text-decoration: none; }
+    nav.toc a:hover { text-decoration: underline; }
+
+    /* Pipeline */
+    .pipeline { display: flex; flex-wrap: wrap; gap: 10px; align-items: stretch; justify-content: center; margin: 24px 0; }
+    .pipe-step {
+        background: var(--card); border: 1px solid #e5e7eb; border-radius: 10px;
+        padding: 12px 14px; min-width: 130px; flex: 1; max-width: 170px; text-align: center;
+        box-shadow: 0 1px 2px rgba(0,0,0,.04);
+    }
+    .pipe-step .icon { font-size: 1.6rem; display: block; margin-bottom: 6px; }
+    .pipe-step b { display: block; font-size: .92rem; }
+    .pipe-step small { color: var(--muted); font-size: .78rem; }
+    .arrow { align-self: center; color: #9ca3af; font-size: 1.3rem; }
+
+    /* Schema cards */
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); gap: 16px; margin: 20px 0; }
+    .schema-card {
+        background: var(--card); border-radius: 12px; padding: 18px 20px;
+        border-top: 5px solid var(--muted);
+        box-shadow: 0 1px 3px rgba(0,0,0,.06);
+    }
+    .schema-card h3 { margin: 0 0 4px; font-size: 1.05rem; }
+    .schema-card .tag {
+        display: inline-block; font-size: .72rem; letter-spacing: .04em; text-transform: uppercase;
+        color: #fff; padding: 2px 10px; border-radius: 999px; margin-bottom: 8px;
+    }
+    .schema-card p { margin: 6px 0 0; font-size: .9rem; color: #374151; }
+    .schema-card ul { margin: 8px 0 0; padding-left: 18px; font-size: .85rem; color: #4b5563; }
+    .t-core { background: var(--core); }         .bd-core { border-color: var(--core); }
+    .t-platform { background: var(--platform); } .bd-platform { border-color: var(--platform); }
+    .t-ingestion { background: var(--ingestion);} .bd-ingestion { border-color: var(--ingestion); }
+    .t-documents { background: var(--documents);} .bd-documents { border-color: var(--documents); }
+    .t-intelligence { background: var(--intelligence);} .bd-intelligence { border-color: var(--intelligence); }
+    .t-market { background: var(--market); }     .bd-market { border-color: var(--market); }
+    .t-delivery { background: var(--delivery); } .bd-delivery { border-color: var(--delivery); }
+
+    /* Tables */
+    table.data {
+        width: 100%; border-collapse: collapse; margin: 12px 0 4px;
+        background: var(--card); font-size: .85rem;
+        border-radius: 10px; overflow: hidden;
+        box-shadow: 0 1px 3px rgba(0,0,0,.06);
+    }
+    table.data th {
+        text-align: left; padding: 9px 12px; color: #fff;
+        font-weight: 600; white-space: nowrap;
+    }
+    table.data td {
+        padding: 9px 12px; border-bottom: 1px solid #f1f5f9; vertical-align: top;
+    }
+    table.data tr:last-child td { border-bottom: none; }
+    code {
+        background: #eef2ff; color: #3730a3; padding: 1px 6px; border-radius: 5px;
+        font-family: ui-monospace, SFMono-Regular, Consolas, "Courier New", monospace;
+        font-size: .84em;
+    }
+    .table-note { font-size: .8rem; color: var(--muted); margin: 4px 0 0; }
+
+    /* Story */
+    .story-step {
+        background: var(--card); border: 1px solid #e5e7eb; border-radius: 12px;
+        margin: 22px 0; overflow: hidden;
+    }
+    .story-head {
+        display: flex; align-items: center; gap: 12px;
+        padding: 14px 20px; border-bottom: 1px solid #eef2f7;
+    }
+    .story-num {
+        width: 34px; height: 34px; min-width: 34px; border-radius: 50%;
+        display: flex; align-items: center; justify-content: center;
+        color: #fff; font-weight: 700; font-size: .95rem;
+    }
+    .story-head h3 { margin: 0; font-size: 1.02rem; }
+    .story-body { padding: 14px 20px 18px; }
+    .story-body > p:first-child { margin-top: 0; }
+
+    .callout {
+        border-radius: 12px; padding: 16px 22px; margin: 18px 0;
+        background: #eff6ff; border: 1px solid #bfdbfe;
+    }
+    .callout.warn { background: #fffbeb; border-color: #fde68a; }
+    .callout h4 { margin: 0 0 6px; }
+    .callout ul { margin: 8px 0 0; padding-left: 20px; }
+
+    .rules li { margin-bottom: 8px; }
+    footer { text-align: center; color: var(--muted); font-size: .82rem; padding: 28px 16px 44px; }
+</style>
+</head>
+<body>
+
+<header class="hero">
+    <h1>📊 Stock Market Insights Engine<br><span style="font-size:1.2rem;font-weight:400">— the database, explained like you're new to it —</span></h1>
+    <p>This is a friendly tour of our PostgreSQL schema (version 1.2). No jargon walls: every part of the
+       database is explained in everyday language, then shown with <b>dummy sample data</b> so you can see exactly
+       what a real row looks like.</p>
+    <div class="badge-row">
+        <span class="badge">PostgreSQL 17</span>
+        <span class="badge">7 schemas</span>
+        <span class="badge">44 tables</span>
+        <span class="badge">3 views</span>
+        <span class="badge">38 triggers guarding history</span>
+    </div>
+</header>
+
+<main>
+
+<nav class="toc">
+    <b>On this page</b>
+    <ol>
+        <li><a href="#bigpicture">What does this system even do?</a></li>
+        <li><a href="#schemas">The 7 schemas — seven filing cabinets</a></li>
+        <li><a href="#journey">The journey of one announcement (with dummy data)</a></li>
+        <li><a href="#rules">The golden rules of this database</a></li>
+    </ol>
+</nav>
+
+<!-- ============================================================ -->
+<h2 class="section" id="bigpicture">1️⃣ What does this system even do?</h2>
+<p class="lede">
+    Every day, Indian stock exchanges (NSE &amp; BSE) publish hundreds of company announcements.
+    Some are boring; a few matter a lot — a big order win, a dividend, a regulatory probe, a fundraising.
+    This system <b>automatically collects those announcements, understands them with AI,
+    checks how the stock price reacted, and sends you a short daily digest</b> of only the important stuff.
+</p>
+
+<div class="pipeline">
+    <div class="pipe-step"><span class="icon">📡</span><b>Collect</b><small>RSS feeds &amp; exchange APIs</small></div>
+    <div class="arrow">➜</div>
+    <div class="pipe-step"><span class="icon">🧹</span><b>Clean up</b><small>remove duplicates, name the company</small></div>
+    <div class="arrow">➜</div>
+    <div class="pipe-step"><span class="icon">📄</span><b>Download</b><small>PDFs / articles, kept forever byte-for-byte</small></div>
+    <div class="arrow">➜</div>
+    <div class="pipe-step"><span class="icon">🔍</span><b>Understand</b><small>extract text, then AI finds events</small></div>
+    <div class="arrow">➜</div>
+    <div class="pipe-step"><span class="icon">📈</span><b>Check market</b><small>did the stock react?</small></div>
+    <div class="arrow">➜</div>
+    <div class="pipe-step"><span class="icon">📬</span><b>Deliver</b><small>daily digest notification</small></div>
+</div>
+
+<div class="callout">
+    <h4>💡 One-sentence summary</h4>
+    <p style="margin:0">The database doesn't just store results — it stores <b>the full evidence trail</b>,
+    so any insight we ever send you can be traced back to the exact bytes of the original announcement.</p>
+</div>
+
+<!-- ============================================================ -->
+<h2 class="section" id="schemas">2️⃣ The 7 schemas — think of them as filing cabinets</h2>
+<p class="lede">A PostgreSQL database can contain multiple <i>schemas</i> — think of them as labeled drawers
+in one big filing cabinet. Each drawer belongs to one job in the pipeline.</p>
+
+<div class="grid">
+    <div class="schema-card bd-core">
+        <span class="tag t-core">core</span>
+        <h3>🗂️ Who exists?</h3>
+        <p>The <b>master list</b>: companies we track, their shares (instruments), where they trade
+           (listings on NSE/BSE), alternative names (aliases) and whitelist membership history.</p>
+        <ul><li>companies · instruments · listings</li><li>company_aliases · whitelist_memberships</li><li>reference vocabularies (ref_sources…)</li></ul>
+    </div>
+    <div class="schema-card bd-platform">
+        <span class="tag t-platform">platform</span>
+        <h3>⚙️ What needs doing?</h3>
+        <p>A built-in <b>to-do list and message board</b>. Long-running steps (download this PDF, run AI on that text)
+           become jobs here, and finished work announces itself via the outbox.</p>
+        <ul><li>processing_jobs — retryable task queue</li><li>outbox_events — reliable hand-off messages</li></ul>
+    </div>
+    <div class="schema-card bd-ingestion">
+        <span class="tag t-ingestion">ingestion</span>
+        <h3>📡 What did we fetch?</h3>
+        <p>The <b>intake desk</b>. Every poll of an RSS feed or API, the exact raw response, parsed items,
+           cleaned-up canonical records, and which company each record belongs to.</p>
+        <ul><li>source_partitions · fetch_runs · cursors</li><li>raw_artifacts · raw_feed_items</li><li>normalized_records · identity_resolutions</li><li>stage_runs · stage_errors</li></ul>
+    </div>
+    <div class="schema-card bd-documents">
+        <span class="tag t-documents">documents</span>
+        <h3>📄 What did we download?</h3>
+        <p>The <b>archive room</b>. Every downloaded PDF/article is fingerprinted (SHA-256) and stored once.
+           Extracted text is versioned — re-running a better extractor adds a version, never overwrites.</p>
+        <ul><li>content_objects — immutable files registry</li><li>content_fetch_attempts — incl. failures</li><li>record_contents · text_versions</li></ul>
+    </div>
+    <div class="schema-card bd-intelligence">
+        <span class="tag t-intelligence">intelligence</span>
+        <h3>🧠 What does it mean?</h3>
+        <p>The <b>brain</b>. AI reads the documents, extracts business events (results, dividends, order wins…),
+           groups related mentions into events, snapshots each grouping, and produces scored insights.</p>
+        <ul><li>extractions · extracted_event_mentions</li><li>events · event_versions (immutable)</li><li>insights · reaction_signals</li></ul>
+    </div>
+    <div class="schema-card bd-market">
+        <span class="tag t-market">market</span>
+        <h3>📈 How did the price move?</h3>
+        <p>The <b>market tape</b>. Price history belongs to a specific listing (e.g., NSE:HDFCBANK) with a fixed
+           adjustment mode, so adjusted and raw prices never get mixed up.</p>
+        <ul><li>price_series — one definition per series</li><li>price_bars — OHLCV observations</li><li>current_price_bars view</li></ul>
+    </div>
+    <div class="schema-card bd-delivery">
+        <span class="tag t-delivery">delivery</span>
+        <h3>📬 What did we send you?</h3>
+        <p>The <b>post office</b>. Daily digests, their ranked contents, the exact rendered notification messages,
+           and one row per delivery attempt (including failed retries).</p>
+        <ul><li>digests · digest_items</li><li>notifications · delivery_attempts</li></ul>
+    </div>
+</div>
+
+<!-- ============================================================ -->
+<h2 class="section" id="journey">3️⃣ The journey of one announcement 🎬</h2>
+<p class="lede">
+Let's follow a completely made-up company — <b>Sunrise Textiles Ltd</b> — through the whole system.
+At each step you'll see a <b>sample row</b> (only the most interesting columns; many bookkeeping columns
+are hidden for readability). Follow the numbers!
+</p>
+
+<!-- STEP 1 -->
+<div class="story-step">
+    <div class="story-head"><span class="story-num t-core">1</span><h3>Setup: the company is whitelisted <span style="color:#94a3b8;font-weight:400">(schema: core)</span></h3></div>
+    <div class="story-body">
+        <p>Before anything happens, Sunrise Textiles must exist in our master list and be on the watchlist:</p>
+        <table class="data">
+            <tr><th class="t-core">company_id</th><th>canonical_name</th><th>status</th></tr>
+            <tr><td><code>42</code></td><td>Sunrise Textiles Ltd</td><td>active ✅</td></tr>
+        </table>
+        <table class="data">
+            <tr><th class="t-core">instrument_id</th><th>security_name</th><th>isin</th><th>type</th></tr>
+            <tr><td><code>7</code></td><td>Sunrise Textiles Equity</td><td><code>INE123A01019</code></td><td>equity</td></tr>
+        </table>
+        <table class="data">
+            <tr><th class="t-core">listing_id</th><th>exchange</th><th>exchange_symbol</th><th>currency</th></tr>
+            <tr><td><code>15</code></td><td>NSE</td><td><code>SUNRISE</code></td><td>INR</td></tr>
+        </table>
+        <table class="data">
+            <tr><th class="t-core">alias_value</th><th>normalized_value</th><th>alias_kind</th></tr>
+            <tr><td>Sunrise Textiles Limited</td><td><code>sunrise textiles limited</code></td><td>name_variant</td></tr>
+            <tr><td>SUNRISE TEX</td><td><code>sunrise tex</code></td><td>short_name</td></tr>
+        </table>
+        <p class="table-note">💡 <b>Why three levels?</b> Company ≠ share ≠ listing. If Sunrise later issues preference
+        shares or lists on BSE too, each gets its own row without touching the company record.</p>
+    </div>
+</div>
+
+<!-- STEP 2 -->
+<div class="story-step">
+    <div class="story-head"><span class="story-num t-ingestion">2</span><h3>An announcement appears on NSE's RSS feed <span style="color:#94a3b8;font-weight:400">(schema: ingestion)</span></h3></div>
+    <div class="story-body">
+        <p>Our poller checks the NSE announcements feed every 5 minutes. Each feed URL gets its own <i>partition</i> and cursor:</p>
+        <table class="data">
+            <tr><th class="t-ingestion">partition_id</th><th>source</th><th>partition_key</th><th>poll_interval_sec</th></tr>
+            <tr><td><code>3</code></td><td>nse_rss</td><td><code>Online_announcements.xml</code></td><td>300</td></tr>
+        </table>
+        <table class="data">
+            <tr><th class="t-ingestion">fetch_run_id</th><th>status</th><th>items_seen</th><th>items_new</th><th>started_at</th></tr>
+            <tr><td><code>900</code></td><td>ok</td><td>120</td><td>4</td><td>2025-09-10 09:31 UTC</td></tr>
+        </table>
+        <p>The entire HTTP response — all 120 items' worth of XML — is archived <b>byte-for-byte</b>:</p>
+        <table class="data">
+            <tr><th class="t-ingestion">artifact_id</th><th>sha256</th><th>storage_path</th><th>byte_size</th></tr>
+            <tr><td><code>5500</code></td><td><code>a3f8…c21e</code> (64 hex chars)</td><td><code>raw/nse_rss/2025/09/10/a3f8c21e.xml</code></td><td>184,320</td></tr>
+        </table>
+        <p>From that artifact, individual items are parsed out:</p>
+        <table class="data">
+            <tr><th class="t-ingestion">item_id</th><th>external_id</th><th>title</th><th>published_at</th></tr>
+            <tr><td><code>31001</code></td><td><code>NSE-ANN-8842</code></td><td>"Sunrise Textiles Ltd — Board Meeting Outcome"</td><td>2025-09-10 09:02 IST</td></tr>
+        </table>
+        <p class="table-note">💡 Even though the item was parsed into nice columns, the original XML artifact is the
+        <b>replay source of truth</b>. If parsing had a bug, we can re-parse from the archive.</p>
+    </div>
+</div>
+
+<!-- STEP 3 -->
+<div class="story-step">
+    <div class="story-head"><span class="story-num t-ingestion">3</span><h3>Cleaning up &amp; figuring out WHO announced it <span style="color:#94a3b8;font-weight:400">(schema: ingestion)</span></h3></div>
+    <div class="story-body">
+        <p>The raw item becomes a <i>normalized record</i> — cleaned, standardized, de-duplicated:</p>
+        <table class="data">
+            <tr><th class="t-ingestion">record_id</th><th>dedup_key</th><th>title</th><th>exchange</th><th>content_url</th><th>company_name_raw</th></tr>
+            <tr><td><code>777</code></td><td><code>nse:ann:8842</code></td><td>Board approves preferential issue of shares</td><td>NSE</td><td><code>https://nsearchives…/SUNRISE_8842.pdf</code></td><td>"SUNRISE TEXTILES LTD."</td></tr>
+        </table>
+        <p>Now the resolver asks: <i>which of our companies is "SUNRISE TEXTILES LTD."?</i> It matches the NSE scrip code — the highest-confidence tier:</p>
+        <table class="data">
+            <tr><th class="t-ingestion">resolution_id</th><th>tier</th><th>outcome</th><th>confidence</th><th>reason</th></tr>
+            <tr><td><code>1500</code></td><td><code>A_scripcode</code></td><td>resolved ✅</td><td>0.990</td><td>NSE scrip code matched master</td></tr>
+        </table>
+        <table class="data">
+            <tr><th class="t-ingestion">record_id</th><th>resolution_id (current pointer)</th><th>company_id</th></tr>
+            <tr><td><code>777</code></td><td><code>1500</code></td><td><code>42</code></td></tr>
+        </table>
+        <p class="table-note">💡 Resolutions are <b>append-only history</b>; the assignment table is just a mutable
+        pointer to the currently accepted decision. If a mistake is proven, we append a superseding decision —
+        we never rewrite history.</p>
+    </div>
+</div>
+
+<!-- STEP 4 -->
+<div class="story-step">
+    <div class="story-head"><span class="story-num t-platform">4</span><h3>A job is queued: "go download that PDF" <span style="color:#94a3b8;font-weight:400">(schema: platform)</span></h3></div>
+    <div class="story-body">
+        <p>Instead of downloading immediately, the system enqueues a durable job — if the server crashes mid-download, the job survives and retries:</p>
+        <table class="data">
+            <tr><th class="t-platform">job_id</th><th>job_kind</th><th>payload</th><th>status</th><th>attempts/max</th></tr>
+            <tr><td><code>2001</code></td><td><code>fetch_content</code></td><td><code>{"record_id": 777}</code></td><td>queued ⏳</td><td>0 / 5</td></tr>
+        </table>
+        <p class="table-note">💡 Jobs use idempotency keys (<code>job_kind + idempotency_key</code> unique), so the same
+        download request can safely be enqueued twice — only one job will exist.</p>
+    </div>
+</div>
+
+<!-- STEP 5 -->
+<div class="story-step">
+    <div class="story-head"><span class="story-num t-documents">5</span><h3>Downloaded! Fingerprinted! Archived forever <span style="color:#94a3b8;font-weight:400">(schema: documents)</span></h3></div>
+    <div class="story-body">
+        <p>A worker picks up job 2001 and downloads the PDF:</p>
+        <table class="data">
+            <tr><th class="t-documents">attempt_id</th><th>attempt_no</th><th>http_status</th><th>status</th></tr>
+            <tr><td><code>3400</code></td><td>1</td><td>200</td><td>ok ✅</td></tr>
+        </table>
+        <table class="data">
+            <tr><th class="t-documents">content_id</th><th>media_type</th><th>byte_size</th><th>sha256</th></tr>
+            <tr><td><code>880</code></td><td>application/pdf</td><td>245,190</td><td><code>7be1…9d04</code></td></tr>
+        </table>
+        <p class="table-note">💡 Same PDF filed by two different records? Both point at the same <code>content_id</code> —
+        bytes are stored once. And a <i>failed</i> download also gets recorded (with its error), because failures are evidence too.</p>
+    </div>
+</div>
+
+<!-- STEP 6 -->
+<div class="story-step">
+    <div class="story-head"><span class="story-num t-documents">6</span><h3>PDF → plain text (version 1) <span style="color:#94a3b8;font-weight:400">(schema: documents)</span></h3></div>
+    <div class="story-body">
+        <table class="data">
+            <tr><th class="t-documents">text_version_id</th><th>extractor</th><th>status</th><th>char_count</th><th>page_count</th></tr>
+            <tr><td><code>430</code></td><td><code>pdfplumber@0.11.0</code></td><td>ok ✅</td><td>5,412</td><td>3</td></tr>
+        </table>
+        <p class="table-note">💡 Next year, a better extractor comes along? It creates text_version <b>431</b>.
+        Version 430 stays untouched — old AI analyses still point to the exact text they were based on.</p>
+    </div>
+</div>
+
+<!-- STEP 7 -->
+<div class="story-step">
+    <div class="story-head"><span class="story-num t-intelligence">7</span><h3>AI reads the text and finds events <span style="color:#94a3b8;font-weight:400">(schema: intelligence)</span></h3></div>
+    <div class="story-body">
+        <p>One LLM execution over text version 430:</p>
+        <table class="data">
+            <tr><th class="t-intelligence">extraction_id</th><th>model</th><th>document_kind</th><th>summary</th><th>quote_verified</th></tr>
+            <tr><td><code>260</code></td><td><code>gpt-4.1-mini</code></td><td>board_meeting_outcome</td><td>"Board approved raising ₹500 crore via preferential issue."</td><td>true ✅</td></tr>
+        </table>
+        <p>One extraction can yield <b>several</b> typed event candidates (mentions):</p>
+        <table class="data">
+            <tr><th class="t-intelligence">mention_id</th><th>event_kind</th><th>direction</th><th>evidence_quote</th></tr>
+            <tr><td><code>510</code></td><td><code>fundraising</code></td><td>positive ↗</td><td>"…approved issuance of shares aggregating to ₹500 crore…"</td></tr>
+            <tr><td><code>511</code></td><td><code>shareholding_update</code></td><td>neutral ➖</td><td>"…promoter holding to change upon allotment…"</td></tr>
+        </table>
+    </div>
+</div>
+
+<!-- STEP 8 -->
+<div class="story-step">
+    <div class="story-head"><span class="story-num t-intelligence">8</span><h3>Mentions get grouped into an immutable Event snapshot <span style="color:#94a3b8;font-weight:400">(schema: intelligence)</span></h3></div>
+    <div class="story-body">
+        <p>The clustering step decides these mentions describe <b>one</b> business event and freezes a snapshot:</p>
+        <table class="data">
+            <tr><th class="t-intelligence">event_version_id</th><th>event_id</th><th>version_no</th><th>event_kind</th><th>window</th><th>confidence</th></tr>
+            <tr><td><code>91</code></td><td><code>55</code></td><td>1</td><td><code>fundraising</code></td><td>Sep 09 – Sep 11</td><td>0.94</td></tr>
+        </table>
+        <table class="data">
+            <tr><th class="t-intelligence">event_version_id</th><th>mention_id</th><th>role</th></tr>
+            <tr><td><code>91</code></td><td><code>510</code></td><td>primary ⭐</td></tr>
+            <tr><td><code>91</code></td><td><code>511</code></td><td>supporting</td></tr>
+        </table>
+        <p class="table-note">💡 If we re-cluster next week, that creates event_version <b>2 superseding 1</b>.
+        Any insight already delivered keeps pointing at version 1 — delivered conclusions never silently change.</p>
+    </div>
+</div>
+
+<!-- STEP 9 -->
+<div class="story-step">
+    <div class="story-head"><span class="story-num t-market">9</span><h3>Did the stock react? Check the tape <span style="color:#94a3b8;font-weight:400">(schemas: market + intelligence)</span></h3></div>
+    <div class="story-body">
+        <p>Sunrise's NSE listing has one price series with fixed semantics:</p>
+        <table class="data">
+            <tr><th class="t-market">series_id</th><th>listing_id</th><th>interval</th><th>adjustment_mode</th><th>currency</th></tr>
+            <tr><td><code>23</code></td><td><code>15</code></td><td>1d</td><td>total_return_adjusted</td><td>INR</td></tr>
+        </table>
+        <table class="data">
+            <tr><th class="t-market">bar_id</th><th>trade_date</th><th>open</th><th>close</th><th>volume</th></tr>
+            <tr><td><code>41,002</code></td><td>2025-09-09 (day before)</td><td>412.50</td><td>418.20</td><td>1.2M</td></tr>
+            <tr><td><code>41,003</code></td><td>2025-09-10 (reaction day)</td><td>425.00</td><td><b>431.60</b></td><td><b>4.8M</b></td></tr>
+        </table>
+        <p>The reaction calculator compares the day's move against the last 20 normal trading days and records everything it used:</p>
+        <table class="data">
+            <tr><th class="t-market">signal_id</th><th>reaction_pct</th><th>return_zscore</th><th>baseline window</th><th>attribution_status</th></tr>
+            <tr><td><code>17</code></td><td>+3.21</td><td>2.4</td><td>Aug 11 → Sep 09 (20 sessions)</td><td><b>safe ✅</b></td></tr>
+        </table>
+        <p class="table-note">💡 "Safe" means: no other big anomaly in the baseline window could explain the move.
+        It's an honest gate, not a claim of scientific proof.</p>
+    </div>
+</div>
+
+<!-- STEP 10 -->
+<div class="story-step">
+    <div class="story-head"><span class="story-num t-intelligence">10</span><h3>The Insight is born <span style="color:#94a3b8;font-weight:400">(schema: intelligence)</span></h3></div>
+    <div class="story-body">
+        <table class="data">
+            <tr><th class="t-intelligence">insight_id</th><th>severity</th><th>headline</th><th>rulepack</th></tr>
+            <tr><td><code>301</code></td><td>3 / 5</td><td>"Sunrise Textiles raises ₹500 cr; stock up 3.2% on heavy volume"</td><td><code>rulepack@1.3.0</code></td></tr>
+        </table>
+        <p class="table-note">💡 The insight references event_version <code>91</code>, signal <code>17</code>, and carries an
+        input fingerprint — reproduce the exact inputs and you get the exact same insight back.</p>
+    </div>
+</div>
+
+<!-- STEP 11 -->
+<div class="story-step">
+    <div class="story-head"><span class="story-num t-delivery">11</span><h3>Digest time: ranked, rendered, sent <span style="color:#94a3b8;font-weight:400">(schema: delivery)</span></h3></div>
+    <div class="story-body">
+        <p>At 6 pm the digest composer ranks today's insights:</p>
+        <table class="data">
+            <tr><th class="t-delivery">digest_id</th><th>digest_date</th><th>audience</th><th>coverage</th></tr>
+            <tr><td><code>12</code></td><td>2025-09-10</td><td>owner</td><td>Sep 09 18:00 → Sep 10 18:00 IST</td></tr>
+        </table>
+        <table class="data">
+            <tr><th class="t-delivery">digest_id</th><th>rank</th><th>insight_id</th><th>ranking_score</th><th>why chosen</th></tr>
+            <tr><td><code>12</code></td><td>1 ⭐</td><td><code>301</code></td><td>8.42</td><td>severity × category weight × recency</td></tr>
+        </table>
+        <p>The message is rendered once and hashed — retries resend the <b>same</b> words:</p>
+        <table class="data">
+            <tr><th class="t-delivery">notification_id</th><th>kind</th><th>channel</th><th>rendered_message</th><th>status</th></tr>
+            <tr><td><code>88</code></td><td>digest</td><td>telegram</td><td>"📈 Today's top: Sunrise Textiles raises ₹500 cr…" (1,204 chars)</td><td>queued → sent</td></tr>
+        </table>
+        <table class="data">
+            <tr><th class="t-delivery">attempt_no</th><th>status</th><th>provider_message_id</th></tr>
+            <tr><td>1</td><td>sent ✅</td><td><code>tg-msg-99182</code></td></tr>
+        </table>
+        <div class="callout warn" style="margin-bottom:0">
+            <h4>🎉 Done!</h4>
+            <p style="margin:0">In ~30 seconds of machine time, one RSS line became an archived, fingerprinted,
+            AI-understood, price-checked, ranked, delivered insight — and every hop left a permanent, queryable breadcrumb.</p>
+        </div>
+    </div>
+</div>
+
+<!-- ============================================================ -->
+<h2 class="section" id="rules">4️⃣ The golden rules of this database 📜</h2>
+<div class="callout rules">
+    <ul>
+        <li>🔒 <b>Evidence is append-only.</b> Raw artifacts, downloads, extractions, event snapshots, price bars and
+            delivery attempts cannot be updated or deleted — database triggers physically block it.</li>
+        <li>🧾 <b>Corrections = new versions, never edits.</b> Better extractor? New text_version. Re-cluster? New
+            event_version that supersedes the old one.</li>
+        <li>🔑 <b>Idempotency everywhere.</b> Almost every insertable row has a stable idempotency key — feeding the
+            same input twice inserts once. Safe retries by design.</li>
+        <li>🧬 <b>Every output remembers its inputs.</b> Insights store fingerprints, model versions, rulepack versions
+            and pointers to the exact text they were computed from.</li>
+        <li>🏢 <b>Company ≠ instrument ≠ listing.</b> Prices belong to listings; events belong to companies; aliases
+            may be ambiguous and the resolver fails closed rather than guessing.</li>
+        <li>🗃️ <b>Bytes live in object storage; the DB registers them.</b> SHA-256 + storage path make every fetched
+            document replayable forever.</li>
+    </ul>
+</div>
+
+<footer>
+    Stock Market Insights Engine · schema v1.2 baseline · companion to <code>docs/database-schema.md</code> and <code>db/schema.sql</code> ·
+    all sample data on this page is fictional
+</footer>
+
+</main>
+</body>
+</html>

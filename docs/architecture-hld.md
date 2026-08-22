@@ -119,6 +119,12 @@ The outbox dispatcher itself is restartable. Re-publishing is harmless because d
 
 ## 5. Module capability cards
 
+> **Module detail specs:** the four source-capture modules (NSE, BSE, Google News, Screener) now have
+> build-ready requirement specs in [`docs/modules/`](modules/README.md), including corrected source
+> mechanics observed in the Aug-2026 pilots (TLS-fingerprint impersonation for NSE, BSE API contract
+> change, AttachHis/AttachLive behavior, Screener risk acceptance). Where this section and those specs
+> disagree about *source access mechanics*, the module specs govern.
+
 ### M1 · Source adapters
 
 **Owns:** source sessions, conditional GET, rate limits, partition scheduling and exact response persistence.
