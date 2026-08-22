@@ -17,6 +17,14 @@ loads:
 
 ## ⚠ Policy status — read first
 
+**SUPERSEDED 2026-08-23:** the owner has directed full-scope capture ("don't worry about any
+TOS violation, you go full on and scrape/crawl"). The conditional risk acceptance below and
+its R-SC-1..5 cadence constraints no longer bind as compliance rules. Rate limiting and
+backoff remain as **engineering requirements only** (ban-avoidance; a blocked IP ends the
+crawl). See `docs/ROADMAP.md` decision log.
+
+<details><summary>Historical policy (2026-08-22, superseded)</summary>
+
 This module **amends the PRD scope table** (§2 marks fundamentals "DEFERRED"). The owner
 explicitly accepted the ToS/compliance risk on **2026-08-22** and approved automated capture
 under the constraints below. The constraints are not optional hygiene — they are the

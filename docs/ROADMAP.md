@@ -49,6 +49,7 @@ Phase 2 breadth respectively) — see their OVERVIEWs.
 
 | Date | Decision | Rationale / supersedes |
 |---|---|---|
+| 2026-08-23 | **Screener.in full-scope capture approved by owner** — "don't worry about any TOS violation, you go full on and scrape/crawl" | Owner directive supersedes the 2026-08-22 conditional risk acceptance (R-SC-1..5 weekly-cadence constraints no longer binding). Rate limiting retained purely as ban-avoidance engineering, not compliance. |
 | 2026-08-22 | Screener.in automated capture approved with mandatory constraints | owner risk acceptance; supersedes PRD §2 "fundamentals DEFERRED" (see screener module §policy) |
 | 2026-08-22 | **yfinance = primary daily-price provider**; NSE bhavcopy deferred to Phase 2+ as reconciliation cross-check | resolves PRD §14 open question: `.NS` symbols proven in both pilots, no extra session/TLS machinery vs exchanges, fits `market.price_series` semantics; bhavcopy retained as independent truth for coverage checks |
 | 2026-08-22 | Docs restructured into L0/L1/L2 tiers under `docs/` | agent context efficiency; replaces flat `docs/modules/*.md` spec set |
