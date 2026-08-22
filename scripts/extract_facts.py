@@ -4,11 +4,16 @@ stronger-model re-pass rather than silently degraded, per the §8 tiered-routing
 """
 import json
 import os
+import sys
 from pathlib import Path
 
 from openai import OpenAI
 
-DATA = Path(__file__).parent.parent / "data" / "tataelxsi"
+sys.path.insert(0, str(Path(__file__).parent))
+from companies import get
+
+co = get(sys.argv[1] if len(sys.argv) > 1 else "tataelxsi")
+DATA = Path(__file__).parent.parent / "data" / co.slug
 MODEL = "gpt-4o-mini"
 MAX_CHARS = 12000  # bulk-tier cap; see note in pilot_learnings.md on long-document handling
 
@@ -47,7 +52,7 @@ SCHEMA = {
     "additionalProperties": False,
 }
 
-PROMPT = """You are extracting structured facts from an Indian stock exchange filing for Tata Elxsi Limited (NSE: TATAELXSI, BSE: 500408).
+PROMPT = """You are extracting structured facts from an Indian stock exchange filing for {company} (NSE: {nse}, BSE: {bse}).
 
 Rules:
 - Extract ONLY facts explicitly stated in the text. Never infer or estimate a number that isn't written.
@@ -78,7 +83,7 @@ def extract_document(client: OpenAI, text: str) -> dict:
     payload_text = text[:MAX_CHARS]
     resp = client.chat.completions.create(
         model=MODEL,
-        messages=[{"role": "user", "content": PROMPT.format(text=payload_text)}],
+        messages=[{"role": "user", "content": PROMPT.format(text=payload_text, company=co.name, nse=co.nse_symbol, bse=co.bse_scrip)}],
         response_format={"type": "json_schema", "json_schema": {"name": "filing_extraction", "schema": SCHEMA, "strict": True}},
         temperature=0,
     )
@@ -100,7 +105,7 @@ def main():
     for doc in manifest:
         if doc.get("error") or doc.get("image_only"):
             continue
-        text = Path(doc["text_path"]).read_text()
+        text = Path(doc["text_path"]).read_text(encoding="utf-8")
         if not text.strip():
             continue
         try:

@@ -1,10 +1,15 @@
 """Extract text layer from each unique (by hash) filing PDF. Flags image-only/low-confidence PDFs per §6."""
 import json
+import sys
 from pathlib import Path
 
 import pdfplumber
 
-DATA = Path(__file__).parent.parent / "data" / "tataelxsi"
+sys.path.insert(0, str(Path(__file__).parent))
+from companies import get
+
+co = get(sys.argv[1] if len(sys.argv) > 1 else "tataelxsi")
+DATA = Path(__file__).parent.parent / "data" / co.slug
 TEXT_DIR = DATA / "extracted_text"
 TEXT_DIR.mkdir(exist_ok=True)
 
@@ -53,7 +58,7 @@ def main():
 
         text_path = TEXT_DIR / f"{h[:16]}.txt"
         if "text" in extraction:
-            text_path.write_text(extraction["text"])
+            text_path.write_text(extraction["text"], encoding="utf-8")
 
         results.append({
             "sha256": h,

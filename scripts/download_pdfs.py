@@ -1,21 +1,30 @@
 """Download all filing PDFs referenced in normalized_documents.json and hash them for dedup."""
 import hashlib
 import json
-import subprocess
+import sys
 from pathlib import Path
 
-DATA = Path(__file__).parent.parent / "data" / "tataelxsi"
+sys.path.insert(0, str(Path(__file__).parent))
+from companies import get
+
+from curl_cffi import requests as cr
+
+co = get(sys.argv[1] if len(sys.argv) > 1 else "tataelxsi")
+DATA = Path(__file__).parent.parent / "data" / co.slug
 PDF_DIR = DATA / "pdfs"
 PDF_DIR.mkdir(exist_ok=True)
 
 UA = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0 Safari/537.36"
 
 
-def curl_get(url: str, referer: str, out_path: Path) -> bool:
-    subprocess.run(
-        ["curl", "-s", "-A", UA, "-e", referer, str(url), "-o", str(out_path)],
-        check=True,
-    )
+def curl_get(url: str, referer: str, out_path: Path, session) -> bool:
+    try:
+        r = session.get(url, headers={"Referer": referer}, timeout=60)
+        if r.status_code != 200:
+            return False
+        out_path.write_bytes(r.content)
+    except Exception:
+        return False
     return out_path.exists() and out_path.stat().st_size > 0 and _is_pdf(out_path)
 
 
@@ -37,17 +46,18 @@ def sha256(path: Path) -> str:
 
 def main():
     records = json.loads((DATA / "raw_meta" / "normalized_documents.json").read_text())
+    session = cr.Session(impersonate="chrome")  # TLS impersonation: plain requests/curl get blocked
     results = []
     for r in records:
         seq = r["source_seq_id"]
         out_path = PDF_DIR / f"{r['exchange']}_{seq}.pdf"
         ok = False
         if r["exchange"] == "NSE" and r["document_url"]:
-            ok = curl_get(r["document_url"], "https://www.nseindia.com/", out_path)
+            ok = curl_get(r["document_url"], "https://www.nseindia.com/", out_path, session)
         elif r["exchange"] == "BSE" and r["document_url"]:
             filename = r["document_url"].rsplit("/", 1)[-1]
             for candidate in bse_url_variants(filename):
-                if curl_get(candidate, "https://www.bseindia.com/", out_path):
+                if curl_get(candidate, "https://www.bseindia.com/", out_path, session):
                     ok = True
                     break
         entry = {**r, "local_path": str(out_path) if ok else None, "downloaded": ok}

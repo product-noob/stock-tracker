@@ -193,3 +193,46 @@ This means a naive rule — "flag any event whose next-session return z-score ex
 2. Implement the anomaly cross-check (§16) as a real function and re-run against the full 3-month window to see how many of the 28 events would actually survive it as safe-to-attribute.
 3. Widen the facts schema per §17 item 8 and re-run LLM extraction to capture growth percentages structurally instead of via regex.
 4. Everything still open from Parts 1 and 2 (Google News redirects, identity collision test, quote-verification retry loop, governance category split).
+
+---
+
+# Part 4 — Second Company Run: HDFC Bank (NSE: HDFCBANK, BSE: 500180)
+
+**Date:** 22 August 2026. Scripts: `scripts/companies.py` (new registry), `fetch_announcements.py`, `price_reaction.py`; all Part-1/2 scripts generalized to take a company slug.
+
+## 19. The pipeline generalizes cleanly — with three new environment findings
+
+Ran the full chain end-to-end on a second, very different company (mega-cap bank vs mid-cap tech): **38 NSE + 42 BSE announcements fetched → 80 PDFs downloaded → 38 unique by hash (36 cross-exchange dup groups) → 38/38 text-usable → LLM extraction (~$0.02) → 37/38 quotes verified after normalization → ranked digest → automated price-reaction join.** Cross-exchange byte-identical duplication held at the same ~95% rate as Tata Elxsi, further validating hash-tier dedup.
+
+New findings from running on a different machine/network (Windows, corporate proxy):
+
+1. **Akamai now defeats plain HTTP clients on nseindia.com entirely** (403 even on the homepage for curl and python-requests). Fix: `curl_cffi` with `impersonate="chrome"` — TLS-fingerprint impersonation — passes warm-up and API calls. This supersedes §1's "cookie warm-up" note: cookies are necessary but no longer sufficient; the client's TLS handshake must look like a browser too.
+2. **Both exchange APIs changed contracts since Part 1.** NSE's `/api/corporate-announcements` now rejects queries without `index=equities` (returns `Missing index`). BSE replaced `strCategory/strSubCategory/strPageSize` with `strCat/strType/subcategory` and wants `strSearch=P` for scrip-code lookups (reverse-engineered from ann.html's Angular bundle). Confirms the product note's adapter-with-per-source-session-state requirement — these feeds change without notice.
+3. **Windows/console encoding is a real portability bug class**: default cp1252 choked on `₹` in PDF text (`write_text`) and stdout prints. All text I/O needs explicit `encoding="utf-8"`; scripts that print unicode need `sys.stdout.reconfigure(encoding="utf-8")`.
+
+## 20. Quote verification fix confirmed at scale
+
+Applied the whitespace+hyphenation normalization from §10 to HDFC Bank's extractions: **3/38 naive verbatim matches → 37/38 after normalization (34 recovered)**. Same failure profile as the pilot (89% naive failures were never real). One genuine model quote-fabrication remains in 38 docs (~2.6%), consistent with the 2/28 rate in Part 2 — the retry-then-downgrade loop stays a required pipeline component.
+
+## 21. Event-cluster anchoring: the subtle half of clustering nobody scoped
+
+Generalizing the price-reaction join forced automating cluster→event-date mapping, which surfaced a failure mode distinct from anything in Parts 1–3: **which trading session an event "reacts on" depends on per-document publication timestamps, and both simple rules get it wrong.**
+
+- Anchoring on the *latest* filing in the cluster breaks when a follow-up doc (con-call update filed 3 days later, tagged `results` by the LLM) drags the anchor past the real reaction.
+- Anchoring on the *earliest* breaks when pre-event noise (a notice filed 2 days before results) masks the real post-publication session.
+
+Rule that validates against both companies: **each document maps to the first trading session strictly after its publication timestamp; the event's reaction session is the modal such session across the cluster, tie-broken earliest.** Reproduces Tata Elxsi exactly (−4.78%, z≈−2.3 on 15 Jul) and correctly lands HDFC Bank on Mon 20 Jul after its Saturday board outcome.
+
+This means event clustering has *two* coupled sub-problems, not one: grouping documents (semantic) AND choosing the event's market-time anchor (temporal). The product note's event-clustering stage spec should cover both.
+
+## 22. The anomaly cross-check works — and immediately earned its keep
+
+The §16 gate, implemented as code, re-ran against Tata Elxsi's full window and **automatically reproduced the manual finding from §16: it flagged 1 July (−6.3%, z=−3.05, unexplained) plus two other comparable anomalies, downgrading the results-day insight to hedged framing.** What took manual spreadsheet work in Part 3 is now one function call.
+
+HDFC Bank Q1 FY27 results, by contrast, passed clean: **−5.12% next session (Mon 20 Jul), z=−3.79 on 1.35% daily stdev, volume z=+1.51, zero comparable-or-larger unexplained anomalies anywhere in the window** — a stronger causal candidate than anything in the Tata Elxsi sample. Notably the drop came despite the filings themselves being routine-looking (board outcome + presentation + con-call intimation), reinforcing that the reaction signal lives in the join, not in any single document.
+
+## 23. State of the pipeline after two companies
+
+Working end-to-end, parameterized by company slug: fetch (NSE/BSE/news/prices) → normalize → download+hash-dedup → text extraction → LLM extraction → normalized quote verification → severity/ranking digest → auto-clustered price-reaction join with anomaly gate.
+
+Still open (unchanged): Google News redirect resolution, identity-resolution stress test, retry-on-quote-failure loop (verification exists, retry doesn't), growth% facts field, governance kind split, full event-clustering stage (the modal-anchor rule above is its temporal half).

@@ -1,0 +1,848 @@
+[
+  {
+    "sha256": "6bfd7e3cf9bf94f4629a45c44a1fda9c2357833c58542ba433a235c595063bf4",
+    "source_records": [
+      {
+        "exchange": "NSE",
+        "subject": "General Updates",
+        "published_at": "2026-08-20T22:59:40"
+      },
+      {
+        "exchange": "BSE",
+        "subject": "Company Update",
+        "published_at": "2026-08-20T22:57:35.313"
+      }
+    ],
+    "pdf_path": "C:\\Users\\princ\\OneDrive\\Attachments\\Documents\\AI Projects\\Stock Market\\data\\hdfcbank\\pdfs\\NSE_106751730.pdf",
+    "text_path": "C:\\Users\\princ\\OneDrive\\Attachments\\Documents\\AI Projects\\Stock Market\\data\\hdfcbank\\extracted_text\\6bfd7e3cf9bf94f4.txt",
+    "n_pages": 2,
+    "total_chars": 3687,
+    "low_confidence_pages": 0,
+    "image_only": false,
+    "error": null
+  },
+  {
+    "sha256": "f703655fb77dfb7cf6dac3e720106cf5426762f06772187e773a4e92fbcb65a1",
+    "source_records": [
+      {
+        "exchange": "NSE",
+        "subject": "Credit Rating",
+        "published_at": "2026-08-20T17:16:08"
+      },
+      {
+        "exchange": "BSE",
+        "subject": "Company Update",
+        "published_at": "2026-08-20T17:16:49.087"
+      }
+    ],
+    "pdf_path": "C:\\Users\\princ\\OneDrive\\Attachments\\Documents\\AI Projects\\Stock Market\\data\\hdfcbank\\pdfs\\NSE_106751149.pdf",
+    "text_path": "C:\\Users\\princ\\OneDrive\\Attachments\\Documents\\AI Projects\\Stock Market\\data\\hdfcbank\\extracted_text\\f703655fb77dfb7c.txt",
+    "n_pages": 13,
+    "total_chars": 42161,
+    "low_confidence_pages": 0,
+    "image_only": false,
+    "error": null
+  },
+  {
+    "sha256": "3df533e58d1e7c8523280f1ec1ab30d00a6050ca8e87b1a30126ef8ad6a5dcef",
+    "source_records": [
+      {
+        "exchange": "NSE",
+        "subject": "Credit Rating",
+        "published_at": "2026-08-19T23:19:15"
+      },
+      {
+        "exchange": "BSE",
+        "subject": "Company Update",
+        "published_at": "2026-08-19T23:19:39.42"
+      }
+    ],
+    "pdf_path": "C:\\Users\\princ\\OneDrive\\Attachments\\Documents\\AI Projects\\Stock Market\\data\\hdfcbank\\pdfs\\NSE_106750362.pdf",
+    "text_path": "C:\\Users\\princ\\OneDrive\\Attachments\\Documents\\AI Projects\\Stock Market\\data\\hdfcbank\\extracted_text\\3df533e58d1e7c85.txt",
+    "n_pages": 8,
+    "total_chars": 19682,
+    "low_confidence_pages": 0,
+    "image_only": false,
+    "error": null
+  },
+  {
+    "sha256": "3c34a60d23d9f21c20fd854f70faed337e41c10a567fd67e88daabcd6e647fba",
+    "source_records": [
+      {
+        "exchange": "NSE",
+        "subject": "Updates",
+        "published_at": "2026-08-19T22:52:22"
+      },
+      {
+        "exchange": "BSE",
+        "subject": "Company Update",
+        "published_at": "2026-08-19T22:52:54.67"
+      }
+    ],
+    "pdf_path": "C:\\Users\\princ\\OneDrive\\Attachments\\Documents\\AI Projects\\Stock Market\\data\\hdfcbank\\pdfs\\NSE_106750293.pdf",
+    "text_path": "C:\\Users\\princ\\OneDrive\\Attachments\\Documents\\AI Projects\\Stock Market\\data\\hdfcbank\\extracted_text\\3c34a60d23d9f21c.txt",
+    "n_pages": 1,
+    "total_chars": 1971,
+    "low_confidence_pages": 0,
+    "image_only": false,
+    "error": null
+  },
+  {
+    "sha256": "bded2da5704a21e9885619b5ffd54f213de92e4c97040a03de5b082964feb771",
+    "source_records": [
+      {
+        "exchange": "NSE",
+        "subject": "Analysts/Institutional Investor Meet/Con. Call Updates",
+        "published_at": "2026-08-16T19:34:00"
+      },
+      {
+        "exchange": "BSE",
+        "subject": "Company Update",
+        "published_at": "2026-08-16T19:43:27.497"
+      }
+    ],
+    "pdf_path": "C:\\Users\\princ\\OneDrive\\Attachments\\Documents\\AI Projects\\Stock Market\\data\\hdfcbank\\pdfs\\NSE_106746345.pdf",
+    "text_path": "C:\\Users\\princ\\OneDrive\\Attachments\\Documents\\AI Projects\\Stock Market\\data\\hdfcbank\\extracted_text\\bded2da5704a21e9.txt",
+    "n_pages": 1,
+    "total_chars": 1505,
+    "low_confidence_pages": 0,
+    "image_only": false,
+    "error": null
+  },
+  {
+    "sha256": "c6d7fcbb806b5bcdf9602f97a6584356ab4ad01b715a83d539963d9f706197b8",
+    "source_records": [
+      {
+        "exchange": "NSE",
+        "subject": "ESOP/ESOS/ESPS",
+        "published_at": "2026-08-14T14:10:29"
+      },
+      {
+        "exchange": "BSE",
+        "subject": "Company Update",
+        "published_at": "2026-08-14T14:10:20.837"
+      }
+    ],
+    "pdf_path": "C:\\Users\\princ\\OneDrive\\Attachments\\Documents\\AI Projects\\Stock Market\\data\\hdfcbank\\pdfs\\NSE_106744049.pdf",
+    "text_path": "C:\\Users\\princ\\OneDrive\\Attachments\\Documents\\AI Projects\\Stock Market\\data\\hdfcbank\\extracted_text\\c6d7fcbb806b5bcd.txt",
+    "n_pages": 1,
+    "total_chars": 1229,
+    "low_confidence_pages": 0,
+    "image_only": false,
+    "error": null
+  },
+  {
+    "sha256": "8bf08e1bdec1a3ee4a986630eb1fd927b55612c8f99bba6c6e3c8eedd2d210d6",
+    "source_records": [
+      {
+        "exchange": "NSE",
+        "subject": "Analysts/Institutional Investor Meet/Con. Call Updates",
+        "published_at": "2026-08-13T16:17:31"
+      },
+      {
+        "exchange": "BSE",
+        "subject": "Company Update",
+        "published_at": "2026-08-13T16:21:49.777"
+      }
+    ],
+    "pdf_path": "C:\\Users\\princ\\OneDrive\\Attachments\\Documents\\AI Projects\\Stock Market\\data\\hdfcbank\\pdfs\\NSE_106741788.pdf",
+    "text_path": "C:\\Users\\princ\\OneDrive\\Attachments\\Documents\\AI Projects\\Stock Market\\data\\hdfcbank\\extracted_text\\8bf08e1bdec1a3ee.txt",
+    "n_pages": 1,
+    "total_chars": 1545,
+    "low_confidence_pages": 0,
+    "image_only": false,
+    "error": null
+  },
+  {
+    "sha256": "0b7f5f20f12f85887ea985003465f576a8f4dd1e2dd07203925fd621cf924ae2",
+    "source_records": [
+      {
+        "exchange": "NSE",
+        "subject": "Shareholders meeting",
+        "published_at": "2026-08-05T21:00:26"
+      },
+      {
+        "exchange": "BSE",
+        "subject": "AGM/EGM",
+        "published_at": "2026-08-05T21:24:22.577"
+      },
+      {
+        "exchange": "BSE",
+        "subject": "AGM/EGM",
+        "published_at": "2026-08-05T21:06:57.29"
+      }
+    ],
+    "pdf_path": "C:\\Users\\princ\\OneDrive\\Attachments\\Documents\\AI Projects\\Stock Market\\data\\hdfcbank\\pdfs\\NSE_106727491.pdf",
+    "text_path": "C:\\Users\\princ\\OneDrive\\Attachments\\Documents\\AI Projects\\Stock Market\\data\\hdfcbank\\extracted_text\\0b7f5f20f12f8588.txt",
+    "n_pages": 20,
+    "total_chars": 35106,
+    "low_confidence_pages": 0,
+    "image_only": false,
+    "error": null
+  },
+  {
+    "sha256": "f687082b79c45439679474528443a421039f3aa9a550cf3c50326530286c1006",
+    "source_records": [
+      {
+        "exchange": "NSE",
+        "subject": "Copy of Newspaper Publication",
+        "published_at": "2026-07-31T12:14:43"
+      },
+      {
+        "exchange": "BSE",
+        "subject": "Company Update",
+        "published_at": "2026-07-31T12:14:56.32"
+      }
+    ],
+    "pdf_path": "C:\\Users\\princ\\OneDrive\\Attachments\\Documents\\AI Projects\\Stock Market\\data\\hdfcbank\\pdfs\\NSE_106718725.pdf",
+    "text_path": "C:\\Users\\princ\\OneDrive\\Attachments\\Documents\\AI Projects\\Stock Market\\data\\hdfcbank\\extracted_text\\f687082b79c45439.txt",
+    "n_pages": 3,
+    "total_chars": 1202,
+    "low_confidence_pages": 2,
+    "image_only": false,
+    "error": null
+  },
+  {
+    "sha256": "6e8025862cae1561a9248d5c223120bca73d50f81eeb8287b97c8f3050752041",
+    "source_records": [
+      {
+        "exchange": "NSE",
+        "subject": "ESOP/ESOS/ESPS",
+        "published_at": "2026-07-31T12:05:08"
+      },
+      {
+        "exchange": "BSE",
+        "subject": "Company Update",
+        "published_at": "2026-07-31T12:05:33.023"
+      }
+    ],
+    "pdf_path": "C:\\Users\\princ\\OneDrive\\Attachments\\Documents\\AI Projects\\Stock Market\\data\\hdfcbank\\pdfs\\NSE_106718711.pdf",
+    "text_path": "C:\\Users\\princ\\OneDrive\\Attachments\\Documents\\AI Projects\\Stock Market\\data\\hdfcbank\\extracted_text\\6e8025862cae1561.txt",
+    "n_pages": 1,
+    "total_chars": 1227,
+    "low_confidence_pages": 0,
+    "image_only": false,
+    "error": null
+  },
+  {
+    "sha256": "9801924a8d264b601798664101839a78ad36bf0b536a3817c4df24021ce189f4",
+    "source_records": [
+      {
+        "exchange": "NSE",
+        "subject": "Updates",
+        "published_at": "2026-07-27T15:56:07"
+      },
+      {
+        "exchange": "BSE",
+        "subject": "Company Update",
+        "published_at": "2026-07-27T15:56:57.08"
+      }
+    ],
+    "pdf_path": "C:\\Users\\princ\\OneDrive\\Attachments\\Documents\\AI Projects\\Stock Market\\data\\hdfcbank\\pdfs\\NSE_106711895.pdf",
+    "text_path": "C:\\Users\\princ\\OneDrive\\Attachments\\Documents\\AI Projects\\Stock Market\\data\\hdfcbank\\extracted_text\\9801924a8d264b60.txt",
+    "n_pages": 2,
+    "total_chars": 2485,
+    "low_confidence_pages": 0,
+    "image_only": false,
+    "error": null
+  },
+  {
+    "sha256": "33f8d8e7cf4198fd65eea5d8ee9aaf9bbb7e9eb77f2061d8bfb1c731b1a8ab13",
+    "source_records": [
+      {
+        "exchange": "NSE",
+        "subject": "General Updates",
+        "published_at": "2026-07-24T19:06:34"
+      },
+      {
+        "exchange": "BSE",
+        "subject": "Company Update",
+        "published_at": "2026-07-24T19:07:05.07"
+      }
+    ],
+    "pdf_path": "C:\\Users\\princ\\OneDrive\\Attachments\\Documents\\AI Projects\\Stock Market\\data\\hdfcbank\\pdfs\\NSE_106710326.pdf",
+    "text_path": "C:\\Users\\princ\\OneDrive\\Attachments\\Documents\\AI Projects\\Stock Market\\data\\hdfcbank\\extracted_text\\33f8d8e7cf4198fd.txt",
+    "n_pages": 4,
+    "total_chars": 2600,
+    "low_confidence_pages": 2,
+    "image_only": false,
+    "error": null
+  },
+  {
+    "sha256": "d6c19e7d4f74456f7e842284db091fd3fcf98eb1dac35820379d1a8c57c26db0",
+    "source_records": [
+      {
+        "exchange": "NSE",
+        "subject": "Analysts/Institutional Investor Meet/Con. Call Updates",
+        "published_at": "2026-07-24T15:52:03"
+      },
+      {
+        "exchange": "BSE",
+        "subject": "Company Update",
+        "published_at": "2026-07-24T15:52:36.74"
+      }
+    ],
+    "pdf_path": "C:\\Users\\princ\\OneDrive\\Attachments\\Documents\\AI Projects\\Stock Market\\data\\hdfcbank\\pdfs\\NSE_106709751.pdf",
+    "text_path": "C:\\Users\\princ\\OneDrive\\Attachments\\Documents\\AI Projects\\Stock Market\\data\\hdfcbank\\extracted_text\\d6c19e7d4f74456f.txt",
+    "n_pages": 17,
+    "total_chars": 53090,
+    "low_confidence_pages": 0,
+    "image_only": false,
+    "error": null
+  },
+  {
+    "sha256": "52dbcae36e404237e99cb1a20550ee6149e5a76ee056bb5db932dce1926d980e",
+    "source_records": [
+      {
+        "exchange": "NSE",
+        "subject": "ESOP/ESOS/ESPS",
+        "published_at": "2026-07-21T13:50:17"
+      },
+      {
+        "exchange": "BSE",
+        "subject": "Company Update",
+        "published_at": "2026-07-21T13:51:06.687"
+      }
+    ],
+    "pdf_path": "C:\\Users\\princ\\OneDrive\\Attachments\\Documents\\AI Projects\\Stock Market\\data\\hdfcbank\\pdfs\\NSE_106704818.pdf",
+    "text_path": "C:\\Users\\princ\\OneDrive\\Attachments\\Documents\\AI Projects\\Stock Market\\data\\hdfcbank\\extracted_text\\52dbcae36e404237.txt",
+    "n_pages": 1,
+    "total_chars": 1226,
+    "low_confidence_pages": 0,
+    "image_only": false,
+    "error": null
+  },
+  {
+    "sha256": "2c3c409216f4a771aa56011c2adb818be1aaff57b8c645abb5b233c8389f71fb",
+    "source_records": [
+      {
+        "exchange": "NSE",
+        "subject": "Analysts/Institutional Investor Meet/Con. Call Updates",
+        "published_at": "2026-07-18T21:41:03"
+      },
+      {
+        "exchange": "BSE",
+        "subject": "Company Update",
+        "published_at": "2026-07-18T21:44:19.86"
+      }
+    ],
+    "pdf_path": "C:\\Users\\princ\\OneDrive\\Attachments\\Documents\\AI Projects\\Stock Market\\data\\hdfcbank\\pdfs\\NSE_106702815.pdf",
+    "text_path": "C:\\Users\\princ\\OneDrive\\Attachments\\Documents\\AI Projects\\Stock Market\\data\\hdfcbank\\extracted_text\\2c3c409216f4a771.txt",
+    "n_pages": 1,
+    "total_chars": 1547,
+    "low_confidence_pages": 0,
+    "image_only": false,
+    "error": null
+  },
+  {
+    "sha256": "2058db8cf54a01107272ba7df35ebd54a64f0c47810feadb7f4121d5b8a3b24f",
+    "source_records": [
+      {
+        "exchange": "NSE",
+        "subject": "Investor Presentation",
+        "published_at": "2026-07-18T15:18:05"
+      },
+      {
+        "exchange": "BSE",
+        "subject": "Company Update",
+        "published_at": "2026-07-18T15:18:18.6"
+      }
+    ],
+    "pdf_path": "C:\\Users\\princ\\OneDrive\\Attachments\\Documents\\AI Projects\\Stock Market\\data\\hdfcbank\\pdfs\\NSE_106702560.pdf",
+    "text_path": "C:\\Users\\princ\\OneDrive\\Attachments\\Documents\\AI Projects\\Stock Market\\data\\hdfcbank\\extracted_text\\2058db8cf54a0110.txt",
+    "n_pages": 1,
+    "total_chars": 1387,
+    "low_confidence_pages": 0,
+    "image_only": false,
+    "error": null
+  },
+  {
+    "sha256": "d4dbfc8542276e1e572380efd1855f6b3c1b2bb62ef1b12a7fb4b6eb3519c3a7",
+    "source_records": [
+      {
+        "exchange": "NSE",
+        "subject": "Outcome of Board Meeting",
+        "published_at": "2026-07-18T14:22:30"
+      },
+      {
+        "exchange": "BSE",
+        "subject": "Result",
+        "published_at": "2026-07-18T14:27:17.553"
+      },
+      {
+        "exchange": "BSE",
+        "subject": "Board Meeting",
+        "published_at": "2026-07-18T14:22:51.453"
+      }
+    ],
+    "pdf_path": "C:\\Users\\princ\\OneDrive\\Attachments\\Documents\\AI Projects\\Stock Market\\data\\hdfcbank\\pdfs\\NSE_106702522.pdf",
+    "text_path": "C:\\Users\\princ\\OneDrive\\Attachments\\Documents\\AI Projects\\Stock Market\\data\\hdfcbank\\extracted_text\\d4dbfc8542276e1e.txt",
+    "n_pages": 22,
+    "total_chars": 2254,
+    "low_confidence_pages": 21,
+    "image_only": false,
+    "error": null
+  },
+  {
+    "sha256": "608110e9ec515e7613a93d527e923fe274aba8b101675e68115d2af943d6c903",
+    "source_records": [
+      {
+        "exchange": "NSE",
+        "subject": "Certificate under SEBI (Depositories and Participants) Regulations, 2018",
+        "published_at": "2026-07-16T11:06:07"
+      },
+      {
+        "exchange": "BSE",
+        "subject": "Company Update",
+        "published_at": "2026-07-16T11:06:25.983"
+      }
+    ],
+    "pdf_path": "C:\\Users\\princ\\OneDrive\\Attachments\\Documents\\AI Projects\\Stock Market\\data\\hdfcbank\\pdfs\\NSE_106699773.pdf",
+    "text_path": "C:\\Users\\princ\\OneDrive\\Attachments\\Documents\\AI Projects\\Stock Market\\data\\hdfcbank\\extracted_text\\608110e9ec515e76.txt",
+    "n_pages": 2,
+    "total_chars": 1201,
+    "low_confidence_pages": 1,
+    "image_only": false,
+    "error": null
+  },
+  {
+    "sha256": "3663c54ad542ed2ca71dfe2859a8b6cbaba52440b487de7f07a789677d8791d1",
+    "source_records": [
+      {
+        "exchange": "NSE",
+        "subject": "Appointment",
+        "published_at": "2026-07-15T17:00:18"
+      },
+      {
+        "exchange": "BSE",
+        "subject": "Company Update",
+        "published_at": "2026-07-15T17:00:31.02"
+      }
+    ],
+    "pdf_path": "C:\\Users\\princ\\OneDrive\\Attachments\\Documents\\AI Projects\\Stock Market\\data\\hdfcbank\\pdfs\\NSE_106698807.pdf",
+    "text_path": "C:\\Users\\princ\\OneDrive\\Attachments\\Documents\\AI Projects\\Stock Market\\data\\hdfcbank\\extracted_text\\3663c54ad542ed2c.txt",
+    "n_pages": 1,
+    "total_chars": 1638,
+    "low_confidence_pages": 0,
+    "image_only": false,
+    "error": null
+  },
+  {
+    "sha256": "01e4b64dbbc0745eb960447ed4e4ee7b7a3307408f56faf2fc3c9c42ecb8feae",
+    "source_records": [
+      {
+        "exchange": "NSE",
+        "subject": "Copy of Newspaper Publication",
+        "published_at": "2026-07-12T14:29:26"
+      },
+      {
+        "exchange": "BSE",
+        "subject": "Company Update",
+        "published_at": "2026-07-12T14:33:20.37"
+      }
+    ],
+    "pdf_path": "C:\\Users\\princ\\OneDrive\\Attachments\\Documents\\AI Projects\\Stock Market\\data\\hdfcbank\\pdfs\\NSE_106695031.pdf",
+    "text_path": "C:\\Users\\princ\\OneDrive\\Attachments\\Documents\\AI Projects\\Stock Market\\data\\hdfcbank\\extracted_text\\01e4b64dbbc0745e.txt",
+    "n_pages": 3,
+    "total_chars": 1379,
+    "low_confidence_pages": 2,
+    "image_only": false,
+    "error": null
+  },
+  {
+    "sha256": "92de3c75b6fc05afe8731e97705c9d3534cc192e677af02f4b325e3d82eafca6",
+    "source_records": [
+      {
+        "exchange": "NSE",
+        "subject": "Shareholders meeting",
+        "published_at": "2026-07-10T23:50:18"
+      },
+      {
+        "exchange": "BSE",
+        "subject": "Others",
+        "published_at": "2026-07-11T00:06:13.937"
+      },
+      {
+        "exchange": "BSE",
+        "subject": "AGM/EGM",
+        "published_at": "2026-07-10T23:50:46.327"
+      }
+    ],
+    "pdf_path": "C:\\Users\\princ\\OneDrive\\Attachments\\Documents\\AI Projects\\Stock Market\\data\\hdfcbank\\pdfs\\NSE_106694495.pdf",
+    "text_path": "C:\\Users\\princ\\OneDrive\\Attachments\\Documents\\AI Projects\\Stock Market\\data\\hdfcbank\\extracted_text\\92de3c75b6fc05af.txt",
+    "n_pages": 678,
+    "total_chars": 1983420,
+    "low_confidence_pages": 6,
+    "image_only": false,
+    "error": null
+  },
+  {
+    "sha256": "6eaaffcb7f5cd62ae7050fc478ba3fd7425eadaf96c8d5982b576884d2dc5c9b",
+    "source_records": [
+      {
+        "exchange": "NSE",
+        "subject": "Analysts/Institutional Investor Meet/Con. Call Updates",
+        "published_at": "2026-07-09T17:09:34"
+      },
+      {
+        "exchange": "BSE",
+        "subject": "Company Update",
+        "published_at": "2026-07-09T17:09:53.533"
+      }
+    ],
+    "pdf_path": "C:\\Users\\princ\\OneDrive\\Attachments\\Documents\\AI Projects\\Stock Market\\data\\hdfcbank\\pdfs\\NSE_106692277.pdf",
+    "text_path": "C:\\Users\\princ\\OneDrive\\Attachments\\Documents\\AI Projects\\Stock Market\\data\\hdfcbank\\extracted_text\\6eaaffcb7f5cd62a.txt",
+    "n_pages": 1,
+    "total_chars": 1942,
+    "low_confidence_pages": 0,
+    "image_only": false,
+    "error": null
+  },
+  {
+    "sha256": "84affd55db6561694dc6013c25b2e1c248c438111c9fa691584544d504bcb706",
+    "source_records": [
+      {
+        "exchange": "NSE",
+        "subject": "Updates",
+        "published_at": "2026-07-04T09:00:01"
+      },
+      {
+        "exchange": "BSE",
+        "subject": "Company Update",
+        "published_at": "2026-07-04T09:04:20.74"
+      }
+    ],
+    "pdf_path": "C:\\Users\\princ\\OneDrive\\Attachments\\Documents\\AI Projects\\Stock Market\\data\\hdfcbank\\pdfs\\NSE_106686539.pdf",
+    "text_path": "C:\\Users\\princ\\OneDrive\\Attachments\\Documents\\AI Projects\\Stock Market\\data\\hdfcbank\\extracted_text\\84affd55db656169.txt",
+    "n_pages": 2,
+    "total_chars": 3679,
+    "low_confidence_pages": 0,
+    "image_only": false,
+    "error": null
+  },
+  {
+    "sha256": "04a1a4fde99d43f90385285a6d8aa1ebadf31c2404844264c19e4069634a80f0",
+    "source_records": [
+      {
+        "exchange": "NSE",
+        "subject": "Appointment",
+        "published_at": "2026-06-29T23:06:25"
+      },
+      {
+        "exchange": "NSE",
+        "subject": "Appointment",
+        "published_at": "2026-06-29T23:06:25"
+      },
+      {
+        "exchange": "BSE",
+        "subject": "Company Update",
+        "published_at": "2026-06-29T22:32:50.273"
+      }
+    ],
+    "pdf_path": "C:\\Users\\princ\\OneDrive\\Attachments\\Documents\\AI Projects\\Stock Market\\data\\hdfcbank\\pdfs\\NSE_106680339.pdf",
+    "text_path": "C:\\Users\\princ\\OneDrive\\Attachments\\Documents\\AI Projects\\Stock Market\\data\\hdfcbank\\extracted_text\\04a1a4fde99d43f9.txt",
+    "n_pages": 4,
+    "total_chars": 6386,
+    "low_confidence_pages": 0,
+    "image_only": false,
+    "error": null
+  },
+  {
+    "sha256": "bbf486074fdf1c4c371d9750ce1ffcbd43d657b7afa18a0cf7f11645f48709bf",
+    "source_records": [
+      {
+        "exchange": "NSE",
+        "subject": "Appointment",
+        "published_at": "2026-06-29T20:33:49"
+      },
+      {
+        "exchange": "BSE",
+        "subject": "Company Update",
+        "published_at": "2026-06-29T20:22:22.93"
+      }
+    ],
+    "pdf_path": "C:\\Users\\princ\\OneDrive\\Attachments\\Documents\\AI Projects\\Stock Market\\data\\hdfcbank\\pdfs\\NSE_106680236.pdf",
+    "text_path": "C:\\Users\\princ\\OneDrive\\Attachments\\Documents\\AI Projects\\Stock Market\\data\\hdfcbank\\extracted_text\\bbf486074fdf1c4c.txt",
+    "n_pages": 5,
+    "total_chars": 8878,
+    "low_confidence_pages": 0,
+    "image_only": false,
+    "error": null
+  },
+  {
+    "sha256": "30fb9d8aad6091726df821a66389d650efc3fe1b55a3e19ab187a0106b3677e0",
+    "source_records": [
+      {
+        "exchange": "NSE",
+        "subject": "Updates",
+        "published_at": "2026-06-26T21:31:58"
+      },
+      {
+        "exchange": "BSE",
+        "subject": "Company Update",
+        "published_at": "2026-06-26T21:36:45.577"
+      }
+    ],
+    "pdf_path": "C:\\Users\\princ\\OneDrive\\Attachments\\Documents\\AI Projects\\Stock Market\\data\\hdfcbank\\pdfs\\NSE_106678068.pdf",
+    "text_path": "C:\\Users\\princ\\OneDrive\\Attachments\\Documents\\AI Projects\\Stock Market\\data\\hdfcbank\\extracted_text\\30fb9d8aad609172.txt",
+    "n_pages": 3,
+    "total_chars": 4818,
+    "low_confidence_pages": 0,
+    "image_only": false,
+    "error": null
+  },
+  {
+    "sha256": "521877bb1dc485817a169301e476e79930781ca7181d59c0f23623d1f982670e",
+    "source_records": [
+      {
+        "exchange": "NSE",
+        "subject": "Copy of Newspaper Publication",
+        "published_at": "2026-06-26T15:14:41"
+      },
+      {
+        "exchange": "BSE",
+        "subject": "Company Update",
+        "published_at": "2026-06-26T15:04:21.93"
+      }
+    ],
+    "pdf_path": "C:\\Users\\princ\\OneDrive\\Attachments\\Documents\\AI Projects\\Stock Market\\data\\hdfcbank\\pdfs\\NSE_106676949.pdf",
+    "text_path": "C:\\Users\\princ\\OneDrive\\Attachments\\Documents\\AI Projects\\Stock Market\\data\\hdfcbank\\extracted_text\\521877bb1dc48581.txt",
+    "n_pages": 3,
+    "total_chars": 1381,
+    "low_confidence_pages": 2,
+    "image_only": false,
+    "error": null
+  },
+  {
+    "sha256": "b63545980aee874b83ab8015cba91bc39ccc84da73713709567a804689ab4d58",
+    "source_records": [
+      {
+        "exchange": "NSE",
+        "subject": "ESOP/ESOS/ESPS",
+        "published_at": "2026-06-25T12:21:27"
+      },
+      {
+        "exchange": "BSE",
+        "subject": "Company Update",
+        "published_at": "2026-06-25T12:23:34.493"
+      }
+    ],
+    "pdf_path": "C:\\Users\\princ\\OneDrive\\Attachments\\Documents\\AI Projects\\Stock Market\\data\\hdfcbank\\pdfs\\NSE_106674120.pdf",
+    "text_path": "C:\\Users\\princ\\OneDrive\\Attachments\\Documents\\AI Projects\\Stock Market\\data\\hdfcbank\\extracted_text\\b63545980aee874b.txt",
+    "n_pages": 1,
+    "total_chars": 1224,
+    "low_confidence_pages": 0,
+    "image_only": false,
+    "error": null
+  },
+  {
+    "sha256": "5f921ea011f3f4c7339e398a4c32240a0225aede27c6bdbd96514f2fb23af805",
+    "source_records": [
+      {
+        "exchange": "NSE",
+        "subject": "Updates",
+        "published_at": "2026-06-18T16:46:58"
+      },
+      {
+        "exchange": "BSE",
+        "subject": "Company Update",
+        "published_at": "2026-06-18T16:47:31.24"
+      }
+    ],
+    "pdf_path": "C:\\Users\\princ\\OneDrive\\Attachments\\Documents\\AI Projects\\Stock Market\\data\\hdfcbank\\pdfs\\NSE_106666835.pdf",
+    "text_path": "C:\\Users\\princ\\OneDrive\\Attachments\\Documents\\AI Projects\\Stock Market\\data\\hdfcbank\\extracted_text\\5f921ea011f3f4c7.txt",
+    "n_pages": 1,
+    "total_chars": 2456,
+    "low_confidence_pages": 0,
+    "image_only": false,
+    "error": null
+  },
+  {
+    "sha256": "7f8eaf44f77843540fd72b94f205fba20619a73d86cf8a17ddd76e397e64dee7",
+    "source_records": [
+      {
+        "exchange": "NSE",
+        "subject": "General Updates",
+        "published_at": "2026-06-16T22:41:49"
+      },
+      {
+        "exchange": "BSE",
+        "subject": "Company Update",
+        "published_at": "2026-06-16T22:39:07"
+      }
+    ],
+    "pdf_path": "C:\\Users\\princ\\OneDrive\\Attachments\\Documents\\AI Projects\\Stock Market\\data\\hdfcbank\\pdfs\\NSE_106664942.pdf",
+    "text_path": "C:\\Users\\princ\\OneDrive\\Attachments\\Documents\\AI Projects\\Stock Market\\data\\hdfcbank\\extracted_text\\7f8eaf44f7784354.txt",
+    "n_pages": 2,
+    "total_chars": 2661,
+    "low_confidence_pages": 0,
+    "image_only": false,
+    "error": null
+  },
+  {
+    "sha256": "f1f121510524600918447d0f81b7ec0f3d53590527685b89d2905740479fcd72",
+    "source_records": [
+      {
+        "exchange": "NSE",
+        "subject": "ESOP/ESOS/ESPS",
+        "published_at": "2026-06-16T14:34:16"
+      },
+      {
+        "exchange": "BSE",
+        "subject": "Company Update",
+        "published_at": "2026-06-16T14:29:01.037"
+      }
+    ],
+    "pdf_path": "C:\\Users\\princ\\OneDrive\\Attachments\\Documents\\AI Projects\\Stock Market\\data\\hdfcbank\\pdfs\\NSE_106664411.pdf",
+    "text_path": "C:\\Users\\princ\\OneDrive\\Attachments\\Documents\\AI Projects\\Stock Market\\data\\hdfcbank\\extracted_text\\f1f1215105246009.txt",
+    "n_pages": 1,
+    "total_chars": 1208,
+    "low_confidence_pages": 0,
+    "image_only": false,
+    "error": null
+  },
+  {
+    "sha256": "1c968beae722339d4519244fa2b1322dc8de154ccf3efafaffa52b6aad360ce5",
+    "source_records": [
+      {
+        "exchange": "NSE",
+        "subject": "Copy of Newspaper Publication",
+        "published_at": "2026-06-02T13:18:55"
+      },
+      {
+        "exchange": "BSE",
+        "subject": "Company Update",
+        "published_at": "2026-06-02T13:03:54.89"
+      }
+    ],
+    "pdf_path": "C:\\Users\\princ\\OneDrive\\Attachments\\Documents\\AI Projects\\Stock Market\\data\\hdfcbank\\pdfs\\NSE_106652345.pdf",
+    "text_path": "C:\\Users\\princ\\OneDrive\\Attachments\\Documents\\AI Projects\\Stock Market\\data\\hdfcbank\\extracted_text\\1c968beae722339d.txt",
+    "n_pages": 3,
+    "total_chars": 4048,
+    "low_confidence_pages": 0,
+    "image_only": false,
+    "error": null
+  },
+  {
+    "sha256": "32a34fdf7f7a5108bee2583e8cba99987a07001b132e4e768099fd240a42a233",
+    "source_records": [
+      {
+        "exchange": "NSE",
+        "subject": "ESOP/ESOS/ESPS",
+        "published_at": "2026-05-29T12:10:34"
+      },
+      {
+        "exchange": "BSE",
+        "subject": "Company Update",
+        "published_at": "2026-05-29T12:09:25.173"
+      }
+    ],
+    "pdf_path": "C:\\Users\\princ\\OneDrive\\Attachments\\Documents\\AI Projects\\Stock Market\\data\\hdfcbank\\pdfs\\NSE_106646644.pdf",
+    "text_path": "C:\\Users\\princ\\OneDrive\\Attachments\\Documents\\AI Projects\\Stock Market\\data\\hdfcbank\\extracted_text\\32a34fdf7f7a5108.txt",
+    "n_pages": 1,
+    "total_chars": 1207,
+    "low_confidence_pages": 0,
+    "image_only": false,
+    "error": null
+  },
+  {
+    "sha256": "7d891d4a9f645b0da07e90f546ff00a0007a800de8baba8fb9af53f986e57ba8",
+    "source_records": [
+      {
+        "exchange": "NSE",
+        "subject": "News Verification",
+        "published_at": "2026-05-28T21:22:07"
+      },
+      {
+        "exchange": "BSE",
+        "subject": "Others",
+        "published_at": "2026-05-28T21:29:42.28"
+      }
+    ],
+    "pdf_path": "C:\\Users\\princ\\OneDrive\\Attachments\\Documents\\AI Projects\\Stock Market\\data\\hdfcbank\\pdfs\\NSE_106646184.pdf",
+    "text_path": "C:\\Users\\princ\\OneDrive\\Attachments\\Documents\\AI Projects\\Stock Market\\data\\hdfcbank\\extracted_text\\7d891d4a9f645b0d.txt",
+    "n_pages": 1,
+    "total_chars": 2526,
+    "low_confidence_pages": 0,
+    "image_only": false,
+    "error": null
+  },
+  {
+    "sha256": "2e22c184ee009357b66373b9462b819fb9e237e7923c2368dada1f623560b52a",
+    "source_records": [
+      {
+        "exchange": "NSE",
+        "subject": "Analysts/Institutional Investor Meet/Con. Call Updates",
+        "published_at": "2026-05-26T17:09:29"
+      },
+      {
+        "exchange": "BSE",
+        "subject": "Company Update",
+        "published_at": "2026-05-26T17:10:03.603"
+      }
+    ],
+    "pdf_path": "C:\\Users\\princ\\OneDrive\\Attachments\\Documents\\AI Projects\\Stock Market\\data\\hdfcbank\\pdfs\\NSE_106641581.pdf",
+    "text_path": "C:\\Users\\princ\\OneDrive\\Attachments\\Documents\\AI Projects\\Stock Market\\data\\hdfcbank\\extracted_text\\2e22c184ee009357.txt",
+    "n_pages": 1,
+    "total_chars": 1583,
+    "low_confidence_pages": 0,
+    "image_only": false,
+    "error": null
+  },
+  {
+    "sha256": "8f8835b4f644ea4d4929242d0f498453dcf3a6ef5fdfd3f41bd92d996c6caa63",
+    "source_records": [
+      {
+        "exchange": "NSE",
+        "subject": "Copy of Newspaper Publication",
+        "published_at": "2026-05-26T15:46:37"
+      },
+      {
+        "exchange": "BSE",
+        "subject": "Company Update",
+        "published_at": "2026-05-26T15:54:03.4"
+      }
+    ],
+    "pdf_path": "C:\\Users\\princ\\OneDrive\\Attachments\\Documents\\AI Projects\\Stock Market\\data\\hdfcbank\\pdfs\\NSE_106641296.pdf",
+    "text_path": "C:\\Users\\princ\\OneDrive\\Attachments\\Documents\\AI Projects\\Stock Market\\data\\hdfcbank\\extracted_text\\8f8835b4f644ea4d.txt",
+    "n_pages": 3,
+    "total_chars": 1363,
+    "low_confidence_pages": 0,
+    "image_only": false,
+    "error": null
+  },
+  {
+    "sha256": "6b6fb0f23bba71248ae82370c4f2e9c98ec500caa6ddd7c2c4a189a31e2f40ce",
+    "source_records": [
+      {
+        "exchange": "BSE",
+        "subject": "Others",
+        "published_at": "2026-07-10T23:56:09.04"
+      }
+    ],
+    "pdf_path": "C:\\Users\\princ\\OneDrive\\Attachments\\Documents\\AI Projects\\Stock Market\\data\\hdfcbank\\pdfs\\BSE_154f0bb5-3361-4555-b37e-12f92a188c2d.pdf",
+    "text_path": "C:\\Users\\princ\\OneDrive\\Attachments\\Documents\\AI Projects\\Stock Market\\data\\hdfcbank\\extracted_text\\6b6fb0f23bba7124.txt",
+    "n_pages": 57,
+    "total_chars": 140610,
+    "low_confidence_pages": 0,
+    "image_only": false,
+    "error": null
+  },
+  {
+    "sha256": "229105aef71a36367b54bf5f70d4ea71716b26473008940e47cddb6e077015f1",
+    "source_records": [
+      {
+        "exchange": "BSE",
+        "subject": "Board Meeting",
+        "published_at": "2026-06-23T20:51:56.953"
+      }
+    ],
+    "pdf_path": "C:\\Users\\princ\\OneDrive\\Attachments\\Documents\\AI Projects\\Stock Market\\data\\hdfcbank\\pdfs\\BSE_7b83c462-2be5-4ca5-aea1-009d0d9cf4c0.pdf",
+    "text_path": "C:\\Users\\princ\\OneDrive\\Attachments\\Documents\\AI Projects\\Stock Market\\data\\hdfcbank\\extracted_text\\229105aef71a3636.txt",
+    "n_pages": 1,
+    "total_chars": 1580,
+    "low_confidence_pages": 0,
+    "image_only": false,
+    "error": null
+  }
+]

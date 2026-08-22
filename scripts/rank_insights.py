@@ -1,10 +1,18 @@
 """Collate extractions into events, apply deterministic severity (§8) and ranking (§9), render a digest."""
 import json
 import re
+import sys
 from datetime import datetime, timezone
 from pathlib import Path
 
-DATA = Path(__file__).parent.parent / "data" / "tataelxsi"
+if hasattr(sys.stdout, "reconfigure"):
+    sys.stdout.reconfigure(encoding="utf-8")  # Windows cp1252 console can't print ₹/unicode quotes
+
+sys.path.insert(0, str(Path(__file__).parent))
+from companies import get
+
+co = get(sys.argv[1] if len(sys.argv) > 1 else "tataelxsi")
+DATA = Path(__file__).parent.parent / "data" / co.slug
 
 CATEGORY_WEIGHT = {
     "governance": 1.5,
@@ -120,7 +128,7 @@ def main():
     events.sort(key=lambda e: e["score"], reverse=True)
     (DATA / "raw_meta" / "ranked_events.json").write_text(json.dumps(events, indent=2))
 
-    print(f"{len(events)} events ranked -> data/tataelxsi/raw_meta/ranked_events.json\n")
+    print(f"{len(events)} events ranked -> {DATA / 'raw_meta' / 'ranked_events.json'}\n")
     print("Severity distribution:", {s: sum(1 for e in events if e["severity"] == s) for s in range(1, 6)})
     print()
 
@@ -130,7 +138,7 @@ def main():
     routine = [e for e in events if e["severity"] <= 2]
 
     print("=" * 60)
-    print(f"MORNING BRIEFING (pilot) · Tata Elxsi · {len(events)} events, 3-month backfill")
+    print(f"MORNING BRIEFING (pilot) · {co.name} · {len(events)} events, 3-month backfill")
     print("=" * 60)
     print(f"\nHIGH ({len(high)})\n")
     for i, e in enumerate(high, 1):

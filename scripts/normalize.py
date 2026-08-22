@@ -1,9 +1,14 @@
 """Normalize NSE + BSE announcement JSON for TATAELXSI into a common schema, per pipeline §6."""
 import json
+import sys
 from datetime import datetime
 from pathlib import Path
 
-DATA = Path(__file__).parent.parent / "data" / "tataelxsi"
+sys.path.insert(0, str(Path(__file__).parent))
+from companies import get
+
+co = get(sys.argv[1] if len(sys.argv) > 1 else "tataelxsi")
+DATA = Path(__file__).parent.parent / "data" / co.slug
 
 
 def load_nse():

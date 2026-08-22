@@ -1,0 +1,1266 @@
+[
+  {
+    "sha256": "6bfd7e3cf9bf94f4629a45c44a1fda9c2357833c58542ba433a235c595063bf4",
+    "source_records": [
+      {
+        "exchange": "NSE",
+        "subject": "General Updates",
+        "published_at": "2026-08-20T22:59:40"
+      },
+      {
+        "exchange": "BSE",
+        "subject": "Company Update",
+        "published_at": "2026-08-20T22:57:35.313"
+      }
+    ],
+    "n_pages": 2,
+    "document_kind": "corporate_action",
+    "facts": {
+      "amount_inr": null,
+      "counterparty": null,
+      "pledge_pct_after": null,
+      "holding_delta_pct": null,
+      "officer_role": "Company Secretary",
+      "action": "completed the issue of total US$ 1,750 million Senior Unsecured Bonds",
+      "effective_date": "26 August 2026",
+      "audit_opinion": null
+    },
+    "summary_one_line": "HDFC Bank Limited has completed the issuance of US$ 1,750 million Senior Unsecured Bonds.",
+    "supporting_quote": "HDFC Bank Limited acting through GIFT City Branch has completed the issue of total US$ 1,750 million Senior Unsecured Bonds.",
+    "extraction_confidence": 0.95,
+    "language": "en",
+    "truncated_input": false,
+    "quote_verified": true
+  },
+  {
+    "sha256": "f703655fb77dfb7cf6dac3e720106cf5426762f06772187e773a4e92fbcb65a1",
+    "source_records": [
+      {
+        "exchange": "NSE",
+        "subject": "Credit Rating",
+        "published_at": "2026-08-20T17:16:08"
+      },
+      {
+        "exchange": "BSE",
+        "subject": "Company Update",
+        "published_at": "2026-08-20T17:16:49.087"
+      }
+    ],
+    "n_pages": 13,
+    "document_kind": "press_release",
+    "facts": {
+      "amount_inr": null,
+      "counterparty": "S&P Global Ratings Singapore Pte. Limited and Moody\u2019s Investors Service Singapore Pte. Limited",
+      "pledge_pct_after": null,
+      "holding_delta_pct": null,
+      "officer_role": "Company Secretary",
+      "action": "assigned ratings",
+      "effective_date": "August 20, 2026",
+      "audit_opinion": null
+    },
+    "summary_one_line": "HDFC Bank Limited announces credit ratings assigned to its proposed Fixed Rate Senior Notes.",
+    "supporting_quote": "S&P Global Ratings, acting through S&P Global Ratings Singapore Pte. Limited, and Moody\u2019s Investors Service Singapore Pte. Limited have assigned ratings to the proposed Fixed Rate Senior Notes of the Bank on August 20, 2026.",
+    "extraction_confidence": 0.95,
+    "language": "en",
+    "truncated_input": true,
+    "quote_verified": true
+  },
+  {
+    "sha256": "3df533e58d1e7c8523280f1ec1ab30d00a6050ca8e87b1a30126ef8ad6a5dcef",
+    "source_records": [
+      {
+        "exchange": "NSE",
+        "subject": "Credit Rating",
+        "published_at": "2026-08-19T23:19:15"
+      },
+      {
+        "exchange": "BSE",
+        "subject": "Company Update",
+        "published_at": "2026-08-19T23:19:39.42"
+      }
+    ],
+    "n_pages": 8,
+    "document_kind": "results",
+    "facts": {
+      "amount_inr": 200000,
+      "counterparty": "CARE Ratings Limited",
+      "pledge_pct_after": null,
+      "holding_delta_pct": null,
+      "officer_role": null,
+      "action": "Reaffirmed",
+      "effective_date": "August 18, 2026",
+      "audit_opinion": null
+    },
+    "summary_one_line": "HDFC Bank Limited's Certificate of Deposit rating reaffirmed by CARE Ratings.",
+    "supporting_quote": "Certificate of 2,00,000.00 CARE A1+ Reaffirmed",
+    "extraction_confidence": 0.95,
+    "language": "en",
+    "truncated_input": true,
+    "quote_verified": true
+  },
+  {
+    "sha256": "3c34a60d23d9f21c20fd854f70faed337e41c10a567fd67e88daabcd6e647fba",
+    "source_records": [
+      {
+        "exchange": "NSE",
+        "subject": "Updates",
+        "published_at": "2026-08-19T22:52:22"
+      },
+      {
+        "exchange": "BSE",
+        "subject": "Company Update",
+        "published_at": "2026-08-19T22:52:54.67"
+      }
+    ],
+    "n_pages": 1,
+    "document_kind": "governance",
+    "facts": {
+      "amount_inr": null,
+      "counterparty": "Life Insurance Corporation of India",
+      "pledge_pct_after": null,
+      "holding_delta_pct": 5.88,
+      "officer_role": "Company Secretary",
+      "action": "acquiring aggregate holding up to 9.99%",
+      "effective_date": "August 19, 2026",
+      "audit_opinion": null
+    },
+    "summary_one_line": "RBI approves LIC to acquire up to 9.99% of HDFC Bank's share capital.",
+    "supporting_quote": "the Reserve Bank of India (\u201cRBI\u201d) vide its letter dated August 19, 2026, has accorded its approval to Life Insurance Corporation of India (\u201cLIC\u201d), for acquiring aggregate holding up to 9.99% of the paid-up share capital or voting rights in HDFC Bank Limited",
+    "extraction_confidence": 0.95,
+    "language": "en",
+    "truncated_input": false,
+    "quote_verified": true
+  },
+  {
+    "sha256": "bded2da5704a21e9885619b5ffd54f213de92e4c97040a03de5b082964feb771",
+    "source_records": [
+      {
+        "exchange": "NSE",
+        "subject": "Analysts/Institutional Investor Meet/Con. Call Updates",
+        "published_at": "2026-08-16T19:34:00"
+      },
+      {
+        "exchange": "BSE",
+        "subject": "Company Update",
+        "published_at": "2026-08-16T19:43:27.497"
+      }
+    ],
+    "n_pages": 1,
+    "document_kind": "other",
+    "facts": {
+      "amount_inr": null,
+      "counterparty": null,
+      "pledge_pct_after": null,
+      "holding_delta_pct": null,
+      "officer_role": "Company Secretary",
+      "action": "Intimation of Schedule of Analyst / Institutional Investor Meetings",
+      "effective_date": "August 19, 2026",
+      "audit_opinion": null
+    },
+    "summary_one_line": "HDFC Bank Limited announced a schedule for an Analyst/Institutional Investor Meeting.",
+    "supporting_quote": "please find below the Schedule for the Analyst / Institutional Investor Meeting: Date Investor / Event Type of meeting Mode of meeting August 19, 2026 Debt Investor Roadshow Individual/Group Virtual",
+    "extraction_confidence": 0.95,
+    "language": "en",
+    "truncated_input": false,
+    "quote_verified": true
+  },
+  {
+    "sha256": "c6d7fcbb806b5bcdf9602f97a6584356ab4ad01b715a83d539963d9f706197b8",
+    "source_records": [
+      {
+        "exchange": "NSE",
+        "subject": "ESOP/ESOS/ESPS",
+        "published_at": "2026-08-14T14:10:29"
+      },
+      {
+        "exchange": "BSE",
+        "subject": "Company Update",
+        "published_at": "2026-08-14T14:10:20.837"
+      }
+    ],
+    "n_pages": 1,
+    "document_kind": "corporate_action",
+    "facts": {
+      "amount_inr": null,
+      "counterparty": null,
+      "pledge_pct_after": null,
+      "holding_delta_pct": null,
+      "officer_role": "Company Secretary",
+      "action": "allotment of equity shares",
+      "effective_date": "August 14, 2026",
+      "audit_opinion": null
+    },
+    "summary_one_line": "HDFC Bank Limited allotted 17,29,212 equity shares to employees under ESOP/RSU.",
+    "supporting_quote": "the Bank has allotted today 17,29,212 equity shares to the employees of the Bank pursuant to exercise of Options/RSU\u2019s under its Employees Stock Options Schemes (ESOS).",
+    "extraction_confidence": 0.95,
+    "language": "en",
+    "truncated_input": false,
+    "quote_verified": true
+  },
+  {
+    "sha256": "8bf08e1bdec1a3ee4a986630eb1fd927b55612c8f99bba6c6e3c8eedd2d210d6",
+    "source_records": [
+      {
+        "exchange": "NSE",
+        "subject": "Analysts/Institutional Investor Meet/Con. Call Updates",
+        "published_at": "2026-08-13T16:17:31"
+      },
+      {
+        "exchange": "BSE",
+        "subject": "Company Update",
+        "published_at": "2026-08-13T16:21:49.777"
+      }
+    ],
+    "n_pages": 1,
+    "document_kind": "other",
+    "facts": {
+      "amount_inr": null,
+      "counterparty": "Motilal Oswal",
+      "pledge_pct_after": null,
+      "holding_delta_pct": null,
+      "officer_role": "Company Secretary",
+      "action": "Intimation of Schedule of Analyst / Institutional Investor Meetings",
+      "effective_date": "August 18, 2026",
+      "audit_opinion": null
+    },
+    "summary_one_line": "HDFC Bank Limited announces the schedule for an Analyst / Institutional Investor Meeting.",
+    "supporting_quote": "please find below the Schedule for the Analyst / Institutional Investor Meeting.",
+    "extraction_confidence": 0.95,
+    "language": "en",
+    "truncated_input": false,
+    "quote_verified": true
+  },
+  {
+    "sha256": "0b7f5f20f12f85887ea985003465f576a8f4dd1e2dd07203925fd621cf924ae2",
+    "source_records": [
+      {
+        "exchange": "NSE",
+        "subject": "Shareholders meeting",
+        "published_at": "2026-08-05T21:00:26"
+      },
+      {
+        "exchange": "BSE",
+        "subject": "AGM/EGM",
+        "published_at": "2026-08-05T21:24:22.577"
+      },
+      {
+        "exchange": "BSE",
+        "subject": "AGM/EGM",
+        "published_at": "2026-08-05T21:06:57.29"
+      }
+    ],
+    "n_pages": 20,
+    "document_kind": "agm_egm",
+    "facts": {
+      "amount_inr": null,
+      "counterparty": null,
+      "pledge_pct_after": null,
+      "holding_delta_pct": null,
+      "officer_role": "Company Secretary",
+      "action": "held",
+      "effective_date": "August 5, 2026",
+      "audit_opinion": "unqualified"
+    },
+    "summary_one_line": "The 32nd Annual General Meeting of HDFC Bank Limited was held on August 5, 2026.",
+    "supporting_quote": "the 32nd Annual General Meeting (\u201cAGM\u201d) of the Bank was held today i.e. on August 5, 2026 at 2:00 p.m. (IST) through video-conference.",
+    "extraction_confidence": 0.95,
+    "language": "en",
+    "truncated_input": true,
+    "quote_verified": true
+  },
+  {
+    "sha256": "f687082b79c45439679474528443a421039f3aa9a550cf3c50326530286c1006",
+    "source_records": [
+      {
+        "exchange": "NSE",
+        "subject": "Copy of Newspaper Publication",
+        "published_at": "2026-07-31T12:14:43"
+      },
+      {
+        "exchange": "BSE",
+        "subject": "Company Update",
+        "published_at": "2026-07-31T12:14:56.32"
+      }
+    ],
+    "n_pages": 3,
+    "document_kind": "other",
+    "facts": {
+      "amount_inr": null,
+      "counterparty": null,
+      "pledge_pct_after": null,
+      "holding_delta_pct": null,
+      "officer_role": "Company Secretary",
+      "action": "publication regarding special window for transfer and dematerialisation of physical shares",
+      "effective_date": "July 31, 2026",
+      "audit_opinion": null
+    },
+    "summary_one_line": "HDFC Bank Limited published a notice regarding a special window for transfer and dematerialisation of physical shares.",
+    "supporting_quote": "Sub: Newspaper publication regarding special window for transfer and dematerialisation of physical shares of HDFC Bank Limited",
+    "extraction_confidence": 0.95,
+    "language": "en",
+    "truncated_input": false,
+    "quote_verified": true
+  },
+  {
+    "sha256": "6e8025862cae1561a9248d5c223120bca73d50f81eeb8287b97c8f3050752041",
+    "source_records": [
+      {
+        "exchange": "NSE",
+        "subject": "ESOP/ESOS/ESPS",
+        "published_at": "2026-07-31T12:05:08"
+      },
+      {
+        "exchange": "BSE",
+        "subject": "Company Update",
+        "published_at": "2026-07-31T12:05:33.023"
+      }
+    ],
+    "n_pages": 1,
+    "document_kind": "corporate_action",
+    "facts": {
+      "amount_inr": null,
+      "counterparty": null,
+      "pledge_pct_after": null,
+      "holding_delta_pct": null,
+      "officer_role": "Company Secretary",
+      "action": "Allotment of equity shares",
+      "effective_date": "July 31, 2026",
+      "audit_opinion": null
+    },
+    "summary_one_line": "HDFC Bank Limited allotted 42,48,902 equity shares pursuant to exercise of ESOP/RSU.",
+    "supporting_quote": "the Bank has allotted today 42,48,902 equity shares to the employees of the Bank pursuant to exercise of Options/RSU\u2019s under its Employees Stock Options Schemes (ESOS).",
+    "extraction_confidence": 0.95,
+    "language": "en",
+    "truncated_input": false,
+    "quote_verified": true
+  },
+  {
+    "sha256": "9801924a8d264b601798664101839a78ad36bf0b536a3817c4df24021ce189f4",
+    "source_records": [
+      {
+        "exchange": "NSE",
+        "subject": "Updates",
+        "published_at": "2026-07-27T15:56:07"
+      },
+      {
+        "exchange": "BSE",
+        "subject": "Company Update",
+        "published_at": "2026-07-27T15:56:57.08"
+      }
+    ],
+    "n_pages": 2,
+    "document_kind": "governance",
+    "facts": {
+      "amount_inr": 100000,
+      "counterparty": "Maharashtra State Road Development Corporation",
+      "pledge_pct_after": null,
+      "holding_delta_pct": null,
+      "officer_role": "Managing Director & CEO, Chief Financial Officer and Group Head \u2013 Retail Assets",
+      "action": "issue warning letters and monetary penalty",
+      "effective_date": "July 23, 2026",
+      "audit_opinion": null
+    },
+    "summary_one_line": "HDFC Bank concludes internal review regarding MSRDC arrangement and issues penalties to senior employees.",
+    "supporting_quote": "the Board decided to issue warning letters and monetary penalty of \u20b91 lakh for three senior employees",
+    "extraction_confidence": 0.95,
+    "language": "en",
+    "truncated_input": false,
+    "quote_verified": true
+  },
+  {
+    "sha256": "33f8d8e7cf4198fd65eea5d8ee9aaf9bbb7e9eb77f2061d8bfb1c731b1a8ab13",
+    "source_records": [
+      {
+        "exchange": "NSE",
+        "subject": "General Updates",
+        "published_at": "2026-07-24T19:06:34"
+      },
+      {
+        "exchange": "BSE",
+        "subject": "Company Update",
+        "published_at": "2026-07-24T19:07:05.07"
+      }
+    ],
+    "n_pages": 4,
+    "document_kind": "corporate_action",
+    "facts": {
+      "amount_inr": null,
+      "counterparty": "Citicorp International Limited",
+      "pledge_pct_after": null,
+      "holding_delta_pct": null,
+      "officer_role": "Company Secretary",
+      "action": "exercise of call option",
+      "effective_date": "August 25, 2026",
+      "audit_opinion": null
+    },
+    "summary_one_line": "HDFC Bank Limited has elected to exercise the call option on US$ 1,000,000,000 3.7% Additional Tier 1 Notes.",
+    "supporting_quote": "the Bank has elected to exercise the Call Option in respect of the US$ 1,000,000,000 3.7% Additional Tier 1 Notes",
+    "extraction_confidence": 0.95,
+    "language": "en",
+    "truncated_input": false,
+    "quote_verified": true
+  },
+  {
+    "sha256": "d6c19e7d4f74456f7e842284db091fd3fcf98eb1dac35820379d1a8c57c26db0",
+    "source_records": [
+      {
+        "exchange": "NSE",
+        "subject": "Analysts/Institutional Investor Meet/Con. Call Updates",
+        "published_at": "2026-07-24T15:52:03"
+      },
+      {
+        "exchange": "BSE",
+        "subject": "Company Update",
+        "published_at": "2026-07-24T15:52:36.74"
+      }
+    ],
+    "n_pages": 17,
+    "document_kind": "results",
+    "facts": {
+      "amount_inr": null,
+      "counterparty": null,
+      "pledge_pct_after": null,
+      "holding_delta_pct": null,
+      "officer_role": "Managing Director and Chief Executive Officer",
+      "action": null,
+      "effective_date": "July 18, 2026",
+      "audit_opinion": null
+    },
+    "summary_one_line": "Transcript of Earnings Call for Q1 FY27 results of HDFC Bank Limited.",
+    "supporting_quote": "We wish to inform you that pursuant to Regulation 30 of the SEBI (Listing Obligations and Disclosure Requirements) Regulations, 2015, the transcript of the Earnings Call with analysts and investors held on Saturday, July 18, 2026 with respect to the unaudited standalone and consolidated financial results of the Bank for the quarter ended June 30, 2026, has been made available on the website of the Bank at the below link: https://www.hdfc.bank.in/about-us/investor-relations",
+    "extraction_confidence": 0.95,
+    "language": "en",
+    "truncated_input": true,
+    "quote_verified": true
+  },
+  {
+    "sha256": "52dbcae36e404237e99cb1a20550ee6149e5a76ee056bb5db932dce1926d980e",
+    "source_records": [
+      {
+        "exchange": "NSE",
+        "subject": "ESOP/ESOS/ESPS",
+        "published_at": "2026-07-21T13:50:17"
+      },
+      {
+        "exchange": "BSE",
+        "subject": "Company Update",
+        "published_at": "2026-07-21T13:51:06.687"
+      }
+    ],
+    "n_pages": 1,
+    "document_kind": "corporate_action",
+    "facts": {
+      "amount_inr": null,
+      "counterparty": null,
+      "pledge_pct_after": null,
+      "holding_delta_pct": null,
+      "officer_role": "Company Secretary",
+      "action": "Allotment of equity shares",
+      "effective_date": "July 21, 2026",
+      "audit_opinion": null
+    },
+    "summary_one_line": "HDFC Bank Limited allotted 38,15,292 equity shares pursuant to exercise of ESOP/RSU.",
+    "supporting_quote": "the Bank has allotted today 38,15,292 equity shares to the employees of the Bank pursuant to exercise of Options/RSU\u2019s under its Employees Stock Options Scheme (ESOS).",
+    "extraction_confidence": 0.95,
+    "language": "en",
+    "truncated_input": false,
+    "quote_verified": true
+  },
+  {
+    "sha256": "2c3c409216f4a771aa56011c2adb818be1aaff57b8c645abb5b233c8389f71fb",
+    "source_records": [
+      {
+        "exchange": "NSE",
+        "subject": "Analysts/Institutional Investor Meet/Con. Call Updates",
+        "published_at": "2026-07-18T21:41:03"
+      },
+      {
+        "exchange": "BSE",
+        "subject": "Company Update",
+        "published_at": "2026-07-18T21:44:19.86"
+      }
+    ],
+    "n_pages": 1,
+    "document_kind": "results",
+    "facts": {
+      "amount_inr": null,
+      "counterparty": null,
+      "pledge_pct_after": null,
+      "holding_delta_pct": null,
+      "officer_role": "Company Secretary",
+      "action": "audio recording of earnings call",
+      "effective_date": "July 18, 2026",
+      "audit_opinion": null
+    },
+    "summary_one_line": "Audio recording of earnings call for Q2 2026 results available.",
+    "supporting_quote": "the audio recording of the earnings call with analysts and investors held on July 18, 2026, in relation to the unaudited standalone and consolidated financial results of the Bank for the quarter ended June 30, 2026, has been made available on the website of the Bank",
+    "extraction_confidence": 0.95,
+    "language": "en",
+    "truncated_input": false,
+    "quote_verified": true
+  },
+  {
+    "sha256": "2058db8cf54a01107272ba7df35ebd54a64f0c47810feadb7f4121d5b8a3b24f",
+    "source_records": [
+      {
+        "exchange": "NSE",
+        "subject": "Investor Presentation",
+        "published_at": "2026-07-18T15:18:05"
+      },
+      {
+        "exchange": "BSE",
+        "subject": "Company Update",
+        "published_at": "2026-07-18T15:18:18.6"
+      }
+    ],
+    "n_pages": 1,
+    "document_kind": "results",
+    "facts": {
+      "amount_inr": null,
+      "counterparty": null,
+      "pledge_pct_after": null,
+      "holding_delta_pct": null,
+      "officer_role": "Company Secretary",
+      "action": "presentation to be made at the Earnings Call",
+      "effective_date": "July 18, 2026",
+      "audit_opinion": null
+    },
+    "summary_one_line": "HDFC Bank Limited announced a presentation for an earnings call regarding financial results.",
+    "supporting_quote": "the presentation to be made at the said earnings call has been made available on the website of the Bank",
+    "extraction_confidence": 0.95,
+    "language": "en",
+    "truncated_input": false,
+    "quote_verified": true
+  },
+  {
+    "sha256": "d4dbfc8542276e1e572380efd1855f6b3c1b2bb62ef1b12a7fb4b6eb3519c3a7",
+    "source_records": [
+      {
+        "exchange": "NSE",
+        "subject": "Outcome of Board Meeting",
+        "published_at": "2026-07-18T14:22:30"
+      },
+      {
+        "exchange": "BSE",
+        "subject": "Result",
+        "published_at": "2026-07-18T14:27:17.553"
+      },
+      {
+        "exchange": "BSE",
+        "subject": "Board Meeting",
+        "published_at": "2026-07-18T14:22:51.453"
+      }
+    ],
+    "n_pages": 22,
+    "document_kind": "board_meeting",
+    "facts": {
+      "amount_inr": null,
+      "counterparty": null,
+      "pledge_pct_after": null,
+      "holding_delta_pct": null,
+      "officer_role": "Company Secretary",
+      "action": "approved",
+      "effective_date": "July 18, 2026",
+      "audit_opinion": null
+    },
+    "summary_one_line": "The Board of Directors approved the unaudited standalone and consolidated financial results for the quarter ended June 30, 2026.",
+    "supporting_quote": "the Board of Directors of the Bank at its meeting held today i.e. on July 18, 2026, approved the unaudited standalone and consolidated financial results of the Bank for the quarter ended June 30, 2026",
+    "extraction_confidence": 0.95,
+    "language": "en",
+    "truncated_input": false,
+    "quote_verified": true
+  },
+  {
+    "sha256": "608110e9ec515e7613a93d527e923fe274aba8b101675e68115d2af943d6c903",
+    "source_records": [
+      {
+        "exchange": "NSE",
+        "subject": "Certificate under SEBI (Depositories and Participants) Regulations, 2018",
+        "published_at": "2026-07-16T11:06:07"
+      },
+      {
+        "exchange": "BSE",
+        "subject": "Company Update",
+        "published_at": "2026-07-16T11:06:25.983"
+      }
+    ],
+    "n_pages": 2,
+    "document_kind": "compliance_certificate",
+    "facts": {
+      "amount_inr": null,
+      "counterparty": "Datamatics Business Solutions Limited",
+      "pledge_pct_after": null,
+      "holding_delta_pct": null,
+      "officer_role": "Company Secretary",
+      "action": "Certificate under Regulation 74(5) of SEBI (Depositories and Participants) Regulations, 2018",
+      "effective_date": "2026-06-30",
+      "audit_opinion": null
+    },
+    "summary_one_line": "Certificate under Regulation 74(5) of SEBI for the quarter ended June 30, 2026.",
+    "supporting_quote": "the certificate under Regulation 74(5) of SEBI (Depositories and Participants) Regulations, 2018, for the quarter ended June 30, 2026 received from Datamatics Business Solutions Limited, Registrar and Transfer Agents of the Bank.",
+    "extraction_confidence": 0.95,
+    "language": "en",
+    "truncated_input": false,
+    "quote_verified": true
+  },
+  {
+    "sha256": "3663c54ad542ed2ca71dfe2859a8b6cbaba52440b487de7f07a789677d8791d1",
+    "source_records": [
+      {
+        "exchange": "NSE",
+        "subject": "Appointment",
+        "published_at": "2026-07-15T17:00:18"
+      },
+      {
+        "exchange": "BSE",
+        "subject": "Company Update",
+        "published_at": "2026-07-15T17:00:31.02"
+      }
+    ],
+    "n_pages": 1,
+    "document_kind": "governance",
+    "facts": {
+      "amount_inr": null,
+      "counterparty": null,
+      "pledge_pct_after": null,
+      "holding_delta_pct": null,
+      "officer_role": "Part-time Chairman",
+      "action": "appointment",
+      "effective_date": "July 15, 2026",
+      "audit_opinion": null
+    },
+    "summary_one_line": "Approval received for appointment of Mr. Rajiv Kumar as Part-time Chairman of HDFC Bank.",
+    "supporting_quote": "the RBI vide its communication dated July 15, 2026, has approved the appointment of Mr. Rajiv Kumar (DIN: 08049696) as the Part Time Chairman of the Bank under Section 10B(1A)(i) of the Banking Regulation Act, 1949 for a period of 3 (three) years w.e.f. July 15, 2026.",
+    "extraction_confidence": 0.95,
+    "language": "en",
+    "truncated_input": false,
+    "quote_verified": true
+  },
+  {
+    "sha256": "01e4b64dbbc0745eb960447ed4e4ee7b7a3307408f56faf2fc3c9c42ecb8feae",
+    "source_records": [
+      {
+        "exchange": "NSE",
+        "subject": "Copy of Newspaper Publication",
+        "published_at": "2026-07-12T14:29:26"
+      },
+      {
+        "exchange": "BSE",
+        "subject": "Company Update",
+        "published_at": "2026-07-12T14:33:20.37"
+      }
+    ],
+    "n_pages": 3,
+    "document_kind": "agm_egm",
+    "facts": {
+      "amount_inr": null,
+      "counterparty": null,
+      "pledge_pct_after": null,
+      "holding_delta_pct": null,
+      "officer_role": "Company Secretary",
+      "action": "published newspaper advertisement",
+      "effective_date": "July 12, 2026",
+      "audit_opinion": null
+    },
+    "summary_one_line": "HDFC Bank Limited published a newspaper advertisement regarding the 32nd Annual General Meeting.",
+    "supporting_quote": "We enclose the copies of newspaper advertisement published in today\u2019s Financial Express (English) and Navshakti (Marathi), regarding the notice and e-voting information for the 32nd Annual General Meeting of the Bank",
+    "extraction_confidence": 0.95,
+    "language": "en",
+    "truncated_input": false,
+    "quote_verified": true
+  },
+  {
+    "sha256": "92de3c75b6fc05afe8731e97705c9d3534cc192e677af02f4b325e3d82eafca6",
+    "source_records": [
+      {
+        "exchange": "NSE",
+        "subject": "Shareholders meeting",
+        "published_at": "2026-07-10T23:50:18"
+      },
+      {
+        "exchange": "BSE",
+        "subject": "Others",
+        "published_at": "2026-07-11T00:06:13.937"
+      },
+      {
+        "exchange": "BSE",
+        "subject": "AGM/EGM",
+        "published_at": "2026-07-10T23:50:46.327"
+      }
+    ],
+    "n_pages": 678,
+    "document_kind": "agm_egm",
+    "facts": {
+      "amount_inr": 60000000000,
+      "counterparty": "HDFC Life Insurance Company Limited",
+      "pledge_pct_after": null,
+      "holding_delta_pct": null,
+      "officer_role": "Company Secretary",
+      "action": "Notice of the 32nd Annual General Meeting",
+      "effective_date": "August 5, 2026",
+      "audit_opinion": null
+    },
+    "summary_one_line": "Notice of the 32nd Annual General Meeting and Integrated Annual Report for FY 2025-26.",
+    "supporting_quote": "NOTICE IS HEREBY GIVEN THAT THE 32 (THIRTY-SECOND) ANNUAL GENERAL MEETING (\u201cAGM\u201d) OF THE MEMBERS OF HDFC BANK LIMITED (THE \u201cBANK\u201d) WILL BE HELD ON WEDNESDAY, AUGUST 5, 2026 AT 2:00 P.M. INDIAN STANDARD TIME (\u201cIST\u201d) THROUGH VIDEO CONFERENCE (\u201cVC\u201d):",
+    "extraction_confidence": 0.95,
+    "language": "en",
+    "truncated_input": true,
+    "quote_verified": false
+  },
+  {
+    "sha256": "6eaaffcb7f5cd62ae7050fc478ba3fd7425eadaf96c8d5982b576884d2dc5c9b",
+    "source_records": [
+      {
+        "exchange": "NSE",
+        "subject": "Analysts/Institutional Investor Meet/Con. Call Updates",
+        "published_at": "2026-07-09T17:09:34"
+      },
+      {
+        "exchange": "BSE",
+        "subject": "Company Update",
+        "published_at": "2026-07-09T17:09:53.533"
+      }
+    ],
+    "n_pages": 1,
+    "document_kind": "results",
+    "facts": {
+      "amount_inr": null,
+      "counterparty": null,
+      "pledge_pct_after": null,
+      "holding_delta_pct": null,
+      "officer_role": "Company Secretary",
+      "action": "host an earnings call",
+      "effective_date": "July 18, 2026",
+      "audit_opinion": null
+    },
+    "summary_one_line": "HDFC Bank Limited will host an earnings call on July 18, 2026, to discuss financial results.",
+    "supporting_quote": "the Bank will host an earnings call with analysts and investors at 16:00 hours (IST) on Saturday, July 18, 2026",
+    "extraction_confidence": 0.95,
+    "language": "en",
+    "truncated_input": false,
+    "quote_verified": true
+  },
+  {
+    "sha256": "84affd55db6561694dc6013c25b2e1c248c438111c9fa691584544d504bcb706",
+    "source_records": [
+      {
+        "exchange": "NSE",
+        "subject": "Updates",
+        "published_at": "2026-07-04T09:00:01"
+      },
+      {
+        "exchange": "BSE",
+        "subject": "Company Update",
+        "published_at": "2026-07-04T09:04:20.74"
+      }
+    ],
+    "n_pages": 2,
+    "document_kind": "results",
+    "facts": {
+      "amount_inr": null,
+      "counterparty": null,
+      "pledge_pct_after": null,
+      "holding_delta_pct": null,
+      "officer_role": "Company Secretary",
+      "action": null,
+      "effective_date": "June 30, 2026",
+      "audit_opinion": null
+    },
+    "summary_one_line": "HDFC Bank Limited reports financial results for the quarter ending June 30, 2026.",
+    "supporting_quote": "The results of the Bank as of June 30, 2026, will be subjected to a limited review by the statutory auditors of the Bank.",
+    "extraction_confidence": 0.95,
+    "language": "en",
+    "truncated_input": false,
+    "quote_verified": true
+  },
+  {
+    "sha256": "04a1a4fde99d43f90385285a6d8aa1ebadf31c2404844264c19e4069634a80f0",
+    "source_records": [
+      {
+        "exchange": "NSE",
+        "subject": "Appointment",
+        "published_at": "2026-06-29T23:06:25"
+      },
+      {
+        "exchange": "NSE",
+        "subject": "Appointment",
+        "published_at": "2026-06-29T23:06:25"
+      },
+      {
+        "exchange": "BSE",
+        "subject": "Company Update",
+        "published_at": "2026-06-29T22:32:50.273"
+      }
+    ],
+    "n_pages": 4,
+    "document_kind": "governance",
+    "facts": {
+      "amount_inr": null,
+      "counterparty": null,
+      "pledge_pct_after": null,
+      "holding_delta_pct": null,
+      "officer_role": "Chief Financial Officer - Designate",
+      "action": "appointment",
+      "effective_date": "September 1, 2026",
+      "audit_opinion": null
+    },
+    "summary_one_line": "Appointment of Mr. Puneet Sharma as CFO-Designate effective September 1, 2026.",
+    "supporting_quote": "approved the appointment of Mr. Puneet Sharma as the Chief Financial Officer - Designate (CFO-Designate) w.e.f. September 1, 2026",
+    "extraction_confidence": 0.95,
+    "language": "en",
+    "truncated_input": false,
+    "quote_verified": true
+  },
+  {
+    "sha256": "bbf486074fdf1c4c371d9750ce1ffcbd43d657b7afa18a0cf7f11645f48709bf",
+    "source_records": [
+      {
+        "exchange": "NSE",
+        "subject": "Appointment",
+        "published_at": "2026-06-29T20:33:49"
+      },
+      {
+        "exchange": "BSE",
+        "subject": "Company Update",
+        "published_at": "2026-06-29T20:22:22.93"
+      }
+    ],
+    "n_pages": 5,
+    "document_kind": "governance",
+    "facts": {
+      "amount_inr": null,
+      "counterparty": null,
+      "pledge_pct_after": null,
+      "holding_delta_pct": null,
+      "officer_role": "Part-time Chairman and Additional (Independent) Director",
+      "action": "appointment",
+      "effective_date": "June 30, 2026",
+      "audit_opinion": null
+    },
+    "summary_one_line": "Mr. Rajiv Kumar appointed as Part-time Chairman and Additional Independent Director of HDFC Bank.",
+    "supporting_quote": "approved the appointment of Mr. Rajiv Kumar (DIN: 08049696) as an Additional Director (Independent Director) of the Bank for a period of 4 (four) years, with effect from June 30, 2026.",
+    "extraction_confidence": 0.95,
+    "language": "en",
+    "truncated_input": false,
+    "quote_verified": true
+  },
+  {
+    "sha256": "30fb9d8aad6091726df821a66389d650efc3fe1b55a3e19ab187a0106b3677e0",
+    "source_records": [
+      {
+        "exchange": "NSE",
+        "subject": "Updates",
+        "published_at": "2026-06-26T21:31:58"
+      },
+      {
+        "exchange": "BSE",
+        "subject": "Company Update",
+        "published_at": "2026-06-26T21:36:45.577"
+      }
+    ],
+    "n_pages": 3,
+    "document_kind": "governance",
+    "facts": {
+      "amount_inr": null,
+      "counterparty": null,
+      "pledge_pct_after": null,
+      "holding_delta_pct": null,
+      "officer_role": "Company Secretary",
+      "action": "conclusion of legal review",
+      "effective_date": "June 26, 2026",
+      "audit_opinion": null
+    },
+    "summary_one_line": "HDFC Bank Limited announces the conclusion of a legal review regarding Mr. Atanu Chakraborty's resignation.",
+    "supporting_quote": "The Bank today announces the conclusion of the legal review by external law firms.",
+    "extraction_confidence": 0.95,
+    "language": "en",
+    "truncated_input": false,
+    "quote_verified": true
+  },
+  {
+    "sha256": "521877bb1dc485817a169301e476e79930781ca7181d59c0f23623d1f982670e",
+    "source_records": [
+      {
+        "exchange": "NSE",
+        "subject": "Copy of Newspaper Publication",
+        "published_at": "2026-06-26T15:14:41"
+      },
+      {
+        "exchange": "BSE",
+        "subject": "Company Update",
+        "published_at": "2026-06-26T15:04:21.93"
+      }
+    ],
+    "n_pages": 3,
+    "document_kind": "agm_egm",
+    "facts": {
+      "amount_inr": null,
+      "counterparty": null,
+      "pledge_pct_after": null,
+      "holding_delta_pct": null,
+      "officer_role": "Company Secretary",
+      "action": "Notice regarding 32nd Annual General Meeting",
+      "effective_date": "June 26, 2026",
+      "audit_opinion": null
+    },
+    "summary_one_line": "Notice regarding the 32nd Annual General Meeting of HDFC Bank Limited.",
+    "supporting_quote": "Notice regarding 32nd Annual General Meeting of HDFC Bank Limited and other related information",
+    "extraction_confidence": 0.95,
+    "language": "en",
+    "truncated_input": false,
+    "quote_verified": true
+  },
+  {
+    "sha256": "b63545980aee874b83ab8015cba91bc39ccc84da73713709567a804689ab4d58",
+    "source_records": [
+      {
+        "exchange": "NSE",
+        "subject": "ESOP/ESOS/ESPS",
+        "published_at": "2026-06-25T12:21:27"
+      },
+      {
+        "exchange": "BSE",
+        "subject": "Company Update",
+        "published_at": "2026-06-25T12:23:34.493"
+      }
+    ],
+    "n_pages": 1,
+    "document_kind": "corporate_action",
+    "facts": {
+      "amount_inr": null,
+      "counterparty": null,
+      "pledge_pct_after": null,
+      "holding_delta_pct": null,
+      "officer_role": "Company Secretary",
+      "action": "allotment of equity shares",
+      "effective_date": "June 25, 2026",
+      "audit_opinion": null
+    },
+    "summary_one_line": "HDFC Bank Limited allotted 5,18,036 equity shares pursuant to exercise of ESOP/RSU.",
+    "supporting_quote": "the Bank has allotted today 5,18,036 equity shares to the employees of the Bank pursuant to exercise of Options/RSU\u2019s under its Employees Stock Options Scheme (ESOS).",
+    "extraction_confidence": 0.95,
+    "language": "en",
+    "truncated_input": false,
+    "quote_verified": true
+  },
+  {
+    "sha256": "5f921ea011f3f4c7339e398a4c32240a0225aede27c6bdbd96514f2fb23af805",
+    "source_records": [
+      {
+        "exchange": "NSE",
+        "subject": "Updates",
+        "published_at": "2026-06-18T16:46:58"
+      },
+      {
+        "exchange": "BSE",
+        "subject": "Company Update",
+        "published_at": "2026-06-18T16:47:31.24"
+      }
+    ],
+    "n_pages": 1,
+    "document_kind": "governance",
+    "facts": {
+      "amount_inr": 13,
+      "counterparty": null,
+      "pledge_pct_after": null,
+      "holding_delta_pct": null,
+      "officer_role": "interim Part-time Chairman",
+      "action": "extension of tenure",
+      "effective_date": "September 18, 2026",
+      "audit_opinion": null
+    },
+    "summary_one_line": "Approval received for extension of Mr. Keki Mistry's tenure as interim Part-time Chairman.",
+    "supporting_quote": "the RBI vide its communication dated June 18, 2026, has granted approval for the extension of tenure of Mr. Keki Mistry (DIN: 00008886) as an interim Part-time Chairman of the Bank for a further period of 3 (three) months until September 18, 2026",
+    "extraction_confidence": 0.95,
+    "language": "en",
+    "truncated_input": false,
+    "quote_verified": true
+  },
+  {
+    "sha256": "7f8eaf44f77843540fd72b94f205fba20619a73d86cf8a17ddd76e397e64dee7",
+    "source_records": [
+      {
+        "exchange": "NSE",
+        "subject": "General Updates",
+        "published_at": "2026-06-16T22:41:49"
+      },
+      {
+        "exchange": "BSE",
+        "subject": "Company Update",
+        "published_at": "2026-06-16T22:39:07"
+      }
+    ],
+    "n_pages": 2,
+    "document_kind": "corporate_action",
+    "facts": {
+      "amount_inr": null,
+      "counterparty": null,
+      "pledge_pct_after": null,
+      "holding_delta_pct": null,
+      "officer_role": "Company Secretary",
+      "action": "Issuance of USD 750 Million Senior Unsecured Bonds",
+      "effective_date": "June 16, 2026",
+      "audit_opinion": null
+    },
+    "summary_one_line": "HDFC Bank Limited has completed the issuance of USD 750 Million Senior Unsecured Bonds.",
+    "supporting_quote": "HDFC Bank Limited acting through GIFT City IFSC Banking Unit has completed the issuance of USD 750 Million Senior Unsecured Bonds, today i.e. June 16, 2026.",
+    "extraction_confidence": 0.95,
+    "language": "en",
+    "truncated_input": false,
+    "quote_verified": true
+  },
+  {
+    "sha256": "f1f121510524600918447d0f81b7ec0f3d53590527685b89d2905740479fcd72",
+    "source_records": [
+      {
+        "exchange": "NSE",
+        "subject": "ESOP/ESOS/ESPS",
+        "published_at": "2026-06-16T14:34:16"
+      },
+      {
+        "exchange": "BSE",
+        "subject": "Company Update",
+        "published_at": "2026-06-16T14:29:01.037"
+      }
+    ],
+    "n_pages": 1,
+    "document_kind": "corporate_action",
+    "facts": {
+      "amount_inr": null,
+      "counterparty": null,
+      "pledge_pct_after": null,
+      "holding_delta_pct": null,
+      "officer_role": "Company Secretary",
+      "action": "allotment of equity shares",
+      "effective_date": "June 16, 2026",
+      "audit_opinion": null
+    },
+    "summary_one_line": "HDFC Bank Limited allotted 31,60,300 equity shares under ESOP/RSU.",
+    "supporting_quote": "the Bank has allotted today 31,60,300 equity shares to the employees of the Bank pursuant to exercise of Options/RSU\u2019s under its Employees Stock Options Scheme (ESOS).",
+    "extraction_confidence": 0.95,
+    "language": "en",
+    "truncated_input": false,
+    "quote_verified": true
+  },
+  {
+    "sha256": "1c968beae722339d4519244fa2b1322dc8de154ccf3efafaffa52b6aad360ce5",
+    "source_records": [
+      {
+        "exchange": "NSE",
+        "subject": "Copy of Newspaper Publication",
+        "published_at": "2026-06-02T13:18:55"
+      },
+      {
+        "exchange": "BSE",
+        "subject": "Company Update",
+        "published_at": "2026-06-02T13:03:54.89"
+      }
+    ],
+    "n_pages": 3,
+    "document_kind": "corporate_action",
+    "facts": {
+      "amount_inr": null,
+      "counterparty": null,
+      "pledge_pct_after": null,
+      "holding_delta_pct": null,
+      "officer_role": "Company Secretary",
+      "action": "open a Special Window for transfer and dematerialisation of physical shares",
+      "effective_date": "February 5, 2026",
+      "audit_opinion": null
+    },
+    "summary_one_line": "HDFC Bank Limited announces a Special Window for transfer and dematerialisation of physical shares.",
+    "supporting_quote": "a Special Window is open for a period of one year, from February 5, 2026 to February 4, 2027 to facilitate transfer and dematerialisation of physical securities which were sold/purchased prior to April 01, 2019.",
+    "extraction_confidence": 0.95,
+    "language": "en",
+    "truncated_input": false,
+    "quote_verified": true
+  },
+  {
+    "sha256": "32a34fdf7f7a5108bee2583e8cba99987a07001b132e4e768099fd240a42a233",
+    "source_records": [
+      {
+        "exchange": "NSE",
+        "subject": "ESOP/ESOS/ESPS",
+        "published_at": "2026-05-29T12:10:34"
+      },
+      {
+        "exchange": "BSE",
+        "subject": "Company Update",
+        "published_at": "2026-05-29T12:09:25.173"
+      }
+    ],
+    "n_pages": 1,
+    "document_kind": "corporate_action",
+    "facts": {
+      "amount_inr": null,
+      "counterparty": null,
+      "pledge_pct_after": null,
+      "holding_delta_pct": null,
+      "officer_role": "Company Secretary",
+      "action": "Allotment of equity shares",
+      "effective_date": "May 29, 2026",
+      "audit_opinion": null
+    },
+    "summary_one_line": "HDFC Bank Limited allotted 13,16,960 equity shares under ESOP/RSU.",
+    "supporting_quote": "the Bank has allotted today 13,16,960 equity shares to the employees of the Bank pursuant to exercise of Options/RSU\u2019s under its Employees Stock Options Scheme (ESOS).",
+    "extraction_confidence": 0.95,
+    "language": "en",
+    "truncated_input": false,
+    "quote_verified": true
+  },
+  {
+    "sha256": "7d891d4a9f645b0da07e90f546ff00a0007a800de8baba8fb9af53f986e57ba8",
+    "source_records": [
+      {
+        "exchange": "NSE",
+        "subject": "News Verification",
+        "published_at": "2026-05-28T21:22:07"
+      },
+      {
+        "exchange": "BSE",
+        "subject": "Others",
+        "published_at": "2026-05-28T21:29:42.28"
+      }
+    ],
+    "n_pages": 1,
+    "document_kind": "press_release",
+    "facts": {
+      "amount_inr": 45,
+      "counterparty": "state transport firm",
+      "pledge_pct_after": null,
+      "holding_delta_pct": null,
+      "officer_role": "Company Secretary",
+      "action": "clarification",
+      "effective_date": "2026-05-28",
+      "audit_opinion": null
+    },
+    "summary_one_line": "HDFC Bank clarifies media reports regarding an internal probe into \u20b945 crore interest payments.",
+    "supporting_quote": "HDFC Bank shares fall 2.5% after report on internal probe into Rs 45 crore interest payments",
+    "extraction_confidence": 0.95,
+    "language": "en",
+    "truncated_input": false,
+    "quote_verified": true
+  },
+  {
+    "sha256": "2e22c184ee009357b66373b9462b819fb9e237e7923c2368dada1f623560b52a",
+    "source_records": [
+      {
+        "exchange": "NSE",
+        "subject": "Analysts/Institutional Investor Meet/Con. Call Updates",
+        "published_at": "2026-05-26T17:09:29"
+      },
+      {
+        "exchange": "BSE",
+        "subject": "Company Update",
+        "published_at": "2026-05-26T17:10:03.603"
+      }
+    ],
+    "n_pages": 1,
+    "document_kind": "other",
+    "facts": {
+      "amount_inr": null,
+      "counterparty": null,
+      "pledge_pct_after": null,
+      "holding_delta_pct": null,
+      "officer_role": "Company Secretary",
+      "action": "Intimation of Schedule of Analyst / Institutional Investor Meetings",
+      "effective_date": "May 26, 2026",
+      "audit_opinion": null
+    },
+    "summary_one_line": "HDFC Bank Limited announces schedule for Analyst / Institutional Investor Meetings.",
+    "supporting_quote": "please find below the Schedule for the Analyst / Institutional Investor Meeting.",
+    "extraction_confidence": 0.95,
+    "language": "en",
+    "truncated_input": false,
+    "quote_verified": true
+  },
+  {
+    "sha256": "8f8835b4f644ea4d4929242d0f498453dcf3a6ef5fdfd3f41bd92d996c6caa63",
+    "source_records": [
+      {
+        "exchange": "NSE",
+        "subject": "Copy of Newspaper Publication",
+        "published_at": "2026-05-26T15:46:37"
+      },
+      {
+        "exchange": "BSE",
+        "subject": "Company Update",
+        "published_at": "2026-05-26T15:54:03.4"
+      }
+    ],
+    "n_pages": 3,
+    "document_kind": "corporate_action",
+    "facts": {
+      "amount_inr": null,
+      "counterparty": null,
+      "pledge_pct_after": null,
+      "holding_delta_pct": null,
+      "officer_role": "Company Secretary",
+      "action": "transfer of equity shares to Investor Education and Protection Fund (IEPF) Authority",
+      "effective_date": "May 26, 2026",
+      "audit_opinion": null
+    },
+    "summary_one_line": "Notice published for transfer of equity shares to IEPF Authority.",
+    "supporting_quote": "Sub: Publication of Notice in newspapers for transfer of equity shares to Investor Education and Protection Fund (IEPF) Authority",
+    "extraction_confidence": 0.95,
+    "language": "en",
+    "truncated_input": false,
+    "quote_verified": true
+  },
+  {
+    "sha256": "6b6fb0f23bba71248ae82370c4f2e9c98ec500caa6ddd7c2c4a189a31e2f40ce",
+    "source_records": [
+      {
+        "exchange": "BSE",
+        "subject": "Others",
+        "published_at": "2026-07-10T23:56:09.04"
+      }
+    ],
+    "n_pages": 57,
+    "document_kind": "other",
+    "facts": {
+      "amount_inr": 37005465,
+      "counterparty": null,
+      "pledge_pct_after": null,
+      "holding_delta_pct": null,
+      "officer_role": "Deputy Managing Director",
+      "action": null,
+      "effective_date": null,
+      "audit_opinion": null
+    },
+    "summary_one_line": "HDFC Bank Limited reports on its business responsibility and sustainability initiatives for the financial year 2025-26.",
+    "supporting_quote": "Turnover: ` 3,70,054.65 crore",
+    "extraction_confidence": 0.95,
+    "language": "en",
+    "truncated_input": true,
+    "quote_verified": true
+  },
+  {
+    "sha256": "229105aef71a36367b54bf5f70d4ea71716b26473008940e47cddb6e077015f1",
+    "source_records": [
+      {
+        "exchange": "BSE",
+        "subject": "Board Meeting",
+        "published_at": "2026-06-23T20:51:56.953"
+      }
+    ],
+    "n_pages": 1,
+    "document_kind": "board_meeting",
+    "facts": {
+      "amount_inr": null,
+      "counterparty": null,
+      "pledge_pct_after": null,
+      "holding_delta_pct": null,
+      "officer_role": "Company Secretary",
+      "action": "scheduled to be held",
+      "effective_date": "July 18, 2026",
+      "audit_opinion": null
+    },
+    "summary_one_line": "HDFC Bank Limited's Board meeting scheduled for July 18, 2026, to approve financial results.",
+    "supporting_quote": "a meeting of the Board of Directors of HDFC Bank Limited (\u201cthe Bank\u201d) is scheduled to be held on Saturday, July 18, 2026 to inter-alia consider and approve the unaudited standalone and consolidated financial results of the Bank for the quarter ending June 30, 2026.",
+    "extraction_confidence": 0.95,
+    "language": "en",
+    "truncated_input": false,
+    "quote_verified": true
+  }
+]
