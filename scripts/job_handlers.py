@@ -9,6 +9,9 @@ Currently registers:
                         cannot duplicate the logical side effect.
 * ``selftest``        — behaviour-switchable handler for integration tests:
                         ``{"action": "ok"|"fail"|"hard_crash"|"sleep", ...}``.
+                        Also bound to the ``selftest.`` *prefix*, so per-test
+                        kinds like ``selftest.crash.<uid>`` resolve to it in
+                        separate worker subprocesses too.
 
 Later fetchers register their own kinds here (or in their own modules via
 ``jobs.register_handler``) — importing this module is what makes handlers
@@ -53,6 +56,7 @@ def handle_demo(ctx: JobContext) -> None:
 
 
 @jobs.register_handler("selftest")
+@jobs.register_prefix_handler("selftest.")
 def handle_selftest(ctx: JobContext) -> None:
     """Test handler. Actions:
     * ok         — succeed (optionally after sleep_sec)
@@ -68,7 +72,11 @@ def handle_selftest(ctx: JobContext) -> None:
     if action == "fail":
         raise RuntimeError(ctx.payload.get("message", "selftest failure"))
     if action == "hard_crash":
-        os._exit(9)
+        if ctx.job.attempts <= 1:
+            os._exit(9)
+        # Later attempts fall through to the success path so crash-recovery
+        # tests can drive a full kill -> lease-expiry -> retry cycle while
+        # the retried attempt completes normally.
     # "ok": record execution via the same dedup-safe outbox marker
     with jobs.connect(ctx.db_url) as conn:
         emit_outbox(

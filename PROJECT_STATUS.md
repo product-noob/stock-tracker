@@ -22,15 +22,17 @@ Moving from **docs + pilot scripts** to a working pipeline backed by the real Po
 - Company registry (`scripts/companies.py`) expanded to all 30 SENSEX constituents with checksum-validated ISINs
 - Per-company HTML report generator (`scripts/make_report.py`); sample at `data/hdfcbank/report.html`
 - Module requirement specs captured as tiered docs (`docs/ROUTER.md` → `docs/modules/<mod>/OVERVIEW.md` → L2 detail); Yahoo market-data module specified (yfinance chosen as primary daily-price provider, ROADMAP decision log); plain-English schema explainer in `docs/schema-explained.html`
+- **Durable job/outbox worker — DONE (Phase 0 next-action 1)** (`scripts/jobs.py`, `scripts/job_handlers.py`, `scripts/job_worker.py`) on `platform.processing_jobs` / `platform.outbox_events`: idempotency-key dedup on enqueue, FOR UPDATE SKIP LOCKED claim with heartbeat lease, lease-expiry crash recovery, exponential-backoff retry → dead-letter quarantine, transactional outbox emission (one `job.failed` event per attempt, terminal `job.dead` on quarantine); exact + prefix (`selftest.`-style family kinds) handler resolution; CLI worker with graceful SIGTERM/SIGINT (`--queue`, `--drain`, `--once`, `--enqueue-demo`). Integration tests in `tests/test_jobs.py` (`venv/bin/python -m unittest tests.test_jobs -v`, 7/7 pass) prove claim exclusivity under 6 concurrent workers, hard-crash recovery via subprocess `os._exit(9)` + lease reclaim + successful retry, poison-job quarantine to dead with immutable terminal rows, outbox emission/dedup, and SIGTERM finishing the in-flight job. Verified live: two concurrent CLI workers drained 10 demo jobs 5/5 with exactly-once logical effects and zero duplicates
 
 ## Next steps (rough order — tracks HLD Phase 0 "reliable capture")
 
 1. ~~Seed the whitelist~~ ✅ done (`seed_core.py`)
-2. Object store + ingestion plumbing: partition-aware fetchers writing exact response bytes to immutable storage + `fetch_runs`/`raw_artifacts`/`raw_feed_items`/cursors lineage in the DB, with durable jobs/outbox (per `docs/modules/*/OVERVIEW.md` specs)
-3. Normalizer (M2) + identity resolver (M3) with fail-closed review flow
-4. Plain resolved-filing Telegram digest + reconciliation harness → Phase 0 gate: 7 unattended days, worker-kill tests, measured coverage
-5. Text extraction → LLM fact extraction → event clustering stages (Phase 1)
-6. Market data join and reaction calculation; ranking + digest delivery (Phase 2)
+2. ~~Durable job queue + outbox worker pattern~~ ✅ done (`scripts/jobs.py` + `job_worker.py`; downstream fetchers register handlers per job_kind and run inside this framework)
+3. Object store + ingestion plumbing: partition-aware fetchers writing exact response bytes to immutable storage + `fetch_runs`/`raw_artifacts`/`raw_feed_items`/cursors lineage in the DB, running as jobs in the TODO-1 framework (per `docs/modules/*/OVERVIEW.md` specs)
+4. Normalizer (M2) + identity resolver (M3) with fail-closed review flow
+5. Plain resolved-filing Telegram digest + reconciliation harness → Phase 0 gate: 7 unattended days, worker-kill tests, measured coverage
+6. Text extraction → LLM fact extraction → event clustering stages (Phase 1)
+7. Market data join and reaction calculation; ranking + digest delivery (Phase 2)
 
 ## Ops notes
 

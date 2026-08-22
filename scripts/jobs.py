@@ -90,6 +90,7 @@ class NoHandlerError(JobsError):
 
 HandlerFn = Callable[["JobContext"], Any]
 _HANDLERS: dict[str, HandlerFn] = {}
+_PREFIX_HANDLERS: list[tuple[str, HandlerFn]] = []
 
 
 def register_handler(job_kind: str, fn: Optional[HandlerFn] = None) -> Callable:
@@ -106,14 +107,37 @@ def register_handler(job_kind: str, fn: Optional[HandlerFn] = None) -> Callable:
     return deco
 
 
+def register_prefix_handler(prefix: str, fn: Optional[HandlerFn] = None) -> Callable:
+    """Register ``fn`` for every ``job_kind`` starting with ``prefix``
+    (longest matching prefix wins; exact registrations always beat prefixes).
+    Lets a family of kinds share one handler, e.g. ``selftest.crash.<uid>``
+    or ``nse.fetch:<slug>``."""
+    if fn is not None:
+        _PREFIX_HANDLERS.append((prefix, fn))
+        return fn
+
+    def deco(f: HandlerFn) -> HandlerFn:
+        _PREFIX_HANDLERS.append((prefix, f))
+        return f
+
+    return deco
+
+
 def get_handler(job_kind: str) -> HandlerFn:
     try:
         return _HANDLERS[job_kind]
     except KeyError:
-        raise NoHandlerError(
-            f"no handler registered for job_kind {job_kind!r}; "
-            f"known: {sorted(_HANDLERS)}"
-        ) from None
+        pass
+    best: Optional[tuple[str, HandlerFn]] = None
+    for prefix, fn in _PREFIX_HANDLERS:
+        if job_kind.startswith(prefix) and (best is None or len(prefix) > len(best[0])):
+            best = (prefix, fn)
+    if best is not None:
+        return best[1]
+    raise NoHandlerError(
+        f"no handler registered for job_kind {job_kind!r}; "
+        f"known: {sorted(_HANDLERS)} + prefixes {sorted(p for p, _ in _PREFIX_HANDLERS)}"
+    )
 
 
 # --------------------------------------------------------------------- #
@@ -358,6 +382,8 @@ def fail_job(
         _insert_outbox_events(
             conn, job, base_event="job.failed", extra=outbox_events,
             result_payload={"error": message[:2000], "outcome": outcome},
+            # one failure event per attempt; the unique key dedupes replays
+            event_key_suffix=f":{job.attempts}",
         )
         if dead:
             emit_outbox(
@@ -403,6 +429,7 @@ def _insert_outbox_events(
     base_event: str,
     extra: Optional[list[dict[str, Any]]],
     result_payload: Optional[dict[str, Any]],
+    event_key_suffix: str = "",
 ) -> None:
     payload: dict[str, Any] = {
         "job_kind": job.job_kind,
@@ -415,7 +442,7 @@ def _insert_outbox_events(
         event_type=base_event,
         aggregate_type="processing_job",
         aggregate_id=str(job.job_id),
-        event_key=f"{base_event}:{job.job_id}",
+        event_key=f"{base_event}:{job.job_id}{event_key_suffix}",
         payload=payload,
     )
     for spec in extra or []:

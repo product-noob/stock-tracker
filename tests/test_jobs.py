@@ -209,14 +209,22 @@ class TestClaimExclusivity(JobsIntegrationTestCase):
 
 class TestCrashRecovery(JobsIntegrationTestCase):
     def test_hard_crash_midjob_then_retry_completes(self):
-        kind = f"test_crash_{_uid()}"
+        # Unique kind under the ``selftest.`` prefix: the worker SUBPROCESS
+        # resolves it via the prefix handler registered in
+        # scripts/job_handlers.py, and the --queue filter guarantees this
+        # worker only ever sees *this run's* job (stale hard_crash rows from
+        # older runs can never be reclaimed into this drain).
+        kind = f"selftest.crash.{_uid()}"
         key = f"{kind}-crashy"
         job_id = self.enqueue(kind, key, {"action": "hard_crash"})
 
         # Real worker subprocess that claims the job and os._exit(9)s mid-job.
-        subprocess.run(WORKER + ["--queue", kind, "--drain", "--quiet"],
-                       capture_output=True, text=True, timeout=120,
-                       env=os.environ.copy())
+        proc = subprocess.run(WORKER + ["--queue", kind, "--drain", "--quiet"],
+                              capture_output=True, text=True, timeout=120,
+                              env=os.environ.copy())
+        self.assertEqual(proc.returncode, 9,
+                         f"worker must die via os._exit(9); stderr="
+                         f"{proc.stderr[-2000:]}")
         row = self.q1(
             "SELECT status, attempts, locked_by IS NOT NULL "
             "FROM platform.processing_jobs WHERE job_id = %s", (job_id,))
@@ -234,8 +242,11 @@ class TestCrashRecovery(JobsIntegrationTestCase):
         self.assertEqual((row[0], row[1]), ("queued", 1))
 
         # A healthy retry now succeeds.
-        subprocess.run(WORKER + ["--queue", kind, "--drain", "--quiet"],
-                       capture_output=True, text=True, timeout=120)
+        proc = subprocess.run(WORKER + ["--queue", kind, "--drain", "--quiet"],
+                              capture_output=True, text=True, timeout=120)
+        self.assertEqual(proc.returncode, 0,
+                         f"retry worker must exit cleanly; stderr="
+                         f"{proc.stderr[-2000:]}")
         row = self.q1("SELECT status, attempts FROM platform.processing_jobs "
                       "WHERE job_id = %s", (job_id,))
         self.assertEqual((row[0], row[1]), ("succeeded", 2))
@@ -252,7 +263,7 @@ class TestRetryBackoffAndPoisonQuarantine(JobsIntegrationTestCase):
         job_id = self.enqueue(kind, key, {"action": "fail"}, max_attempts=2)
 
         # Attempt 1: handler raises -> retry scheduled with exponential backoff.
-        claimed = self.claim(kind)
+        claimed = self.claim(kind, "t")
         self.assertIsNotNone(claimed)
         outcome = None
         try:
@@ -274,7 +285,7 @@ class TestRetryBackoffAndPoisonQuarantine(JobsIntegrationTestCase):
 
         # Attempt 2: fail again with attempts == max_attempts -> dead (quarantine).
         self.backdate_available_at(job_id, seconds_ago=1)
-        claimed2 = self.claim(kind)
+        claimed2 = self.claim(kind, "t")
         self.assertIsNotNone(claimed2)
         self.assertEqual(claimed2.attempts, 2)
         with jobs.connect(self.url()) as conn:
@@ -283,7 +294,7 @@ class TestRetryBackoffAndPoisonQuarantine(JobsIntegrationTestCase):
         row = self.q1(
             "SELECT status, finished_at IS NOT NULL, locked_at IS NULL "
             "FROM platform.processing_jobs WHERE job_id = %s", (job_id,))
-        self.assertEqual(row, (True, True, True))
+        self.assertEqual(row, ("dead", True, True))
         # outbox: one failed event per attempt + one terminal dead event
         self.assertEqual(self.outbox_count(f"job.failed:{job_id}"), 2)
         self.assertEqual(self.outbox_count(f"job.dead:{job_id}"), 1)
@@ -355,8 +366,10 @@ class TestOutboxEmission(JobsIntegrationTestCase):
 
 class TestGracefulShutdown(JobsIntegrationTestCase):
     def test_sigterm_finishes_in_flight_job_and_exits_zero(self):
-        kind = "selftest"
-        key = f"sigterm-{_uid()}"
+        # Unique kind under the ``selftest.`` prefix so this worker's queue
+        # filter can never pick up a stale hard_crash row from older runs.
+        kind = f"selftest.sigterm.{_uid()}"
+        key = f"{kind}-sig"
         job_id = self.enqueue(kind, key,
                               {"action": "sleep", "sleep_sec": 4})
 
