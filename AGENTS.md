@@ -30,6 +30,17 @@ A personal research tool for Indian listed companies (NSE/BSE): fetch official f
 - `scripts/resolve_news.py` resolves opaque `news.google.com` redirects to publisher URLs (base64 decode or batchexecute flow), cached per token.
 - Design principles in the HLD are binding: fetched bytes are persisted before parsing, at-least-once with idempotency keys, append-only versioned outputs, "the LLM extracts, code decides." Do not confuse a stated invariant with an implemented guarantee; the comprehensive review records current gaps.
 - Commit style follows conventional commits (`feat:`, `chore(db):`, `docs:` …).
+- **Keep `docs/BUILD_LOG.md` updated** with timestamped entries during working sessions (owner requirement): one entry per meaningful action, append-only, newest last.
+
+## Operational learnings (broadly applicable, learned the hard way)
+
+- **Job handlers register at import time.** A new `job_kind` only exists for a worker if its module is imported by `scripts/job_worker.py`. Forgetting the import produces `NoHandlerError` on every job of that kind (caught live 2026-08-23).
+- **Capture runs are idempotent per partition + IST calendar day.** Re-running the same day short-circuits with zero network — that is correct behaviour, not a bug. To force a genuine live fetch (e.g. for testing), call `_run_partition_impl(..., day_key="<YYYYMMDDsuffix>")` programmatically instead of deleting run rows.
+- **Filing lineage lives in `raw_artifacts.metadata`** (`seq_ids`/`news_ids` → raw-item idempotency keys), NOT in `documents.record_contents`, which stays empty until the M4 content processor is built. Joins for “which PDF belongs to which announcement” must go through artifact metadata.
+- **Object-store URLs need an extra prefix**: store root is `data/objects/` but `storage_path` values already start with `objects/`, so served hrefs are `objects/<storage_path>` relative to `data/`. Verify blob links against disk before shipping UI code.
+- **Append-only guards are `reject_mutation()` triggers on ~28 tables**, including ones you would not expect (`raw_feed_items`). Any authorized cleanup must disable those triggers inside ONE transaction and re-enable them after, and must respect FK order (`record_raw_items` before `raw_feed_items`). Never leave triggers disabled.
+- **When spawning worker subprocesses from tests**, set `STOCKTRACKER_USE_TEST_DB=1` in the child env — `sys.modules` does not cross process boundaries, so unittest detection alone is insufficient.
+- **BSE attachment paths are filename-shape-aware**: GUID-named filings exist only under `AttachLive` (His returns 404 HTML); legacy numeric names are archive-first. Only VALID pdf captures count as "captured" — see `docs/modules/bse-capture/evidence-log.md` (2026-08-23) before changing download logic.
 
 ## Safety
 
