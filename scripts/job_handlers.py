@@ -28,6 +28,9 @@ from jobs import JobContext, emit_outbox
 # NSE capture adapter: importing registers the ``nse.fetch`` handler family.
 import nse_capture  # noqa: F401
 
+# BSE capture adapter: importing registers the ``bse.fetch`` handler family.
+import bse_capture  # noqa: F401
+
 
 @jobs.register_handler("demo")
 def handle_demo(ctx: JobContext) -> None:

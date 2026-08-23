@@ -1,4 +1,4 @@
-"""BSE capture adapter → DB (Phase 0, ROADMAP action 2 / TODO 4).
+"""BSE capture adapter → DB (Phase 0, ROADMAP action 2 / TODO 3).
 
 Reshapes the proven file-based ``fetch_announcements.py`` (BSE half) +
 ``download_pdfs.py`` discovery logic into a partition-aware fetcher per
@@ -122,7 +122,14 @@ PdfFetchFn = Callable[[Any, str], tuple[Optional[bytes], Optional[int], str]]
 
 
 class BseFetchError(RuntimeError):
-    """Partition-level fetch failure (drives job retry with backoff)."""
+    """Partition-level fetch failure (drives job retry with backoff).
+
+    ``body`` optionally carries the exact offending response bytes so the
+    failed run can retain them as evidence."""
+
+    def __init__(self, msg: str, body: bytes = b""):
+        super().__init__(msg)
+        self.body = body
 
 
 class EnvelopeError(BseFetchError):
@@ -233,8 +240,11 @@ def parse_envelope(body: bytes) -> tuple[list[dict[str, Any]], Optional[int]]:
 
 def sniff_stale_session(body: bytes) -> bool:
     """True if a 200 body is actually a stale-session/HTML/garbage response
-    rather than the expected JSON object envelope (R-BSE-1/2)."""
-    head = body.lstrip().lstrip(b"\ufeff")[:64]
+    rather than the expected JSON object envelope (R-BSE-1/2). Tolerates a
+    UTF-8 BOM and surrounding whitespace (R-BSE-3)."""
+    head = body.lstrip()
+    if head.startswith(b"\xef\xbb\xbf"):  # UTF-8 BOM
+        head = head[3:].lstrip()
     return not head.startswith(b"{")
 
 
@@ -351,15 +361,18 @@ def get_cursor(conn: psycopg.Connection, partition_id: int) -> Optional[dict[str
 
 
 def url_already_captured(conn: psycopg.Connection, partition_id: int, url: str) -> bool:
-    """True if a prior successful run of this partition already stored a valid
-    document for this content URL (keeps re-runs from re-downloading)."""
+    """True if a prior successful run of this partition already stored bytes
+    for this content URL — either a valid ``filing_pdf`` OR retained
+    ``filing_pdf_invalid`` evidence (re-fetching known-garbage daily adds
+    nothing; convergence means "handled", not "valid"). Keeps re-runs from
+    re-downloading."""
     row = conn.execute(
         """
         SELECT 1
         FROM ingestion.raw_artifacts a
         JOIN ingestion.fetch_runs r USING (fetch_run_id)
         WHERE r.partition_id = %s
-          AND a.artifact_kind = 'filing_pdf'
+          AND a.artifact_kind IN ('filing_pdf', 'filing_pdf_invalid')
           AND a.metadata->>'url' = %s
         LIMIT 1
         """,
@@ -385,7 +398,7 @@ def _pending_pdf_urls(conn: psycopg.Connection, partition_id: int,
               FROM ingestion.raw_artifacts a
               JOIN ingestion.fetch_runs r USING (fetch_run_id)
               WHERE r.partition_id = %s
-                AND a.artifact_kind = 'filing_pdf'
+                AND a.artifact_kind IN ('filing_pdf', 'filing_pdf_invalid')
                 AND a.metadata->>'url' = i.content_url)
         ORDER BY 1
         """,
@@ -553,7 +566,7 @@ def _run_partition_impl(
                 conn, store, fetch_run_id, frm, to, fetch_fn, part, log)
     except BseFetchError as e:
         _finalize_failed(conn, store, partition_id, fetch_run_id, None,
-                         str(e), b"")
+                         str(e), getattr(e, "body", b""))
         raise
 
     items = [row for row in collected.values() if _row_matches_scrip(row, scrip)]
@@ -686,11 +699,11 @@ def _fetch_page(fetch_fn: FetchFn, scrip: str, frm: str, to: str,
     if status != 200 or sniff_stale_session(body):
         raise BseFetchError(
             f"API unusable after re-warm (HTTP {status}, "
-            f"head={body[:80]!r})")
+            f"head={body[:80]!r})", body=body)
     try:
         rows, rowcnt = parse_envelope(body)
     except EnvelopeError as e:
-        raise BseFetchError(f"page {pageno}: {e}") from e
+        raise BseFetchError(f"page {pageno}: {e}", body=body) from e
     return body, rows, rowcnt, url
 
 
@@ -829,9 +842,22 @@ def _finalize_failed(conn: psycopg.Connection, store: ObjectStore,
                      partition_id: int, fetch_run_id: int,
                      http_status: Optional[int], summary: str,
                      body: bytes) -> None:
-    """Close the run as failed and bump the cursor failure counter."""
+    """Persist whatever bytes we got as evidence, close the run as failed,
+    bump the cursor failure counter."""
     try:
         with conn.transaction():
+            if body:
+                sha, path, _ = _persist_bytes(
+                    conn, store, body, media_type="application/octet-stream",
+                    metadata={"source": "bse_api", "error": summary[:500]})
+                _store_artifact(
+                    conn,
+                    fetch_run_id=fetch_run_id,
+                    idem_key=f"bse_api:{partition_id}:err:{sha[:16]}",
+                    kind="api_response_error",
+                    media="application/octet-stream",
+                    sha=sha, path=path, size=len(body),
+                    meta={"error": summary[:500]})
             conn.execute(
                 "UPDATE ingestion.fetch_runs SET finished_at=now(), "
                 "status='failed', http_status=%s, error_summary=%s "
