@@ -60,9 +60,10 @@ Cursor rules identical to NSE (advance only after artifact + items commit).
   not current production totals.
 - **Contract gaps:** responses are collected/parsed before artifact persistence; multi-page
   rows can point at the wrong page/run; the once-per-day key contradicts six-hour cadence;
-  invalid HTML evidence suppresses future valid retries; all-foreign results can pass the
-  empty gate; downloads are unbounded; canonical fetch-attempt and record-content rows are
-  absent. This is partial C1 plus content artifacts, not complete C3/M4 lineage.
+  invalid-only URLs now retry every run but have no bounded attempt/backoff model;
+  all-foreign results can pass the empty gate; downloads are unbounded; canonical
+  fetch-attempt and record-content rows are absent. This is partial C1 plus content
+  artifacts, not complete C3/M4 lineage.
 - `bse_rss` is not DB-integrated. No seven-day soak/reconciliation gate has run.
 - **Next milestone:** close review `ST-C01`, `ST-C03`–`ST-C07`, with guarded test
   isolation, before RSS integration and the Phase 0 soak.

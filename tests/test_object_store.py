@@ -28,16 +28,23 @@ from object_store import (  # noqa: E402
 
 
 def _database_url() -> str | None:
-    env_file = ROOT / ".env"
-    if not env_file.exists():
-        return None
-    for line in env_file.read_text(encoding="utf-8-sig").splitlines():
-        line = line.strip()
-        if line and not line.startswith("#") and "=" in line:
-            k, v = line.split("=", 1)
-            if k.strip() == "DATABASE_URL" and v.strip():
-                return v.strip()
-    return None
+    """Isolated test-DB URL ONLY (TEST_DATABASE_URL in .env). Tests create
+    synthetic TEST*/identtest data and must never touch the live pipeline DB
+    (2026-08-23 cleanup: they did, twice). Skips if not configured."""
+    url = os.environ.get("TEST_DATABASE_URL")
+    if not url:
+        env_file = ROOT / ".env"
+        if env_file.exists():
+            for line in env_file.read_text(encoding="utf-8-sig").splitlines():
+                line = line.strip()
+                if line.startswith("TEST_DATABASE_URL="):
+                    url = line.split("=", 1)[1].strip() or None
+                    break
+    if url and "stocktracker_test" not in url:
+        return None  # refuse anything that is not the isolated test DB
+    return url
+
+
 
 
 def _db_available(url: str) -> bool:

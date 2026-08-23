@@ -41,11 +41,22 @@ import nse_capture  # noqa: E402
 
 
 def _database_url() -> str | None:
+    """Isolated test-DB URL ONLY. Tests must never touch the live pipeline DB:
+    they create synthetic TEST*/identtest partitions and records. Requires
+    TEST_DATABASE_URL in .env (stocktracker_test); otherwise tests skip."""
     import jobs
-    try:
-        return jobs.db_url_from_env()
-    except jobs.JobsError:
-        return None
+    url = None
+    env_path = Path(__file__).resolve().parent.parent / ".env"
+    if env_path.exists():
+        for line in env_path.read_text(encoding="utf-8-sig").splitlines():
+            line = line.strip()
+            if line.startswith("TEST_DATABASE_URL="):
+                url = line.split("=", 1)[1].strip() or None
+                break
+    if not url:
+        import os
+        url = os.environ.get("TEST_DATABASE_URL") or None
+    return url
 
 
 # --------------------------------------------------------------------- #

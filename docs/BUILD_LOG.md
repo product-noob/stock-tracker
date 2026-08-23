@@ -90,3 +90,31 @@ Started 2026-08-23 (IST). Maintained during interactive build/testing sessions.
   retries/links, source validation, concurrency, outbox dispatch and service supervision.
 - Canonical timestamped status is in `PROJECT_STATUS.md`, `docs/ROADMAP.md`, and
   `docs/reviews/2026-08-23-comprehensive-review.md`; live totals must be queried read-only.
+
+## 2026-08-23 (cont.) — Authorized DB cleanup + test isolation + BSE AttachLive fix
+
+**Owner authorized removal of all synthetic test data.**
+
+1. Safety dump: backups/pre_cleanup_20260823_0541.sql (4.2 MB)
+2. Full pipeline-data reset (TRUNCATE non-core schemas, bypassing row guards
+   legally; core security master kept). intelligence ref-table seeds restored
+   from db/schema.sql.
+3. Root cause fixed — unit tests were writing TEST*/identtest rows into the
+   LIVE database:
+   - created isolated `stocktracker_test` DB (schema applied) + TEST_DATABASE_URL in .env
+   - jobs.db_url_from_env() now prefers TEST_DATABASE_URL under unittest/pytest,
+     refusing any URL that is not stocktracker_test; child worker processes opt in
+     via STOCKTRACKER_USE_TEST_DB=1
+   - all six DB-backed test files route through the guarded helper
+4. Fresh re-ingestion of all 30 stocks on clean DB: NSE/BSE/yahoo/filings all ok
+5. Owner-reported BSE bug fixed: GUID-named filings exist ONLY under AttachLive
+   (His → 404 HTML). attachment_urls() orders by filename shape; invalid captures
+   no longer count as "handled" (stranded-capture fix). 91/91 tests pass.
+6. Surgical cleanup of remaining legacy test rows (guard triggers temporarily
+   disabled inside one transaction, then re-enabled): removed 33 junk partitions,
+   56 items, 88 runs, 74 sightings, 35 resolutions, 70 records.
+
+### Final clean state
+
+partitions=122 · fetch_runs=92 · raw_items=178 · normalized≈176 · PDFs stored for
+25+ companies · price_bars=7529 (30 series × ~251) · junk=0

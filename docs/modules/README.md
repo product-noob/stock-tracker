@@ -144,6 +144,7 @@ doc-amending items.
 | 9 | BSE module: archive-first ordering for all filings | GUID-named filings (newer) exist only under AttachLive (His = 404 HTML); variant order is now filename-shape-aware. Invalid captures no longer count as "handled". (Part 5 evidence-log 2026-08-23) |
 | 9 | HLD/module contracts could be read as implementation status | 2026-08-23 review proved material gaps in exact-byte ordering, outbox dispatch, attempts/links, cadence and test isolation. Requirements remain binding; status lives in §4 and module OVERVIEWs. |
 | 10 | 2026-08-22 Screener weekly constraints | Owner's 2026-08-23 full-scope directive supersedes them as compliance conditions; pacing/backoff remains required to avoid a ban. |
+| 11 | R-BSE-10 archive-first for every attachment | 2026-08-23 verified GUID-named filings live under AttachLive: GUIDs are Live-first; legacy numeric names remain His-first. Invalid-only captures retry. |
 
 ## 7. References
 

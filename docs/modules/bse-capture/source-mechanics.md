@@ -94,7 +94,7 @@ Critical: **AttachLive returns HTTP 200 with an HTML error page when the file is
 
 | Req | Rule |
 |---|---|
-| R-BSE-10 | Try `AttachHis` first, then `AttachLive` (archive-first minimizes garbage downloads). |
+| R-BSE-10 | Select by filename shape (**supersedes archive-first-only wording, 2026-08-23**): GUID filenames try `AttachLive` then `AttachHis`; legacy numeric filenames try `AttachHis` then `AttachLive`. Every variant is still magic-validated. |
 | R-BSE-11 | Validate magic bytes (`%PDF`) after every download; 200-with-HTML = failed attempt, bytes retained as evidence. |
 | R-BSE-12 | Register valid bytes as content objects keyed by SHA-256; failed attempts to `documents.content_fetch_attempts` with resolved URL + outcome. |
 
@@ -114,6 +114,7 @@ Critical: **AttachLive returns HTTP 200 with an HTML error page when the file is
 Envelope/`ROWCNT` validation now enforces R-BSE-2/7/8, including stable denominators and
 mandatory `NEWSID`. Other requirements remain incomplete: page-to-row artifact provenance
 is wrong in mixed reuse, parsing precedes durable registration, the empty canary occurs
-before foreign-scrip filtering, invalid HTML suppresses future retries, and downloads are
-unbounded. Invalid bytes are raw evidence but no canonical failed-attempt row exists. See
-review `ST-C01`–`ST-C05`.
+before foreign-scrip filtering, and downloads are unbounded. The 2026-08-23 GUID fix makes
+invalid-only URLs retry each run and chooses AttachLive first for GUID names; invalid bytes
+remain raw evidence with no canonical failed-attempt/backoff row. See review
+`ST-C01`–`ST-C05`.

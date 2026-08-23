@@ -57,8 +57,9 @@ Empirical findings from live runs. Cite as `(BSE evidence-log, YYYY-MM-DD)`.
   the run. Offline pagination/helper regressions pass (`ST-C02`, fixed).
 - Remaining P0 gaps supersede broad “full lineage/crash convergence” claims: rows can point
   at the wrong page/run in multi-page mixed-reuse cases; parsing precedes durable artifact
-  registration; invalid HTML is treated as final; all-foreign results can bypass the canary;
-  canonical content attempts/links and download bounds are absent.
+  registration; invalid HTML was treated as final (**superseded by the next entry**);
+  all-foreign results can bypass the canary; canonical content attempts/links and download
+  bounds are absent.
 - The IST-day key fetches at most daily, not every six hours. See review `ST-C01`,
   `ST-C03`–`ST-C07`.
 

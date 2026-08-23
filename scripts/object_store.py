@@ -122,19 +122,10 @@ class ObjectStore:
 
     def _ensure_db_url(self) -> str:
         if self.db_url is None:
-            env: dict[str, str] = {}
-            env_file = ROOT / ".env"
-            if env_file.exists():
-                for line in env_file.read_text(encoding="utf-8-sig").splitlines():
-                    line = line.strip()
-                    if line and not line.startswith("#") and "=" in line:
-                        k, v = line.split("=", 1)
-                        env[k.strip()] = v.strip()
-            self.db_url = env.get("DATABASE_URL")
-            if not self.db_url:
-                raise ObjectStoreError(
-                    "no db_url given and DATABASE_URL missing from .env"
-                )
+            # Route through jobs.db_url_from_env so unittest processes get the
+            # isolated stocktracker_test DB automatically (2026-08-23).
+            from jobs import db_url_from_env
+            self.db_url = db_url_from_env()
         return self.db_url
 
     # ------------------------------------------------------------------ #

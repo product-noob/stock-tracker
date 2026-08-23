@@ -24,9 +24,10 @@ PostgreSQL/object storage, a robust processing-job core, NSE/BSE API paths, M2/M
 started. Backups/migrations, test isolation, exact-byte crash boundaries, BSE page
 provenance, canonical content attempts/links, source trust bounds, outbox dispatch,
 least-privilege roles, supervision and health reporting are P0 prerequisites. The M4–M7,
-M8 reaction, and M9–M10 paths remain non-shipping file prototypes. Three confirmed Critical
-defects were fixed; no
-nice-to-have refactor was undertaken.
+M8 reaction, and M9–M10 paths remain non-shipping file prototypes. Three baseline Critical
+defects were fixed. A fourth Critical credential exposure discovered at final Git inspection
+was rotated operationally, but remote-history remediation remains open. No nice-to-have
+refactor was undertaken.
 
 **Baseline time:** 2026-08-23 05:10 UTC
 
@@ -145,7 +146,7 @@ This inventory excludes historical tracked `tmp/pi-*` artifacts from product
 coverage, but records them in §4. Tracked pilot/sample data is inventoried as a
 separate non-runtime input class.
 
-### 6.1 Implementation source (23)
+### 6.1 Implementation source (22)
 
 - Capture/integration: `scripts/bse_capture.py`, `scripts/download_filings.py`,
   `scripts/download_pdfs.py`, `scripts/fetch_announcements.py`,
@@ -178,12 +179,14 @@ separate non-runtime input class.
 - `docker-compose.yml`
 - `requirements.txt`
 
-### 6.4 System/product documentation (11)
+### 6.4 System/product documentation (12, plus this review)
 
 - `AGENTS.md`, `PROJECT_STATUS.md`, `nse-bse-rss.md`, `pilot_learnings.md`,
   `product_note.html`
-- `docs/ROUTER.md`, `docs/ROADMAP.md`, `docs/architecture-hld.md`,
-  `docs/database-schema.md`, `docs/index.html`, `docs/schema-explained.html`
+- `docs/BUILD_LOG.md`, `docs/ROUTER.md`, `docs/ROADMAP.md`,
+  `docs/architecture-hld.md`, `docs/database-schema.md`, `docs/index.html`, and
+  `docs/schema-explained.html`
+- Durable audit record: `docs/reviews/2026-08-23-comprehensive-review.md`
 
 ### 6.5 Module documentation (21)
 
@@ -226,9 +229,9 @@ contract. This matrix assigns every tracked implementation area so omission is v
 | Yahoo/prices: `fetch_prices.py`, `test_fetch_prices.py`, all Yahoo L1/L2 docs | **Deep complete**: frame mapping, validation, revision keys, timezone/calendar/gap logic, lineage, runtime behavior and live read-only data audit | Isolated DB revision/crash tests and an authoritative trading calendar remain open |
 | Google News/Screener: `resolve_news.py`, `fetch_fundamentals.py`, all corresponding L1/L2 docs | **Deep complete**: parser/resolver boundaries, cache/retry behavior, URL trust, snapshot semantics and sample replay | Both remain pilot/file-based; DB adapters are not built |
 | Pilot extraction/ranking/reaction: `extract_text.py`, `extract_facts.py`, `price_reaction.py`, `rank_insights.py`; HLD M4–M9 and pilot learnings | **Deep complete**: parser bounds, evidence/quote gate, determinism, event semantics, no-look-ahead and causal wording | These are prototypes, not the DB-integrated M4–M9 pipeline |
-| Reporting: `make_report.py`, `make_dashboard.py`, and tracked `data/dashboard.html` | **Deep complete**: escaping, query validity, privacy, read behavior and status claims | Dashboard files were committed concurrently by another task and preserved untouched by this pass |
+| Reporting: `make_report.py`, `make_dashboard.py`, and tracked `data/dashboard.html` | **Deep complete**: escaping, query validity, privacy, read behavior and status claims; the corrected dashboard query generated successfully during concurrent owner work | Dashboard remains a generated whole-DB debugging view, includes test-contaminated totals, and does not explicitly open a read-only transaction |
 | Root config/dependencies | **Deep complete** for compose exposure, direct/transitive pins, imports, runtime versions, env handling and secret metadata | Dependency lock/hash/update policy and service unit review |
-| System and module docs | **Complete:** every tracked project/module Markdown/HTML document and relevant `.claude` guidance reviewed; current-state claims reconciled while historical evidence logs/build/pilot records were preserved and labelled | Re-audit status whenever a milestone or live gate changes |
+| System and module docs | **Complete:** every tracked project/module Markdown/HTML document (including the subsequently tracked `docs/BUILD_LOG.md`) and relevant `.claude` guidance reviewed; current-state claims reconciled while historical evidence logs/build/pilot records were preserved and labelled | Re-audit status whenever a milestone or live gate changes |
 | Tracked pilot/sample data and agent metadata | **Deep complete structurally and in aggregate**; provenance, relationships, staleness, path portability, secret patterns and causal/status claims checked without emitting source bodies | Owner decision on tracked public-source bodies and portable sample-fixture policy |
 
 ### 7.1 Documentation fact table (authoritative for this reconciliation)
@@ -342,21 +345,74 @@ These sampled counts materially contradicted the then-current prose totals in
 artifacts). The documentation pass removed those values as evergreen status while preserving
 them in dated evidence logs and kept the architecture requirements explicit.
 
+### 8.5 Final reconciliation after concurrent cleanup/test activity (06:00 UTC)
+
+A final explicitly read-only transaction was required because concurrent owner/worker
+activity materially changed the application state after the baseline sample. This is a new
+timestamped fact set, not a replacement for the historical evidence above:
+
+- all seven schemas and 44 tables / 156 indexes remained present;
+- master data held 124 active companies and 98 active whitelist memberships, but still
+  exactly 30 active instruments, 60 current listings, and 30 companies represented on each
+  exchange. The extra company/whitelist rows are integration fixtures;
+- fetch runs were 142 `ok` and 21 `not_modified`, with no running/failed rows, no stale
+  running row, and no terminal row missing `finished_at`; 108 cursors had zero failures,
+  invalid overlap, missing/wrong-partition last-run references, or success/status mismatch;
+- 373 artifacts included 42 without a matching content-object SHA (synthetic fixture shape),
+  with zero size/path mismatch where a registry row existed. NSE/BSE raw linkage was
+  146/120 rows, with 14 NSE rows lacking a normalized-record link and zero BSE rows lacking
+  one. Canonical attempts, record-content links and text versions remained empty;
+- duplicate checks remained zero for artifact, raw-item, normalized-record, content-hash and
+  outbox logical keys. All 276 normalized records had at least one identity decision; latest
+  outcomes were 209 resolved and 67 review-required, with zero assignment/outcome or cache
+  mismatch;
+- jobs were 213 succeeded, 5 queued/runnable and 4 dead, with no expired owner, malformed
+  terminal state or attempts-over-max. All 882 outbox rows were pending/publishable; none was
+  yet over one hour old at this new sample;
+- the registry had 192 canonical hash/path/size rows, but the filesystem had 380 blobs.
+  Full hash verification found **0 missing, 0 size mismatch, 0 hash mismatch, 0 stale temp,
+  and 188 orphan blobs**. This is consistent with DB fixture cleanup occurring without the
+  corresponding immutable files; no repair or cleanup was attempted;
+- the final test command itself added at least 3 fixture companies, 2 normalize partitions,
+  6 raw items, 10 normalized records, 12 resolutions, 9 stage runs, 2 stage errors and 13
+  outbox events to the application DB. Four NSE/BSE partitions were separately inserted in
+  `stocktracker_test`. These rows were retained; no forbidden cleanup followed.
+
+Every reconciliation connection reported `transaction_read_only=on`, used a 10–60 second
+statement timeout, and was explicitly rolled back. The changed totals are evidence of
+concurrent cleanup and unsafe test routing, not writes by the reconciliation SQL.
+
 ## 9. Integration-test safety assessment
 
-A full suite was intentionally **not** run. Several modules point directly at the
-configured application database and commit permanent rows; running them would
-materially contaminate persistent state and can process real pending records.
+At the baseline, a full suite was intentionally **not** run because several modules point
+directly at the configured application database and commit permanent rows. Before final
+verification, concurrent uncommitted test edits introduced `TEST_DATABASE_URL` selection,
+but the command proved that selection was not propagated into code under test. After that
+failure, further concurrent edits changed `jobs.db_url_from_env()` and object registration
+to prefer the test URL under unittest. Those later edits were inspected but not rerun: they
+still use the application filesystem object root, have no database marker, and remain
+uncommitted/unverified.
 
 | Test module | Database selection | Persistence / isolation result |
 |---|---|---|
-| `test_object_store.py` | Reads `DATABASE_URL` from repo `.env`; connectivity checked | Filesystem uses temporary directories. DB inserts use caller transactions and explicit rollback. Safe in observed run; 17 tests caused zero table-count delta. |
-| `test_jobs.py` | Repo `.env`, then environment fallback; real application DB | Most tests commit namespaced append-only jobs/outbox rows and intentionally cannot clean them. Concurrency-safe naming, but not data-isolated. New final-lease regression is rollback-only. |
-| `test_nse_capture.py` | `jobs.db_url_from_env()`; real application DB | Creates permanent partition/fetch/artifact/item/cursor/content rows and physical blobs. UUID names prevent key collision, not contamination. |
-| `test_bse_capture.py` | Same as NSE | Creates permanent partition/fetch/artifact/item/cursor/content rows and physical blobs. |
-| `test_normalize.py` | Decorator checks only that a URL string exists, then connects to it | Commits fixture rows and `run_normalize` processes **all** pending items, including real application rows. This is not an isolated integration test. |
-| `test_resolve_identity.py` | Same weak URL-presence gate | Commits fixture companies, aliases, whitelist rows, records, resolutions and outbox; resolver also processes real dev rows. |
+| `test_object_store.py` | Current helper selects `TEST_DATABASE_URL` | Filesystem uses temporary directories. DB inserts use caller transactions and explicit rollback. Safe when the selected URL is genuinely isolated; DB cases skipped in the final command. |
+| `test_jobs.py` | Current helper selects and name-checks `TEST_DATABASE_URL` | Most tests commit namespaced append-only jobs/outbox rows and intentionally cannot clean them. The final unreachable override skipped these cases; subprocess/env propagation still needs an isolated acceptance run. |
+| `test_nse_capture.py` | Setup selects `TEST_DATABASE_URL`; later concurrent `jobs.py` edit now also routes unittest code there | At final command time routing was split, causing two errors after test-DB setup. Current unverified code still writes blobs under the application `data/objects` root. |
+| `test_bse_capture.py` | Same timing/routing as NSE | Same: two final-command errors; later DB routing edit inspected but not rerun, and object-root isolation remains absent. |
+| `test_normalize.py` | Decorator selects test URL; later `jobs.py` edit makes URL-less `jobs.connect()` prefer it under unittest | At final command time it committed fixtures and processed pending application items. The later routing change is unverified and still lacks a hard database marker. |
+| `test_resolve_identity.py` | Same timing/routing as normalize | At final command time it committed fixture master/records/resolutions/outbox to the application DB. Later routing edit is unverified. |
 | `test_fetch_prices.py` | None | Offline pure tests; no DB/network. |
+
+The required final command was attempted once with `TEST_DATABASE_URL` overridden to an
+unreachable `stocktracker_test` URL to force DB-backed cases to skip. The guard failed
+closed for jobs/object-store, but not for all modules: `unittest discover` ran 91 tests in
+0.812 seconds, with **73 passed, 14 skipped and 4 errors**. The four NSE/BSE E2E cases
+inserted partitions into the real isolated test DB during `setUp`, then errored because the
+capture functions looked up colliding partition IDs in the application DB. Normalize's one
+DB case and resolver's three DB cases silently connected to and committed into the
+application DB; their minimum row effects are recorded in §8.5. No second full-suite run
+was made and no rows/files were deleted. This is direct proof that the current partial guard
+must not be treated as supported isolation.
 
 Concurrency risk: independently namespaced keys avoid most direct conflicts, but
 parallel suites share global pending work, source master rows, queue sweeps, and the
@@ -445,11 +501,12 @@ append-only soak tests for an explicitly approved namespace/database.
   page insertion. A page-1 artifact reused from an older run plus a changed later page
   can violate the composite FK; even the success case attributes page-2 rows to page
   1 rather than their containing bytes.
-- **Retry convergence is asymmetric.** NSE retries retained invalid PDF content;
-  BSE treats both valid and `filing_pdf_invalid` artifacts as permanently handled.
-  A temporary BSE HTML block page can therefore suppress later retrieval of a valid
-  filing. Network failures with no bytes are only counters/log lines; neither adapter
-  writes the required `content_fetch_attempts` row.
+- **Retry convergence was asymmetric at the audit baseline.** NSE retried retained invalid
+  PDF content while BSE treated `filing_pdf_invalid` as handled. During the review, a
+  concurrent owner-driven fix made BSE invalid-only URLs retry each run and routes GUID
+  names to AttachLive first. Remaining gaps: retry is not a bounded canonical attempt model,
+  network failures with no bytes are only counters/log lines, and neither adapter writes
+  the required `content_fetch_attempts` row.
 - **Same-day keys implement at most daily fetch, not the documented six-hour rolling
   cadence.** Every later invocation that IST day skips the API. The next day's
   overlap should eventually recover ordinary announcements, but near-real-time
@@ -687,9 +744,13 @@ adding persistent integration coverage.
   aggregates show dominant test fixture populations.
 - **Risk:** test runs alter research data, queue behavior, metrics, disk usage, and
   reproducibility; concurrent runs can interact through global work.
-- **Disposition:** **open.** Full suite withheld. Build a dedicated guarded test DB
-  and object root; do not delete existing rows without an owner-approved data
-  classification/cleanup plan.
+- **Disposition:** **open; final guard attempt failed.** The one final discovery command
+  failed and committed the minimum namespaced rows in §8.5 because its partial URL guard did
+  not reach code under test. Later concurrent uncommitted edits now route unittest DB calls
+  through `TEST_DATABASE_URL`, but were not rerun and still share the application object
+  root with no hard DB marker. Build a dedicated guarded test DB **and** object root, inject
+  both through every code path, require a database marker, and do not delete existing rows
+  without an owner-approved backup and classification plan.
 
 ### `ST-P03` — Outbox has no dispatcher and all events remain pending
 
@@ -830,6 +891,34 @@ adding persistent integration coverage.
   historical pilot/build/source records were reconciled from the fact table in §7.1.
   Dated evidence counts remain append-only and are explicitly non-evergreen.
 
+### `ST-P16` — Database credential was committed and pushed in pathnames
+
+- **Severity / priority:** Critical / P0 incident response
+- **Fact:** final tracked-path inspection found two repository pathnames containing a full
+  database connection credential. Both were already present in commits on `origin/main`;
+  the value is intentionally omitted here. A pre-cleanup SQL dump and worker logs were also
+  tracked and pushed during concurrent work.
+- **Disposition:** **credential fixed operationally; repository exposure open.** The exposed
+  database password was rotated immediately, `.env` was atomically updated and remained
+  mode `0600`, and new connections to both application and test databases succeeded. The
+  invalid credential and potentially private dump/log contents remain in local/remote Git
+  history. Coordinate a history rewrite/removal, force-push and clone/cache invalidation;
+  classify the dump/logs without opening them in routine review output. Check hosting audit
+  logs and rotate any other credential if the dump proves to contain one.
+
+### `ST-P17` — Database cleanup left 188 unregistered object blobs
+
+- **Severity / priority:** High / P1 after backup/classification
+- **Fact:** the final verifier found 192 healthy registered objects and 380 filesystem blobs:
+  188 files were orphaned, with zero missing/corrupt/size/path/temp problems. Earlier in the
+  review, 350 registry rows and 350 files reconciled cleanly; concurrent DB fixture cleanup
+  occurred between samples.
+- **Risk:** unclassified orphans consume root disk and may include evidence removed from the
+  registry; deleting them blindly could destroy the only remaining bytes.
+- **Disposition:** **open; no cleanup attempted.** Preserve until coordinated backup and a
+  provenance/classification report can distinguish test blobs, crash-window orphans and
+  application evidence. Any deletion requires explicit owner approval and a manifest.
+
 ### `ST-C01` — Capture parses before exact artifact registration is durable
 
 - **Severity / priority:** High / P0
@@ -867,14 +956,14 @@ adding persistent integration coverage.
 ### `ST-C04` — Attachment failure/convergence can strand canonical content
 
 - **Severity / priority:** High / P0
-- **Fact:** BSE considers retained `filing_pdf_invalid` evidence permanently handled;
-  NSE retries it. Neither adapter records no-byte failures in
-  `content_fetch_attempts`; no live canonical record has a `record_contents` link.
-- **Risk:** a temporary HTML block can permanently suppress a later valid BSE PDF,
-  and downstream M4 has no canonical record→content edge or attempt history.
-- **Disposition:** **open.** Separate “attempt observed” from “valid content linked”;
-  retry invalid content with a bounded schedule, create immutable attempt rows after
-  normalization, and idempotently link valid content to every relevant record.
+- **Baseline fact:** BSE considered retained `filing_pdf_invalid` evidence handled while
+  NSE retried it. Neither adapter recorded no-byte failures in `content_fetch_attempts`, and
+  no live canonical record had a `record_contents` link.
+- **Disposition:** **partially fixed 2026-08-23.** BSE now treats only valid PDFs as captured,
+  retries invalid-only URLs on later runs, and chooses AttachLive first for GUID filenames;
+  focused ordering/retry tests were added. Still open: bounded retry/backoff, immutable
+  canonical attempt rows for invalid/no-byte outcomes, valid record→content links, and the
+  generic `download_filings.py` recovery defect (`ST-D03`).
 
 ### `ST-C05` — Adapter validation still permits silent malformed/foreign outcomes
 
@@ -1037,13 +1126,15 @@ adding persistent integration coverage.
 - **Severity / priority:** Medium / P1
 - **Fact:** `make_report.py` leaves publication text and local-path href attributes
   unescaped and has no adversarial fixture. Dashboard source/output changed concurrently
-  during this pass. Reviewed versions escaped displayed text but had fatal SQL drift
-  (initially a nonexistent `title_or_desc` column; latest observed version put `WHERE`
-  before later `JOIN`s), included test fixtures, and did not explicitly request a read-only
-  DB transaction.
-- **Disposition:** **open.** Escape every text/attribute context, remove local absolute
-  paths from portable products, add malformed-input tests, and stabilize/test or discard
-  the dashboard after owner alignment; this review did not alter the dashboard files.
+  during this pass; the final tracked SQL was corrected and generated the current output,
+  and displayed values are escaped. It still reads the application DB without explicitly
+  requesting a read-only transaction, tracks a volatile generated snapshot, exposes local
+  object/source links, and includes test fixtures in top-level/per-company aggregates even
+  though one recent-record scope is filtered.
+- **Disposition:** **open.** Escape every report text/attribute context, remove local
+  absolute paths from portable products, add malformed-input tests, make dashboard DB access
+  explicitly read-only, define production/test filtering, and decide whether generated live
+  snapshots belong in Git.
 
 ### `ST-D09` — Source/dependency documentation overstated or understated status
 
@@ -1078,6 +1169,9 @@ Commands were run from the repository root without displaying secrets:
   recorded in §8.4; transaction rolled back.
 - `venv/bin/python -m unittest tests.test_nse_capture.TestPureHelpers tests.test_bse_capture.TestPureHelpers tests.test_bse_capture.TestCollectPages tests.test_normalize.TestNormalizeItem tests.test_normalize.TestFingerprintAndKeys tests.test_resolve_identity.TestNormalizeName tests.test_resolve_identity.TestResolutionLadder -v`
   — 55/55 offline M1–M3 tests passed (no DB or network use).
+- Concurrent commit `b192d52` added BSE GUID path-ordering and invalid-only retry regression
+  coverage and reports 91/91 tests passed. This documentation pass inspected the diff but did
+  not independently rerun the persistent full suite because `ST-P02` remains open.
 - `venv/bin/python -m py_compile scripts/companies.py scripts/nse_capture.py scripts/bse_capture.py scripts/normalize.py scripts/resolve_identity.py tests/test_nse_capture.py tests/test_bse_capture.py tests/test_normalize.py tests/test_resolve_identity.py`
   — passed.
 - `venv/bin/python -m pytest tests/test_fetch_prices.py -q` — all 16 offline price
@@ -1113,18 +1207,77 @@ Commands were run from the repository root without displaying secrets:
   because its root-relative links target the source websites, not repository files.
 - `git diff --check -- . ':(exclude)tmp/pi-*'` — passed after documentation reconciliation.
 
-The full suite was **not run by design** due `ST-P02`; this is a safety result, not
-an unverified claim that the full suite passes.
+### 12.1 Final verification closure (06:00–06:09 UTC)
+
+- `TEST_DATABASE_URL=postgresql://127.0.0.1:1/stocktracker_test venv/bin/python -m
+  unittest discover -s tests -v` (unreachable non-secret override intended to skip DB
+  cases) — **failed**: 91 run in 0.812s, 73 passed, 14 skipped, 4 errors. The partial test
+  guard routed setup and code-under-test differently and still wrote the application/test
+  databases; exact aggregate effects are in §8.5. No second run or cleanup occurred.
+- `venv/bin/python scripts/object_store.py verify` — exit 1. A second aggregate-only pass
+  through the same verifier under an explicit read-only transaction reported 192 registry
+  rows / 380 blobs: 0 missing, 0 size mismatch, 0 hash mismatch, 0 stale temp, **188
+  orphan**, 0 other.
+- bounded final SQL reconciliation — `transaction_read_only=on` for application and test
+  DB connections; schema/master/fetch/cursor/linkage/duplicate/identity/queue/outbox
+  results are in §8.5; both transactions explicitly rolled back.
+- non-writing compilation via Python `compile()` — all 29 tracked script/test Python files
+  compiled; `pip check` reported no broken requirements.
+- non-writing documentation checker — 60 tracked Markdown/HTML files checked (including
+  historical tracked Pi Markdown), 25 front matters inspected, all 88 local relative links
+  resolved; links from ROUTER/human hub to this review resolve.
+- location-only tracked secret scanner — 170 non-Pi tracked files scanned, excluding the
+  committed SQL dump from content inspection. Two content matches were manually classified
+  as captured third-party minified code and an environment placeholder. A separate filename
+  scan then found `ST-P16`; no credential value is reproduced in this review.
+- `git diff --check` and the non-Pi scoped variant — passed.
+- PostgreSQL credential rotation after `ST-P16` — private `.env` stayed `0600`; new
+  application/test connections and container health were verified without printing values.
+
+This is **not** a passing full-suite result. It is concrete evidence that safe DB isolation
+has not been established, despite the existence of `stocktracker_test`. No test result above
+is represented as stronger than what actually ran.
+
+### 12.2 Final change and worktree accounting
+
+The final worker changed only:
+
+- `docs/reviews/2026-08-23-comprehensive-review.md` (this closure/evidence);
+- `~/SERVER_CONTEXT.md` (durable credential-rotation incident note);
+- ignored private `.env` (database credential rotation only; mode `0600`).
+
+It did not edit any `tmp/pi-*` path, generated report/dashboard, object byte, SQL dump, test
+or implementation file, and made no commit. At final inspection, the following **pre-existing
+or concurrent non-Pi worktree changes** remained and were preserved:
+
+- `PROJECT_STATUS.md`, `data/dashboard.html`, `scripts/jobs.py`, `scripts/object_store.py`;
+- `docs/modules/README.md`, `docs/modules/bse-capture/OVERVIEW.md`,
+  `docs/modules/bse-capture/evidence-log.md`,
+  `docs/modules/bse-capture/source-mechanics.md`;
+- `tests/test_bse_capture.py`, `tests/test_jobs.py`, `tests/test_normalize.py`,
+  `tests/test_nse_capture.py`, `tests/test_object_store.py`, and
+  `tests/test_resolve_identity.py`.
+
+Five commits appeared after the recorded baseline and were already on `origin/main`:
+`391755f`, `9ea8a64`, `b073663`, `e128092`, and `b192d52`. They include the worker import,
+dashboard/build-log, BSE and broad documentation changes, plus tracked worker logs, a
+pre-cleanup SQL dump, and two credential-bearing object pathnames (redacted; `ST-P16`). This
+review session did not create, amend, revert or push those commits. Because commits and
+forbidden generated/sensitive artifacts did appear concurrently, the original “no commit or
+dump” completion condition cannot honestly be claimed even though this worker made none.
 
 ## 13. Prioritized recommendations and owner decisions
 
 ### P0 before unattended operation / more schema work
 
+0. Complete incident response for `ST-P16`: remove the credential-bearing pathnames,
+   SQL dump and private logs from Git, rewrite/purge remote history, invalidate stale clones
+   and inspect hosting access. The exposed database password is already rotated.
 1. Establish coordinated DB + object-store backups and perform a non-destructive
    restore drill (`ST-P08`).
 2. Freeze the baseline and choose a forward migration tool/process (`ST-P01`).
-3. Isolate integration tests behind a hard test-database marker and separate object
-   root (`ST-P02`). Decide whether existing fixture rows are retained as audit
+3. Isolate integration tests behind a hard test-database marker, dependency-injected DB URL
+   and separate object root (`ST-P02`). Decide whether existing fixture rows are retained as audit
    evidence, migrated to a test DB, or cleaned only after an approved backup.
 4. Correct exact-bytes/commit ordering and per-page BSE provenance before relying
    on crash recovery (`ST-C01`, `ST-C03`).
@@ -1152,12 +1305,16 @@ an unverified claim that the full suite passes.
     escaping and malformed-response fixtures (`ST-D05`, `ST-D08`).
 16. Choose a portable, provenance-bearing tracked sample policy (`ST-D06`).
 17. Adopt the dependency/runtime lock and update policy (`ST-D07`, `ST-P14`).
+18. Classify and reconcile the 188 orphan blobs only after backup; never infer that an
+    unregistered object is disposable (`ST-P17`).
 
 Documentation/status reconciliation (`ST-P15`, `ST-D09`) completed in this review; keep it
 current in the same change as future milestones.
 
 ### Owner alignment required
 
+- Who will coordinate the required Git history rewrite/force-push for `ST-P16`, notify any
+  other clone holders, and classify/remove the tracked pre-cleanup SQL dump and logs?
 - Is this database now the durable application environment, or an intentionally
   disposable development environment? Current data volume and owner instructions
   require treating it as durable until explicitly decided otherwise.
@@ -1172,8 +1329,8 @@ current in the same change as future milestones.
   reconciliation denominator? The current day key enforces once daily.
 - May a manual identity assignment target an existing non-whitelisted company, or
   must the automatic whitelist invariant also bind operator corrections?
-- Should invalid BSE bodies retry until a valid PDF is obtained (recommended), and
-  what retry/age budget is acceptable before an operator alert?
+- BSE invalid-only API captures now retry until valid content is obtained. What bounded
+  retry/age budget and operator-alert threshold should replace the current every-run retry?
 - Are `data/<slug>` products archival pilot evidence, maintained portable fixtures, or
   generated artifacts that should not be tracked? Is tracking full extracted public
   filings/Screener HTML (which may contain personal contact details) acceptable?
@@ -1182,13 +1339,15 @@ current in the same change as future milestones.
 - For Yahoo, is a deterministic returned-frame serialization accepted as the canonical
   provider artifact, or is transport interception required before reactions are trusted?
   Which authoritative NSE calendar and benchmark series should M8 use?
-- Should `scripts/make_dashboard.py` be completed and tracked, or discarded as
-  pre-existing scratch work?
+- The dashboard is now tracked. Should generated live `data/dashboard.html` snapshots remain
+  in Git, and should the dashboard exclude all test fixtures or expose a labelled test view?
 
 ## 14. Known limitations
 
-- No full suite, network source call, worker drain, schema replay, restore, or
-  destructive immutability test was run against the application DB.
+- No **successful safely isolated** full suite exists. The one final discovery attempt failed
+  with 73 pass / 14 skip / 4 error and unexpectedly committed namespaced fixtures because
+  the partial test guard did not propagate into code under test. No network source call,
+  worker drain, schema replay, restore, or destructive immutability test was run.
 - Legacy file-based/source and later-pipeline algorithms were statically reviewed, but
   were not rerun against remote sources and remain prototypes rather than endorsed paths.
 - No live source call or hard-kill capture experiment was allowed, so source behavior

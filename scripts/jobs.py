@@ -56,6 +56,7 @@ from __future__ import annotations
 
 import os
 import socket
+import sys
 import threading
 import time
 import uuid
@@ -144,8 +145,37 @@ def get_handler(job_kind: str) -> HandlerFn:
 # connection helpers
 # --------------------------------------------------------------------- #
 
+def _under_unittest() -> bool:
+    """True when running inside a unittest/pytest discovery process, or in a
+    child process explicitly opted in (test-spawned workers need this since
+    sys.modules does not carry across subprocess boundaries)."""
+    return ("unittest" in sys.modules
+            or os.environ.get("STOCKTRACKER_USE_TEST_DB") == "1")
+
+
 def db_url_from_env(env_path: Path | str = ROOT / ".env") -> str:
-    """Read DATABASE_URL from the repo .env (never log or print it)."""
+    """Read DATABASE_URL from the repo .env (never log or print it).
+
+    Under unittest/pytest, TEST_DATABASE_URL takes precedence instead: the
+    test suite creates synthetic data and must never touch the live pipeline
+    DB (2026-08-23 cleanup — live DB had to be rebuilt twice over this).
+    """
+    if _under_unittest():
+        test_url = os.environ.get("TEST_DATABASE_URL")
+        if not test_url:
+            path = Path(env_path)
+            if path.exists():
+                for line in path.read_text(encoding="utf-8-sig").splitlines():
+                    line = line.strip()
+                    if line.startswith("TEST_DATABASE_URL="):
+                        test_url = line.split("=", 1)[1].strip() or None
+                        break
+        if test_url:
+            if "stocktracker_test" not in test_url:
+                raise JobsError(
+                    "TEST_DATABASE_URL must point at the isolated "
+                    "stocktracker_test database, refusing to use it")
+            return test_url
     path = Path(env_path)
     if path.exists():
         for line in path.read_text(encoding="utf-8-sig").splitlines():

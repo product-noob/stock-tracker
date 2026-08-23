@@ -19,7 +19,7 @@ unattended service yet: major Phase 0 correctness and operational gates remain o
 | Object store | Implemented and content-addressed | Clean 350-object reconciliation at audit sample; stored with DB on root-disk workflow and not backed up |
 | Jobs/outbox | Job claim/lease/retry/dead-letter worker implemented | Outbox rows are inserted, but no dispatcher exists; no scheduler/service supervision |
 | NSE capture | `nse_api` DB-integrated for all 30 registry companies | RSS absent; once-per-IST-day key conflicts with six-hour spec; bytes-before-parse and some validation/provenance gates remain open |
-| BSE capture | `bse_api` DB-integrated for all 30 registry companies | RSS absent; per-page provenance, invalid-content retry/linkage, cadence and validation gaps remain open |
+| BSE capture | `bse_api` DB-integrated for all 30 registry companies | RSS absent; invalid-only URLs now retry and GUID paths are ordered correctly, but per-page provenance, canonical attempt/linkage, bounded retry, cadence and validation gaps remain open |
 | Normalizer/identity | M2 and M3 DB-integrated; exact, fail-closed automatic ladder | Parallel claims/correction semantics and one cross-exchange tier need hardening; manual policy needs owner decision |
 | Filing content | Adapter PDFs and recovery utility register objects/artifacts | No canonical `content_fetch_attempts` or `record_contents` rows at audit sample; invalid/no-byte retry semantics are incomplete |
 | Yahoo daily bars | `scripts/fetch_prices.py` DB-integrated through yfinance | 30 series / 7,529 current bars at audit sample; provenance, finite/current-session checks, calendar, revisions and benchmark gates remain open |
@@ -46,7 +46,8 @@ current totals.
 - Idempotent object puts verify an existing file's SHA-256, not only its size (`ST-P05`),
   with regression coverage and a clean full-store verification.
 - BSE pagination now rejects missing/changing/invalid `ROWCNT` and rows without `NEWSID`
-  (`ST-C02`), covered by offline tests.
+  (`ST-C02`); GUID attachments try AttachLive first and invalid-only captures no longer block
+  a later valid retry (`ST-C04`, partially fixed), with regression coverage.
 - Project `.env` permissions were tightened to `0600` without reading or printing values
   (`ST-P06`).
 

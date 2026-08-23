@@ -41,16 +41,30 @@ import job_handlers  # noqa: E402,F401  (registers demo/selftest handlers)
 WORKER = [sys.executable, str(ROOT / "scripts" / "job_worker.py")]
 
 
+_TEST_URL_ENV: str | None = None
+
 def _database_url() -> str | None:
-    env_file = ROOT / ".env"
-    if env_file.exists():
-        for line in env_file.read_text(encoding="utf-8-sig").splitlines():
-            line = line.strip()
-            if line and not line.startswith("#") and "=" in line:
-                k, v = line.split("=", 1)
-                if k.strip() == "DATABASE_URL" and v.strip():
-                    return v.strip()
-    return os.environ.get("DATABASE_URL")
+    """Isolated test-DB URL ONLY (TEST_DATABASE_URL in .env). Tests create
+    synthetic TEST*/identtest data and must never touch the live pipeline DB
+    (2026-08-23 cleanup: they did, twice). Skips if not configured."""
+    url = os.environ.get("TEST_DATABASE_URL")
+    if not url:
+        env_file = ROOT / ".env"
+        if env_file.exists():
+            for line in env_file.read_text(encoding="utf-8-sig").splitlines():
+                line = line.strip()
+                if line.startswith("TEST_DATABASE_URL="):
+                    url = line.split("=", 1)[1].strip() or None
+                    break
+    if url and "stocktracker_test" not in url:
+        return None  # refuse anything that is not the isolated test DB
+    if url:
+        global _TEST_URL_ENV
+        _TEST_URL_ENV = url
+        os.environ.setdefault("TEST_DATABASE_URL", url)
+    return url
+
+
 
 
 def _db_available(url: str) -> bool:
@@ -265,7 +279,7 @@ class TestCrashRecovery(JobsIntegrationTestCase):
         # Real worker subprocess that claims the job and os._exit(9)s mid-job.
         proc = subprocess.run(WORKER + ["--queue", kind, "--drain", "--quiet"],
                               capture_output=True, text=True, timeout=120,
-                              env=os.environ.copy())
+                              env={**os.environ, "STOCKTRACKER_USE_TEST_DB": "1"})
         self.assertEqual(proc.returncode, 9,
                          f"worker must die via os._exit(9); stderr="
                          f"{proc.stderr[-2000:]}")
@@ -287,7 +301,8 @@ class TestCrashRecovery(JobsIntegrationTestCase):
 
         # A healthy retry now succeeds.
         proc = subprocess.run(WORKER + ["--queue", kind, "--drain", "--quiet"],
-                              capture_output=True, text=True, timeout=120)
+                              capture_output=True, text=True, timeout=120,
+                              env={**os.environ, "STOCKTRACKER_USE_TEST_DB": "1"})
         self.assertEqual(proc.returncode, 0,
                          f"retry worker must exit cleanly; stderr="
                          f"{proc.stderr[-2000:]}")
@@ -420,6 +435,7 @@ class TestGracefulShutdown(JobsIntegrationTestCase):
         proc = subprocess.Popen(
             WORKER + ["--queue", kind, "--quiet", "--poll-interval", "0.2"],
             stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True,
+            env={**os.environ, "STOCKTRACKER_USE_TEST_DB": "1"},
         )
         try:
             row = None

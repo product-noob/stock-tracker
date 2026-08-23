@@ -34,6 +34,7 @@ import unittest
 import uuid
 from unittest import mock
 
+import os
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -42,11 +43,24 @@ sys.path.insert(0, str(ROOT / "scripts"))
 import resolve_identity as ri  # noqa: E402
 
 
-def _database_url():
-    try:
-        return __import__("jobs").db_url_from_env()
-    except Exception:  # noqa: BLE001 — DB absent → skip DB layer
-        return None
+def _database_url() -> str | None:
+    """Isolated test-DB URL ONLY (TEST_DATABASE_URL in .env). Tests create
+    synthetic TEST*/identtest data and must never touch the live pipeline DB
+    (2026-08-23 cleanup: they did, twice). Skips if not configured."""
+    url = os.environ.get("TEST_DATABASE_URL")
+    if not url:
+        env_file = ROOT / ".env"
+        if env_file.exists():
+            for line in env_file.read_text(encoding="utf-8-sig").splitlines():
+                line = line.strip()
+                if line.startswith("TEST_DATABASE_URL="):
+                    url = line.split("=", 1)[1].strip() or None
+                    break
+    if url and "stocktracker_test" not in url:
+        return None  # refuse anything that is not the isolated test DB
+    return url
+
+
 
 
 # --------------------------------------------------------------------- #
