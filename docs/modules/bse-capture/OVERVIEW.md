@@ -58,15 +58,15 @@ Cursor rules identical to NSE (advance only after artifact + items commit).
   adapter-shaped production BSE items normalized/assigned consistently. The 138/109/28
   values previously shown here remain a dated first-ingestion snapshot in the evidence log,
   not current production totals.
-- **Contract gaps:** responses are collected/parsed before artifact persistence; multi-page
-  rows can point at the wrong page/run; deterministic configurable IST slots now implement
-  the six-hour default cadence; invalid-only URLs retry every run but have no bounded attempt/backoff model;
-  all-foreign results can pass the empty gate; downloads are unbounded; canonical
-  fetch-attempt and record-content rows are absent. This is partial C1 plus content
-  artifacts, not complete C3/M4 lineage.
+- **Contract gaps:** artifact keys can still collapse identical fetch events across runs
+  (`ST-C06`). Closed 2026-08-23: each page's exact bytes are durably registered before that
+  page is parsed; every raw item points at the artifact whose bytes contain it (per-page
+  provenance, `ST-C03`); the empty-result canary runs AFTER scrip filtering so all-foreign
+  responses cannot masquerade as genuine empties; rows missing `SCRIP_CD` fail closed;
+  attachment downloads are host-allowlisted and size-capped; the filing downloader records
+  immutable attempts and record→content links under a bounded retry budget.
 - `bse_rss` is not DB-integrated. No seven-day soak/reconciliation gate has run.
-- **Next milestone:** close review `ST-C01`, `ST-C03`–`ST-C07`, with guarded test
-  isolation, before RSS integration and the Phase 0 soak.
+- **Next milestone:** close `ST-C06`/`ST-C07` before RSS integration and the Phase 0 soak.
 
 ## Detail index (L2)
 

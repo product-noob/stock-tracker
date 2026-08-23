@@ -67,8 +67,8 @@ caveats still apply) · `gated` (passing its acceptance gate). No module is gate
 
 | Module | L1 entry | Status | Owns |
 |---|---|---|---|
-| NSE capture | [`modules/nse-capture/OVERVIEW.md`](modules/nse-capture/OVERVIEW.md) | db-integrated (API only) | Per-company API/items/PDF artifacts; RSS and canonical M4 links/attempts absent; P0 reliability gaps open |
-| BSE capture | [`modules/bse-capture/OVERVIEW.md`](modules/bse-capture/OVERVIEW.md) | db-integrated (API only) | Per-company API/items/PDF artifacts; RSS and canonical M4 links/attempts absent; P0 reliability gaps open |
+| NSE capture | [`modules/nse-capture/OVERVIEW.md`](modules/nse-capture/OVERVIEW.md) | db-integrated (API only) | Per-company API/items/PDF artifacts; bytes-before-parse, fail-closed validation, allowlisted/bounded downloads implemented; RSS absent, fetch-event key collapse open |
+| BSE capture | [`modules/bse-capture/OVERVIEW.md`](modules/bse-capture/OVERVIEW.md) | db-integrated (API only) | Per-company API/items/PDF artifacts; per-page provenance, canary placement, bounded downloads implemented; RSS absent, fetch-event key collapse open |
 | Google News capture | [`modules/google-news-capture/OVERVIEW.md`](modules/google-news-capture/OVERVIEW.md) | pilot-proven | File feed/resolver only; no DB adapter; article fetch remains Phase 2 |
 | Screener fundamentals | [`modules/screener-fundamentals/OVERVIEW.md`](modules/screener-fundamentals/OVERVIEW.md) | pilot-proven | Manual file snapshot/parser only; owner-approved source policy, no DB adapter |
 | Yahoo market data | [`modules/yahoo-market-data/OVERVIEW.md`](modules/yahoo-market-data/OVERVIEW.md) | db-integrated | yfinance daily bars for 30 listing series; validation/provenance/calendar gates open |

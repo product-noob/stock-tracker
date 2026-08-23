@@ -88,6 +88,7 @@ from psycopg.types.json import Jsonb
 sys.path.insert(0, str(Path(__file__).parent))
 
 import jobs  # noqa: E402  (handler registration via @jobs.register_handler)
+import content_policy  # noqa: E402
 from capture_schedule import capture_interval_hours, capture_slot_key  # noqa: E402
 from companies import COMPANIES  # noqa: E402
 from object_store import ObjectStore  # noqa: E402
@@ -544,7 +545,8 @@ def _run_partition_impl(
         impersonate, fetch_fn, pdf_fetch_fn)
 
     # Tx1: close any stale 'running' run of this partition (worker crash?),
-    # then open/reuse THIS run row.
+    # then open/reuse THIS run row — committed durably before the network
+    # calls so the run's existence never depends on later stages.
     with conn.transaction():
         conn.execute(
             "UPDATE ingestion.fetch_runs SET status='failed', finished_at=now(), "
@@ -576,19 +578,37 @@ def _run_partition_impl(
                     "control_scrip": CONTROL_SCRIP})),
         ).fetchone()
         fetch_run_id = fr[0]
+    conn.commit()
     log(f"[{scrip}] fetch_run {fetch_run_id} window {frm}..{to} "
         f"(run_key={run_idem})")
 
-    # --- fetch (network outside transactions; bytes persisted first) ---
+    def _persist_page(pageno: int, body: bytes, url: str
+                      ) -> tuple[int, int]:
+        """Durably register one exact page BEFORE its envelope is parsed."""
+        resp_sha, resp_path, _ = _persist_bytes(
+            conn, store, body,
+            media_type="application/json",
+            metadata={"source": "bse_api", "url": url, "scrip": scrip},
+        )
+        with conn.transaction():
+            aid, fsr = _store_artifact(
+                conn,
+                fetch_run_id=fetch_run_id,
+                idem_key=(f"bse_api:{part['partition_key']}:api_response:"
+                          f"p{pageno}:{resp_sha}"),
+                kind="api_response",
+                media="application/json",
+                sha=resp_sha, path=resp_path, size=len(body),
+                meta={"url": url, "scrip": scrip, "pageno": pageno})
+        conn.commit()
+        return aid, fsr
+
+    # --- fetch pages (network; each page's bytes are durably registered
+    # before that page is parsed) ---
     try:
-        collected, rowcnt, page_meta = _collect_pages(
-            scrip, frm, to, fetch_fn, log)
-        # R-BSE-9: empty Table with HTTP 200 is ambiguous — disambiguate via a
-        # known-active control scrip before accepting "no data".
-        control_artifact = None
-        if not collected:
-            control_artifact = _run_control_query(
-                conn, store, fetch_run_id, frm, to, fetch_fn, part, log)
+        collected, rowcnt, page_meta, row_page, page_artifacts = \
+            _collect_pages(scrip, frm, to, fetch_fn, log,
+                           persist=_persist_page)
     except BseFetchError as e:
         _finalize_failed(conn, store, partition_id, fetch_run_id, None,
                          str(e), getattr(e, "body", b""))
@@ -599,34 +619,26 @@ def _run_partition_impl(
     if foreign:
         log(f"[{scrip}] dropping {foreign} rows whose SCRIP_CD ≠ {scrip}")
 
-    # --- Tx2: response artifacts + raw items + fetch_run counts + cursor ---
-    with conn.transaction():
-        artifact_id: Optional[int] = None
-        for pageno, (body, url) in sorted(page_meta.items()):
-            resp_sha, resp_path, _ = _persist_bytes(
-                conn, store, body,
-                media_type="application/json",
-                metadata={"source": "bse_api", "url": url, "scrip": scrip},
-            )
-            aid, first_seen_run = _store_artifact(
-                conn,
-                fetch_run_id=fetch_run_id,
-                idem_key=(f"bse_api:{part['partition_key']}:api_response:"
-                          f"p{pageno}:{resp_sha}"),
-                kind="api_response",
-                media="application/json",
-                sha=resp_sha, path=resp_path, size=len(body),
-                meta={"url": url, "scrip": scrip, "pageno": pageno})
-            if pageno == 1:
-                artifact_id = aid
+    control_artifact = None
+    if not items:
+        # R-BSE-9 canary — evaluated AFTER scrip filtering so an all-foreign
+        # non-empty response cannot masquerade as a genuine empty target
+        # (review ST-C05).
+        control_artifact = _run_control_query(
+            conn, store, fetch_run_id, frm, to, fetch_fn, part, log)
 
+    # --- Tx2: raw items + fetch_run counts + cursor. Every raw item points
+    # at the artifact whose bytes actually contain it (ST-C03 provenance). ---
+    with conn.transaction():
         items_seen = 0
         items_new = 0
         published: list[datetime] = []
         att_urls: dict[str, list[str]] = {}
         for raw in items:
-            items_seen += 1
             news_id = str(raw.get("NEWSID"))
+            pageno = row_page[news_id]
+            artifact_id, first_seen_run = page_artifacts[pageno]
+            items_seen += 1
             pub = parse_news_dt(raw.get("NEWS_DT"))
             if pub is not None:
                 published.append(pub)
@@ -674,6 +686,7 @@ def _run_partition_impl(
                         "last_status": status,
                         "rowcnt": rowcnt,
                         "control_checked": control_artifact is not None})
+    conn.commit()
     log(f"[{scrip}] {items_seen} announcements seen ({items_new} new, "
         f"ROWCNT={rowcnt}) → status {status}")
 
@@ -711,11 +724,11 @@ def _real_session(impersonate: str, fetch_fn: Optional[FetchFn],
 # fetching internals
 # --------------------------------------------------------------------- #
 
-def _fetch_page(fetch_fn: FetchFn, scrip: str, frm: str, to: str,
-                pageno: int) -> tuple[bytes, list[dict[str, Any]],
-                                      Optional[int], str]:
-    """One validated page fetch. Returns ``(body, rows, rowcnt, url)``.
-    Raises BseFetchError on network/HTTP/stale-session/envelope failure."""
+def _fetch_page_bytes(fetch_fn: FetchFn, scrip: str, frm: str, to: str,
+                      pageno: int) -> tuple[bytes, str]:
+    """One page over the network: transport/status checks ONLY — no parsing.
+    Returns ``(body, url)`` so the caller can durably register the exact
+    bytes before any parser sees them (HLD invariant 1; review ST-C01)."""
     url = api_url(scrip, frm, to, pageno)
     try:
         status, body = fetch_fn(scrip, frm, to, pageno, url)
@@ -725,37 +738,62 @@ def _fetch_page(fetch_fn: FetchFn, scrip: str, frm: str, to: str,
         raise BseFetchError(
             f"API unusable after re-warm (HTTP {status}, "
             f"head={body[:80]!r})", body=body)
-    try:
-        rows, rowcnt = parse_envelope(body)
-    except EnvelopeError as e:
-        raise BseFetchError(f"page {pageno}: {e}", body=body) from e
-    return body, rows, rowcnt, url
+    size_err = content_policy.api_body_size_error(len(body))
+    if size_err:
+        raise BseFetchError(size_err, body=body)
+    return body, url
 
 
 def _collect_pages(scrip: str, frm: str, to: str, fetch_fn: FetchFn,
-                   log: Callable[[str], None]
+                   log: Callable[[str], None], *, persist=None
                    ) -> tuple[dict[str, dict[str, Any]], Optional[int],
-                              dict[int, tuple[bytes, str]]]:
+                              dict[int, tuple[bytes, str]],
+                              dict[str, int], dict[int, tuple[int, int]]]:
     """Paginate until ``len(collected) >= ROWCNT`` or pages exhaust
     (R-BSE-8). A ROWCNT shortfall raises instead of silently truncating.
-    Returns ``(collected_by_newsid, last_rowcnt, {pageno: (body, url)})``."""
+
+    ``persist(pageno, body, url)`` is invoked for each fetched page BEFORE
+    its envelope is parsed; when given it must durably register the exact
+    bytes and return ``(artifact_id, first_seen_run_id)``.
+
+    Returns ``(collected_by_newsid, last_rowcnt, {pageno: (body, url)},
+    {newsid: pageno}, {pageno: (artifact_id, first_seen_run)})`` so every
+    raw item can be attributed to the artifact whose bytes actually contain
+    it (review ST-C03). Rows missing SCRIP_CD are contract drift and fail
+    closed — identity cannot even be checked without them."""
     collected: dict[str, dict[str, Any]] = {}
+    row_page: dict[str, int] = {}
     page_meta: dict[int, tuple[bytes, str]] = {}
+    page_artifacts: dict[int, tuple[int, int]] = {}
     rowcnt: Optional[int] = None
     pageno = 1
     while pageno <= MAX_PAGES:
-        body, rows, rc, url = _fetch_page(fetch_fn, scrip, frm, to, pageno)
+        body, url = _fetch_page_bytes(fetch_fn, scrip, frm, to, pageno)
         page_meta[pageno] = (body, url)
+        if persist is not None:
+            page_artifacts[pageno] = persist(pageno, body, url)
+        try:
+            rows, rc = parse_envelope(body)
+        except EnvelopeError as e:
+            # When the page was persisted above, its bytes are already in
+            # lineage — do not make finalize double-store them.
+            raise BseFetchError(f"page {pageno}: {e}",
+                                body=b"" if persist is not None else body) from e
         if rowcnt is not None and rc != rowcnt:
             raise BseFetchError(
                 f"pagination ROWCNT changed from {rowcnt} to {rc} on page "
-                f"{pageno} (contract drift?)", body=body)
+                f"{pageno} (contract drift?)")
         rowcnt = rc
         fresh = 0
         for row in rows:
+            if row.get("SCRIP_CD") in (None, ""):
+                raise BseFetchError(
+                    f"page {pageno} row NEWSID={row.get('NEWSID')!r} is "
+                    "missing SCRIP_CD (identity cannot be verified)")
             key = str(row["NEWSID"])
             if key not in collected:
                 collected[key] = row
+                row_page[key] = pageno
                 fresh += 1
         log(f"[{scrip}] page {pageno}: {len(rows)} rows "
             f"({fresh} new, total {len(collected)}, ROWCNT={rowcnt})")
@@ -769,7 +807,7 @@ def _collect_pages(scrip: str, frm: str, to: str, fetch_fn: FetchFn,
             f"pagination shortfall: ROWCNT={rowcnt} but collected "
             f"{len(collected)} items across {len(page_meta)} pages "
             f"(R-BSE-8: failing loudly instead of silent truncation)")
-    return collected, rowcnt, page_meta
+    return collected, rowcnt, page_meta, row_page, page_artifacts
 
 
 def _run_control_query(
@@ -778,27 +816,35 @@ def _run_control_query(
     log: Callable[[str], None]) -> int:
     """R-BSE-9 canary: query a known-active scrip over the same window. Its
     non-empty result proves the endpoint still works, so the target scrip's
-    emptiness is genuine. Returns the control artifact id; raises
-    BseFetchError when the canary comes back empty/garbled (contract drift)."""
+    emptiness is genuine. The exact canary bytes are durably registered
+    BEFORE parsing; returns the control artifact id; raises BseFetchError
+    when the canary comes back empty/garbled (contract drift)."""
     log(f"[{part['partition_key']}] empty result — running control-scrip "
         f"canary ({CONTROL_SCRIP}) before accepting 'no data'")
-    body, rows, rc, url = _fetch_page(fetch_fn, CONTROL_SCRIP, frm, to, 1)
-    if not rows:
-        raise BseFetchError(
-            "control scrip also returned no items — API contract drift "
-            "suspected (R-BSE-9); refusing to accept 'no data'")
+    body, url = _fetch_page_bytes(fetch_fn, CONTROL_SCRIP, frm, to, 1)
     sha, path, _ = _persist_bytes(
         conn, store, body, media_type="application/json",
         metadata={"source": "bse_api", "url": url,
                   "role": "control_canary", "scrip": CONTROL_SCRIP})
-    artifact_id, _ = _store_artifact(
-        conn,
-        fetch_run_id=fetch_run_id,
-        idem_key=(f"bse_api:{part['partition_key']}:api_control:{sha}"),
-        kind="api_response_control",
-        media="application/json",
-        sha=sha, path=path, size=len(body),
-        meta={"url": url, "control_scrip": CONTROL_SCRIP})
+    with conn.transaction():
+        artifact_id, _ = _store_artifact(
+            conn,
+            fetch_run_id=fetch_run_id,
+            idem_key=(f"bse_api:{part['partition_key']}:api_control:{sha}"),
+            kind="api_response_control",
+            media="application/json",
+            sha=sha, path=path, size=len(body),
+            meta={"url": url, "control_scrip": CONTROL_SCRIP})
+    conn.commit()
+    try:
+        rows, _rc = parse_envelope(body)
+    except EnvelopeError as e:
+        # Bytes retained as the control artifact above; no double evidence.
+        raise BseFetchError(f"control query unusable: {e}") from e
+    if not rows:
+        raise BseFetchError(
+            "control scrip also returned no items — API contract drift "
+            "suspected (R-BSE-9); refusing to accept 'no data'")
     return artifact_id
 
 
@@ -889,6 +935,7 @@ def _finalize_failed(conn: psycopg.Connection, store: ObjectStore,
                 "WHERE fetch_run_id=%s",
                 (http_status, summary[:2000], fetch_run_id))
             _bump_cursor_failures(conn, partition_id)
+        conn.commit()  # failure lineage must survive the raise
     except psycopg.Error:
         pass  # DB unavailable — the job framework retry will re-record
 
@@ -948,6 +995,11 @@ def _download_one_attachment(
     Returns one of 'downloaded' | 'invalid' | 'failed'."""
     outcome = "failed"
     for candidate in attachment_urls(content_url.rsplit("/", 1)[-1]):
+        # Trust boundary (review ST-C05): never fetch non-allowlisted hosts.
+        url_err = content_policy.attachment_url_error("bse_api", candidate)
+        if url_err:
+            log(f"  DL REJECTED {candidate} ({url_err})")
+            continue
         data, http_status, err = pdf_fetch_fn(sess, candidate)
         if not data:
             # one session-renew retry before giving up on this variant
@@ -961,6 +1013,10 @@ def _download_one_attachment(
                 data, http_status, err = pdf_fetch_fn(sess, candidate)
         if not data:
             log(f"  DL FAIL {candidate} ({err})")
+            continue
+        size_err = content_policy.download_size_error(len(data))
+        if size_err:
+            log(f"  DL REJECTED {candidate} ({size_err})")
             continue
         valid = looks_like_pdf(data)
         media = "application/pdf" if valid else "text/html"
@@ -988,6 +1044,7 @@ def _download_one_attachment(
                     meta={"url": content_url, "resolved_url": candidate,
                           "news_ids": news_ids, "magic_valid": valid,
                           "http_status": http_status})
+            conn.commit()  # each attachment is one durable unit
         except psycopg.Error as e:
             log(f"  STORE FAIL {candidate}: {e}")
             continue

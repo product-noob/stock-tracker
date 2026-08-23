@@ -96,6 +96,37 @@ class TestPureHelpers(unittest.TestCase):
         frm, to = nse_capture.window_from_cursor(cursor, now)
         self.assertLess(frm, to)
 
+    def test_validate_rows_accepts_contract_conforming_payload(self):
+        items = [
+            {"seq_id": 1, "symbol": "TESTFAKE",
+             "attchmntFile": "https://x/y.pdf"},
+            {"seq_id": "2", "symbol": "testfake", "attchmntFile": ""},
+        ]
+        self.assertIsNone(nse_capture.validate_nse_rows(items, "TESTFAKE"))
+        self.assertEqual(nse_capture.validate_nse_rows([], "TESTFAKE"), None)
+
+    def test_validate_rows_rejects_non_list(self):
+        self.assertIsNotNone(nse_capture.validate_nse_rows({"a": 1}, "S"))
+        self.assertIsNotNone(nse_capture.validate_nse_rows("[]", "S"))
+
+    def test_validate_rows_rejects_non_object_row(self):
+        self.assertIn("not an object",
+                      nse_capture.validate_nse_rows(["junk"], "S") or "")
+
+    def test_validate_rows_rejects_missing_seq_id(self):
+        err = nse_capture.validate_nse_rows(
+            [{"symbol": "S", "an_dt": None}], "S")
+        self.assertIsNotNone(err)
+        self.assertIn("seq_id", err)
+
+    def test_validate_rows_rejects_symbol_mismatch(self):
+        err = nse_capture.validate_nse_rows(
+            [{"seq_id": 7, "symbol": "OTHER"}], "S")
+        self.assertIsNotNone(err)
+        self.assertIn("does not match", err)
+        # missing symbol is equally a contract drift
+        self.assertIsNotNone(nse_capture.validate_nse_rows([{"seq_id": 8}], "S"))
+
 
 # --------------------------------------------------------------------- #
 # DB-backed end-to-end idempotency test (injected HTTP + clock)
@@ -147,7 +178,9 @@ class FakeHttp:
 
     def fetch_api(self, symbol: str, frm: str, to: str, url: str):
         self.api_calls += 1
-        return 200, API_BODY
+        # The real API echoes the requested symbol in every row; the new
+        # fail-closed validator (ST-C05) rejects any mismatch.
+        return 200, API_BODY.replace(b'TESTFAKE', symbol.encode())
 
     def fetch_pdf(self, session, url: str):
         self.pdf_calls.append(url)

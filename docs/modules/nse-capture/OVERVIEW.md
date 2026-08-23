@@ -64,14 +64,16 @@ Cursor advances only after artifact + raw items commit. The API partition double
   registry companies as durable `nse.fetch` jobs. A read-only audit found all 168
   adapter-shaped production NSE items normalized/assigned consistently; the larger totals
   in the 2026-08-23 evidence entry are a historical first-fleet snapshot, not current counts.
-- **Contract gaps:** API JSON is parsed before artifact registration is durable; artifact
-  keys can collapse fetch events; deterministic configurable IST slots now implement the
-  six-hour default cadence; malformed/foreign rows and attachment hosts/sizes remain insufficiently guarded;
-  no-byte attempts and canonical `record_contents` links are absent. The API path therefore
-  implements part of C1 plus content artifacts, not complete C3/M4 lineage.
+- **Contract gaps:** artifact keys can still collapse identical fetch events across runs
+  (`ST-C06`). Closed 2026-08-23: exact response bytes are durably registered before parsing;
+  malformed/foreign rows fail closed (`validate_nse_rows`); attachment downloads are host-
+  allowlisted and size-capped (`content_policy`); the filing downloader records immutable
+  `content_fetch_attempts` and `record_contents` links under a bounded retry budget. The API
+  path therefore implements C1 with content artifacts and the canonical content edge for
+  downloader-processed URLs.
 - `nse_rss` is not DB-integrated. No seven-day soak or reconciliation acceptance gate has
   run.
-- **Next milestone:** close review `ST-C01`, `ST-C04`–`ST-C07` and test isolation before
+- **Next milestone:** close `ST-C06`/`ST-C07` (fetch-event keys, M2/M3 concurrency) before
   adding RSS and beginning sampled-week reconciliation.
 
 ## Detail index (L2)

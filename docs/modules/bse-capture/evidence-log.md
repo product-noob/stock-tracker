@@ -87,3 +87,20 @@ Empirical findings from live runs. Cite as `(BSE evidence-log, YYYY-MM-DD)`.
   closed. Job payloads carry their slot so delayed workers do not drift into a later slot.
 - This supersedes the earlier daily-key cadence limitation; page provenance and exact-byte
   ordering remain open.
+
+## 2026-08-23 — Capture-correctness P0 batch implemented (ST-C01/ST-C03/ST-C05)
+
+- `_collect_pages` now accepts a `persist` callback invoked per page BEFORE its envelope is
+  parsed; each page's bytes + artifact commit durably at that point. A parse failure after
+  persistence finalizes the run failed without re-storing evidence.
+- Provenance fix: `row_page` records which page first yielded each NEWSID, and items insert
+  with that page's `(artifact_id, first_seen_run)` — mixed reused/new pages can no longer
+  misattribute lineage or violate the composite FK.
+- The R-BSE-9 canary moved AFTER scrip filtering: an all-foreign non-empty response now
+  triggers the canary instead of passing as a genuine empty result. Rows missing SCRIP_CD
+  fail closed during collection; missing SCRIP_CD rows can no longer be silently dropped.
+- Attachment downloads enforce the `content_policy` allowlist and 25 MiB cap; API bodies
+  capped at 20 MiB; explicit durability commits per stage.
+- Live validation 2026-08-23: RELIANCE run through the new path returned HTTP 200 with the
+  new slot key; zero provenance mismatches across ALL BSE raw items; every api_response
+  artifact registered in `content_objects`.

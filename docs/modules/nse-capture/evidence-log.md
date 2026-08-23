@@ -84,3 +84,16 @@ Empirical findings from live runs. Cite as `(NSE evidence-log, YYYY-MM-DD)`.
   closed. Job payloads carry their slot so delayed workers do not drift into a later slot.
 - This supersedes only the cadence gap above; bytes-before-parse and provenance findings
   remain open.
+
+## 2026-08-23 — Capture-correctness P0 batch implemented (ST-C01/ST-C05)
+
+- Exact response bytes + artifact are durably committed BEFORE `json.loads` runs; a parse
+  failure finalizes the run failed without losing response lineage.
+- `validate_nse_rows` fails closed on non-object rows, missing `seq_id`, and symbol
+  mismatch vs the partition (the old code silently skipped rows and stored `nse_ann:None`).
+- Attachment downloads enforce the `content_policy` host allowlist and a 25 MiB cap; API
+  bodies capped at 20 MiB. Durability boundaries are explicit `conn.commit()` points: run
+  row, response artifact, items+cursor, and each PDF commit independently.
+- Live validation 2026-08-23: RELIANCE run through the new path returned HTTP 200 with the
+  new slot key, zero provenance mismatches across all NSE items, and every api_response
+  artifact registered in `content_objects`.

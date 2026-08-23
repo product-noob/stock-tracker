@@ -971,9 +971,12 @@ adding persistent integration coverage.
   transaction rather than independent commits.
 - **Risk:** parser failure or process death can leave no registered replay artifact;
   API/item/cursor and PDF crash boundaries differ from comments and tests.
-- **Disposition:** **open.** Persist and commit each fetched response's object and
-  fetch-event artifact before invoking a parser; then commit parsed items + cursor in
-  a separate transaction. Add real kill-point tests in an isolated DB/object root.
+- **Disposition:** **fixed 2026-08-23.** NSE persists + commits the exact response bytes
+  and artifact before `json.loads`; BSE registers each page durably via a persist callback
+  invoked before that page's envelope is parsed. Failure paths after persistence no longer
+  double-store evidence, and durability boundaries are explicit commits (run row → response
+  artifact(s) → items+cursor → each attachment). Isolated tests plus live RELIANCE runs on
+  both exchanges verified ordering and lineage registration.
 
 ### `ST-C02` — BSE pagination accepted an envelope without a trustworthy denominator
 
@@ -993,8 +996,11 @@ adding persistent integration coverage.
   `first_seen_run_id` is taken from the final page artifact insertion. Reused page 1
   plus changed later pages can violate the composite FK; otherwise page-2 rows still
   point to bytes that do not contain them.
-- **Disposition:** **open.** Preserve `(row, page artifact, artifact first run)`
-  during collection and regression-test mixed reused/new pages.
+- **Disposition:** **fixed 2026-08-23.** `_collect_pages` records the yielding page per
+  NEWSID; item inserts use that page's `(artifact_id, first_seen_run)`, so mixed reused/new
+  pages can neither misattribute rows nor violate the composite FK. A two-page unit test
+  asserts the mapping and persist-before-parse ordering; all production items reconcile
+  with zero provenance mismatches.
 
 ### `ST-C04` — Attachment failure/convergence can strand canonical content
 
@@ -1002,11 +1008,15 @@ adding persistent integration coverage.
 - **Baseline fact:** BSE considered retained `filing_pdf_invalid` evidence handled while
   NSE retried it. Neither adapter recorded no-byte failures in `content_fetch_attempts`, and
   no live canonical record had a `record_contents` link.
-- **Disposition:** **partially fixed 2026-08-23.** BSE now treats only valid PDFs as captured,
-  retries invalid-only URLs on later runs, and chooses AttachLive first for GUID filenames;
-  focused ordering/retry tests were added. Still open: bounded retry/backoff, immutable
-  canonical attempt rows for invalid/no-byte outcomes, valid record→content links, and the
-  generic `download_filings.py` recovery defect (`ST-D03`).
+- **Disposition:** **largely fixed 2026-08-23.** BSE treats only valid PDFs as captured,
+  retries invalid-only URLs, and chooses AttachLive first for GUID filenames; the filing
+  downloader now records immutable `content_fetch_attempts` rows (ok/failed/invalid_content)
+  per linked record, writes `record_contents` links for valid PDFs, bounds retries via
+  `MAX_ATTEMPTS_PER_URL`, fails the durable job when unresolved work remains, enforces
+  host/size controls, gained a guarded DB test module (`tests/test_download_filings.py`),
+  and can backfill links for pre-lifecycle content (`backfill-links`). Still open: adapter-
+  inline downloads do not themselves write attempt rows (no record_id exists pre-M2); their
+  content converges through the downloader/backfill path.
 
 ### `ST-C05` — Adapter validation still permits silent malformed/foreign outcomes
 
@@ -1015,9 +1025,13 @@ adding persistent integration coverage.
   partition symbol. BSE can accept an all-foreign non-empty response because its
   empty canary runs before scrip filtering. Download size is unbounded and NSE trusts
   any HTTP(S) attachment host from the payload.
-- **Disposition:** **open.** Validate mandatory native IDs and partition identity
-  before cursor success, run BSE's canary after target filtering, allowlist attachment
-  hosts, cap bytes, and retain rejected responses as evidence.
+- **Disposition:** **largely fixed 2026-08-23.** The empty-result canary now runs after
+  scrip filtering, so all-foreign responses trigger it instead of passing as genuine
+  empties; rows missing `SCRIP_CD` fail closed during collection; NSE `validate_nse_rows`
+  rejects non-object rows, missing `seq_id` and symbol mismatch before any insert;
+  attachment downloads are host-allowlisted (`content_policy`) with a 25 MiB cap, and API
+  bodies are capped at 20 MiB. Still open: retained rejected responses as dedicated
+  evidence artifacts for URL-policy rejections.
 
 ### `ST-C06` — Capture/stage idempotency and correction semantics are incomplete
 
@@ -1113,9 +1127,13 @@ adding persistent integration coverage.
   unbounded, and its claimed regression test module does not exist.
 - **Risk:** a temporary HTML block or transient network outage can leave filing evidence
   unavailable without durable retry/dead-letter signaling.
-- **Disposition:** **open; extends `ST-C04`/`ST-C05`.** Model immutable attempts separately
-  from valid-content completion, retry invalid/no-byte outcomes under bounded policy,
-  enforce host/size controls, link content M:N, and fail the job when required work remains.
+- **Disposition:** **fixed 2026-08-23.** `download_filings.py` no longer treats invalid
+  captures as permanently handled: pending selection excludes only valid artifacts and
+  quarantines URLs whose per-record attempt budget (`MAX_ATTEMPTS_PER_URL`) is exhausted;
+  every outcome appends an immutable attempt row; valid PDFs gain `record_contents` links;
+  the durable job raises when work remains so backoff/dead-letter applies; downloads are
+  host-allowlisted and size-capped; the previously missing regression suite now exists
+  (guarded disposable DB). See `ST-C04` for the remaining adapter-inline boundary.
 
 ### `ST-D04` — Daily-bar acceptance and provenance are not production-safe
 

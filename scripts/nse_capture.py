@@ -78,6 +78,7 @@ from psycopg.types.json import Jsonb
 sys.path.insert(0, str(Path(__file__).parent))
 
 import jobs  # noqa: E402  (handler registration via @jobs.register_handler)
+import content_policy  # noqa: E402
 from capture_schedule import capture_interval_hours, capture_slot_key  # noqa: E402
 from companies import COMPANIES  # noqa: E402
 from object_store import ObjectStore  # noqa: E402
@@ -212,6 +213,28 @@ def window_from_cursor(cursor_row: Optional[dict[str, Any]],
     if from_dt >= to_dt:  # clock skew guard
         from_dt = to_dt - OVERLAP
     return from_dt, to_dt
+
+
+def validate_nse_rows(items: Any, symbol: str) -> Optional[str]:
+    """Fail-closed response validation (R-NSE contract; review ST-C05).
+
+    Returns ``None`` when every row is an object carrying a native ``seq_id``
+    whose ``symbol`` matches the partition. Any other shape is contract
+    drift: the caller must fail the run instead of silently skipping rows or
+    publishing under a wrong identity."""
+    if not isinstance(items, list):
+        return "expected a bare JSON array"
+    for pos, raw in enumerate(items):
+        if not isinstance(raw, dict):
+            return f"row {pos} is not an object"
+        seq_id = raw.get("seq_id")
+        if seq_id is None or str(seq_id).strip() == "":
+            return f"row {pos} is missing seq_id"
+        row_symbol = raw.get("symbol")
+        if not row_symbol or str(row_symbol).strip().upper() != symbol.upper():
+            return (f"row {pos} symbol {row_symbol!r} does not match "
+                    f"partition symbol {symbol!r}")
+    return None
 
 
 # --------------------------------------------------------------------- #
@@ -415,7 +438,8 @@ def _run_partition_impl(
         impersonate, fetch_fn, pdf_fetch_fn)
 
     # Tx1: close any stale 'running' run of this partition (worker crash?),
-    # then open/reuse THIS run row.
+    # then open/reuse THIS run row — committed durably before the network
+    # call so the run's existence never depends on later stages.
     with conn.transaction():
         conn.execute(
             "UPDATE ingestion.fetch_runs SET status='failed', finished_at=now(), "
@@ -446,6 +470,7 @@ def _run_partition_impl(
                     "schedule_slot": day_key})),
         ).fetchone()
         fetch_run_id = fr[0]
+    conn.commit()
     log(f"[{symbol}] fetch_run {fetch_run_id} window {frm}..{to} "
         f"(run_key={run_idem})")
 
@@ -471,22 +496,21 @@ def _run_partition_impl(
             f"[{symbol}] API unusable after re-warm (HTTP {http_status}, "
             f"head={body[:80]!r})")
 
-    try:
-        items = json.loads(body.decode("utf-8"))
-        if not isinstance(items, list):
-            raise ValueError("expected a bare JSON array")
-    except (UnicodeDecodeError, ValueError, json.JSONDecodeError) as e:
+    size_err = content_policy.api_body_size_error(len(body))
+    if size_err:
         _finalize_failed(conn, store, partition_id, fetch_run_id,
-                         http_status, f"unparseable body: {e}", body)
-        raise NseFetchError(f"[{symbol}] unparseable response: {e}") from e
+                         http_status, size_err, b"")
+        raise NseFetchError(f"[{symbol}] {size_err}")
 
-    # --- Tx2: response artifact + raw items + fetch_run counts + cursor ---
-    resp_sha, resp_path, _ = _persist_bytes(
-        conn, store, body,
-        media_type="application/json",
-        metadata={"source": "nse_api", "url": full_url, "symbol": symbol},
-    )
+    # --- Tx2: exact response bytes + artifact DURABLY COMMITTED before any
+    # parser sees them (HLD invariant 1; review ST-C01). A crash or parser
+    # bug after this point can never lose the response from lineage.
     with conn.transaction():
+        resp_sha, resp_path, _ = _persist_bytes(
+            conn, store, body,
+            media_type="application/json",
+            metadata={"source": "nse_api", "url": full_url, "symbol": symbol},
+        )
         artifact_id, first_seen_run = _store_artifact(
             conn,
             fetch_run_id=fetch_run_id,
@@ -495,14 +519,31 @@ def _run_partition_impl(
             media="application/json",
             sha=resp_sha, path=resp_path, size=len(body),
             meta={"url": full_url, "symbol": symbol})
+    conn.commit()
 
+    try:
+        items = json.loads(body.decode("utf-8"))
+    except (UnicodeDecodeError, json.JSONDecodeError) as e:
+        # Bytes are already retained as the api_response artifact above;
+        # pass an empty body so finalize does not double-store evidence.
+        _finalize_failed(conn, store, partition_id, fetch_run_id,
+                         http_status, f"unparseable body: {e}", b"")
+        raise NseFetchError(f"[{symbol}] unparseable response: {e}") from e
+
+    row_error = validate_nse_rows(items, symbol)
+    if row_error:
+        _finalize_failed(conn, store, partition_id, fetch_run_id,
+                         http_status, f"contract drift: {row_error}", b"")
+        raise NseFetchError(f"[{symbol}] contract drift: {row_error}")
+
+    # --- Tx3: raw items + fetch_run counts + cursor (one durable commit;
+    # invariant 7: cursor advances only after items commit) ---
+    with conn.transaction():
         items_seen = 0
         items_new = 0
         published: list[datetime] = []
         pdf_urls: dict[str, list[str]] = {}
         for raw in items:
-            if not isinstance(raw, dict):
-                continue
             items_seen += 1
             seq_id = raw.get("seq_id")
             pub = parse_an_dt(raw.get("an_dt"))
@@ -522,7 +563,7 @@ def _run_partition_impl(
                 RETURNING item_id
                 """,
                 (partition_id, first_seen_run, artifact_id,
-                 item_key(seq_id), str(seq_id) if seq_id is not None else None,
+                 item_key(seq_id), str(seq_id),
                  pub,
                  raw.get("sm_name") or raw.get("symbol"),
                  raw.get("attchmntText") or raw.get("desc"),
@@ -549,6 +590,7 @@ def _run_partition_impl(
         _upsert_cursor(conn, partition_id, fetch_run_id, newest,
                        {"last_from": frm, "last_to": to,
                         "last_status": status})
+    conn.commit()
     log(f"[{symbol}] {items_seen} announcements seen, {items_new} new "
         f"→ status {status}")
 
@@ -662,6 +704,7 @@ def _finalize_failed(conn: psycopg.Connection, store: ObjectStore,
                 "WHERE fetch_run_id=%s",
                 (http_status, summary[:2000], fetch_run_id))
             _bump_cursor_failures(conn, partition_id)
+        conn.commit()  # failure lineage must survive the raise
     except psycopg.Error:
         pass  # DB unavailable — the job framework retry will re-record
 
@@ -725,6 +768,12 @@ def _download_pdfs(conn: psycopg.Connection, store: ObjectStore,
         if url_already_captured(conn, partition_id, url):
             stats["skipped"] += 1
             continue
+        # Trust boundary (review ST-C05): never fetch non-allowlisted hosts.
+        url_err = content_policy.attachment_url_error("nse_api", url)
+        if url_err:
+            stats["failed"] += 1
+            log(f"  PDF REJECTED {url} ({url_err})")
+            continue
         sleep_fn(PDF_DELAY_SEC)  # ban-avoidance spacing
         data, http_status, err = pdf_fetch_fn(sess, url)
         if not data:
@@ -740,6 +789,11 @@ def _download_pdfs(conn: psycopg.Connection, store: ObjectStore,
         if not data:
             stats["failed"] += 1
             log(f"  PDF FAIL {url} ({err})")
+            continue
+        size_err = content_policy.download_size_error(len(data))
+        if size_err:
+            stats["failed"] += 1
+            log(f"  PDF REJECTED {url} ({size_err})")
             continue
         valid = looks_like_pdf(data)
         media = "application/pdf" if valid else "text/html"
@@ -765,6 +819,7 @@ def _download_pdfs(conn: psycopg.Connection, store: ObjectStore,
                     sha=sha, path=path, size=len(data),
                     meta={"url": url, "seq_ids": seq_ids,
                           "magic_valid": valid, "http_status": http_status})
+            conn.commit()  # each attachment is one durable unit
         except psycopg.Error as e:
             stats["failed"] += 1
             log(f"  PDF STORE FAIL {url}: {e}")

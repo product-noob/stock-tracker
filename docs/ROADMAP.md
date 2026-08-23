@@ -46,9 +46,10 @@ Important boundaries:
   intelligence/event/insight tables, and delivery tables were empty at the review sample.
 - The outbox is written but has no dispatcher; all sampled events were pending. A
   “transactional outbox” is therefore durable storage only, not a working hand-off.
-- Exchange scheduling now uses configurable IST slots with a six-hour default. The adapters
-  still do not satisfy bytes-before-parse, per-fetch provenance, attachment retry/linkage,
-  or all fail-closed validation requirements.
+- Exchange scheduling uses configurable IST slots with a six-hour default, exact bytes are
+  durably registered before parsing, BSE page provenance and canary placement are correct,
+  source rows fail closed, and downloads are bounded/allowlisted. Remaining capture gaps:
+  fetch-event artifact keys (`ST-C06`) and M2/M3 concurrency claims (`ST-C07`).
 - The database/object store are persistent and unbacked; the owner deferred backup work
   until system stability and accepts the temporary risk. DB integration tests must use the
   positively marked disposable DB and separate object root documented in `testing.md`.
@@ -67,11 +68,12 @@ read-only queries for current operations.
    system stable (`ST-P01`, `ST-P08`).
 2. **Preserve test isolation:** keep the verified full suite behind the hard-marked disposable
    database and separate object root; never fall back to application state (`ST-P02`, `ST-C10`).
-3. **Repair capture correctness:** exact bytes durably registered before parsing, correct
-   BSE per-page/run provenance, fail-closed source identity/envelopes, bounded/allowlisted
-   downloads, and explicit correction/run semantics (`ST-C01`, `ST-C03`–`ST-C07`).
-4. **Complete canonical content:** retry invalid/no-byte downloads, record immutable
-   attempts, and populate record→content links before text extraction (`ST-C04`, `ST-D03`).
+3. **Finish capture hardening:** fetch-event artifact keys (`ST-C06`) and M2/M3 concurrency
+   claims (`ST-C07`); bytes-before-parse, BSE page provenance, canary placement,
+   source validation and bounded/allowlisted downloads are now implemented.
+4. **Complete canonical content at scale:** run `download_filings.py backfill-links --all`
+   to link remaining pre-lifecycle content; adapter-inline attempts converge through the
+   downloader path (`ST-C04`).
 5. **Complete the control plane:** outbox dispatcher, scheduler/supervision, least-privilege
    runtime role, and aggregate health/alerts (`ST-P03`, `ST-P07`, `ST-P09`).
 6. **Finish Phase 0 breadth:** DB-integrated NSE/BSE main feeds, plain resolved-filing

@@ -15,8 +15,9 @@ fetch run. This module covers what those runs left behind:
 
 * URLs whose download failed transiently during the capture run;
 * URLs captured before PDF downloading existed on the DB path;
-* NSE invalid-content URLs, which the NSE adapter deliberately never retries
-  but which may serve real bytes later.
+* invalid-content captures (e.g. BSE AttachLive GUID traps), which are
+  retried under a bounded per-record attempt budget
+  (``MAX_ATTEMPTS_PER_URL``) instead of being treated as handled forever.
 
 It downloads ONLY URLs that no successful artifact of the same partition has
 captured yet (``pending_urls``), so running it after a complete capture is a
@@ -42,7 +43,13 @@ Lineage written per run (ONE transaction per downloaded URL):
 2. ``ingestion.raw_artifacts`` row (kind ``filing_pdf``, or
    ``filing_pdf_invalid`` for retained HTML-as-200 evidence) referencing the
    registered sha256/storage_path — the "link from raw artifacts";
-3. the run's ``ingestion.fetch_runs`` row finalized (ok/partial/failed).
+3. one immutable ``documents.content_fetch_attempts`` row per normalized
+   record linked to the URL, plus ``documents.record_contents`` links for
+   valid PDFs (canonical record→content edge; review ST-C04/D03);
+4. the run's ``ingestion.fetch_runs`` row finalized (ok/partial/failed).
+
+The durable job FAILS when unresolved work remains, driving backoff and
+eventual dead-letter instead of silently reporting success.
 
 Magic-byte validation decides media_type/kind at insert time (HTTP 200 proves
 nothing; BSE AttachLive trap). Invalid bytes are kept as evidence, never
@@ -51,7 +58,8 @@ same spirit as the Screener guardrail.
 
 Testability: HTTP is injectable (``fetch_fn(source, url)``), as are clock,
 sleep and store/connection — see ``tests/test_download_filings.py``, which
-drives the full cycle against the live dev DB with recorded fake bytes.
+drives the full cycle against the guarded disposable test DB with recorded
+fake bytes.
 
 CLI
 ---
@@ -76,6 +84,7 @@ from psycopg.types.json import Jsonb
 sys.path.insert(0, str(Path(__file__).parent))
 
 import jobs  # noqa: E402  (handler registration via @jobs.register_handler)
+import content_policy  # noqa: E402
 from companies import COMPANIES  # noqa: E402
 
 # Capture adapters provide the impersonated sessions, magic-byte check and
@@ -87,6 +96,9 @@ from object_store import ObjectStore  # noqa: E402
 JOB_KIND = "filings.download"
 PDF_DELAY_SEC = 0.4             # ban-avoidance spacing between downloads
 SOURCES = ("nse_api", "bse_api")  # sources this downloader understands
+#: Bounded retry budget (review ST-C04): a URL is retried across runs until
+#: it has this many recorded attempts per record, then left quarantined.
+MAX_ATTEMPTS_PER_URL = 8
 
 IST = timezone(timedelta(hours=5, minutes=30))
 
@@ -174,10 +186,15 @@ def _default_fetch_fn() -> FetchFn:
 # --------------------------------------------------------------------- #
 
 def pending_urls(conn: psycopg.Connection, partition_id: int) -> list[str]:
-    """Announcement PDF URLs seen by this partition's feed items that no
-    successful artifact of this partition has captured yet. Both valid PDFs
-    AND retained invalid-content evidence count as handled (re-fetching
-    known garbage adds nothing; BSE adapter semantics)."""
+    """Announcement PDF URLs seen by this partition's feed items that still
+    need work, under the bounded-retry policy (review ST-C04/D03):
+
+    * URLs with a VALID ``filing_pdf`` artifact are done — excluded;
+    * invalid-content captures are NOT treated as handled (the bytes may
+      become valid later, e.g. BSE AttachLive GUID filings) — retried;
+    * a URL whose per-record attempt budget is exhausted is quarantined —
+      excluded until an operator intervenes.
+    """
     rows = conn.execute(
         """
         SELECT DISTINCT i.content_url
@@ -189,13 +206,68 @@ def pending_urls(conn: psycopg.Connection, partition_id: int) -> list[str]:
               FROM ingestion.raw_artifacts a
               JOIN ingestion.fetch_runs r USING (fetch_run_id)
               WHERE r.partition_id = %s
-                AND a.artifact_kind IN ('filing_pdf', 'filing_pdf_invalid')
+                AND a.artifact_kind = 'filing_pdf'
                 AND a.metadata->>'url' = i.content_url)
+          AND NOT EXISTS (
+              SELECT 1
+              FROM ingestion.record_raw_items rr
+              JOIN ingestion.raw_feed_items i2 ON i2.item_id = rr.item_id
+              JOIN documents.content_fetch_attempts cfa
+                ON cfa.record_id = rr.record_id
+               AND cfa.requested_url = i2.content_url
+              WHERE i2.partition_id = %s
+                AND i2.content_url = i.content_url
+              HAVING count(*) >= %s)
         ORDER BY 1
         """,
-        (partition_id, partition_id),
+        (partition_id, partition_id, partition_id, MAX_ATTEMPTS_PER_URL),
     ).fetchall()
     return [r[0] for r in rows]
+
+
+def _record_ids_for_url(conn: psycopg.Connection, partition_id: int,
+                        url: str) -> list[int]:
+    """Canonical records (post-M2) linked to raw items carrying ``url``."""
+    rows = conn.execute(
+        """
+        SELECT DISTINCT n.record_id
+        FROM ingestion.record_raw_items rr
+        JOIN ingestion.raw_feed_items i ON i.item_id = rr.item_id
+        JOIN ingestion.normalized_records n ON n.record_id = rr.record_id
+        WHERE i.partition_id = %s AND i.content_url = %s
+        ORDER BY 1
+        """,
+        (partition_id, url),
+    ).fetchall()
+    return [int(r[0]) for r in rows]
+
+
+def _record_attempt(
+    conn: psycopg.Connection, *, record_id: int, requested_url: str,
+    resolved_url: Optional[str], status: str, http_status: Optional[int],
+    response_media_type: Optional[str], content_id: Optional[int],
+    error_message: Optional[str], job_id: Optional[int] = None,
+) -> None:
+    """Append one immutable ``content_fetch_attempts`` row (idempotent under
+    redelivery via the UNIQUE (record, url, attempt_no) key)."""
+    conn.execute(
+        """
+        INSERT INTO documents.content_fetch_attempts
+            (record_id, job_id, requested_url, resolved_url, attempt_no,
+             status, http_status, response_media_type, content_id,
+             error_message, started_at, finished_at)
+        SELECT %s, %s, %s, %s,
+               COALESCE(MAX(cfa.attempt_no), 0) + 1,
+               %s, %s, %s, %s, %s, now(), now()
+          FROM documents.content_fetch_attempts cfa
+         WHERE cfa.record_id = %s AND cfa.requested_url = %s
+        ON CONFLICT (record_id, requested_url, attempt_no) DO NOTHING
+        """,
+        (record_id, job_id, requested_url, resolved_url,
+         status, http_status, response_media_type, content_id,
+         error_message[:500] if error_message else None,
+         record_id, requested_url),
+    )
 
 
 # --------------------------------------------------------------------- #
@@ -229,6 +301,92 @@ def _store_artifact(conn: psycopg.Connection, *, fetch_run_id: int,
     if row is None:
         raise FilingDownloadError(f"artifact row vanished for {idem_key}")
     return int(row[0]), int(row[1])
+
+
+def _content_id(conn: psycopg.Connection, sha256: str) -> Optional[int]:
+    row = conn.execute(
+        "SELECT content_id FROM documents.content_objects WHERE sha256=%s",
+        (sha256,)).fetchone()
+    return int(row[0]) if row else None
+
+
+def _record_outcome(
+    conn: psycopg.Connection, partition_id: int, url: str, *,
+    resolved_url: Optional[str], status: str, http_status: Optional[int],
+    media_type: Optional[str], content_id: Optional[int],
+    error: Optional[str], log: Log, prefix: str,
+    sha: Optional[str] = None, created: Optional[bool] = None,
+    link: bool = False,
+) -> None:
+    """Canonical content lifecycle (review ST-C04/D03): append one
+    ``content_fetch_attempts`` row per linked record and, for valid content,
+    the ``record_contents`` link — both idempotent under redelivery."""
+    record_ids = _record_ids_for_url(conn, partition_id, url)
+    if not record_ids:
+        # Pre-M2: raw items not normalized yet. Artifact lineage above is
+        # complete; attempts/links converge once the normalizer has run.
+        if sha is not None:
+            log(f"  {prefix} {'NEW' if created else 'dedup'} "
+                f"{(sha or '')[:12]} {url} (no normalized records yet)")
+        else:
+            log(f"  {prefix} {url} (no normalized records yet)")
+        return
+    for record_id in record_ids:
+        _record_attempt(
+            conn, record_id=record_id, requested_url=url,
+            resolved_url=resolved_url, status=status,
+            http_status=http_status, response_media_type=media_type,
+            content_id=content_id, error_message=error)
+        if link and content_id is not None:
+            conn.execute(
+                """
+                INSERT INTO documents.record_contents
+                    (record_id, content_id, relation, source_url)
+                VALUES (%s, %s, 'primary', %s)
+                ON CONFLICT (record_id, content_id, relation) DO NOTHING
+                """,
+                (record_id, content_id, url),
+            )
+    if sha is not None:
+        log(f"  {prefix} {'NEW' if created else 'dedup'} {(sha or '')[:12]} "
+            f"{url} ({len(record_ids)} record(s))")
+    else:
+        log(f"  {prefix} {url} ({len(record_ids)} record(s))")
+
+
+def backfill_links(conn: psycopg.Connection, partition_id: int) -> int:
+    """Backfill ``record_contents`` links for content already validly captured
+    by earlier runs (pre-lifecycle data). Idempotent; writes links only — no
+    synthetic attempt history is fabricated for those past downloads."""
+    rows = conn.execute(
+        """
+        SELECT DISTINCT a.metadata->>'url' AS url, a.sha256
+        FROM ingestion.raw_artifacts a
+        JOIN ingestion.fetch_runs r USING (fetch_run_id)
+        WHERE r.partition_id = %s
+          AND a.artifact_kind = 'filing_pdf'
+          AND a.metadata->>'url' LIKE 'http%%'
+        """,
+        (partition_id,),
+    ).fetchall()
+    linked = 0
+    for url, sha in rows:
+        content_id = _content_id(conn, sha)
+        if content_id is None:
+            continue
+        for record_id in _record_ids_for_url(conn, partition_id, url):
+            conn.execute(
+                """
+                INSERT INTO documents.record_contents
+                    (record_id, content_id, relation, source_url)
+                VALUES (%s, %s, 'primary', %s)
+                ON CONFLICT (record_id, content_id, relation) DO NOTHING
+                """,
+                (record_id, content_id, url),
+            )
+            linked += 1
+    conn.commit()
+    return linked
 
 
 def _get_or_create_run(conn: psycopg.Connection, partition_id: int,
@@ -358,12 +516,35 @@ def _run_impl(conn: psycopg.Connection, store: ObjectStore, fetch: FetchFn,
     failures = 0
 
     for url in sorted(urls):
+        # Trust boundary (review ST-C05): never fetch non-allowlisted hosts.
+        url_err = content_policy.attachment_url_error(source, url)
+        if url_err:
+            failures += 1
+            stats["failed"] += 1
+            log(f"  DL REJECTED {url} ({url_err})")
+            continue
         sleep_fn(PDF_DELAY_SEC)
         data, http_status, err, resolved = fetch(source, url)
         if not data:
             failures += 1
             stats["failed"] += 1
-            log(f"  DL FAIL {url} ({err})")
+            _record_outcome(conn, partition_id, url,
+                            resolved_url=resolved, status="failed",
+                            http_status=http_status, media_type=None,
+                            content_id=None, error=err, log=log,
+                            prefix="DL FAIL")
+            conn.commit()  # attempt evidence is durable even when bytes fail
+            continue
+        size_err = content_policy.download_size_error(len(data))
+        if size_err:
+            failures += 1
+            stats["failed"] += 1
+            _record_outcome(conn, partition_id, url,
+                            resolved_url=resolved, status="failed",
+                            http_status=http_status, media_type=None,
+                            content_id=None, error=size_err, log=log,
+                            prefix="DL REJECTED")
+            conn.commit()
             continue
         valid = nse_capture.looks_like_pdf(data)
         media = "application/pdf" if valid else "text/html"
@@ -399,13 +580,22 @@ def _run_impl(conn: psycopg.Connection, store: ObjectStore, fetch: FetchFn,
             stats["failed"] += 1
             log(f"  STORE FAIL {url}: {e}")
             continue
+        conn.commit()  # content + artifact are one durable unit
+
+        status_str = "ok" if valid else "invalid_content"
+        _record_outcome(conn, partition_id, url,
+                        resolved_url=resolved, status=status_str,
+                        http_status=http_status, media_type=media,
+                        content_id=_content_id(conn, result.sha256),
+                        error=err, log=log,
+                        prefix=("OK" if valid else "INVALID-CONTENT"),
+                        sha=result.sha256, created=result.created,
+                        link=valid)
+        conn.commit()
         if valid:
             stats["downloaded"] += 1
-            log(f"  OK {'NEW' if result.created else 'dedup'} "
-                f"{result.sha256[:12]} {url}")
         else:
             stats["invalid"] += 1
-            log(f"  INVALID-CONTENT (kept as evidence) {url}")
 
     stats["status"] = _finalize_run(conn, fetch_run_id, len(urls),
                                     stats["downloaded"] + stats["invalid"],
@@ -422,12 +612,19 @@ def _run_impl(conn: psycopg.Connection, store: ObjectStore, fetch: FetchFn,
 def handle_filings_download(ctx: jobs.JobContext) -> None:
     """Durable-job entrypoint. Payload: ``{"partition_id": int}``
     (``company_slug``/``source`` informational). Deterministic outbox key so
-    at-least-once redelivery cannot duplicate the completion event."""
+    at-least-once redelivery cannot duplicate the completion event.
+
+    Raises when unresolved work remains (review ST-D03): a partial/failed run
+    must drive job backoff and eventually dead-letter, never report success."""
     payload = ctx.payload
     partition_id = payload.get("partition_id")
     if partition_id is None:
         raise FilingDownloadError("payload missing partition_id")
     stats = run_partition(int(partition_id))
+    if stats.get("status") not in ("ok", "not_modified"):
+        raise FilingDownloadError(
+            f"partition {partition_id}: {stats.get('failed')} download(s) "
+            f"remain unresolved (status {stats.get('status')})")
     event_key = f"{JOB_KIND}.completed:{stats.get('run_idem') or stats['day']}"
     ctx.outbox.append({
         "event_type": "filings.download.completed",
@@ -568,6 +765,18 @@ def _cmd_status(_args) -> int:
     return 0
 
 
+def _cmd_backfill_links(args) -> int:
+    partition_ids = _select_partitions(args)
+    total = 0
+    with jobs.connect() as conn:
+        for pid in partition_ids:
+            linked = backfill_links(conn, pid)
+            total += linked
+            print(f"partition {pid}: {linked} record-to-content link(s)")
+    print(f"\n{total} link(s) ensured")
+    return 0
+
+
 def main(argv: Optional[list[str]] = None) -> int:
     parser = argparse.ArgumentParser(
         description="Filing downloader → object-store content objects")
@@ -582,6 +791,12 @@ def main(argv: Optional[list[str]] = None) -> int:
     p_run.add_argument("--partition", type=int)
     p_run.add_argument("--all", action="store_true")
 
+    p_back = sub.add_parser("backfill-links",
+                            help="link already-valid content to its records")
+    p_back.add_argument("--slug")
+    p_back.add_argument("--partition", type=int)
+    p_back.add_argument("--all", action="store_true")
+
     sub.add_parser("status", help="per-partition pending/PDF counts")
 
     args = parser.parse_args(argv)
@@ -593,6 +808,10 @@ def main(argv: Optional[list[str]] = None) -> int:
         if not args.all and not args.slug and not args.partition:
             parser.error("run needs --slug, --partition or --all")
         return _cmd_run(args)
+    if args.cmd == "backfill-links":
+        if not args.all and not args.slug and not args.partition:
+            parser.error("backfill-links needs --slug, --partition or --all")
+        return _cmd_backfill_links(args)
     return _cmd_status(args)
 
 

@@ -18,10 +18,10 @@ unattended service yet: major Phase 0 correctness and operational gates remain o
 | PostgreSQL/schema | Applied v1.2 baseline; 30-company registry/whitelist seeded | Persistent, not disposable; no migration framework or backup/restore coverage |
 | Object store | Implemented and content-addressed | Registered objects reconcile cleanly after owner-authorized orphan cleanup; stored with DB on root-disk workflow and not backed up |
 | Jobs/outbox | Job claim/lease/retry/dead-letter worker implemented | Outbox rows are inserted, but no dispatcher exists; no scheduler/service supervision |
-| NSE capture | `nse_api` DB-integrated for all 30 registry companies | Configurable IST schedule slots default to six hours; RSS absent and bytes-before-parse plus validation/provenance gates remain open |
-| BSE capture | `bse_api` DB-integrated for all 30 registry companies | Configurable six-hour default; invalid-only URLs retry and GUID paths are ordered correctly, but per-page provenance, canonical attempt/linkage, bounded retry and validation gaps remain open |
+| NSE capture | `nse_api` DB-integrated for all 30 registry companies | Configurable six-hour IST slots; bytes durably registered before parsing; rows fail closed on missing IDs/symbol mismatch; downloads host-allowlisted and size-capped; RSS absent and fetch-event key collapse (`ST-C06`) open |
+| BSE capture | `bse_api` DB-integrated for all 30 registry companies | Per-page bytes-before-parse and provenance fixed; canary runs after scrip filtering; bounded allowlisted downloads; fetch-event key collapse (`ST-C06`) open |
 | Normalizer/identity | M2 and M3 DB-integrated; exact, fail-closed ladder | Manual corrections are whitelist-gated and emit versioned events; parallel claims and one cross-exchange tier need hardening |
-| Filing content | Adapter PDFs and recovery utility register objects/artifacts | No canonical `content_fetch_attempts` or `record_contents` rows at audit sample; invalid/no-byte retry semantics are incomplete |
+| Filing content | Adapter PDFs + recovery downloader register objects/artifacts | Downloader records immutable `content_fetch_attempts`, `record_contents` links (22 live RELIANCE links at validation), bounded retry budget, fail-loud job semantics; adapter-inline attempts still converge via the downloader |
 | Yahoo daily bars | `scripts/fetch_prices.py` DB-integrated through yfinance | 30 series / 7,529 current bars at audit sample; provenance, finite/current-session checks, calendar, revisions and benchmark gates remain open |
 | Google News | File-based feed pilot + redirect resolver | No DB adapter/article fetch; transient resolver failures are cached as final |
 | Screener | File-based manual parser/fetch utility | No DB snapshot schema/adapter/schedule; owner lifted prior ToS cadence constraints, but ban-avoidance controls remain needed |
@@ -58,9 +58,9 @@ current totals.
    until the system is stable and explicitly accepts the temporary risk.
 2. Keep all DB-backed tests behind the positively marked disposable DB and separate object
    root in `docs/testing.md`; the isolated full suite passed without production mutation.
-3. Close capture P0 defects: bytes-before-parse, BSE page/run lineage, bounded and
-   allowlisted downloads, retry/link lifecycle, source validation, run/correction semantics,
-   and M2/M3 concurrency.
+3. Finish capture hardening: fetch-event artifact keys and M2/M3 concurrency claims
+   (`ST-C06`/`ST-C07`); bytes-before-parse, BSE page/run lineage, bounded and allowlisted
+   downloads, source validation and the content attempt/link lifecycle are implemented.
 4. Implement the outbox dispatcher, scheduler/supervision, least-privilege runtime role,
    and actionable aggregate health reporting.
 5. Add DB-integrated NSE/BSE main feeds, canonical content attempts/links, a plain

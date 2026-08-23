@@ -38,6 +38,7 @@ import unittest
 import uuid
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
+from unittest import mock
 
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "scripts"))
@@ -180,19 +181,63 @@ class TestCollectPages(unittest.TestCase):
         def fetch(scrip, frm, to, pageno, url):
             calls.append(pageno)
             if pageno == 1:
-                return _page([{"NEWSID": i} for i in range(50)], 120)
-            return _page([{"NEWSID": i} for i in range(50, 120)], 120)
+                return _page([{"NEWSID": i, "SCRIP_CD": "500325"}
+                              for i in range(50)], 120)
+            return _page([{"NEWSID": i, "SCRIP_CD": "500325"}
+                          for i in range(50, 120)], 120)
 
-        collected, rowcnt, meta = bse_capture._collect_pages(
+        collected, rowcnt, meta, row_page, artifacts = bse_capture._collect_pages(
             "500325", "20260820", "20260822", fetch, lambda m: None)
         self.assertEqual(rowcnt, 120)
         self.assertEqual(len(collected), 120)
         self.assertEqual(sorted(meta.keys()), [1, 2])
         self.assertIn(2, calls)
+        # ST-C03 provenance: every row remembers the page whose bytes hold it
+        self.assertEqual(row_page["0"], 1)
+        self.assertEqual(row_page["119"], 2)
+        self.assertEqual(artifacts, {})
+
+    def test_persist_invoked_before_parse_and_recorded(self):
+        """ST-C01 ordering: each page is durably registered BEFORE its
+        envelope is parsed, and its artifact feeds item attribution."""
+        events = []
+
+        def fetch(scrip, frm, to, pageno, url):
+            return _page([{"NEWSID": pageno, "SCRIP_CD": "500325"}], 2 if pageno < 2 else 2)
+
+        def persist(pageno, body, url):
+            events.append(("persist", pageno))
+            return (100 + pageno, 9000 + pageno)
+
+        original_parse = bse_capture.parse_envelope
+
+        def spy_parse(body):
+            events.append(("parse", None))
+            return original_parse(body)
+
+        with mock.patch.object(bse_capture, "parse_envelope", spy_parse):
+            collected, rowcnt, meta, row_page, artifacts = \
+                bse_capture._collect_pages(
+                    "500325", "20260820", "20260822", fetch, lambda m: None,
+                    persist=persist)
+        self.assertEqual(events, [("persist", 1), ("parse", None),
+                                  ("persist", 2), ("parse", None)])
+        self.assertEqual(artifacts[1], (101, 9001))
+        self.assertEqual(artifacts[2], (102, 9002))
+        self.assertEqual(row_page["1"], 1)
+        self.assertEqual(row_page["2"], 2)
+
+    def test_row_without_scripcd_fails_closed(self):
+        def fetch(scrip, frm, to, pageno, url):
+            return _page([{"NEWSID": 1}], 1)
+
+        with self.assertRaises(bse_capture.BseFetchError):
+            bse_capture._collect_pages(
+                "500325", "20260820", "20260822", fetch, lambda m: None)
 
     def test_shortfall_raises(self):
         def fetch(scrip, frm, to, pageno, url):
-            return _page([{"NEWSID": 1}], 100)
+            return _page([{"NEWSID": 1, "SCRIP_CD": scrip}], 100)
 
         with self.assertRaises(bse_capture.BseFetchError):
             bse_capture._collect_pages("500325", "20260820", "20260822",
@@ -200,7 +245,7 @@ class TestCollectPages(unittest.TestCase):
 
     def test_missing_rowcnt_fails_loudly(self):
         def fetch(scrip, frm, to, pageno, url):
-            return _page([{"NEWSID": 1}], None)
+            return _page([{"NEWSID": 1, "SCRIP_CD": scrip}], None)
 
         with self.assertRaises(bse_capture.BseFetchError):
             bse_capture._collect_pages(
@@ -217,8 +262,8 @@ class TestCollectPages(unittest.TestCase):
     def test_rowcnt_change_across_pages_fails_loudly(self):
         def fetch(scrip, frm, to, pageno, url):
             if pageno == 1:
-                return _page([{"NEWSID": 1}], 2)
-            return _page([{"NEWSID": 2}], 3)
+                return _page([{"NEWSID": 1, "SCRIP_CD": scrip}], 2)
+            return _page([{"NEWSID": 2, "SCRIP_CD": scrip}], 3)
 
         with self.assertRaises(bse_capture.BseFetchError):
             bse_capture._collect_pages(
