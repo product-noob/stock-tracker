@@ -42,6 +42,16 @@ sys.path.insert(0, str(ROOT / "scripts"))
 import jobs  # noqa: E402
 import job_handlers  # noqa: E402,F401  (registers demo + selftest handlers)
 
+# Register every built-in handler. Handler registration happens at module
+# import time via @jobs.register_handler; without these imports the worker
+# would NoHandlerError every real job kind (caught in live testing 2026-08-23).
+import nse_capture  # noqa: E402,F401
+import bse_capture  # noqa: E402,F401
+import download_filings  # noqa: E402,F401
+import fetch_prices  # noqa: E402,F401
+import normalize as _normalize_mod  # noqa: E402,F401
+import resolve_identity  # noqa: E402,F401
+
 
 def enqueue_demo(count: int, prefix: str) -> int:
     """Demo enqueuer: insert ``count`` uniquely-keyed demo jobs in one

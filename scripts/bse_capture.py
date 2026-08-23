@@ -228,13 +228,18 @@ def parse_envelope(body: bytes) -> tuple[list[dict[str, Any]], Optional[int]]:
         if not isinstance(raw, dict):
             raise EnvelopeError("'Table' contains a non-object row")
         rows.append(raw)
-    rowcnt: Optional[int] = None
     t1 = payload.get("Table1")
-    if isinstance(t1, list) and t1 and isinstance(t1[0], dict):
-        rc = t1[0].get("ROWCNT")
-        if isinstance(rc, bool) or not isinstance(rc, int):
-            raise EnvelopeError(f"'Table1[0].ROWCNT' is not an int: {rc!r}")
-        rowcnt = rc
+    if not (isinstance(t1, list) and t1 and isinstance(t1[0], dict)):
+        raise EnvelopeError("envelope missing 'Table1[0].ROWCNT' (contract drift?)")
+    rowcnt = t1[0].get("ROWCNT")
+    if isinstance(rowcnt, bool) or not isinstance(rowcnt, int) or rowcnt < 0:
+        raise EnvelopeError(f"'Table1[0].ROWCNT' is not a non-negative int: {rowcnt!r}")
+    if rowcnt < len(rows):
+        raise EnvelopeError(
+            f"'Table1[0].ROWCNT' ({rowcnt}) is smaller than Table ({len(rows)})")
+    for pos, row in enumerate(rows):
+        if row.get("NEWSID") in (None, ""):
+            raise EnvelopeError(f"'Table[{pos}]' is missing NEWSID")
     return rows, rowcnt
 
 
@@ -721,14 +726,14 @@ def _collect_pages(scrip: str, frm: str, to: str, fetch_fn: FetchFn,
     while pageno <= MAX_PAGES:
         body, rows, rc, url = _fetch_page(fetch_fn, scrip, frm, to, pageno)
         page_meta[pageno] = (body, url)
-        if rc is not None:
-            rowcnt = rc
+        if rowcnt is not None and rc != rowcnt:
+            raise BseFetchError(
+                f"pagination ROWCNT changed from {rowcnt} to {rc} on page "
+                f"{pageno} (contract drift?)", body=body)
+        rowcnt = rc
         fresh = 0
         for row in rows:
-            news_id = row.get("NEWSID")
-            if news_id is None:
-                continue  # cannot dedupe or reference later; skip defensively
-            key = str(news_id)
+            key = str(row["NEWSID"])
             if key not in collected:
                 collected[key] = row
                 fresh += 1

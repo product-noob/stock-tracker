@@ -404,21 +404,48 @@ def requeue_expired_leases(
     conn: psycopg.Connection,
     lease_seconds: float = DEFAULT_LEASE_SECONDS,
 ) -> list[int]:
-    """Crash recovery: put ``running`` jobs whose lease (locked_at) expired
-    back into the queue so another worker can pick them up. The attempt
-    already counted, so repeated crashes eventually quarantine the job as
-    dead. Returns reclaimed job_ids."""
+    """Recover ``running`` jobs whose lease expired after a worker crash.
+
+    Jobs with attempts remaining return to ``queued``. A crash on the final
+    allowed attempt goes directly to ``dead`` and emits the same terminal
+    outbox evidence as a caught handler failure; requeueing it would make the
+    next claim violate ``attempts <= max_attempts`` and strand the queue.
+    Returns all recovered job ids (requeued or dead-lettered).
+    """
+    message = f"lease expired after {int(lease_seconds)}s (worker crash?)"
     with conn.transaction():
         rows = conn.execute(
             "UPDATE platform.processing_jobs "
-            "SET status = 'queued', locked_at = NULL, locked_by = NULL, "
-            "    last_error = COALESCE(last_error || ' | ', '') || "
-            "               'lease expired after ' || %s || 's (worker crash?)', "
+            "SET status = CASE WHEN attempts >= max_attempts THEN 'dead' ELSE 'queued' END, "
+            "    finished_at = CASE WHEN attempts >= max_attempts THEN now() ELSE NULL END, "
+            "    locked_at = NULL, locked_by = NULL, "
+            "    last_error = COALESCE(last_error || ' | ', '') || %s, "
             "    available_at = now() "
             "WHERE status = 'running' AND locked_at < now() - make_interval(secs => %s) "
-            "RETURNING job_id",
-            (int(lease_seconds), lease_seconds),
+            "RETURNING job_id, job_kind, idempotency_key, payload, priority, "
+            "          attempts, max_attempts, status",
+            (message, lease_seconds),
         ).fetchall()
+        for row in rows:
+            if row[7] != "dead":
+                continue
+            job = ClaimedJob(*row[:7])
+            _insert_outbox_events(
+                conn, job, base_event="job.failed", extra=None,
+                result_payload={"error": message, "outcome": "dead"},
+                event_key_suffix=f":{job.attempts}",
+            )
+            emit_outbox(
+                conn,
+                event_type="job.dead",
+                aggregate_type="processing_job",
+                aggregate_id=str(job.job_id),
+                event_key=f"job.dead:{job.job_id}",
+                payload={"job_kind": job.job_kind,
+                         "idempotency_key": job.idempotency_key,
+                         "attempts": job.attempts,
+                         "error": message},
+            )
     return [r[0] for r in rows]
 
 

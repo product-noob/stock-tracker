@@ -15,10 +15,10 @@ A personal research tool for Indian listed companies (NSE/BSE): fetch official f
 
 ## Environment
 
-- **Database:** dedicated PostgreSQL 17 via this repo's `docker-compose.yml` (`stocktracker_db`), bound to `127.0.0.1:5433`, image pinned by digest with a healthcheck. DB/user `stocktracker`; password in `.env` (never display or commit it). Start with `docker compose up -d`. As of 2026-08-22 the container is healthy, the baseline schema is applied, and tables are still empty (no persistent data).
-- **Schema:** `db/schema.sql` is the single editable baseline while no persistent data exists — edit it directly and re-apply to a fresh database (`psql -v ON_ERROR_STOP=1 -f db/schema.sql`); do not write migrations yet.
+- **Database:** dedicated PostgreSQL 17 via this repo's `docker-compose.yml` (`stocktracker_db`), bound to `127.0.0.1:5433`, image pinned by digest with a healthcheck. DB/user `stocktracker`; password in `.env` (never display or commit it). Start with `docker compose up -d`. As of 2026-08-23 the container is healthy and holds persistent capture, market, pipeline, and append-only integration-test rows; it is not disposable.
+- **Schema:** `db/schema.sql` is the applied baseline, not a safe live update mechanism now that persistent data exists. Do not reset/re-apply it or edit live DDL ad hoc. Freeze the baseline and introduce reviewed forward migrations before the next schema change (see `docs/reviews/2026-08-23-comprehensive-review.md`).
 - **Python:** scripts use `curl_cffi`, `pdfplumber`, `openai`, and `psycopg` on top of the stdlib (parsing/fetching helpers are deliberately stdlib-only where possible). Set up once with `python3 -m venv venv && venv/bin/pip install -r requirements.txt`, then run scripts as `venv/bin/python scripts/<script>.py`. The venv is gitignored.
-- **Secrets:** `.env` holds credentials (`POSTGRES_PASSWORD`, `OPENAI_API_KEY`, `DATABASE_URL` for DB-writing scripts; see `.env.example`). It is gitignored; keep it that way.
+- **Secrets:** `.env` holds credentials (`POSTGRES_PASSWORD`, `OPENAI_API_KEY`, `DATABASE_URL` for DB-writing scripts; see `.env.example`). It is gitignored and must remain mode `0600`; keep it that way.
 
 ## Conventions
 
@@ -33,6 +33,6 @@ A personal research tool for Indian listed companies (NSE/BSE): fetch official f
 
 ## Safety
 
-- The database volume (`stock-tracker_db_data`) is disposable **only** while the project holds no real data. Once real data exists, treat destructive Docker/volume commands as forbidden without explicit authorization.
+- The database volume (`stock-tracker_db_data`) contains persistent data. Destructive Docker/volume commands, schema resets, and truncation are forbidden without explicit authorization and a verified backup/restore plan.
 - Do not print `.env` contents or connection strings with passwords in output or commits.
 - Host-level context lives in `~/SERVER_CONTEXT.md`; update it if Docker service topology changes.

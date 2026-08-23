@@ -9,7 +9,7 @@ Run a fresh database with:
 psql -v ON_ERROR_STOP=1 -f db/schema.sql
 ```
 
-> No database has been created yet. During brainstorming/solutioning, `db/schema.sql` is the single editable design baseline; no migration directory or migration ledger is needed.
+> **Live-state correction (2026-08-23):** the PostgreSQL database now contains persistent capture, market, pipeline, and append-only integration-test rows. `db/schema.sql` is the applied baseline; it must not be re-applied as a reset or treated as the live upgrade mechanism. Freeze it and introduce forward migrations before the next DDL change (review finding `ST-P01`).
 
 ---
 
@@ -424,17 +424,12 @@ These are additive later. They do not justify weakening current lineage or integ
 
 ## 14. Schema evolution policy
 
-### While brainstorming (current state)
+### Applied baseline (current state since 2026-08-23)
 
-- `db/schema.sql` is the only database design artifact.
-- Revise it directly as requirements change.
-- Do not create migration files or a migration ledger for databases that do not exist.
-
-### When the first persistent/shared database is created
-
-- Freeze the applied baseline and record its version.
-- Introduce a migration tool/directory from that point onward.
-- Apply future DDL and behavior-bearing reference-data changes through forward migrations.
-- Test backup restoration before relying on a migration in production.
+- `db/schema.sql` records the baseline already applied to the persistent database.
+- Freeze the applied baseline and record its version; do not reset or re-apply the live database to pick up edits.
+- Introduce a migration tool/directory before the next DDL or behavior-bearing reference-data change.
+- Apply future changes through reviewed forward migrations with an explicit rollback/restore path.
+- Establish and test PostgreSQL plus object-store backup restoration before relying on a migration in production.
 
 Behavioral lineage is required independently of DDL migrations: prompt, extraction-schema, classifier, cluster, verifier, rulepack, price-adjustment and reaction-method versions remain persisted in their output rows. Immutable historical outputs are superseded, never rewritten.

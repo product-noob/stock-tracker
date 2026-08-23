@@ -43,5 +43,5 @@ Moving from **docs + pilot scripts** to a working pipeline backed by the real Po
 - Run scripts: `venv/bin/python scripts/<script>.py` (setup: `python3 -m venv venv && venv/bin/pip install -r requirements.txt`)
 - Start/stop DB: `cd ~/projects/stock-tracker && docker compose up -d / down`
 - Connect: `psql -h localhost -p 5433 -U stocktracker -d stocktracker` (password in `.env`)
-- Schema changes: edit `db/schema.sql` directly while no persistent data exists (no migrations yet, by design)
-- Database is not yet covered by host backup scripts
+- Schema changes: the database now contains persistent data. Treat `db/schema.sql` as the frozen applied baseline and introduce forward migrations before the next DDL change; never reset/re-apply the live database to pick up edits
+- Database and `data/objects/` are not yet covered by host backup scripts

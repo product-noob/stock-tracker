@@ -1,7 +1,7 @@
 ---
 tier: L0
 role: router
-updated: 2026-08-22
+updated: 2026-08-23
 ---
 
 # ROUTER — Documentation Map & Loading Protocol
@@ -12,6 +12,9 @@ the task requires; never work from memory when a deeper tier exists.
 
 > **Human?** Resuming after a break — open [`docs/index.html`](index.html) for the visual hub
 > (status badges, next actions, decision log, full doc map). This file remains the machine-facing truth.
+>
+> **Active audit:** [`reviews/2026-08-23-comprehensive-review.md`](reviews/2026-08-23-comprehensive-review.md)
+> is the durable finding ledger and coverage record for the current repository-wide review.
 
 ---
 

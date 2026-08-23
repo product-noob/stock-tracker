@@ -225,6 +225,20 @@ class TestCorruptionDetection(ObjectStoreTestCase):
         # corrupted content was NOT overwritten by the failed re-put
         self.assertEqual(blob.read_bytes(), b"short")
 
+    def test_put_detects_existing_blob_same_size_hash_mismatch(self):
+        """A same-length corruption must not be accepted as an idempotent put."""
+        data = b"payload to corrupt"
+        sha = hashlib.sha256(data).hexdigest()
+        self.store.put_bytes(data)
+        blob = self.store.path_for(sha)
+        corrupted = b"X" * len(data)
+        blob.write_bytes(corrupted)
+
+        with self.assertRaises(ContentMismatchError):
+            self.store.put_bytes(data)
+
+        self.assertEqual(blob.read_bytes(), corrupted)
+
     def test_verify_flags_stale_temps_without_db(self):
         """skip_db mode consults no registry, so it can only flag stale temp
         files — orphan detection needs the DB and is deliberately skipped

@@ -168,9 +168,9 @@ class ObjectStore:
 
         Idempotent: re-putting identical bytes returns the same result with
         ``created=False`` and adds no second registry row. If a blob already
-        exists at the digest path with a different size, raises
-        :class:`ContentMismatchError` (corruption or hash collision) rather
-        than overwriting immutable content.
+        exists at the digest path with a different size or content hash,
+        raises :class:`ContentMismatchError` (corruption or hash collision)
+        rather than overwriting immutable content.
 
         ``conn``: use the given psycopg connection and do NOT commit (the
         caller owns the transaction — recommended for fetchers so the registry
@@ -192,6 +192,13 @@ class ObjectStore:
                     f"blob {sha256} exists with size {actual_size} but re-put "
                     f"has {len(data)} bytes; refusing to overwrite immutable "
                     f"content ({path})"
+                )
+            actual_sha256 = hashlib.sha256(path.read_bytes()).hexdigest()
+            if actual_sha256 != sha256:
+                raise ContentMismatchError(
+                    f"blob {sha256} exists with the expected size but its "
+                    f"content hash is {actual_sha256}; refusing to accept or "
+                    f"overwrite corrupt immutable content ({path})"
                 )
         else:
             self._atomic_write(path, data)

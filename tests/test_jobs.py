@@ -208,6 +208,50 @@ class TestClaimExclusivity(JobsIntegrationTestCase):
 
 
 class TestCrashRecovery(JobsIntegrationTestCase):
+    def test_expired_final_attempt_is_dead_lettered_without_persistent_fixture(self):
+        """A crash on max_attempts must not be requeued into an unclaimable row.
+
+        This regression fixture is fully rolled back, unlike the historical
+        append-only integration cases in this module.
+        """
+        kind = f"selftest.finalcrash.{_uid()}"
+        key = f"{kind}-crashy"
+        with jobs.connect(self.url()) as conn:
+            try:
+                created = jobs.enqueue(
+                    conn, job_kind=kind, idempotency_key=key,
+                    payload={"action": "hard_crash"}, max_attempts=1,
+                )
+                claimed = jobs.claim_next(conn, "doomed-worker", [kind])
+                self.assertIsNotNone(claimed)
+                self.assertEqual(claimed.attempts, claimed.max_attempts)
+                conn.execute(
+                    "UPDATE platform.processing_jobs "
+                    "SET locked_at = now() - interval '10 minutes' "
+                    "WHERE job_id = %s",
+                    (created.job_id,),
+                )
+
+                recovered = jobs.requeue_expired_leases(
+                    conn, lease_seconds=300)
+                self.assertEqual(recovered, [created.job_id])
+                row = conn.execute(
+                    "SELECT status, attempts, finished_at IS NOT NULL, "
+                    "       locked_at IS NULL "
+                    "FROM platform.processing_jobs WHERE job_id = %s",
+                    (created.job_id,),
+                ).fetchone()
+                self.assertEqual(row, ("dead", 1, True, True))
+                events = dict(conn.execute(
+                    "SELECT event_type, count(*) FROM platform.outbox_events "
+                    "WHERE event_key IN (%s, %s) GROUP BY event_type",
+                    (f"job.failed:{created.job_id}:1",
+                     f"job.dead:{created.job_id}"),
+                ).fetchall())
+                self.assertEqual(events, {"job.dead": 1, "job.failed": 1})
+            finally:
+                conn.rollback()
+
     def test_hard_crash_midjob_then_retry_completes(self):
         # Unique kind under the ``selftest.`` prefix: the worker SUBPROCESS
         # resolves it via the prefix handler registered in

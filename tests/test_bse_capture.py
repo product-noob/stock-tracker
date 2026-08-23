@@ -86,8 +86,17 @@ class TestPureHelpers(unittest.TestCase):
         with self.assertRaises(bse_capture.EnvelopeError):
             bse_capture.parse_envelope(b'{"Table": "not-a-list"}')
         with self.assertRaises(bse_capture.EnvelopeError):
+            bse_capture.parse_envelope(b'{"Table": []}')
+        with self.assertRaises(bse_capture.EnvelopeError):
             bse_capture.parse_envelope(
                 b'{"Table": [], "Table1": [{"ROWCNT": "x"}]}')
+        with self.assertRaises(bse_capture.EnvelopeError):
+            bse_capture.parse_envelope(
+                b'{"Table": [{"NEWSID": 1}], "Table1": [{"ROWCNT": 0}]}')
+        with self.assertRaises(bse_capture.EnvelopeError):
+            bse_capture.parse_envelope(
+                b'{"Table": [{"SCRIP_CD": "500325"}], '
+                b'"Table1": [{"ROWCNT": 1}]}')
 
     def test_sniff_stale_session(self):
         self.assertFalse(bse_capture.sniff_stale_session(b'{"Table": []}'))
@@ -198,24 +207,31 @@ class TestCollectPages(unittest.TestCase):
             bse_capture._collect_pages("500325", "20260820", "20260822",
                                        fetch, lambda m: None)
 
-    def test_exhaustion_without_rowcnt_stops(self):
+    def test_missing_rowcnt_fails_loudly(self):
         def fetch(scrip, frm, to, pageno, url):
-            if pageno <= 2:
-                return _page([{"NEWSID": pageno}], None)
-            return _page([], None)
+            return _page([{"NEWSID": 1}], None)
 
-        collected, rowcnt, meta = bse_capture._collect_pages(
-            "500325", "20260820", "20260822", fetch, lambda m: None)
-        self.assertEqual(len(collected), 2)
-        self.assertIsNone(rowcnt)
+        with self.assertRaises(bse_capture.BseFetchError):
+            bse_capture._collect_pages(
+                "500325", "20260820", "20260822", fetch, lambda m: None)
 
-    def test_row_without_newsid_skipped_defensively(self):
+    def test_row_without_newsid_fails_loudly(self):
         def fetch(scrip, frm, to, pageno, url):
-            return _page([{"SCRIP_CD": "500325"}, {"NEWSID": 7}], None)
+            return _page([{"SCRIP_CD": "500325"}], 1)
 
-        collected, _, _ = bse_capture._collect_pages(
-            "500325", "20260820", "20260822", fetch, lambda m: None)
-        self.assertEqual(list(collected.keys()), ["7"])
+        with self.assertRaises(bse_capture.BseFetchError):
+            bse_capture._collect_pages(
+                "500325", "20260820", "20260822", fetch, lambda m: None)
+
+    def test_rowcnt_change_across_pages_fails_loudly(self):
+        def fetch(scrip, frm, to, pageno, url):
+            if pageno == 1:
+                return _page([{"NEWSID": 1}], 2)
+            return _page([{"NEWSID": 2}], 3)
+
+        with self.assertRaises(bse_capture.BseFetchError):
+            bse_capture._collect_pages(
+                "500325", "20260820", "20260822", fetch, lambda m: None)
 
 
 # --------------------------------------------------------------------- #
