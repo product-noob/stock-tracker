@@ -130,8 +130,15 @@ class Master:
     alias_to_companies: dict        # normalized alias -> {company_id}
     whitelist: frozenset            # actively whitelisted company_ids
 
-    def whitelisted(self, company_ids) -> frozenset:
-        return frozenset(company_ids) & self.whitelist
+
+def _wl_companies(company_ids, whitelist: frozenset) -> set:
+    """Company-id candidates restricted to the active whitelist."""
+    return set(company_ids) & whitelist
+
+
+def _wl_listing_pairs(pairs, whitelist: frozenset) -> set:
+    """(company_id, listing_id) candidates restricted to the whitelist."""
+    return {(cid, lid) for cid, lid in pairs if cid in whitelist}
 
 
 def empty_master() -> Master:
@@ -194,58 +201,59 @@ def resolve_record(record: dict[str, Any], master: Master) -> Decision:
 
     # ---- tier A: scrip code on the record's own exchange ---------------
     if code and exchange:
-        candidates = master.whitelisted(
-            master.listings_by_code.get((exchange, code), set()))
+        raw = master.listings_by_code.get((exchange, code), set())
+        candidates = _wl_listing_pairs(raw, master.whitelist)
         if candidates:
             return _decide("A_scripcode", candidates)
-        if master.listings_by_code.get((exchange, code)):
-            return _review_non_whitelisted("A_scripcode",
-                                           master.listings_by_code[(exchange, code)])
+        if raw:
+            return _review_non_whitelisted("A_scripcode", raw)
 
     # ---- tier B: cross-exchange symbol anchor ---------------------------
     if symbol and exchange:
         other = "BSE" if exchange == "NSE" else "NSE"
-        candidates = master.whitelisted(
-            master.listings_by_symbol.get((other, symbol), set()))
+        candidates = _wl_listing_pairs(
+            master.listings_by_symbol.get((other, symbol), set()),
+            master.whitelist)
         if candidates:
             return _decide("B_cross_exchange", candidates)
 
     # ---- tier C: document identifier — ISIN first, then own symbol ------
     if isin:
-        companies = master.whitelisted(master.isin_to_companies.get(isin, set()))
+        raw = master.isin_to_companies.get(isin, set())
+        companies = _wl_companies(raw, master.whitelist)
         if companies:
-            return _decide("C_document_identifier", companies)
-        if master.isin_to_companies.get(isin):
+            return _decide("C_document_identifier",
+                           {(c, None) for c in companies})
+        if raw:
             return _review_non_whitelisted("C_document_identifier",
-                                           {(c, None) for c in
-                                            master.isin_to_companies[isin]})
+                                           {(c, None) for c in raw})
     if symbol and exchange:
-        candidates = master.whitelisted(
-            master.listings_by_symbol.get((exchange, symbol), set()))
+        raw = master.listings_by_symbol.get((exchange, symbol), set())
+        candidates = _wl_listing_pairs(raw, master.whitelist)
         if candidates:
             decision = _decide("C_document_identifier", candidates)
             if decision.outcome == "resolved":
                 decision.confidence = SYMBOL_CONFIDENCE
             return decision
-        if master.listings_by_symbol.get((exchange, symbol)):
-            return _review_non_whitelisted("C_document_identifier",
-                                           master.listings_by_symbol[(exchange, symbol)])
+        if raw:
+            return _review_non_whitelisted("C_document_identifier", raw)
 
     # ---- tier D: exact canonical company name ---------------------------
     if name:
-        companies = master.whitelisted(master.name_to_companies.get(name, set()))
+        raw = master.name_to_companies.get(name, set())
+        companies = _wl_companies(raw, master.whitelist)
         if companies:
             return _decide("D_exact_name", {(c, None) for c in companies})
-        if master.name_to_companies.get(name):
+        if raw:
             return _review_non_whitelisted("D_exact_name",
-                                           {(c, None) for c in
-                                            master.name_to_companies[name]})
+                                           {(c, None) for c in raw})
 
         # ---- tier E: curated alias --------------------------------------
-        companies = master.whitelisted(master.alias_to_companies.get(name, set()))
+        raw = master.alias_to_companies.get(name, set())
+        companies = _wl_companies(raw, master.whitelist)
         if companies:
             return _decide("E_alias_name", {(c, None) for c in companies})
-        if master.alias_to_companies.get(name):
+        if raw:
             return _review_non_whitelisted("E_alias_name",
                                            {(c, None) for c in
                                             master.alias_to_companies[name]})

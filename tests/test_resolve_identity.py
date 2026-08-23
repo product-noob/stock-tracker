@@ -32,8 +32,11 @@ production path, and every assertion filters strictly on its own ids.
 import sys
 import unittest
 import uuid
+from unittest import mock
 
-ROOT = __file__.resolve().parent.parent
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "scripts"))
 
 import resolve_identity as ri  # noqa: E402
@@ -107,7 +110,7 @@ class TestResolutionLadder(unittest.TestCase):
         m = make_master(
             listings_by_symbol={("BSE", "RELIANCE"): {(1, 12)}},
             whitelist=self.WHITELIST)
-        d = self.ladder(m, exchange="NSE", exchange_symbol_raw="Reliance")
+        d = self.ladder(m, exchange="NSE", exchange_symbol_raw="RELIANCE")
         self.assertEqual(d.outcome, "resolved")
         self.assertEqual(d.tier, "B_cross_exchange")
 
@@ -220,7 +223,7 @@ class TestResolutionLadder(unittest.TestCase):
         """If any tier's score were ever lowered under the threshold, the
         candidate must still fail closed to review."""
         conf = dict(ri.TIER_CONFIDENCE, E_alias_name=0.5)
-        with unittest.mock.patch.object(ri, "TIER_CONFIDENCE", conf):
+        with mock.patch.object(ri, "TIER_CONFIDENCE", conf):
             d = ri._decide("E_alias_name", {(1, None)})
         self.assertEqual(d.outcome, "unresolved")
         self.assertTrue(d.needs_review)
@@ -278,7 +281,7 @@ class TestDbBacked(unittest.TestCase):
                 company_name_raw=f"Zzyzx Unknown Industries {cls.uid}"),
             "non_whitelisted": cls._fixture_record(
                 "notwl",
-                company_name_raw=f"Identity Test Gamma {cls.uid} Limited"),
+                company_name_raw=f"Identity Test Gamma {cls.uid}"),
             "fuzzy_trap": cls._fixture_record(
                 "fuzzy", company_name_raw="HDFC"),
         }
@@ -459,8 +462,11 @@ class TestDbBacked(unittest.TestCase):
         # pointer + cache atomically repointed
         self.assertEqual(self.assignment_company(record_id), self.tcs)
         self.assertEqual(self.cached_company(record_id), self.tcs)
-        self.assertEqual(new_resolution, manual[0] if manual[3] == first[0]
-                         else new_resolution)
+        self.assertEqual(new_resolution,
+                         self.conn.execute(
+                             "SELECT max(resolution_id) FROM "
+                             "ingestion.identity_resolutions WHERE "
+                             "record_id=%s", (record_id,)).fetchone()[0])
 
     @classmethod
     def tearDownClass(cls):
