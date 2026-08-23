@@ -763,8 +763,8 @@ Commands were run from the repository root without displaying secrets:
   `SHOW transaction_read_only` — `on`; registry, capture, artifact, raw-item,
   normalized-record, assignment, review, cursor, whitelist and content-link counts
   recorded in §8.4; transaction rolled back.
-- `venv/bin/python -m unittest tests.test_bse_capture.TestPureHelpers tests.test_bse_capture.TestCollectPages -v`
-  — 17/17 offline tests passed (no DB or network use).
+- `venv/bin/python -m unittest tests.test_nse_capture.TestPureHelpers tests.test_bse_capture.TestPureHelpers tests.test_bse_capture.TestCollectPages tests.test_normalize.TestNormalizeItem tests.test_normalize.TestFingerprintAndKeys tests.test_resolve_identity.TestNormalizeName tests.test_resolve_identity.TestResolutionLadder -v`
+  — 55/55 offline M1–M3 tests passed (no DB or network use).
 - `venv/bin/python -m py_compile scripts/companies.py scripts/nse_capture.py scripts/bse_capture.py scripts/normalize.py scripts/resolve_identity.py tests/test_nse_capture.py tests/test_bse_capture.py tests/test_normalize.py tests/test_resolve_identity.py`
   — passed.
 
