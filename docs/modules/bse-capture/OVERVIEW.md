@@ -52,8 +52,13 @@ Cursor rules identical to NSE (advance only after artifact + items commit).
 
 ## Status & next milestone
 
-- **pilot-proven**: announcement fetch + PDF download proven for both pilot companies (incl. the AttachHis trap and the API contract change); DB lineage not written yet.
-- **Next milestone:** reshape into partition-aware adapter writing C1/C3 (ROADMAP action 2).
+- **db-integrated (API)**: partition-aware `bse_api` adapter live on the DB path
+  (`scripts/bse_capture.py`, durable `bse.fetch` jobs). 2026-08-23: all 30 SENSEX
+  partitions ingested (138 raw items, 109 valid filing PDFs + 28 invalid-content
+  evidence artifacts), same-day re-runs skip network entirely, crash-recovery
+  convergence proven. `bse_rss` feed partitions not yet on the DB path.
+- **Next milestone:** Phase 0 soak — 7 unattended days, worker-kill tests,
+  reconciliation.
 
 ## Detail index (L2)
 
