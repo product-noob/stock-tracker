@@ -63,6 +63,7 @@ CLI
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import sys
 import time
@@ -393,8 +394,8 @@ def _run_partition_impl(
             sess, _, pdf_fetch_fn = _real_session(
                 impersonate, fetch_fn, pdf_fetch_fn)
             pdf_stats = _download_pdfs(
-                conn, store, sess, partition_id, prev_run_id, run_idem,
-                {u: ["recovery"] for u in pending},
+                conn, store, sess, partition_id, prev_run_id,
+                part["partition_key"], {u: ["recovery"] for u in pending},
                 pdf_fetch_fn=pdf_fetch_fn, sleep_fn=sleep_fn, log=log)
         log(f"[{symbol}] partition/day {day_key} already {prev_status} "
             f"(run {prev_run_id}) — skipped")
@@ -550,8 +551,9 @@ def _run_partition_impl(
     # --- PDFs (short transactions each; run row already closed) ---
     if pdf_urls:
         pdf_stats = _download_pdfs(
-            conn, store, sess, partition_id, fetch_run_id, run_idem,
-            pdf_urls, pdf_fetch_fn=pdf_fetch_fn, sleep_fn=sleep_fn, log=log)
+            conn, store, sess, partition_id, fetch_run_id,
+            part["partition_key"], pdf_urls,
+            pdf_fetch_fn=pdf_fetch_fn, sleep_fn=sleep_fn, log=log)
         log(f"[{symbol}] PDFs: {pdf_stats['downloaded']} downloaded, "
             f"{pdf_stats['skipped']} already stored, "
             f"{pdf_stats['invalid']} invalid-content, "
@@ -596,34 +598,28 @@ def _store_artifact(conn: psycopg.Connection, *, fetch_run_id: int,
                     idem_key: str, kind: str, media: str, sha: str,
                     path: str, size: int, meta: dict[str, Any],
                     ) -> tuple[int, int]:
-    """Insert a raw_artifacts row (content-deduped across runs by its
-    idempotency key, which embeds the SHA-256) and return
-    ``(artifact_id, first_seen_run_id)``. When the identical bytes were
-    already stored under an earlier run of this partition, that earlier run
-    stays the first-seen run (FK pair artifact/run must stay consistent).
-    Two announcements may also share byte-identical PDFs within ONE run:
-    the idempotency keys differ but UNIQUE (fetch_run_id, artifact_kind,
-    sha256) collides — fall back to the content lookup in that case."""
-    row = None
-    try:
-        with conn.transaction():  # savepoint: a unique violation must not
-            row = conn.execute(   # abort the caller's surrounding transaction
-                """
-                INSERT INTO ingestion.raw_artifacts
-                    (fetch_run_id, idempotency_key, artifact_kind, content_type,
-                     sha256, storage_path, byte_size, metadata)
-                VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
-                ON CONFLICT (idempotency_key) DO NOTHING
-                RETURNING artifact_id, fetch_run_id
-                """,
-                (fetch_run_id, idem_key, kind, media, sha, path, size,
-                 Jsonb(meta)),
-            ).fetchone()
-    except psycopg.errors.UniqueViolation:
-        # ON CONFLICT above only covers the idempotency key; the same-run
-        # byte-identical-sibling collision on UNIQUE (fetch_run_id,
-        # artifact_kind, sha256) lands here.
-        pass
+    """Insert a raw_artifacts row (deduped across runs by its unique
+    idempotency key, which embeds a content/URL digest) and return
+    ``(artifact_id, first_seen_run_id)``. When the key was already stored
+    under an earlier run of this partition, that earlier run stays the
+    first-seen run (FK pair artifact/run must stay consistent). The schema
+    deliberately has NO UNIQUE (fetch_run_id, artifact_kind, sha256):
+    byte-identical attachments under distinct keys keep separate lineage
+    rows; content-level dedup happens via the shared ``content_objects``
+    registration."""
+    with conn.transaction():  # savepoint: a unique violation must not
+        row = conn.execute(   # abort the caller's surrounding transaction
+            """
+            INSERT INTO ingestion.raw_artifacts
+                (fetch_run_id, idempotency_key, artifact_kind, content_type,
+                 sha256, storage_path, byte_size, metadata)
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
+            ON CONFLICT (idempotency_key) DO NOTHING
+            RETURNING artifact_id, fetch_run_id
+            """,
+            (fetch_run_id, idem_key, kind, media, sha, path, size,
+             Jsonb(meta)),
+        ).fetchone()
     if row is not None:
         return int(row[0]), int(row[1])
     row = conn.execute(
@@ -631,14 +627,6 @@ def _store_artifact(conn: psycopg.Connection, *, fetch_run_id: int,
         "WHERE idempotency_key = %s",
         (idem_key,),
     ).fetchone()
-    if row is None:
-        # idempotency-key miss + insert miss ⇒ the (run, kind, sha256)
-        # uniqueness caught a same-run byte-identical sibling
-        row = conn.execute(
-            "SELECT artifact_id, fetch_run_id FROM ingestion.raw_artifacts "
-            "WHERE fetch_run_id = %s AND artifact_kind = %s AND sha256 = %s",
-            (fetch_run_id, kind, sha),
-        ).fetchone()
     if row is None:
         raise NseFetchError(f"artifact row vanished for {idem_key}")
     return int(row[0]), int(row[1])
@@ -718,7 +706,7 @@ def _bump_cursor_failures(conn: psycopg.Connection, partition_id: int) -> None:
 
 def _download_pdfs(conn: psycopg.Connection, store: ObjectStore,
                    sess: Optional[NseSession], partition_id: int,
-                   fetch_run_id: int, run_idem: str,
+                   fetch_run_id: int, partition_key: str,
                    pdf_urls: dict[str, list[str]], *,
                    pdf_fetch_fn: PdfFetchFn,
                    sleep_fn: Callable[[float], None],
@@ -756,12 +744,18 @@ def _download_pdfs(conn: psycopg.Connection, store: ObjectStore,
             metadata={"source": "nse_api", "url": url},
             magic_valid=valid)
         kind = "filing_pdf" if valid else "filing_pdf_invalid"
+        # Idempotency key is partition-scoped and derived from the URL + the
+        # exact downloaded bytes — NOT from the day or seq_ids — so a
+        # crash-recovery re-download of the same URL converges on the same
+        # row instead of duplicating lineage (attempt-2 defect).
+        url_hash = hashlib.sha256(url.encode("utf-8")).hexdigest()[:16]
         try:
             with conn.transaction():
                 _store_artifact(
                     conn,
                     fetch_run_id=fetch_run_id,
-                    idem_key=f"{run_idem}:pdf:{sha[:16]}:{seq_ids[0]}",
+                    idem_key=(f"nse_api:{partition_key}:pdf:"
+                              f"{url_hash}:{sha[:16]}"),
                     kind=kind,
                     media=media,
                     sha=sha, path=path, size=len(data),

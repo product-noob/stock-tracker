@@ -26,6 +26,7 @@ triggers reject UPDATE/DELETE on ``ingestion.raw_feed_items`` /
 every artifact is namespaced under a per-test-uuid symbol
 (``symbol:TEST<uuid>``) and left behind as audit evidence.
 """
+import hashlib
 import json
 import sys
 import unittest
@@ -110,6 +111,7 @@ class TestPureHelpers(unittest.TestCase):
 # --------------------------------------------------------------------- #
 
 PDF_BYTES = b"%PDF-1.4 fake announcement pdf for tests " + b"x" * 512
+PDF_SHA = hashlib.sha256(PDF_BYTES).hexdigest()
 
 ANNOUNCEMENTS = [
     {
@@ -144,6 +146,7 @@ class FakeHttp:
     def __init__(self):
         self.api_calls = 0
         self.pdf_calls: list[str] = []
+        self.pdf_fail = False  # simulate download failures (crash recovery)
         self.pdf_by_url: dict[str, bytes] = {
             "https://nsearchives.nseindia.com/corporate/testfake_1.pdf": PDF_BYTES,
             # an HTML block page masquerading as a download (invalid-content case)
@@ -157,6 +160,8 @@ class FakeHttp:
 
     def fetch_pdf(self, session, url: str):
         self.pdf_calls.append(url)
+        if self.pdf_fail:
+            return None, 503, "HTTP 503"
         data = self.pdf_by_url.get(url)
         if data is None:
             return None, 404, "HTTP 404"
@@ -214,6 +219,7 @@ class TestRunPartitionEndToEnd(unittest.TestCase):
             fetch_fn=self.http.fetch_api,
             pdf_fetch_fn=self.http.fetch_pdf,
             now=now,
+            sleep_fn=lambda _s: None,
             quiet=True)
 
     def test_incremental_rerun_idempotent(self):
@@ -323,6 +329,54 @@ class TestRunPartitionEndToEnd(unittest.TestCase):
                 WHERE i.partition_id=%s AND i.first_seen_run_id <> a.fetch_run_id
                 """, (pid,)).fetchone()[0]
             self.assertEqual(orphan, 0)
+
+    def test_crashed_pdf_download_recovers_without_duplicates(self):
+        """Regression (attempt-2 defect): a run whose PDF download fails must
+        be converged by the same-day skip path's recovery WITHOUT creating a
+        duplicate artifact row for the same sha256."""
+        pid = self.partition_id
+
+        # ---- day 1 run with the PDF download failing (crash analogue) ----
+        self.http.pdf_fail = True
+        s1 = self._run(self.t_day1)
+        self.assertEqual(s1["status"], "ok")
+        self.assertEqual(s1["pdfs"]["failed"], 1,
+                         "initial attempt + re-warm retry both fail → 1 failure")
+        with self.psycopg.connect(_database_url()) as conn:
+            n_pdf = conn.execute(
+                "SELECT count(*) FROM ingestion.raw_artifacts "
+                "WHERE fetch_run_id=%s AND artifact_kind='filing_pdf'",
+                (s1["fetch_run_id"],)).fetchone()[0]
+            self.assertEqual(n_pdf, 0)
+
+        # ---- same-day re-run: skip path recovers the missing PDF ----
+        self.http.pdf_fail = False
+        s2 = self._run(self.t_day1)
+        self.assertTrue(s2["skipped"])
+        self.assertEqual(s2["fetch_run_id"], s1["fetch_run_id"])
+        self.assertEqual(s2["pdfs"]["downloaded"], 1)
+
+        # ---- third same-day re-run: fully converged, zero network calls ----
+        api_calls = self.http.api_calls
+        pdf_calls = len(self.http.pdf_calls)
+        s3 = self._run(self.t_day1)
+        self.assertTrue(s3["skipped"])
+        self.assertEqual(s3["pdfs"]["downloaded"], 0)
+        self.assertEqual(self.http.api_calls, api_calls)
+        self.assertEqual(len(self.http.pdf_calls), pdf_calls)
+
+        with self.psycopg.connect(_database_url()) as conn:
+            rows = conn.execute(
+                "SELECT sha256, count(*) FROM ingestion.raw_artifacts "
+                "WHERE fetch_run_id=%s AND artifact_kind LIKE 'filing_pdf%%' "
+                "GROUP BY 1",
+                (s1["fetch_run_id"],)).fetchall()
+            self.assertEqual(rows, [(PDF_SHA, 1)],
+                             "recovery must not duplicate the PDF artifact row")
+            co = conn.execute(
+                "SELECT magic_valid, media_type FROM documents.content_objects "
+                "WHERE sha256=%s", (PDF_SHA,)).fetchone()
+            self.assertEqual(co, (True, "application/pdf"))
 
 
 if __name__ == "__main__":
