@@ -61,7 +61,7 @@ DB integration not built) · `db-integrated` · `gated` (passing its acceptance 
 
 | Module | L1 entry | Status | Owns |
 |---|---|---|---|
-| NSE capture | [`modules/nse-capture/OVERVIEW.md`](modules/nse-capture/OVERVIEW.md) | pilot-proven | NSE announcements: RSS + API + PDF download |
+| NSE capture | [`modules/nse-capture/OVERVIEW.md`](modules/nse-capture/OVERVIEW.md) | db-integrated (API) | NSE announcements: RSS + API + PDF download |
 | BSE capture | [`modules/bse-capture/OVERVIEW.md`](modules/bse-capture/OVERVIEW.md) | pilot-proven | BSE announcements: RSS + API + PDF download |
 | Google News capture | [`modules/google-news-capture/OVERVIEW.md`](modules/google-news-capture/OVERVIEW.md) | pilot-proven* | per-company news feeds + redirect resolution (*article fetch = Phase 2) |
 | Screener fundamentals | [`modules/screener-fundamentals/OVERVIEW.md`](modules/screener-fundamentals/OVERVIEW.md) | pilot-proven | weekly fundamentals snapshots (risk-accepted source) |

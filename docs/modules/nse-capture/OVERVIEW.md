@@ -59,8 +59,13 @@ Cursor advances only after artifact + raw items commit. The API partition double
 
 ## Status & next milestone
 
-- **pilot-proven**: `scripts/fetch_announcements.py` + `download_pdfs.py` produce valid bytes for both pilot companies; DB lineage not written yet.
-- **Next milestone:** reshape into a partition-aware adapter writing C1/C3 against the DB (ROADMAP action 2). Blocked only by the ingestion skeleton (jobs/outbox).
+- **db-integrated (API family)**: `scripts/nse_capture.py` writes the full C1/C3 lineage
+  (`fetch_runs` → `raw_artifacts` → `raw_feed_items` + `ingestion_cursors`, PDFs into the
+  content store) for all 30 whitelist companies as durable `nse.fetch` jobs; incremental,
+  idempotent re-runs proven live 2026-08-23 (see evidence log). The RSS family (`nse_rss`
+  market-wide partitions) is still pilot-proven-only — not yet reshaped onto the DB path.
+- **Next milestone:** RSS partitions on the same adapter skeleton; then sampled-week
+  reconciliation ≥95% vs this API denominator (Phase 0 gate input).
 
 ## Detail index (L2)
 
