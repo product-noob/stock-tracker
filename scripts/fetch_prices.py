@@ -669,7 +669,8 @@ def build_gap_data(conn: psycopg.Connection) -> dict[str, Any]:
                array_agg(DISTINCT b.trade_date)::date[] AS dates
         FROM market.current_price_bars b
         JOIN market.price_series s USING (series_id)
-        JOIN core.companies c ON c.company_id = s.listing_id
+        JOIN core.listings l ON l.listing_id = s.listing_id
+        JOIN core.companies c ON c.company_id = l.company_id
         GROUP BY s.series_id, c.canonical_name ORDER BY c.canonical_name
         """
     ).fetchall()
