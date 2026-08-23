@@ -219,6 +219,44 @@ class TestResolutionLadder(unittest.TestCase):
             self.assertTrue(d.needs_review, raw)
             self.assertIsNone(d.company_id, raw)
 
+    def test_cross_exchange_duplicates_resolve_to_same_company(self):
+        """Same event captured on both exchanges must land on one company.
+        Each record anchors via its own exchange's scrip code."""
+        m = make_master(
+            listings_by_code={
+                ("NSE", "2885"): {(1, 10)},
+                ("BSE", "500325"): {(1, 11)},
+            },
+            whitelist=self.WHITELIST)
+        nse = self.ladder(m, exchange="NSE", exchange_code_raw="2885")
+        bse = self.ladder(m, exchange="BSE", exchange_code_raw="500325")
+        for d in (nse, bse):
+            self.assertEqual(d.outcome, "resolved", d)
+            self.assertEqual(d.company_id, 1, d)
+
+    def test_symbol_colliding_across_exchanges_fails_closed(self):
+        """A ticker owned by two different companies on the *opposite*
+        exchange makes the cross-exchange anchor ambiguous → review,
+        never an auto-guess between them."""
+        m = make_master(
+            listings_by_symbol={
+                ("BSE", "TWIN"): {(1, 41), (2, 42)},
+            },
+            whitelist=self.WHITELIST)
+        d = self.ladder(m, exchange="NSE", exchange_symbol_raw="TWIN")
+        self.assertEqual(d.outcome, "unresolved")
+        self.assertTrue(d.needs_review)
+        self.assertIsNone(d.company_id)
+        self.assertIn("ambiguous", d.reason)
+
+    def test_record_with_no_identifiers_at_all_goes_to_review(self):
+        """Missing symbol/code/ISIN/name can only fail closed."""
+        d = self.ladder(make_master(whitelist=self.WHITELIST))
+        self.assertEqual(d.outcome, "unresolved")
+        self.assertTrue(d.needs_review)
+        self.assertIsNone(d.company_id)
+        self.assertIn("no whitelisted master match", d.reason)
+
     def test_below_threshold_confidence_cannot_resolve(self):
         """If any tier's score were ever lowered under the threshold, the
         candidate must still fail closed to review."""
@@ -467,6 +505,84 @@ class TestDbBacked(unittest.TestCase):
                              "SELECT max(resolution_id) FROM "
                              "ingestion.identity_resolutions WHERE "
                              "record_id=%s", (record_id,)).fetchone()[0])
+
+    def test_retry_review_appends_superseding_decisions(self):
+        """Re-checking the review queue appends superseding rows: a verdict
+        that changes (or stays) never mutates history, and resolved records
+        are not re-attempted."""
+        conn, rec = self.conn, self.records
+        ambiguous = rec["ambiguous"]
+
+        # baseline pass: everything decided once (ambiguous → review)
+        stats0 = ri.run_resolve(conn, quiet=True)
+        conn.commit()
+        self.assertEqual(stats0["errors"], 0)
+        self.assertTrue(self.resolution_for(ambiguous)[0][5])   # in review
+
+        # pause one of the two ambiguous fixture companies: the shared alias
+        # now points at a single active company, so re-checking the queue
+        # must flip the verdict from review to a real assignment
+        conn.execute("UPDATE core.companies SET status='paused' "
+                     "WHERE company_id=%s", (self.co_beta,))
+        conn.commit()
+
+        before_all = self.conn.execute(
+            "SELECT count(*) FROM ingestion.identity_resolutions").fetchone()[0]
+        stats = ri.run_resolve(conn, quiet=True, retry_review=True)
+        conn.commit()
+        self.assertEqual(stats["errors"], 0)
+
+        # ambiguous record: new decision supersedes the review row and now
+        # resolves to alpha via the newly seeded alias
+        rows = self.conn.execute(
+            """SELECT resolution_id, outcome, tier, company_id, needs_review,
+                      supersedes_resolution_id
+               FROM ingestion.identity_resolutions WHERE record_id=%s
+               ORDER BY resolution_id""", (ambiguous,)).fetchall()
+        self.assertGreaterEqual(len(rows), 2)
+        first, latest = rows[0], rows[-1]
+        self.assertTrue(first[4])                      # original review row
+        self.assertFalse(latest[4])                    # superseding resolve
+        self.assertEqual(latest[2], "E_alias_name")
+        self.assertEqual(latest[3], self.co_alpha)
+        self.assertEqual(latest[5], first[0])          # supersedes link
+        self.assertEqual(self.assignment_company(ambiguous), self.co_alpha)
+        self.assertEqual(self.cached_company(ambiguous), self.co_alpha)
+
+        # a still-unresolvable review record keeps its single row: the
+        # re-check produced the same verdict, so nothing is appended
+        nomatch_rows = self.conn.execute(
+            """SELECT outcome, needs_review, supersedes_resolution_id
+               FROM ingestion.identity_resolutions WHERE record_id=%s
+               ORDER BY resolution_id""",
+            (rec["no_match"],)).fetchall()
+        self.assertEqual(len(nomatch_rows), 1)
+        self.assertTrue(nomatch_rows[0][1])
+        self.assertIsNone(nomatch_rows[0][2])
+        self.assertGreaterEqual(stats.get("unchanged", 0), 1)
+
+        # resolved records were not re-attempted (no new rows for them)
+        resolved_rows = self.conn.execute(
+            "SELECT count(*) FROM ingestion.identity_resolutions "
+            "WHERE record_id=%s", (rec["alias"],)).fetchone()[0]
+        self.assertLessEqual(resolved_rows, 2)   # system + manual-supersede
+
+        # restore master state for any later inspection
+        conn.execute("UPDATE core.companies SET status='active' "
+                     "WHERE company_id=%s", (self.co_beta,))
+        conn.commit()
+
+        # re-running retry-review with an unchanged master appends nothing
+        # (unchanged verdicts are skipped) — idempotent re-checks
+        count_before = self.conn.execute(
+            "SELECT count(*) FROM ingestion.identity_resolutions").fetchone()[0]
+        stats3 = ri.run_resolve(conn, quiet=True, retry_review=True)
+        conn.commit()
+        count_after = self.conn.execute(
+            "SELECT count(*) FROM ingestion.identity_resolutions").fetchone()[0]
+        self.assertEqual(count_before, count_after)
+        self.assertGreater(stats3.get("unchanged", 0), 0)
+        _ = before_all
 
     @classmethod
     def tearDownClass(cls):

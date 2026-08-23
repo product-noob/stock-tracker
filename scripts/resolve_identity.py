@@ -55,7 +55,9 @@ other stage script (see ``tests/test_resolve_identity.py``).
 CLI
 ---
     venv/bin/python scripts/resolve_identity.py run [--limit N]
+        [--retry-review]
     venv/bin/python scripts/resolve_identity.py status
+    venv/bin/python scripts/resolve_identity.py review [--limit N]
     venv/bin/python scripts/resolve_identity.py assign --record ID \
         --company ID --by NAME
 
@@ -318,7 +320,9 @@ def fetch_master(conn: psycopg.Connection) -> Master:
 
     alias_to_companies: dict = {}
     for cid, norm in conn.execute(
-        "SELECT company_id, normalized_value FROM core.company_aliases"
+        "SELECT a.company_id, a.normalized_value FROM core.company_aliases a "
+        "JOIN core.companies c ON c.company_id = a.company_id "
+        "WHERE c.status = 'active'"
     ).fetchall():
         alias_to_companies.setdefault(normalize_name(norm), set()).add(cid)
 
@@ -343,9 +347,32 @@ WHERE n.company_id IS NULL
 
 
 def fetch_pending(conn: psycopg.Connection, *,
-                  limit: Optional[int] = None) -> list[dict[str, Any]]:
-    """Unresolved records with no prior resolution attempt (oldest first)."""
-    sql = _PENDING_SQL_BASE + " ORDER BY n.record_id LIMIT %s"
+                  limit: Optional[int] = None,
+                  retry_review: bool = False) -> list[dict[str, Any]]:
+    """Records to attempt (oldest first).
+
+    Default: unattempted records only. With ``retry_review``, records whose
+    latest decision sits in the review queue are also re-attempted against
+    the current security master — e.g. after new aliases/listings were
+    seeded. Any new decision then supersedes the review row append-only.
+    """
+    sql = _PENDING_SQL_BASE
+    if retry_review:
+        sql += """
+        UNION
+        SELECT n.record_id, n.exchange, n.exchange_code_raw,
+               n.exchange_symbol_raw, n.isin_raw, n.company_name_raw, n.title
+        FROM ingestion.normalized_records n
+        WHERE EXISTS (
+            SELECT 1 FROM ingestion.identity_resolutions r
+            WHERE r.record_id = n.record_id
+              AND r.needs_review
+              AND NOT EXISTS (
+                  SELECT 1 FROM ingestion.identity_resolutions r2
+                  WHERE r2.record_id = n.record_id
+                    AND r2.supersedes_resolution_id = r.resolution_id))
+        """
+    sql += " ORDER BY record_id LIMIT %s"
     params = [limit if limit is not None else 1000000]
     rows = conn.execute(sql, params).fetchall()
     keys = ["record_id", "exchange", "exchange_code_raw",
@@ -382,7 +409,8 @@ def insert_resolution(conn: psycopg.Connection, record_id: int,
 
 
 def apply_decision(conn: psycopg.Connection, record_id: int,
-                   decision: Decision) -> int:
+                   decision: Decision, *,
+                   supersedes_resolution_id: Optional[int] = None) -> int:
     """Write one record's decision so all three stores agree in-tx:
 
     * immutable ``identity_resolutions`` row (always);
@@ -393,7 +421,8 @@ def apply_decision(conn: psycopg.Connection, record_id: int,
 
     Also emits the stage's outbox event. Caller owns the transaction.
     """
-    resolution_id = insert_resolution(conn, record_id, decision)
+    resolution_id = insert_resolution(conn, record_id, decision,
+                                      supersedes_resolution_id=supersedes_resolution_id)
     if decision.outcome == "resolved":
         conn.execute(
             """
@@ -499,21 +528,27 @@ def run_resolve(
     *,
     limit: Optional[int] = None,
     quiet: bool = False,
+    retry_review: bool = False,
 ) -> dict[str, Any]:
     """Resolve all pending normalized records (see module docstring).
 
     One ``ingestion.stage_runs`` row per batch keyed by the highest pending
     record id; per-record SAVEPOINTs so one bad record cannot poison the
     batch. Idempotent end-to-end: already-attempted records are never
-    re-selected, and re-running after new records arrive processes only those.
+    re-selected, and re-running after new records arrives processes only those.
+    With ``retry_review`` the review queue is re-checked and any changed
+    verdict is appended as a superseding decision (append-only correction;
+    manual tier-F assignments are never touched).
 
-    Returns stats: records_in / resolved / review / errors / stage_run_id.
+    Returns stats: records_in / resolved / review / unchanged / errors /
+    stage_run_id.
     """
     log = (lambda m: None) if quiet else (lambda m: print(m, flush=True))
     master = fetch_master(conn)
-    pending = fetch_pending(conn, limit=limit)
+    pending = fetch_pending(conn, limit=limit, retry_review=retry_review)
     batch_max = max((p["record_id"] for p in pending), default=0)
-    batch_key = f"{IDENT_VERSION}:{batch_max}"
+    batch_key = (f"{IDENT_VERSION}:review:{batch_max}" if retry_review
+                 else f"{IDENT_VERSION}:{batch_max}")
 
     stats = {"records_in": len(pending), "resolved": 0, "review": 0,
              "errors": 0}
@@ -540,17 +575,47 @@ def run_resolve(
         record_id = record["record_id"]
         try:
             # Re-check under concurrency: skip records resolved since the
-            # snapshot was taken (the unique assignment keeps us honest).
-            already = conn.execute(
-                "SELECT 1 FROM ingestion.identity_resolutions "
-                "WHERE record_id=%s",
-                (record_id,),
-            ).fetchone()
-            if already:
-                continue
+            # snapshot was taken — unless we are re-checking the review
+            # queue, where existing (review) rows are exactly the target.
+            if not retry_review:
+                already = conn.execute(
+                    "SELECT 1 FROM ingestion.identity_resolutions "
+                    "WHERE record_id=%s",
+                    (record_id,),
+                ).fetchone()
+                if already:
+                    continue
             decision = resolve_record(record, master)
+            supersedes = None
+            if retry_review:
+                prev = conn.execute(
+                    """
+                    SELECT resolution_id, outcome, tier, company_id,
+                           listing_id
+                    FROM ingestion.identity_resolutions
+                    WHERE record_id=%s AND needs_review
+                      AND NOT EXISTS (
+                          SELECT 1 FROM ingestion.identity_resolutions r2
+                          WHERE r2.record_id=%s
+                            AND r2.supersedes_resolution_id
+                                = identity_resolutions.resolution_id)
+                    ORDER BY attempted_at DESC, resolution_id DESC LIMIT 1
+                    """,
+                    (record_id, record_id),
+                ).fetchone()
+                if prev:
+                    same = ((decision.outcome, decision.tier,
+                             decision.company_id, decision.listing_id)
+                            == (prev[1], prev[2], prev[3], prev[4]))
+                    if same:
+                        # verdict unchanged since the last check — append
+                        # nothing (keeps re-checks idempotent)
+                        stats["unchanged"] = stats.get("unchanged", 0) + 1
+                        continue
+                    supersedes = int(prev[0])
             with conn.transaction():   # savepoint per record
-                apply_decision(conn, record_id, decision)
+                apply_decision(conn, record_id, decision,
+                               supersedes_resolution_id=supersedes)
             if decision.outcome == "resolved":
                 stats["resolved"] += 1
                 log(f"  resolved record {record_id} → company "
@@ -590,7 +655,8 @@ def run_resolve(
              Jsonb(stats), stage_run_id),
         )
     log(f"[{STAGE_NAME}] done: {stats['resolved']} resolved, "
-        f"{stats['review']} to review, {stats['errors']} errors")
+        f"{stats['review']} to review, "
+        f"{stats.get('unchanged', 0)} unchanged, {stats['errors']} errors")
     stats["stage_run_id"] = stage_run_id
     return stats
 
@@ -609,7 +675,8 @@ def handle_resolve(ctx: jobs.JobContext) -> None:
     redeliveries converge instead of duplicating decisions."""
     payload = ctx.payload or {}
     with jobs.connect(ctx.db_url) as conn:
-        stats = run_resolve(conn, limit=payload.get("limit"), quiet=True)
+        stats = run_resolve(conn, limit=payload.get("limit"), quiet=True,
+                            retry_review=bool(payload.get("retry_review")))
     ctx.outbox.append({
         "event_type": "resolve.batch.completed",
         "aggregate_type": "stage_run",
@@ -625,7 +692,8 @@ def handle_resolve(ctx: jobs.JobContext) -> None:
 
 def _cmd_run(args) -> int:
     with jobs.connect() as conn:
-        stats = run_resolve(conn, limit=args.limit)
+        stats = run_resolve(conn, limit=args.limit,
+                            retry_review=args.retry_review)
     print(json.dumps(stats, indent=2, default=str))
     return 0 if stats["errors"] == 0 else 2
 
@@ -652,6 +720,45 @@ def _cmd_status(_args) -> int:
     return 0
 
 
+def _cmd_review(args) -> int:
+    """List open review-queue entries: unresolved decisions flagged
+    needs_review that no later decision has superseded."""
+    with jobs.connect() as conn:
+        rows = conn.execute(
+            """
+            SELECT r.record_id, n.exchange, n.exchange_code_raw,
+                   n.exchange_symbol_raw, n.isin_raw,
+                   COALESCE(n.company_name_raw, n.title) AS raw_name,
+                   r.tier, r.confidence, r.reason, r.attempted_at
+            FROM ingestion.identity_resolutions r
+            JOIN ingestion.normalized_records n ON n.record_id = r.record_id
+            WHERE r.needs_review
+              AND r.outcome = 'unresolved'
+              AND NOT EXISTS (
+                  SELECT 1 FROM ingestion.identity_resolutions s
+                  WHERE s.supersedes_resolution_id = r.resolution_id)
+            ORDER BY r.attempted_at, r.record_id
+            LIMIT %s
+            """,
+            (args.limit,),
+        ).fetchall()
+    if not rows:
+        print("review queue is empty")
+        return 0
+    print(f"{len(rows)} open review item(s):")
+    for record_id, exchange, code, symbol, isin, raw_name, tier, conf, \
+            reason, at in rows:
+        ident = (f"exchange={exchange} code={code} symbol={symbol} "
+                 f"isin={isin}")
+        print(f"\n  record {record_id}  [{tier}, {float(conf):.3f}] "
+              f"attempts_at={at}"
+              f"\n    identifiers: {ident}"
+              f"\n    name:        {raw_name!r}"
+              f"\n    reason:      {reason}")
+    print("\nresolve via: assign --record <id> --company <id> --by <name>")
+    return 0
+
+
 def _cmd_assign(args) -> int:
     with jobs.connect() as conn:
         exists = conn.execute(
@@ -675,8 +782,15 @@ def main(argv: Optional[list[str]] = None) -> int:
 
     p_run = sub.add_parser("run", help="resolve pending normalized records")
     p_run.add_argument("--limit", type=int, default=None)
+    p_run.add_argument("--retry-review", action="store_true",
+                       help="re-check review-queue rows against the current "
+                            "security master (superseding decisions)")
 
     sub.add_parser("status", help="resolution coverage summary")
+
+    p_rev = sub.add_parser("review",
+                           help="list open review-queue entries")
+    p_rev.add_argument("--limit", type=int, default=50)
 
     p_as = sub.add_parser("assign",
                           help="manual tier-F correction of one record")
@@ -688,6 +802,8 @@ def main(argv: Optional[list[str]] = None) -> int:
     args = parser.parse_args(argv)
     if args.cmd == "run":
         return _cmd_run(args)
+    if args.cmd == "review":
+        return _cmd_review(args)
     if args.cmd == "assign":
         return _cmd_assign(args)
     return _cmd_status(args)
