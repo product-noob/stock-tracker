@@ -26,8 +26,9 @@ provenance, canonical content attempts/links, source trust bounds, outbox dispat
 least-privilege roles, supervision and health reporting are P0 prerequisites. The M4–M7,
 M8 reaction, and M9–M10 paths remain non-shipping file prototypes. Three baseline Critical
 defects were fixed. A fourth Critical credential exposure discovered at final Git inspection
-was rotated operationally, but remote-history remediation remains open. No nice-to-have
-refactor was undertaken.
+was rotated and removed through an owner-authorized local/remote history rewrite. Final
+remediation also completed test isolation, targeted fixture/orphan cleanup, configurable
+six-hour capture slots, and whitelist-bound manual corrections.
 
 **Baseline time:** 2026-08-23 05:10 UTC
 
@@ -247,7 +248,7 @@ contract. This matrix assigns every tracked implementation area so omission is v
 | Prices | yfinance adapter is DB-integrated; 30 series / 7,529 current bars at sample | read-only market audit; acceptance/provenance gaps remain |
 | Google News/Screener | historical file pilots only; no canonical DB adapter | code/file inventory |
 | M4–M10 | extraction/ranking/reaction/report paths are file prototypes/debugging views, not HLD stage completion | code/schema/live empty downstream tables |
-| Tests | full DB suite is unsafe on the application DB; only offline/rollback-safe subsets were run | static test DB-selection/persistence audit |
+| Tests | full DB suite is forbidden on the application DB; marked disposable DB/object-root suite passed 109/109 with zero production mutation | guard tests + before/after DB/object inventories |
 | Counts | all numeric live values in this review are timestamped 2026-08-23 evidence, never evergreen status | explicitly read-only transactions, rolled back |
 | Historical docs | pilot/build/evidence counts remain unchanged as dated history and carry supersession/status labels | documentation reconciliation |
 
@@ -937,13 +938,13 @@ adding persistent integration coverage.
   database connection credential. Both were already present in commits on `origin/main`;
   the value is intentionally omitted here. A pre-cleanup SQL dump and worker logs were also
   tracked and pushed during concurrent work.
-- **Disposition:** **credential fixed operationally; repository exposure open.** The exposed
-  database password was rotated immediately, `.env` was atomically updated and remained
-  mode `0600`, and new connections to both application and test databases succeeded. The
-  invalid credential and potentially private dump/log contents remain in local/remote Git
-  history. Coordinate a history rewrite/removal, force-push and clone/cache invalidation;
-  classify the dump/logs without opening them in routine review output. Check hosting audit
-  logs and rotate any other credential if the dump proves to contain one.
+- **Disposition:** **fixed 2026-08-23.** The database password was rotated, `.env` remained
+  `0600`, and application/test connections succeeded. With owner authorization, all local
+  refs were rewritten to purge `tmp/`, `backups/`, `data/objects/`, and the generated live
+  dashboard from every commit; local rewrite refs/reflogs were expired, unreachable objects
+  were pruned, prohibited path classes and credential-scheme pathnames scanned to zero, and
+  `origin/main` was force-pushed. Any pre-rewrite clone is now stale and must be discarded or
+  freshly cloned; do not merge an old clone back into rewritten history.
 
 ### `ST-P17` — Database cleanup left 188 unregistered object blobs
 
@@ -1345,65 +1346,57 @@ dump” completion condition cannot honestly be claimed even though this worker 
 
 ### P0 before unattended operation / more schema work
 
-0. Complete incident response for `ST-P16`: remove the credential-bearing pathnames,
-   SQL dump and private logs from Git, rewrite/purge remote history, invalidate stale clones
-   and inspect hosting access. The exposed database password is already rotated.
-1. Establish coordinated DB + object-store backups and perform a non-destructive
-   restore drill (`ST-P08`).
-2. Freeze the baseline and choose a forward migration tool/process (`ST-P01`).
-3. Isolate integration tests behind a hard test-database marker, dependency-injected DB URL
-   and separate object root (`ST-P02`). Decide whether existing fixture rows are retained as audit
-   evidence, migrated to a test DB, or cleaned only after an approved backup.
-4. Correct exact-bytes/commit ordering and per-page BSE provenance before relying
+0. Freeze the baseline and choose a forward migration tool/process (`ST-P01`).
+1. Correct exact-bytes/commit ordering and per-page BSE provenance before relying
    on crash recovery (`ST-C01`, `ST-C03`).
-5. Close attachment retry/linkage and malformed/foreign fail-open paths
+2. Close attachment retry/linkage and malformed/foreign fail-open paths
    (`ST-C04`, `ST-C05`).
-6. Define correction/run idempotency and make M2/M3 worker claims concurrency-safe
+3. Define correction/run idempotency and make M2/M3 worker claims concurrency-safe
    (`ST-C06`, `ST-C07`).
-7. Fix filing-recovery success/retry semantics and the valid record→content/attempt
+4. Fix filing-recovery success/retry semantics and the valid record→content/attempt
    lifecycle; bound and validate URL/content retrieval (`ST-D03`, `ST-C04`, `ST-C05`).
-8. Keep pilot extraction/reaction output non-shipping until verified evidence,
+5. Keep pilot extraction/reaction output non-shipping until verified evidence,
    event-level clustering and pre-reaction-only market fixtures pass (`ST-D01`,
    `ST-D02`, `ST-D04`).
-9. Specify and implement the outbox dispatcher and alert path (`ST-P03`).
-10. Introduce least-privilege runtime DB roles (`ST-P07`).
+6. Specify and implement the outbox dispatcher and alert path (`ST-P03`).
+7. Introduce least-privilege runtime DB roles (`ST-P07`).
+8. Implement coordinated DB/object-store backup and restore once the owner declares the
+   system stable; this remains accepted temporary risk, not a completed control (`ST-P08`).
 
 ### P1 hardening
 
 11. Add stale run/job/cursor/outbox/object health reporting (`ST-P09`, `ST-P13`).
 12. Close the identity outcome constraint and seed mismatch gaps through migrations
     and isolated tests (`ST-P10`, `ST-P11`).
-13. Resolve the dead cross-exchange tier and manual-correction policy/event gap
-    (`ST-C08`, `ST-C09`).
+13. Resolve the dead cross-exchange identity tier (`ST-C08`); manual correction policy and
+    event emission are complete (`ST-C09`).
 14. Decide and document the canonical handler transaction contract (`ST-P12`).
 15. Replace or explicitly archive legacy source utilities; add bounded parser/URL,
     escaping and malformed-response fixtures (`ST-D05`, `ST-D08`).
 16. Choose a portable, provenance-bearing tracked sample policy (`ST-D06`).
 17. Adopt the dependency/runtime lock and update policy (`ST-D07`, `ST-P14`).
-18. Classify and reconcile the latest 204 orphan blobs only after backup; never infer that
-    an unregistered object is disposable (`ST-P17`; 188 was the earlier 06:00 sample).
+18. Keep object reconciliation in routine health checks; the owner-authorized orphan and
+    synthetic-fixture cleanup is complete (`ST-P17`).
 
 Documentation/status reconciliation (`ST-P15`, `ST-D09`) completed in this review; keep it
 current in the same change as future milestones.
 
 ### Owner alignment required
 
-- Who will coordinate the required Git history rewrite/force-push for `ST-P16`, notify any
-  other clone holders, and classify/remove the tracked pre-cleanup SQL dump and logs?
+- Git history remediation is complete. Any holder of a pre-rewrite clone must discard it or
+  freshly clone; old branches must never be merged into rewritten `main`.
 - Is this database now the durable application environment, or an intentionally
   disposable development environment? Current data volume and owner instructions
   require treating it as durable until explicitly decided otherwise.
-- Should append-only integration fixtures remain permanently mixed with application
-  research data? If not, what retention/migration policy is acceptable?
-- Which backup target and retention are acceptable for PostgreSQL plus
-  `data/objects/`, given root-disk constraints?
+- Integration fixtures now belong only in the guarded disposable test environment; explicit
+  production test namespaces and DB-unregistered blobs were removed with owner approval.
+- Backup target and retention remain deliberately undecided until system stability; the
+  owner accepts this temporary risk.
 - Which migration tool and runtime-role split does the owner prefer?
 - What events should the first outbox dispatcher route to jobs versus notifications,
   and what supervision mechanism should run scheduler/worker/dispatcher processes?
-- Is NSE/BSE API capture intended every six hours, once daily, or only as a daily
-  reconciliation denominator? The current day key enforces once daily.
-- May a manual identity assignment target an existing non-whitelisted company, or
-  must the automatic whitelist invariant also bind operator corrections?
+- NSE/BSE API capture defaults to configurable six-hour IST schedule slots.
+- Manual identity assignments remain restricted to active whitelist members.
 - BSE invalid-only API captures now retry until valid content is obtained. What bounded
   retry/age budget and operator-alert threshold should replace the current every-run retry?
 - Are `data/<slug>` products archival pilot evidence, maintained portable fixtures, or
@@ -1414,8 +1407,8 @@ current in the same change as future milestones.
 - For Yahoo, is a deterministic returned-frame serialization accepted as the canonical
   provider artifact, or is transport interception required before reactions are trusted?
   Which authoritative NSE calendar and benchmark series should M8 use?
-- The dashboard is now tracked. Should generated live `data/dashboard.html` snapshots remain
-  in Git, and should the dashboard exclude all test fixtures or expose a labelled test view?
+- Generated live dashboards are untracked. Only small, portable, provenance-labelled,
+  deterministic fixtures may be added to Git; dumps/private logs/volatile snapshots may not.
 
 ## 14. Known limitations
 
