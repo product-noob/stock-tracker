@@ -61,3 +61,18 @@ Started 2026-08-23 (IST). Maintained during interactive build/testing sessions.
 - Bugs found in interactive run: worker handler-registration gap (fixed);
   TEST* test pollution of live DB (cleaned 1 partition; proper isolation TODO);
   orphaned 'running' fetch_run from killed long-task worker (noted, lease sweep TODO).
+
+### 2026-08-23 (cont.) — Dashboard evidence-link fix
+
+- User reported PDFs/links invisible. Root causes found:
+  1. per-stock PDF count joined `documents.record_contents` which is empty —
+     filing lineage actually lives in `raw_artifacts.metadata` (`seq_ids`/`news_ids`
+     → raw item idempotency keys). Rewrote joins accordingly.
+  2. "latest announcements" was dominated by 216 synthetic `identtest:*` records
+     from long-task unit tests (no timestamps → sorted first). Excluded via
+     scope filter; real DB cleanup logged as TODO (append-only guards make
+     deletes non-trivial).
+  3. object-store blob URLs needed an extra `objects/` prefix (store root is
+     `data/objects`, storage_path already starts with `objects/`).
+- Result: 📄 stored-pdf links on announcements, new "Stored filings" table
+  (30 latest with size + origin URL), all blob hrefs verified to exist on disk.

@@ -92,12 +92,14 @@ def main() -> int:
               join ingestion.identity_assignments ia on ia.record_id = n.record_id
               where sp.source='bse_api' group by 1),
             pdfs as (
-              select ia.company_id, count(distinct rc.content_id) n
-              from ingestion.normalized_records n
-              join documents.record_contents rc using (record_id)
-              join documents.content_objects co using (content_id)
-              join ingestion.identity_assignments ia on ia.record_id = n.record_id
-              where co.media_type='application/pdf' group by 1),
+              select c2.company_id, count(*) n
+              from ingestion.raw_artifacts a
+              join ingestion.fetch_runs r using (fetch_run_id)
+              join ingestion.source_partitions p using (partition_id)
+              join core.companies c2 on c2.company_id = p.company_id
+              where a.artifact_kind='filing_pdf'
+                and coalesce((a.metadata->>'magic_valid')::boolean, true)
+              group by 1),
             px as (
               select l.company_id,
                      array_agg(b.close order by b.trade_date) closes,
@@ -119,16 +121,47 @@ def main() -> int:
             order by (coalesce(nse_c.n,0)+coalesce(bse_c.n,0)) desc""", (args.spark_days,))
 
         recent = q(conn, """
-            select c.canonical_name, coalesce(n.title, n.description) as title_or_desc, coalesce(n.published_at, n.first_seen_at) as published_at, sp.source,
-                   n.content_url, n.dedup_key
+            with pdfx as (
+              select a.artifact_id, a.storage_path, a.byte_size,
+                     a.metadata->>'url' src_url,
+                     'nse_ann:' || x.native_id AS item_key
+              from ingestion.raw_artifacts a,
+                   jsonb_array_elements_text(coalesce(a.metadata->'seq_ids','[]'::jsonb)) x(native_id)
+              where a.artifact_kind='filing_pdf'
+              union all
+              select a.artifact_id, a.storage_path, a.byte_size,
+                     a.metadata->>'url',
+                     'bse_ann:' || x.native_id
+              from ingestion.raw_artifacts a,
+                   jsonb_array_elements_text(coalesce(a.metadata->'news_ids','[]'::jsonb)) x(native_id)
+              where a.artifact_kind='filing_pdf')
+            select distinct
+              c.canonical_name,
+              coalesce(n.title, n.description) as title_or_desc,
+              coalesce(n.published_at, n.first_seen_at) as published_at,
+              sp.source, n.content_url, n.dedup_key,
+              px.storage_path as pdf_path, px.src_url as pdf_src_url, px.byte_size as pdf_bytes
             from ingestion.normalized_records n
             join ingestion.identity_assignments ia on ia.record_id = n.record_id
             join core.companies c on c.company_id = ia.company_id
             left join ingestion.record_raw_items rri on rri.record_id = n.record_id
-            left join ingestion.raw_feed_items ri using (item_id)
-            left join ingestion.source_partitions sp using (partition_id)
+            left join ingestion.raw_feed_items ri on ri.item_id = rri.item_id
+            left join ingestion.source_partitions sp on sp.partition_id = ri.partition_id
+            left join pdfx px on px.item_key = ri.idempotency_key
+            where n.dedup_scope !~ '^(identtest|test)'
             order by coalesce(n.published_at, n.first_seen_at) desc nulls last
             limit 25""")
+
+        filings = q(conn, """
+            select a.storage_path, a.byte_size, a.metadata->>'url' src_url,
+                   a.fetched_at, p.partition_key, c.canonical_name,
+                   coalesce((a.metadata->>'magic_valid')::boolean, true) magic_ok
+            from ingestion.raw_artifacts a
+            join ingestion.fetch_runs r using (fetch_run_id)
+            join ingestion.source_partitions p using (partition_id)
+            left join core.companies c on c.company_id = p.company_id
+            where a.artifact_kind = 'filing_pdf'
+            order by a.fetched_at desc limit 30""")
 
         review = q(conn, """
             select outcome, count(*) from ingestion.identity_resolutions
@@ -171,14 +204,30 @@ def main() -> int:
 
     rec_rows = []
     for r in recent:
-        link = (f"<a href='{esc(r['content_url'])}'>link</a>" if r["content_url"]
-                else esc(r["dedup_key"])[:40])
+        links = []
+        if r.get("pdf_path"):
+            links.append(f"<a href='objects/{esc(r['pdf_path'])}'>📄 stored pdf</a>")
+        src = r.get("pdf_src_url") or r.get("content_url")
+        if src:
+            links.append(f"<a href='{esc(src)}' target='_blank'>source</a>")
+        link = " ".join(links) or "<span class='muted'>—</span>"
         rec_rows.append(
-            f"<tr><td>{esc(((str(r['published_at']) if r['published_at'] else '')[:16]))}</td>"
+            f"<tr><td>{esc((str(r['published_at']) if r['published_at'] else '')[:16])}</td>"
             f"<td><code>{esc(r['source'] or '?')}</code></td>"
             f"<td>{esc((r['canonical_name'] or '')[:30])}</td>"
             f"<td>{esc((r['title_or_desc'] or '')[:90])}</td><td>{link}</td></tr>")
-    # title_or_desc may not exist as one column; fallback handled below
+
+    fil_rows = []
+    for f in filings:
+        size_kb = f["byte_size"] / 1024
+        name = (f["src_url"] or "").rsplit("/", 1)[-1][:52] or f["storage_path"][-16:]
+        flag = "" if f["magic_ok"] else " ⚠️"
+        fil_rows.append(
+            f"<tr><td>{f['fetched_at']:%m-%d %H:%M}</td>"
+            f"<td>{esc((f['canonical_name'] or f['partition_key'] or '')[:28])}</td>"
+            f"<td><a href='objects/{esc(f['storage_path'])}'>{esc(name)}</a>{flag}</td>"
+            f"<td class='num'>{size_kb:,.0f} KB</td>"
+            f"<td><a href='{esc(f['src_url'] or '#')}' target='_blank'>origin</a></td></tr>")
 
     page = f"""<!DOCTYPE html><html lang="en"><head><meta charset="utf-8">
 <title>Pipeline Dashboard</title>
@@ -219,6 +268,11 @@ def main() -> int:
 <table><tr><th>company</th><th>NSE items</th><th>BSE items</th><th>PDFs</th>
 <th>last close ₹</th><th>1d</th><th>~1w</th><th>trend</th></tr>
 {''.join(rows)}</table>
+
+<h2>Stored filings (latest {len(filings)})</h2>
+<p class="meta">📄 links serve the exact stored bytes from the local object store (⚠️ = magic-byte check failed, retained as evidence); “origin” opens the exchange source URL.</p>
+<table><tr><th>fetched</th><th>company</th><th>file</th><th>size</th><th>origin</th></tr>
+{''.join(fil_rows)}</table>
 
 <h2>Identity review queue</h2><ul>{rev_rows}</ul>
 

@@ -23,8 +23,9 @@ and dispositions here rather than creating competing review records.
 **Baseline revision:** `cc445b03b94a7ab78aaed93e7ca97590d15f588f`
 (`docs(policy): yahoo daily-bar fetcher`)
 
-**Review status:** persistence/control-plane and DB-integrated M1–M3 passes complete;
-broader component rows marked “assigned later” remain open.
+**Review status:** persistence/control-plane, DB-integrated M1–M3, and the remaining
+pilot/source-integration, dependency, market-data, reporting, and tracked-sample passes
+are complete; documentation/operations reconciliation remains for later passes.
 
 ### Scope in this pass
 
@@ -129,7 +130,7 @@ This inventory excludes historical tracked `tmp/pi-*` artifacts from product
 coverage, but records them in §4. Tracked pilot/sample data is inventoried as a
 separate non-runtime input class.
 
-### 6.1 Implementation source (21)
+### 6.1 Implementation source (23)
 
 - Capture/integration: `scripts/bse_capture.py`, `scripts/download_filings.py`,
   `scripts/download_pdfs.py`, `scripts/fetch_announcements.py`,
@@ -140,7 +141,8 @@ separate non-runtime input class.
 - Pipeline/identity: `scripts/normalize.py`, `scripts/resolve_identity.py`,
   `scripts/extract_text.py`, `scripts/extract_facts.py`,
   `scripts/price_reaction.py`, `scripts/rank_insights.py`
-- Registry/reporting: `scripts/companies.py`, `scripts/make_report.py`
+- Registry/reporting: `scripts/companies.py`, `scripts/make_report.py`,
+  `scripts/make_dashboard.py`
 
 ### 6.2 Tests and fixtures (8)
 
@@ -179,9 +181,10 @@ separate non-runtime input class.
 ### 6.6 Other tracked material
 
 - 93 pilot/sample files under `data/hdfcbank/`, `data/tataelxsi/`, and the two
-  `data/prices_gap_report.*` summaries. They include 67 extracted-text files,
+  `data/prices_gap_report.*` summaries. They include 66 extracted-text files,
   JSON/XML/CSV/HTML pilot outputs, and reports; they are sample evidence, not the
-  live object store.
+  live object store. `data/dashboard.html` is one additional tracked generated
+  database snapshot (94 tracked `data/` files total).
 - Two tracked agent-memory documents:
   `.claude/agent-memory/docs-updater/MEMORY.md` and
   `.claude/agent-memory/docs-updater/feedback_doc_edits.md`.
@@ -192,26 +195,26 @@ separate non-runtime input class.
 
 ## 7. Coverage matrix
 
-“Deep complete” means this pass reviewed implementation and governing contract;
-“test-safety only” means this pass inspected DB selection/persistence but leaves
-functional review assigned to a later pass. This matrix assigns every tracked
-implementation area so omission is visible.
+“Deep complete” means the assigned pass reviewed implementation and its governing
+contract. This matrix assigns every tracked implementation area so omission is visible.
 
 | Area / tracked files | This pass | Remaining assigned review |
 |---|---|---|
 | Schema: `db/schema.sql` | **Deep complete**: constraints, FKs, indexes, trigger guards, queue/outbox and identity invariants | Fresh isolated-schema DDL/replay test once a safe disposable DB exists |
 | Object storage: `object_store.py`, `test_object_store.py` | **Deep complete**; P0 integrity fix and regression | Backup/restore drill and large-store performance measurement |
 | Queue/outbox: `jobs.py`, `job_handlers.py`, `job_worker.py`, `test_jobs.py` | **Deep complete**; lease/failure/signal/transaction semantics and P0 fix | Implement/test dispatcher and service supervision after owner alignment |
-| Core seeding: `seed_core.py`, `companies.py` | **Deep complete** for transaction/idempotency/config safety | Registry content/data-quality sampling in the data-quality pass |
-| NSE/BSE DB capture: `nse_capture.py`, `bse_capture.py`; corresponding tests and all NSE/BSE L1/L2 docs | **Deep complete**: source mechanics, exact-byte/crash ordering, pagination, idempotency, cursors, attachments, malformed input, and live reconciliation; BSE fail-open envelope defect fixed | RSS/file-based pilot scripts remain assigned with the broader legacy-pilot pass; soak/reconciliation needs safe operations design |
+| Core seeding: `seed_core.py`, `companies.py` | **Deep complete** for transaction/idempotency/config safety; registry/sample mismatch recorded | Owner decision on non-whitelist pilot entries/defaults |
+| NSE/BSE DB capture: `nse_capture.py`, `bse_capture.py`; corresponding tests and all NSE/BSE L1/L2 docs | **Deep complete**: source mechanics, exact-byte/crash ordering, pagination, idempotency, cursors, attachments, malformed input, and live reconciliation; BSE fail-open envelope defect fixed | Legacy file utilities reviewed below; soak/reconciliation needs safe operations design |
 | Normalization/identity: `normalize.py`, `resolve_identity.py`; corresponding tests | **Deep complete**: mapping/versioning, append-only decisions, fail-closed ladder, manual/retry flow, concurrency, tests, and live reconciliation | Isolated concurrency/schema regressions after guarded test DB exists |
-| Yahoo/prices: `fetch_prices.py`, `test_fetch_prices.py`, module docs | Test classified as offline; registration import observed | **Assigned later:** market data correctness/gap/revision audit |
-| Google News/Screener: `resolve_news.py`, `fetch_fundamentals.py`, module docs | Inventoried; configuration/dependency surface noted | **Assigned later:** source, security, policy, and data-quality audit |
-| Pilot extraction/ranking/reaction: `extract_text.py`, `extract_facts.py`, `price_reaction.py`, `rank_insights.py` | Inventoried | **Assigned later:** correctness, evidence, causal-language, and test-gap audit |
-| Reporting: `make_report.py` and tracked sample reports/data | Inventoried; untrusted-rendering boundary noted | **Assigned later:** sanitization, privacy, and maintainability audit |
-| Root config/dependencies | **Deep complete** for compose exposure, pins, env handling, secret metadata | Dependency update/lock strategy and service unit review |
-| System and module docs | Persistence contracts read; critical “empty/disposable DB” drift corrected | **Assigned later:** comprehensive ROUTER/ROADMAP/PROJECT_STATUS/module-status reconciliation |
-| Tracked sample data and agent metadata | Counted and classified; no private body review | **Assigned later:** sample provenance/privacy/size and git hygiene decision |
+| Filing recovery: `download_filings.py` | **Deep complete**: pending selection, network/session behavior, URL/magic handling, run/job idempotency, transaction boundaries and failure reporting | Attempt/link model and retry policy need owner/design alignment; the referenced regression module is absent |
+| Legacy file capture: `fetch_announcements.py`, `download_pdfs.py` | **Deep complete**: pagination, exact-byte/crash behavior, URL trust, status/CLI semantics and output layout | Pilot-only; do not promote these overlapping utilities to a service path |
+| Yahoo/prices: `fetch_prices.py`, `test_fetch_prices.py`, all Yahoo L1/L2 docs | **Deep complete**: frame mapping, validation, revision keys, timezone/calendar/gap logic, lineage, runtime behavior and live read-only data audit | Isolated DB revision/crash tests and an authoritative trading calendar remain open |
+| Google News/Screener: `resolve_news.py`, `fetch_fundamentals.py`, all corresponding L1/L2 docs | **Deep complete**: parser/resolver boundaries, cache/retry behavior, URL trust, snapshot semantics and sample replay | Both remain pilot/file-based; DB adapters are not built |
+| Pilot extraction/ranking/reaction: `extract_text.py`, `extract_facts.py`, `price_reaction.py`, `rank_insights.py`; HLD M4–M9 and pilot learnings | **Deep complete**: parser bounds, evidence/quote gate, determinism, event semantics, no-look-ahead and causal wording | These are prototypes, not the DB-integrated M4–M9 pipeline |
+| Reporting: `make_report.py`, `make_dashboard.py`, and tracked `data/dashboard.html` | **Deep complete**: escaping, query validity, privacy, read behavior and status claims | Dashboard files were committed concurrently by another task and preserved untouched by this pass |
+| Root config/dependencies | **Deep complete** for compose exposure, direct/transitive pins, imports, runtime versions, env handling and secret metadata | Dependency lock/hash/update policy and service unit review |
+| System and module docs | Persistence/source contracts read; implementation/status contradictions recorded | **Assigned later:** comprehensive ROUTER/ROADMAP/PROJECT_STATUS/module-status reconciliation |
+| Tracked pilot/sample data and agent metadata | **Deep complete structurally and in aggregate**; provenance, relationships, staleness, path portability, secret patterns and causal/status claims checked without emitting source bodies | Owner decision on tracked public-source bodies and portable sample-fixture policy |
 
 ## 8. Live PostgreSQL and object-store baseline
 
@@ -463,6 +466,170 @@ append-only soak tests for an explicitly approved namespace/database.
   on shared class state/test order; UUID names prevent collisions but do not provide
   isolation. The synthetic row in a real company partition demonstrates that this is
   operational contamination, not a theoretical concern.
+
+### 10.4 Remaining source integrations, pilots, dependencies and data quality
+
+#### Runtime classification and enforced strengths
+
+The pass read every scoped file completely. The implementation boundary is materially
+mixed and must be explicit:
+
+- **DB-integrated but not a complete downstream service:** `fetch_prices.py` writes
+  immutable market observations and C1-style CSV artifacts; `download_filings.py`
+  writes content objects/raw artifacts as a recovery path. Neither creates the full
+  canonical M4/M8 products promised by the HLD. In particular, filing content still
+  has no `record_contents`/attempt edge and no reaction signal exists.
+- **Legacy file-based capture pilots:** `fetch_announcements.py` and
+  `download_pdfs.py`. They overwrite `data/<slug>` files and overlap the DB adapters;
+  they are empirical utilities, not restart-safe canonical ingestion.
+- **File-based later-stage prototypes:** `extract_text.py`, `extract_facts.py`,
+  `rank_insights.py`, `price_reaction.py`, and `make_report.py`. They demonstrate the
+  pilot but do not implement HLD M4–M9 versioning, jobs, canonical DB rows or outbox.
+- **File-based source pilots:** `resolve_news.py` and `fetch_fundamentals.py`.
+  Google News article capture and Screener snapshot DB integration do not exist.
+- **Dashboard utility:** `scripts/make_dashboard.py` was untracked at this pass's
+  start and was reviewed as executable worktree source. During verification, a separate
+  concurrent task committed it and `data/dashboard.html` in `9ea8a64`; this pass did not
+  edit, stage or commit either file.
+
+Useful implemented properties include bounded 30/60-second direct exchange/Screener/
+Google calls, browser impersonation where empirically required, PDF magic checks in both
+filing downloaders, deterministic SHA-256 document grouping, explicit UTF-8 in newer
+text/report paths, deterministic price observation hashes, append-only revised price-bar
+keys, current live OHLC sanity, and HTML escaping for most report fields. The Screener
+raw snapshot reparsed byte-for-byte to the tracked JSON structure, all 200 RSS item dates
+parsed, the 100 cached HDFC redirects were structurally valid HTTP(S) URLs with no URL
+credentials or literal private IPs, and the two tracked price files had no non-finite or
+negative close/volume values.
+
+#### Correctness, reliability and trust-boundary critique
+
+- **Filing recovery is not durable-attempt semantics.** `pending_urls()` considers
+  invalid HTML evidence permanently handled, despite the module docstring saying the
+  recovery path covers temporarily invalid NSE URLs. A job whose every download fails
+  returns a failed fetch run but `handle_filings_download()` still emits a completed
+  event and succeeds the durable job, so job backoff/dead-letter never applies. Per-URL
+  blocks are savepoints under the caller's outer transaction, not independently durable
+  commits; no-byte failures have no immutable attempt rows. Downloads are unbounded,
+  URLs/errors are printed, and NSE accepts any upstream HTTP(S) attachment host. The
+  docstring references `tests/test_download_filings.py`, but no such tracked or untracked
+  test exists.
+- **The legacy fetch chain is fail-open and crash-unsafe.** It parses before writing,
+  overwrites final paths non-atomically, has no retries/backoff or response-size limits,
+  and generally exits zero after partial source failure. BSE capture reads only page 1;
+  Google RSS writes any status/body as success; the PDF utility swallows all exceptions
+  and leaves invalid/stale files outside its manifest. Native IDs are interpolated into
+  filenames without a path-component validation boundary. None preserves immutable
+  fetch attempts or exact-response lineage.
+- **Google resolver failures are cached forever.** A transient failure is written under
+  the token and excluded from all future `todo` lists, contradicting R-GN-8's retryable
+  backoff/dead-letter contract. Regex XML parsing and protobuf URL extraction are
+  unbounded and permissive; decoded/batchexecute URLs have no canonicalization,
+  credential/private-address/length policy for their future article-fetch consumer.
+  Cache writes occur only at the end, so a crash loses the whole batch. Logs expose full
+  resolved URLs and remote error text, which may include tracking/signature material.
+- **Screener output is not the specified snapshot contract.** HTTP is bounded but has no
+  spacing/backoff/content canary or title/company check. A 200 interstitial/wrong-company
+  page can become a successful zero-section result. Duplicate section and row labels
+  silently overwrite in dictionaries, and displayed unit/consolidated/provenance fields
+  are not represented as explicit typed data. Raw HTML is written before parsing (good
+  for this pilot) but neither write is atomic/versioned; parser output is an untyped
+  convenience JSON, not `fundamentals_snapshots`.
+- **Yahoo lineage is weaker than its docstring.** `frame_to_rows()` parses the provider
+  frame before artifact persistence, and the artifact is a pandas CSV reserialization,
+  not exact provider transport bytes. `ObjectStore.put_bytes()` is called without the
+  caller connection, so content registration commits separately from artifact/bar
+  lineage. The history call supplies no explicit timeout/retry policy. Artifact keys
+  collapse identical observations across fetch runs, and the daily run key prevents a
+  second normal fetch that day. These may be defensible contracts, but are not “exact
+  bytes first” or one fetch-event artifact per run as currently claimed.
+- **Price validation has material edge gaps.** `validate_frame()` accepts NaN/Infinity
+  OHLC values (a characterization call returned zero hard errors for NaN), does not
+  reject duplicate trade dates, and permits today's still-forming daily bar before the
+  15:30 IST close. Weekday-only gap inference is a heuristic, not an exchange calendar;
+  a date missing from 80% of series can hide correlated provider loss. Symbol changes,
+  split/dividend adjustment validation, benchmark coverage and provider revisions have
+  no integration fixture. Live data is clean today, so this is a prospective corruption
+  risk rather than evidence of bad stored bars.
+- **The reaction prototype violates M8's central rule.** It computes mean/std and rival
+  anomalies over the entire file, including observations after the reaction. In a
+  synthetic characterization, appending one future bar changed an unchanged event's
+  z-score from 1.69 to 0.66 and created a rival. Publication timestamps are reduced to
+  their source timezone's calendar date rather than converted to IST/session cutoffs,
+  and every same-day filing is forced to the next session. “Unexplained” rivals are not
+  joined to events at all, yet output says no substantive filing matched and can print
+  “causal framing permitted,” contrary to the association-only invariant.
+- **Evidence and event guarantees are demonstrably absent from the prototypes.** The
+  extractor truncates at 12,000 characters without the promised stronger-model rerun,
+  has no explicit request timeout/checkpoint, uses an undated model alias and hard-coded
+  pricing, and performs only a naive substring quote check. `rank_insights.py` ships
+  every extraction regardless of `quote_verified`, treats each document hash as an
+  event, bakes wall-clock freshness into an overwritten file, and trusts incomplete
+  JSON shapes. The tracked HDFC flags cannot be reproduced by current extractor code:
+  only 3/38 quotes match naively while 37 are marked true; whitespace normalization
+  reproduces 37. Across both samples, 26/66 ranked rows are explicitly marked unverified.
+  This is pilot evidence, not a safe shipping path.
+- **Report escaping is incomplete.** Most summaries, titles and URLs use
+  `html.escape`, but source `published_at` cells and local `file:///` href values are
+  interpolated without escaping. There is no malformed-input fixture. The report labels
+  per-document rows “ranked events,” thereby overstating event clustering. The dashboard
+  was changing concurrently: its initial untracked version queried nonexistent
+  `normalized_records.title_or_desc`; a later revision fixed that expression but the
+  latest observed worktree SQL placed `WHERE` before subsequent `JOIN` clauses. The
+  reviewed versions therefore were not executable as written. Its DB connection also
+  does not explicitly request read-only mode, and generated views include test fixtures.
+
+#### Dependency and sample-data assessment
+
+All third-party import roots are supplied by the environment: direct runtime pins are
+`curl-cffi 0.16.1`, `pdfplumber 0.11.10`, `openai 3.3.1`, `psycopg 3.2.13`, and
+`yfinance 1.6.0`; test pin `pytest 9.1.1` and transitive `pandas 2.3.3` are installed.
+`pip check` is clean. However, runtime and dev dependencies share one file, pandas is a
+test/runtime API used directly but only arrives transitively, there is no Python-version
+contract, transitive lock/hash/SBOM, or reviewed update policy, and network/parser/LLM
+behavior depends on large unpinned transitive trees. Direct pins alone do not make an
+installation reproducible or supply-chain verified.
+
+Tracked `data/` is 94 files / about 5.1 MiB: 138 normalized announcement rows,
+136 downloaded-manifest rows collapsing to 66 hashes, 66 extraction manifests/texts/LLM
+outputs/ranked rows, two 100-item RSS snapshots, two fundamentals snapshots, two daily
+price CSVs, rendered pilot reports, the two gap summaries, and one generated DB dashboard. Structural checks found no duplicate exchange-native
+IDs or document hashes at their intended levels, malformed JSON/XML, impossible tracked
+close/volume values, or secret-pattern hits. The 30-series gap report is structurally
+consistent and reports one genuine gap-day, but is a generated live snapshot, not a
+stable fixture.
+
+The corpus is not portable/reproducible: all 136 PDF paths and all 132 text/PDF paths in
+manifests point outside the repository and are missing on this host; HDFC paths use a
+foreign Windows layout and Tata paths use absolute Unix layout. Tata Elxsi was removed
+from the current company registry, so seven pilot scripts whose default is `tataelxsi`
+now fail at import/startup and the original sample cannot be regenerated through those
+defaults. The tracked flags reflect code not present in the current extractor, and one
+Tata price CSV row is silently skipped by the prototype loader. Raw PDFs are intentionally
+untracked, while extracted public filing text and full third-party HTML are tracked without
+a compact provenance/fixture manifest. The tracked dashboard is a stale whole-database
+snapshot (111 companies including persistent test identities versus the 30-company registry)
+and therefore is not a production-only view. It is structurally valid HTML with no script,
+`file:`-scheme or absolute-home links (newer concurrent output adds relative object-store
+links), but its aggregate counts have already drifted. No
+credential signature matched; nevertheless, public filings can contain personal contact
+details and full source bodies, so continued tracking/redistribution is an explicit owner
+policy decision rather than a secret scan's conclusion.
+
+#### Test quality
+
+`tests/test_fetch_prices.py` is useful and fully offline for normal hashes, frame mapping,
+basic OHLC, timezone-aware date conversion, pre-close expected-session gating and the 80%
+gap heuristic. It does not test NaN/Infinity, duplicate dates, pre-close frame rejection,
+DST/foreign timezone inputs, revisions/current-bar ordering, symbol/adjustment changes,
+artifact transaction boundaries, empty/malformed frames, DB idempotency or job failure.
+There are no tests at all for the other eleven reviewed scripts. Missing priority
+fixtures include malformed exchange/publisher/Screener responses; URL host/private-address
+policy; redirects and cache retry; parser/decompression/page/byte limits; normalized quote
+verification and retry/suppression; deterministic multi-mention ranking/clustering;
+pre-reaction-only baselines and IST session cutoffs; zero-variance reactions; and complete
+HTML attribute/text escaping. Existing DB test isolation (`ST-P02`) must be solved before
+adding persistent integration coverage.
 
 ## 11. Finding ledger
 
@@ -743,6 +910,121 @@ append-only soak tests for an explicitly approved namespace/database.
   before expanding integration tests. Keep pure/offline tests for envelope, mapping
   and ladder behavior; reserve persistent soak fixtures for an explicit namespace.
 
+### `ST-D01` — Pilot reaction output uses future data and overstates attribution
+
+- **Severity / priority:** High / P0 before any reaction is published
+- **Fact:** `price_reaction.py` computes return/volume baselines and rival anomalies
+  across the full CSV, including post-reaction sessions; a future synthetic bar changed
+  an existing event z-score from 1.69 to 0.66. It does no event join for purportedly
+  “unexplained” dates and prints that causal framing may be permitted.
+- **Risk:** unstable look-ahead scores and unsupported causal copy can turn retrospective
+  knowledge into a falsely strong market explanation.
+- **Disposition:** **open; prototype must not ship.** Implement HLD M8 against exact
+  pre-reaction bar memberships, IST exchange cutoffs/calendar, benchmarks and real
+  event-exclusion evidence; association wording remains mandatory even when gates pass.
+
+### `ST-D02` — Pilot evidence/ranking path ships unverified and non-reproducible quotes
+
+- **Severity / priority:** High / P0 before Phase 1 shipping
+- **Fact:** current extraction uses naive substring verification, does not retry/suppress,
+  and ranking ignores the flag. The tracked HDFC `quote_verified` values require
+  normalization absent from current code; 26/66 tracked ranked rows are marked unverified.
+  Each content hash is also mislabeled as a business event.
+- **Risk:** a fluent model omission/fabrication can be displayed as evidence, while
+  duplicate documents are presented as independently ranked events.
+- **Disposition:** **open; pilot-only.** Build versioned M5–M7 DB stages with normalized
+  containment/location, retry then suppression, multi-mention event fixtures and
+  deterministic rulepack tests. Do not patch the throwaway JSON chain into production.
+
+### `ST-D03` — Filing recovery can permanently accept invalid content or silently succeed
+
+- **Severity / priority:** High / P0
+- **Fact:** `download_filings.py` excludes `filing_pdf_invalid` URLs from future work and
+  reports its durable job complete even when all downloads fail. No-byte attempts are
+  absent, valid contents are not linked to canonical records, downloads/hosts are
+  unbounded, and its claimed regression test module does not exist.
+- **Risk:** a temporary HTML block or transient network outage can leave filing evidence
+  unavailable without durable retry/dead-letter signaling.
+- **Disposition:** **open; extends `ST-C04`/`ST-C05`.** Model immutable attempts separately
+  from valid-content completion, retry invalid/no-byte outcomes under bounded policy,
+  enforce host/size controls, link content M:N, and fail the job when required work remains.
+
+### `ST-D04` — Daily-bar acceptance and provenance are not production-safe
+
+- **Severity / priority:** High / P0 before market reactions
+- **Fact:** the Yahoo adapter accepts NaN/Infinity OHLC and still-forming pre-close daily
+  frames, parses before persistence, and stores a pandas CSV serialization rather than
+  exact transport. It has no explicit history timeout, authoritative holiday calendar,
+  revision integration test or benchmark path. Live read-only checks found none of the
+  invalid values and no revisions, so no current corruption is alleged.
+- **Risk:** malformed/partial/provider-revised bars can become the current observation and
+  silently change later calculations; a provider-wide gap may be mislabeled a holiday.
+- **Disposition:** **open.** Add finite/duplicate/session-close checks and offline fixtures
+  now; define transport/frame provenance explicitly, then prove append-only revisions,
+  cursor and artifact crash behavior in the guarded test environment.
+
+### `ST-D05` — Remaining source utilities lack bounded, retryable trust boundaries
+
+- **Severity / priority:** Medium / P1 (High if promoted to unattended service)
+- **Fact:** legacy exchange/news/PDF scripts overwrite outputs and can exit success after
+  partial failure; BSE fetch is page-1 only. Resolver failures are cached permanently and
+  future publisher URLs have no consumer trust policy. Screener lacks title/content/unit
+  validation and silently overwrites duplicate labels. None caps response/parser growth.
+- **Disposition:** **open.** Keep these explicitly pilot-only. Reuse empirical mechanics in
+  new DB adapters with atomic exact artifacts, bounded requests/decompression/parsing,
+  retryable state, URL allowlists/private-address denial, validation and visible failures.
+
+### `ST-D06` — Tracked pilot products are stale, non-portable and weakly provenance-bound
+
+- **Severity / priority:** Medium / P1
+- **Fact:** every manifest PDF/text path is absent and absolute/foreign; Tata Elxsi is no
+  longer in the registry although seven scripts default to it; output flags cannot be
+  reproduced by current code; 26 ranked rows carry unverified quotes; generated reports
+  call document rows events. The tracked dashboard includes test identities and stale live
+  aggregates. Structural relationships and tracked numeric ranges otherwise passed, and no
+  credential pattern matched.
+- **Risk:** samples look executable/authoritative but cannot serve as deterministic fixtures;
+  full public source bodies may also retain personal contact data without a tracking policy.
+- **Disposition:** **owner decision required.** Choose between portable minimized fixtures
+  with provenance/version manifests, clearly archival pilot evidence, or removal from Git
+  history via a separately approved policy. Do not silently regenerate/refetch in this audit.
+
+### `ST-D07` — Dependency reproducibility and runtime contract are incomplete
+
+- **Severity / priority:** Medium / P2
+- **Fact:** direct packages are pinned and `pip check` passes, but pandas is imported
+  directly through a transitive dependency; runtime/dev packages are mixed; no supported
+  Python declaration, transitive lock/hash/SBOM or update policy exists. LLM and parser
+  behavior depends on unpinned transitives and an undated model alias.
+- **Disposition:** **open; extends `ST-P14`.** Declare direct imports and supported Python,
+  separate dev tooling, and adopt a reviewed hashed lock/update process with regression
+  fixtures before upgrades. Record immutable model revision/prompt/schema versions per run.
+
+### `ST-D08` — Report/dashboard output boundaries are incomplete
+
+- **Severity / priority:** Medium / P1
+- **Fact:** `make_report.py` leaves publication text and local-path href attributes
+  unescaped and has no adversarial fixture. Dashboard source/output changed concurrently
+  during this pass. Reviewed versions escaped displayed text but had fatal SQL drift
+  (initially a nonexistent `title_or_desc` column; latest observed version put `WHERE`
+  before later `JOIN`s), included test fixtures, and did not explicitly request a read-only
+  DB transaction.
+- **Disposition:** **open.** Escape every text/attribute context, remove local absolute
+  paths from portable products, add malformed-input tests, and stabilize/test or discard
+  the dashboard after owner alignment; this review did not alter the dashboard files.
+
+### `ST-D09` — Source/dependency documentation materially overstates or understates status
+
+- **Severity / priority:** Medium / P1
+- **Fact:** Yahoo L1/L2 says no fetcher exists and uses `yahoo` while live code/data use
+  `yfinance`; PROJECT_STATUS says prices remain pending; the product note says no database
+  exists; filing recovery claims a nonexistent test and incompatible invalid retry behavior;
+  Screener prose still mixes superseded policy with manual-only status. Pilot scripts can
+  be mistaken for HLD M4–M9 implementation.
+- **Disposition:** **open; extends `ST-P15`.** The documentation pass must reconcile status,
+  source names, exact-byte claims, phase position and pilot/DB-integrated boundaries without
+  converting these findings into false completion claims.
+
 ## 12. Verification record
 
 Commands were run from the repository root without displaying secrets:
@@ -767,6 +1049,30 @@ Commands were run from the repository root without displaying secrets:
   — 55/55 offline M1–M3 tests passed (no DB or network use).
 - `venv/bin/python -m py_compile scripts/companies.py scripts/nse_capture.py scripts/bse_capture.py scripts/normalize.py scripts/resolve_identity.py tests/test_nse_capture.py tests/test_bse_capture.py tests/test_normalize.py tests/test_resolve_identity.py`
   — passed.
+- `venv/bin/python -m pytest tests/test_fetch_prices.py -q` — all 16 offline price
+  helper tests passed; no DB/network use.
+- scoped `py_compile` over the eleven reviewed tracked scripts,
+  `tests/test_fetch_prices.py`, and `make_dashboard.py` (untracked at command start,
+  subsequently committed by a concurrent task) — passed.
+- read-only market-data SQL (`BEGIN TRANSACTION READ ONLY`, confirmed `on`) — 30
+  active series/partitions/cursors, 7,529 current bars (250–251 per series), 30
+  price artifacts, no revisions, missing content registrations, NaN, weekend/future,
+  invalid OHLC, missing fetch lineage, duplicate logical series, or cursor failures;
+  date span 2025-08-21..2026-08-21; rolled back.
+- tracked-data structural audit — all JSON/XML parsed; relationship/ID/hash/count,
+  path portability, quote-gate, price and generated-report aggregates are recorded in
+  §10.4 without emitting article/document bodies.
+- Screener offline replay — tracked raw HDFC HTML reparsed identically to the tracked
+  fundamentals JSON. Google resolver cache audit — 100/100 entries were structurally
+  valid HTTP(S), with no URL credentials, literal private IPs or non-HTTP schemes.
+- synthetic characterization (no files/DB) — Yahoo validation accepted NaN (zero hard
+  errors); adding one future bar changed the reaction prototype's same-event z-score
+  1.69→0.66 and rival count 0→1.
+- `venv/bin/python -m pip check` — no broken requirements; installed direct versions
+  matched `requirements.txt`; direct/transitive import comparison is in §10.4.
+- secret-safe tracked-path scanner (locations/pattern names only, excluding `tmp/pi-*`)
+  — two credentialed-URL pattern matches, manually confirmed as placeholders in
+  `.env.example` and `seed_core.py`; no credential value match. No scan artifact written.
 
 The full suite was **not run by design** due `ST-P02`; this is a safety result, not
 an unverified claim that the full suite passes.
@@ -787,18 +1093,27 @@ an unverified claim that the full suite passes.
    (`ST-C04`, `ST-C05`).
 6. Define correction/run idempotency and make M2/M3 worker claims concurrency-safe
    (`ST-C06`, `ST-C07`).
-7. Specify and implement the outbox dispatcher and alert path (`ST-P03`).
-8. Introduce least-privilege runtime DB roles (`ST-P07`).
+7. Fix filing-recovery success/retry semantics and the valid record→content/attempt
+   lifecycle; bound and validate URL/content retrieval (`ST-D03`, `ST-C04`, `ST-C05`).
+8. Keep pilot extraction/reaction output non-shipping until verified evidence,
+   event-level clustering and pre-reaction-only market fixtures pass (`ST-D01`,
+   `ST-D02`, `ST-D04`).
+9. Specify and implement the outbox dispatcher and alert path (`ST-P03`).
+10. Introduce least-privilege runtime DB roles (`ST-P07`).
 
 ### P1 hardening
 
-9. Add stale run/job/cursor/outbox/object health reporting (`ST-P09`, `ST-P13`).
-10. Close the identity outcome constraint and seed mismatch gaps through migrations
+11. Add stale run/job/cursor/outbox/object health reporting (`ST-P09`, `ST-P13`).
+12. Close the identity outcome constraint and seed mismatch gaps through migrations
     and isolated tests (`ST-P10`, `ST-P11`).
-11. Resolve the dead cross-exchange tier and manual-correction policy/event gap
+13. Resolve the dead cross-exchange tier and manual-correction policy/event gap
     (`ST-C08`, `ST-C09`).
-12. Decide and document the canonical handler transaction contract (`ST-P12`).
-13. Reconcile the complete documentation/status map (`ST-P15`).
+14. Decide and document the canonical handler transaction contract (`ST-P12`).
+15. Replace or explicitly archive legacy source utilities; add bounded parser/URL,
+    escaping and malformed-response fixtures (`ST-D05`, `ST-D08`).
+16. Choose a portable, provenance-bearing tracked sample policy (`ST-D06`).
+17. Reconcile the complete documentation/status map (`ST-P15`, `ST-D09`).
+18. Adopt the dependency/runtime lock and update policy (`ST-D07`, `ST-P14`).
 
 ### Owner alignment required
 
@@ -818,13 +1133,23 @@ an unverified claim that the full suite passes.
   must the automatic whitelist invariant also bind operator corrections?
 - Should invalid BSE bodies retry until a valid PDF is obtained (recommended), and
   what retry/age budget is acceptable before an operator alert?
+- Are `data/<slug>` products archival pilot evidence, maintained portable fixtures, or
+  generated artifacts that should not be tracked? Is tracking full extracted public
+  filings/Screener HTML (which may contain personal contact details) acceptable?
+- Should Tata Elxsi remain a supported non-whitelist pilot registry entry, or should all
+  pilot defaults/fixtures move to a current registry company?
+- For Yahoo, is a deterministic returned-frame serialization accepted as the canonical
+  provider artifact, or is transport interception required before reactions are trusted?
+  Which authoritative NSE calendar and benchmark series should M8 use?
+- Should `scripts/make_dashboard.py` be completed and tracked, or discarded as
+  pre-existing scratch work?
 
 ## 14. Known limitations
 
 - No full suite, network source call, worker drain, schema replay, restore, or
   destructive immutability test was run against the application DB.
-- Static inspection of legacy file-based/RSS and later-pipeline algorithms remains
-  assigned to later passes; “inventoried” is not an endorsement.
+- Legacy file-based/source and later-pipeline algorithms were statically reviewed, but
+  were not rerun against remote sources and remain prototypes rather than endorsed paths.
 - No live source call or hard-kill capture experiment was allowed, so source behavior
   is assessed from recorded docs/tests and current metadata, not independently
   reproduced network evidence.
