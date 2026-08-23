@@ -78,6 +78,7 @@ from psycopg.types.json import Jsonb
 sys.path.insert(0, str(Path(__file__).parent))
 
 import jobs  # noqa: E402  (handler registration via @jobs.register_handler)
+from capture_schedule import capture_interval_hours, capture_slot_key  # noqa: E402
 from companies import COMPANIES  # noqa: E402
 from object_store import ObjectStore  # noqa: E402
 
@@ -323,7 +324,7 @@ def run_partition(
 
     Raises NseFetchError on partition-level failure (after recording a failed
     fetch_run + cursor failure bump). Returns a stats dict; ``skipped: True``
-    means the partition/day had already completed and nothing was refetched.
+    means the partition/schedule slot had already completed and nothing was refetched.
 
     All collaborators are injectable for tests: ``conn`` (DB connection —
     opens+commits its own when omitted), ``store``, ``fetch_fn`` /
@@ -373,9 +374,10 @@ def _run_partition_impl(
     symbol = part["partition_key"].split(":", 1)[1]
 
     now = now or datetime.now(timezone.utc)
-    day_key = day_key or now.astimezone(IST).strftime("%Y%m%d")
-    # Deterministic per partition + IST day → re-runs of the same day find the
-    # completed run below and no-op (TODO acceptance: idempotent re-runs).
+    interval_hours = capture_interval_hours()
+    day_key = day_key or capture_slot_key(now, interval_hours=interval_hours)
+    # Deterministic per partition + configured IST slot: retries converge while
+    # the default schedule permits four independent captures per day.
     run_idem = f"nse_api:{part['partition_key']}:{day_key}"
 
     pdf_stats = {"downloaded": 0, "skipped": 0, "invalid": 0, "failed": 0}
@@ -397,7 +399,7 @@ def _run_partition_impl(
                 conn, store, sess, partition_id, prev_run_id,
                 part["partition_key"], {u: ["recovery"] for u in pending},
                 pdf_fetch_fn=pdf_fetch_fn, sleep_fn=sleep_fn, log=log)
-        log(f"[{symbol}] partition/day {day_key} already {prev_status} "
+        log(f"[{symbol}] partition/slot {day_key} already {prev_status} "
             f"(run {prev_run_id}) — skipped")
         return {"partition_id": partition_id, "symbol": symbol,
                 "fetch_run_id": prev_run_id, "status": prev_status,
@@ -439,7 +441,9 @@ def _run_partition_impl(
             """,
             (partition_id, run_idem,
              Jsonb({"impersonate": impersonate, "from": frm, "to": to,
-                    "overlap_hours": int(OVERLAP.total_seconds() // 3600)})),
+                    "overlap_hours": int(OVERLAP.total_seconds() // 3600),
+                    "capture_interval_hours": interval_hours,
+                    "schedule_slot": day_key})),
         ).fetchone()
         fetch_run_id = fr[0]
     log(f"[{symbol}] fetch_run {fetch_run_id} window {frm}..{to} "
@@ -783,13 +787,13 @@ def handle_nse_fetch(ctx: jobs.JobContext) -> None:
     """Durable-job entrypoint. Payload:
     ``{"partition_id": int}`` (``company_slug`` informational).
 
-    The underlying run is keyed deterministically per partition + IST day, so
-    crash redeliveries on the same day converge instead of duplicating."""
+    The underlying run is keyed deterministically per partition + schedule
+    slot, so crash redeliveries converge instead of duplicating."""
     payload = ctx.payload
     partition_id = payload.get("partition_id")
     if partition_id is None:
         raise NseFetchError("payload missing partition_id")
-    stats = run_partition(int(partition_id))
+    stats = run_partition(int(partition_id), day_key=payload.get("slot_key"))
     event_key = f"{JOB_KIND}.completed:{stats['run_idem']}"
     ctx.outbox.append({
         "event_type": "nse.fetch.completed",
@@ -800,8 +804,8 @@ def handle_nse_fetch(ctx: jobs.JobContext) -> None:
     })
 
 
-def enqueue(conn: psycopg.Connection, slug: str, day_key: str) -> jobs.EnqueueResult:
-    """Enqueue the daily fetch job for one slug (idempotent per day)."""
+def enqueue(conn: psycopg.Connection, slug: str, slot_key: str) -> jobs.EnqueueResult:
+    """Enqueue one fetch job for a deterministic schedule slot."""
     symbol = COMPANIES[slug].nse_symbol
     with conn.transaction():
         row = conn.execute(
@@ -814,9 +818,9 @@ def enqueue(conn: psycopg.Connection, slug: str, day_key: str) -> jobs.EnqueueRe
         return jobs.enqueue(
             conn,
             job_kind=JOB_KIND,
-            idempotency_key=f"nse_api:{symbol}:{day_key}",
+            idempotency_key=f"nse_api:{symbol}:{slot_key}",
             payload={"company_slug": slug, "partition_id": row[0],
-                     "symbol": symbol},
+                     "symbol": symbol, "slot_key": slot_key},
             priority=100,
         )
 
@@ -827,12 +831,12 @@ def enqueue(conn: psycopg.Connection, slug: str, day_key: str) -> jobs.EnqueueRe
 
 def _cmd_enqueue(args) -> int:
     slugs = list(COMPANIES) if args.all else [args.slug]
-    day_key = datetime.now(IST).strftime("%Y%m%d")
+    slot_key = capture_slot_key()
     created = 0
     with jobs.connect() as conn:
         with conn.transaction():
             for slug in slugs:
-                res = enqueue(conn, slug, day_key)
+                res = enqueue(conn, slug, slot_key)
                 created += 1 if res.created else 0
                 print(f"{'enqueued' if res.created else 'exists '} {slug} "
                       f"(job {res.job_id})")

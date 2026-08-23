@@ -16,17 +16,17 @@ unattended service yet: major Phase 0 correctness and operational gates remain o
 | Area | Current status | Important boundary |
 |---|---|---|
 | PostgreSQL/schema | Applied v1.2 baseline; 30-company registry/whitelist seeded | Persistent, not disposable; no migration framework or backup/restore coverage |
-| Object store | Implemented and content-addressed | Clean 350-object reconciliation at audit sample; stored with DB on root-disk workflow and not backed up |
+| Object store | Implemented and content-addressed | Registered objects reconcile cleanly after owner-authorized orphan cleanup; stored with DB on root-disk workflow and not backed up |
 | Jobs/outbox | Job claim/lease/retry/dead-letter worker implemented | Outbox rows are inserted, but no dispatcher exists; no scheduler/service supervision |
-| NSE capture | `nse_api` DB-integrated for all 30 registry companies | RSS absent; once-per-IST-day key conflicts with six-hour spec; bytes-before-parse and some validation/provenance gates remain open |
-| BSE capture | `bse_api` DB-integrated for all 30 registry companies | RSS absent; invalid-only URLs now retry and GUID paths are ordered correctly, but per-page provenance, canonical attempt/linkage, bounded retry, cadence and validation gaps remain open |
-| Normalizer/identity | M2 and M3 DB-integrated; exact, fail-closed automatic ladder | Parallel claims/correction semantics and one cross-exchange tier need hardening; manual policy needs owner decision |
+| NSE capture | `nse_api` DB-integrated for all 30 registry companies | Configurable IST schedule slots default to six hours; RSS absent and bytes-before-parse plus validation/provenance gates remain open |
+| BSE capture | `bse_api` DB-integrated for all 30 registry companies | Configurable six-hour default; invalid-only URLs retry and GUID paths are ordered correctly, but per-page provenance, canonical attempt/linkage, bounded retry and validation gaps remain open |
+| Normalizer/identity | M2 and M3 DB-integrated; exact, fail-closed ladder | Manual corrections are whitelist-gated and emit versioned events; parallel claims and one cross-exchange tier need hardening |
 | Filing content | Adapter PDFs and recovery utility register objects/artifacts | No canonical `content_fetch_attempts` or `record_contents` rows at audit sample; invalid/no-byte retry semantics are incomplete |
 | Yahoo daily bars | `scripts/fetch_prices.py` DB-integrated through yfinance | 30 series / 7,529 current bars at audit sample; provenance, finite/current-session checks, calendar, revisions and benchmark gates remain open |
 | Google News | File-based feed pilot + redirect resolver | No DB adapter/article fetch; transient resolver failures are cached as final |
 | Screener | File-based manual parser/fetch utility | No DB snapshot schema/adapter/schedule; owner lifted prior ToS cadence constraints, but ban-avoidance controls remain needed |
 | M4–M10 intelligence/delivery | File-based extraction/ranking/reaction/report prototypes only | Canonical text/extraction/event/insight/reaction/delivery pipeline is not implemented and prototypes must not ship |
-| Dashboard | DB-backed generated debugging view exists | Includes/filters around persistent fixtures and is not an operational health/production UI |
+| Dashboard | DB-backed generated debugging utility exists | Volatile generated `data/dashboard.html` is gitignored; this is not an operational health/production UI |
 
 ### Timestamped audit facts, not evergreen status counters
 
@@ -53,10 +53,11 @@ current totals.
 
 ## Next steps
 
-1. Back up PostgreSQL + object store together and prove a non-destructive restore; establish
-   forward migrations before more DDL.
-2. Create a guarded disposable test DB/object root. **Do not run the full DB integration
-   suite against the application database.**
+1. Establish forward migrations before more DDL. Coordinated PostgreSQL/object-store backup
+   and restore remain required before unattended operation, but the owner deferred this work
+   until the system is stable and explicitly accepts the temporary risk.
+2. Keep all DB-backed tests behind the positively marked disposable DB and separate object
+   root in `docs/testing.md`; the isolated full suite passed without production mutation.
 3. Close capture P0 defects: bytes-before-parse, BSE page/run lineage, bounded and
    allowlisted downloads, retry/link lifecycle, source validation, run/correction semantics,
    and M2/M3 concurrency.
@@ -80,3 +81,5 @@ ledger for stable IDs, evidence, recommendations, limitations, and owner questio
 - `db/schema.sql` is the frozen applied baseline. Future DDL requires reviewed forward
   migrations and a backup/restore plan.
 - PostgreSQL and `data/objects/` are persistent and not covered by current host backups.
+  Backup implementation is owner-deferred until system stability (decision 2026-08-23),
+  not cancelled; avoid additional destructive operations without explicit authorization.

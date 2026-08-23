@@ -75,3 +75,12 @@ Empirical findings from live runs. Cite as `(NSE evidence-log, YYYY-MM-DD)`.
   scheduled-window key.
 - These gaps supersede completion claims, not the empirical source findings. See review
   `ST-C01`, `ST-C04`–`ST-C07`.
+
+## 2026-08-23 — Six-hour schedule decision implemented
+
+- Owner selected a six-hour default with configuration support. Deterministic IST slot keys
+  now begin at 00:00/06:00/12:00/18:00 for the default and encode the configured interval.
+- `EXCHANGE_CAPTURE_INTERVAL_HOURS` must be a positive divisor of 24; invalid values fail
+  closed. Job payloads carry their slot so delayed workers do not drift into a later slot.
+- This supersedes only the cadence gap above; bytes-before-parse and provenance findings
+  remain open.

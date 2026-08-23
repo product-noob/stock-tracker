@@ -10,8 +10,8 @@ Three layers:
   validation, download-path ordering, cursor window math).
 * Offline pagination tests for ``_collect_pages`` (ROWCNT completeness,
   loud failure on shortfall) against a scripted fetcher — no DB, no network.
-* A DB-backed end-to-end test against the live ``stocktracker_db`` with the
-  HTTP layer and clock INJECTED (canned announcement JSON envelope + PDF /
+* A DB-backed end-to-end test against the positively marked disposable database/object
+  root with the HTTP layer and clock INJECTED (canned announcement JSON envelope + PDF /
   HTML-garbage attachment bytes; no network). It creates its own throwaway
   ``bse_api`` partition (``scrip:<fake>``) and drives the real
   ``run_partition`` across three simulated days, asserting:
@@ -28,11 +28,8 @@ Three layers:
     canary fires and "no data" is accepted only after the canary succeeds;
   - crashed-PDF-download convergence via the same-day skip path.
 
-Like ``tests/test_jobs.py``, these rows live in append-only tables (DB
-triggers reject UPDATE/DELETE on ``ingestion.raw_feed_items`` /
-``raw_artifacts`` / ``documents.content_objects``), so nothing is cleaned
-up: every artifact is namespaced under a per-test-uuid scrip and left
-behind as audit evidence.
+Like ``tests/test_jobs.py``, these rows live in append-only tables. Every artifact is
+namespaced under a per-test UUID scrip and remains only in the disposable test targets.
 """
 import hashlib
 import json
@@ -44,27 +41,10 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "scripts"))
+sys.path.insert(0, str(ROOT / "tests"))
 
 import bse_capture  # noqa: E402
-
-
-def _database_url() -> str | None:
-    """Isolated test-DB URL ONLY. Tests must never touch the live pipeline DB:
-    they create synthetic TEST*/identtest partitions and records. Requires
-    TEST_DATABASE_URL in .env (stocktracker_test); otherwise tests skip."""
-    import jobs
-    url = None
-    env_path = Path(__file__).resolve().parent.parent / ".env"
-    if env_path.exists():
-        for line in env_path.read_text(encoding="utf-8-sig").splitlines():
-            line = line.strip()
-            if line.startswith("TEST_DATABASE_URL="):
-                url = line.split("=", 1)[1].strip() or None
-                break
-    if not url:
-        import os
-        url = os.environ.get("TEST_DATABASE_URL") or None
-    return url
+from support import guarded_environment_or_skip  # noqa: E402
 
 
 # --------------------------------------------------------------------- #
@@ -335,28 +315,15 @@ class FakeBseHttp:
         return data, 200, ""
 
 
-def _db_up() -> bool:
-    url = _database_url()
-    if not url:
-        return False
-    try:
-        import psycopg
-        with psycopg.connect(url, connect_timeout=3) as conn:
-            conn.execute("SELECT 1")
-        return True
-    except Exception:
-        return False
-
-
-@unittest.skipUnless(_db_up(), "live stocktracker_db not reachable")
 class TestRunPartitionEndToEnd(unittest.TestCase):
-    """Full run_partition cycle against the real DB, fake HTTP + fixed clock."""
+    """Full run_partition cycle against a positively marked disposable DB."""
 
     def setUp(self):
-        import psycopg
         from object_store import ObjectStore
-        self.psycopg = psycopg
-        self.store = ObjectStore.from_env()
+        self.test_env = guarded_environment_or_skip()
+        self.store = ObjectStore(
+            root=self.test_env.object_root, db_url=self.test_env.database_url
+        )
         self.uid = uuid.uuid4().hex[:12]
         self.scrip = f"T{self.uid[:5]}"          # fake scrip code (unique)
         self.news_base = 99000000 + int(self.uid[:6], 16)
@@ -374,7 +341,7 @@ class TestRunPartitionEndToEnd(unittest.TestCase):
         self.t_day3 = self.t_day1 + timedelta(days=2)
 
     def _make_partition(self) -> int:
-        with self.psycopg.connect(_database_url()) as conn:
+        with self.test_env.connect() as conn:
             pid = conn.execute(
                 """
                 INSERT INTO ingestion.source_partitions
@@ -412,7 +379,7 @@ class TestRunPartitionEndToEnd(unittest.TestCase):
         self.assertEqual(s1["pdfs"]["invalid"], 1)
         api_calls_after_run1 = self.http.api_calls
 
-        with self.psycopg.connect(_database_url()) as conn:
+        with self.test_env.connect() as conn:
             # lineage shape: 3 raw items keyed bse_ann:{NEWSID} per contract
             rows = conn.execute(
                 "SELECT idempotency_key, external_id, title, description, "
@@ -517,7 +484,7 @@ class TestRunPartitionEndToEnd(unittest.TestCase):
         # day2: garbage retried (His+Live again) = 2 more
         self.assertEqual(len(self.http.pdf_calls), 5)
 
-        with self.psycopg.connect(_database_url()) as conn:
+        with self.test_env.connect() as conn:
             # still exactly 3 raw items — no duplicates
             n_items = conn.execute(
                 "SELECT count(*) FROM ingestion.raw_feed_items "
@@ -543,7 +510,7 @@ class TestRunPartitionEndToEnd(unittest.TestCase):
         self.assertEqual(s4["items_new"], 0)
         self.assertEqual(self.http.control_calls, 1,
                          "empty Table must trigger the R-BSE-9 canary")
-        with self.psycopg.connect(_database_url()) as conn:
+        with self.test_env.connect() as conn:
             kinds = dict(conn.execute(
                 "SELECT artifact_kind, count(*) FROM ingestion.raw_artifacts "
                 "WHERE fetch_run_id=%s GROUP BY 1",
@@ -565,7 +532,7 @@ class TestRunPartitionEndToEnd(unittest.TestCase):
         s1 = self._run(self.t_day1)
         self.assertEqual(s1["status"], "ok")
         self.assertEqual(s1["pdfs"]["failed"], 2)
-        with self.psycopg.connect(_database_url()) as conn:
+        with self.test_env.connect() as conn:
             n_pdf = conn.execute(
                 "SELECT count(*) FROM ingestion.raw_artifacts "
                 "WHERE fetch_run_id=%s AND artifact_kind LIKE 'filing_pdf%%'",
@@ -590,7 +557,7 @@ class TestRunPartitionEndToEnd(unittest.TestCase):
         self.assertEqual(self.http.api_calls, api_calls)
         self.assertEqual(len(self.http.pdf_calls), pdf_calls)
 
-        with self.psycopg.connect(_database_url()) as conn:
+        with self.test_env.connect() as conn:
             rows = dict(conn.execute(
                 "SELECT sha256, count(*) FROM ingestion.raw_artifacts "
                 "WHERE fetch_run_id=%s AND artifact_kind IN "

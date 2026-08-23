@@ -78,3 +78,12 @@ Empirical findings from live runs. Cite as `(BSE evidence-log, YYYY-MM-DD)`.
   run (content-addressed dedup absorbs the repeated garbage bytes).
 - Tests: ordering unit tests + retry-contract test; end-to-end fixture updated
   to the corrected semantics (91/91 pass).
+
+## 2026-08-23 — Six-hour schedule decision implemented
+
+- Owner selected a six-hour default with configuration support. Deterministic IST slot keys
+  now begin at 00:00/06:00/12:00/18:00 for the default and encode the configured interval.
+- `EXCHANGE_CAPTURE_INTERVAL_HOURS` must be a positive divisor of 24; invalid values fail
+  closed. Job payloads carry their slot so delayed workers do not drift into a later slot.
+- This supersedes the earlier daily-key cadence limitation; page provenance and exact-byte
+  ordering remain open.

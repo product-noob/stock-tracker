@@ -107,7 +107,20 @@ class ObjectStore:
     """Content-addressed blob store backed by ``documents.content_objects``."""
 
     def __init__(self, root: Path | str = DEFAULT_ROOT, db_url: Optional[str] = None):
-        self.root = Path(root)
+        candidate = Path(root)
+        from test_environment import PRODUCTION_OBJECT_ROOT, test_mode_enabled
+
+        if test_mode_enabled():
+            try:
+                resolved = candidate.resolve()
+                production = PRODUCTION_OBJECT_ROOT.resolve(strict=True)
+            except (OSError, RuntimeError):
+                raise ObjectStoreError("test object root cannot be resolved safely") from None
+            if resolved == production or production in resolved.parents:
+                raise ObjectStoreError(
+                    "test mode refuses the application object tree"
+                )
+        self.root = candidate
         self.db_url = db_url
 
     # ------------------------------------------------------------------ #
@@ -116,14 +129,26 @@ class ObjectStore:
 
     @classmethod
     def from_env(cls, root: Path | str = DEFAULT_ROOT) -> "ObjectStore":
-        """Build a store using DATABASE_URL from the repo ``.env`` (lazily, on
-        first DB use)."""
+        """Build a store from runtime configuration.
+
+        Explicit test mode ignores the default/application root and requires the
+        centralized positively marked disposable database and object root.  Merely
+        importing a test framework never changes routing.
+        """
+        from test_environment import guarded_test_environment, test_mode_enabled
+
+        if test_mode_enabled():
+            environment = guarded_test_environment()
+            requested = Path(root)
+            if requested != DEFAULT_ROOT and requested.resolve() != environment.object_root:
+                raise ObjectStoreError(
+                    "explicit object root differs from guarded test object root"
+                )
+            return cls(root=environment.object_root, db_url=environment.database_url)
         return cls(root=root, db_url=None)
 
     def _ensure_db_url(self) -> str:
         if self.db_url is None:
-            # Route through jobs.db_url_from_env so unittest processes get the
-            # isolated stocktracker_test DB automatically (2026-08-23).
             from jobs import db_url_from_env
             self.db_url = db_url_from_env()
         return self.db_url

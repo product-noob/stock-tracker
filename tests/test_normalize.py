@@ -9,7 +9,7 @@ Two layers:
 * Offline pure-helper tests: NSE/BSE field mapping, fail-closed shape gate,
   timestamp parsing (IST → UTC), fingerprint stability/change sensitivity,
   revision-key building.
-* A DB-backed end-to-end test against the live ``stocktracker_db`` covering
+* A DB-backed end-to-end test against a positively marked disposable target covering
   the TODO acceptance matrix:
 
   - happy path: raw item → normalized record + sighting link + outbox event;
@@ -23,43 +23,23 @@ Two layers:
     ``ingestion.stage_errors`` — never silently dropped, never guessed into a
     record.
 
-Like the capture-adapter tests, these rows live in append-only tables, so
-nothing is cleaned up: every fixture row is namespaced under a per-test uuid
-(``TESTNORM<uid>`` partition keys) and left behind as audit evidence. Note
-that ``run_normalize`` processes ALL pending items, including real dev-DB
-items — that is by design (it is the production path) and every fixture
-assertion below filters strictly on its own namespaced ids.
+Like the capture-adapter tests, these rows live in append-only tables and remain in the
+disposable target. ``run_normalize`` processes all pending items there, never application
+work; fixture assertions still filter on their namespaced IDs.
 """
 import json
 import sys
 import unittest
 import uuid
 from datetime import datetime, timezone
-import os
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "scripts"))
+sys.path.insert(0, str(ROOT / "tests"))
 
 import normalize  # noqa: E402
-
-
-def _database_url() -> str | None:
-    """Isolated test-DB URL ONLY (TEST_DATABASE_URL in .env). Tests create
-    synthetic TEST*/identtest data and must never touch the live pipeline DB
-    (2026-08-23 cleanup: they did, twice). Skips if not configured."""
-    url = os.environ.get("TEST_DATABASE_URL")
-    if not url:
-        env_file = ROOT / ".env"
-        if env_file.exists():
-            for line in env_file.read_text(encoding="utf-8-sig").splitlines():
-                line = line.strip()
-                if line.startswith("TEST_DATABASE_URL="):
-                    url = line.split("=", 1)[1].strip() or None
-                    break
-    if url and "stocktracker_test" not in url:
-        return None  # refuse anything that is not the isolated test DB
-    return url
+from support import guarded_environment_or_skip  # noqa: E402
 
 
 
@@ -214,14 +194,14 @@ class TestFingerprintAndKeys(unittest.TestCase):
 
 
 # --------------------------------------------------------------------- #
-# DB-backed end-to-end (live stocktracker_db)
+# DB-backed end-to-end (positively marked disposable target)
 # --------------------------------------------------------------------- #
 
-@unittest.skipUnless(_database_url(), "stocktracker_db not reachable")
 class TestDbBacked(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         import jobs
+        cls.test_env = guarded_environment_or_skip()
         cls.jobs = jobs
         cls.conn = jobs.connect()
         cls.uid = uuid.uuid4().hex[:10]

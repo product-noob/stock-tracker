@@ -56,7 +56,6 @@ from __future__ import annotations
 
 import os
 import socket
-import sys
 import threading
 import time
 import uuid
@@ -145,37 +144,20 @@ def get_handler(job_kind: str) -> HandlerFn:
 # connection helpers
 # --------------------------------------------------------------------- #
 
-def _under_unittest() -> bool:
-    """True when running inside a unittest/pytest discovery process, or in a
-    child process explicitly opted in (test-spawned workers need this since
-    sys.modules does not carry across subprocess boundaries)."""
-    return ("unittest" in sys.modules
-            or os.environ.get("STOCKTRACKER_USE_TEST_DB") == "1")
-
-
 def db_url_from_env(env_path: Path | str = ROOT / ".env") -> str:
-    """Read DATABASE_URL from the repo .env (never log or print it).
+    """Read the configured database target without ever logging it.
 
-    Under unittest/pytest, TEST_DATABASE_URL takes precedence instead: the
-    test suite creates synthetic data and must never touch the live pipeline
-    DB (2026-08-23 cleanup — live DB had to be rebuilt twice over this).
+    Test routing is enabled only by the explicit, subprocess-safe test-mode flag.
+    It then crosses the positive marker/object-root guard; test-framework imports
+    alone never alter production configuration.
     """
-    if _under_unittest():
-        test_url = os.environ.get("TEST_DATABASE_URL")
-        if not test_url:
-            path = Path(env_path)
-            if path.exists():
-                for line in path.read_text(encoding="utf-8-sig").splitlines():
-                    line = line.strip()
-                    if line.startswith("TEST_DATABASE_URL="):
-                        test_url = line.split("=", 1)[1].strip() or None
-                        break
-        if test_url:
-            if "stocktracker_test" not in test_url:
-                raise JobsError(
-                    "TEST_DATABASE_URL must point at the isolated "
-                    "stocktracker_test database, refusing to use it")
-            return test_url
+    from test_environment import guarded_test_environment, test_mode_enabled
+
+    if test_mode_enabled():
+        try:
+            return guarded_test_environment(env_path=env_path).database_url
+        except Exception as exc:
+            raise JobsError("guarded test database configuration was rejected") from exc
     path = Path(env_path)
     if path.exists():
         for line in path.read_text(encoding="utf-8-sig").splitlines():
@@ -191,7 +173,23 @@ def db_url_from_env(env_path: Path | str = ROOT / ".env") -> str:
 
 
 def connect(url: Optional[str] = None) -> psycopg.Connection:
-    """Open a connection (autocommit off; callers own transactions)."""
+    """Open a connection (autocommit off; callers own transactions).
+
+    In explicit test mode, even URL-less production call sites and explicit URL
+    callers must pass the centralized positive guard before a connection is returned.
+    """
+    from test_environment import guarded_test_environment, test_mode_enabled
+
+    if test_mode_enabled():
+        try:
+            environment = guarded_test_environment()
+            if url is not None and url != environment.database_url:
+                raise JobsError("explicit database target differs from guarded test target")
+            return environment.connect()
+        except JobsError:
+            raise
+        except Exception as exc:
+            raise JobsError("guarded test database configuration was rejected") from exc
     return psycopg.connect(url or db_url_from_env())
 
 

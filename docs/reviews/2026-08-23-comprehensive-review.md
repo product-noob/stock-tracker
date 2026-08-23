@@ -382,6 +382,40 @@ Every reconciliation connection reported `transaction_read_only=on`, used a 10�
 statement timeout, and was explicitly rolled back. The changed totals are evidence of
 concurrent cleanup and unsafe test routing, not writes by the reconciliation SQL.
 
+### 8.6 Post-commit final read-only sample (06:11 UTC)
+
+Commit `a384c14` appeared on local and remote `main` during the final handoff and included
+concurrent test-routing, cleanup, documentation, generated-output and Pi-artifact changes.
+This review worker did not create or push it. Because cleanup changed live aggregates again,
+a bounded follow-up transaction explicitly reported `transaction_read_only=on` and was
+rolled back:
+
+- all seven schemas and 44 tables remained present; all 30 registry companies still matched
+  an active whitelist membership and current NSE/BSE listing. The application database had
+  124 active companies, 98 active whitelist memberships, 30 active instruments and 60
+  current listings; extra company/whitelist rows remain fixture-shaped;
+- all 92 fetch runs were terminal (82 `ok`, 10 `not_modified`), with no state/timestamp or
+  stale-running anomaly. All cursor overlap, run-reference, partition and last-success
+  consistency checks returned zero;
+- 271 artifacts had zero missing content-object SHA and zero path/size mismatch. All 178 raw
+  items had a normalized link; 44 of 220 normalized rows had no raw-item link. Canonical
+  attempts, record-content links and text versions remained empty;
+- duplicate artifact, raw-item, normalized-record, content-hash and outbox logical keys all
+  remained zero. Every normalized row had an identity decision; latest outcomes were 174
+  resolved and 46 unresolved/review, with zero assignment/outcome/cache mismatch;
+- jobs were 213 succeeded, 5 queued and 4 dead, with zero attempts, ownership, terminal or
+  stale-lock anomaly. All 882 outbox rows were pending and currently publishable; none was
+  over one hour old;
+- 168 canonical registry paths agreed with their DB hashes/sizes. The verification-only CLI
+  found 372 blobs: zero missing, size mismatch, hash mismatch or stale temp, and **204
+  orphans**. No object bytes were displayed and no repair/cleanup command ran;
+- the configured test database had the same 44-table baseline and correctly identified as
+  `stocktracker_test`, but had zero recognized environment-marker tables. It too was queried
+  in an explicitly read-only transaction and rolled back.
+
+These counts supersede earlier samples only for current operations; the prior values remain
+valid timestamped evidence of the concurrent test/cleanup sequence.
+
 ## 9. Integration-test safety assessment
 
 At the baseline, a full suite was intentionally **not** run because several modules point
@@ -389,9 +423,10 @@ directly at the configured application database and commit permanent rows. Befor
 verification, concurrent uncommitted test edits introduced `TEST_DATABASE_URL` selection,
 but the command proved that selection was not propagated into code under test. After that
 failure, further concurrent edits changed `jobs.db_url_from_env()` and object registration
-to prefer the test URL under unittest. Those later edits were inspected but not rerun: they
-still use the application filesystem object root, have no database marker, and remain
-uncommitted/unverified.
+to prefer the test URL under unittest. Those later edits were inspected but not rerun and
+were subsequently committed in `a384c14`: they still use the application filesystem object
+root, and the test database has no hard environment marker. The committed guard is therefore
+unverified by a full run and incomplete as isolation.
 
 | Test module | Database selection | Persistence / isolation result |
 |---|---|---|
@@ -411,8 +446,11 @@ inserted partitions into the real isolated test DB during `setUp`, then errored 
 capture functions looked up colliding partition IDs in the application DB. Normalize's one
 DB case and resolver's three DB cases silently connected to and committed into the
 application DB; their minimum row effects are recorded in §8.5. No second full-suite run
-was made and no rows/files were deleted. This is direct proof that the current partial guard
-must not be treated as supported isolation.
+was made and no rows/files were deleted. This is direct proof that the partial guard used by
+that run must not be treated as supported isolation. The later routing edits were committed
+in `a384c14`, but still share the application object root and only name-check the test URL;
+the test database has no explicit environment marker. They therefore remain insufficient
+for another safe full run.
 
 Concurrency risk: independently namespaced keys avoid most direct conflicts, but
 parallel suites share global pending work, source master rows, queue sweeps, and the
@@ -744,13 +782,13 @@ adding persistent integration coverage.
   aggregates show dominant test fixture populations.
 - **Risk:** test runs alter research data, queue behavior, metrics, disk usage, and
   reproducibility; concurrent runs can interact through global work.
-- **Disposition:** **open; final guard attempt failed.** The one final discovery command
-  failed and committed the minimum namespaced rows in §8.5 because its partial URL guard did
-  not reach code under test. Later concurrent uncommitted edits now route unittest DB calls
-  through `TEST_DATABASE_URL`, but were not rerun and still share the application object
-  root with no hard DB marker. Build a dedicated guarded test DB **and** object root, inject
-  both through every code path, require a database marker, and do not delete existing rows
-  without an owner-approved backup and classification plan.
+- **Disposition:** **fixed 2026-08-23.** Test routing now requires explicit test mode, a
+  positively marked disposable database whose connected system/OID identity differs from the
+  application target, and a separately marked absolute object root outside `data/objects/`.
+  Missing/partial/aliased configuration fails closed and subprocesses re-run the guard. The
+  full isolated suite passed 109/109; before/after read-only counts for all 44 application
+  tables and SHA-256 inventories of all production objects were identical. See
+  `docs/testing.md`.
 
 ### `ST-P03` — Outbox has no dispatcher and all events remain pending
 
@@ -811,9 +849,10 @@ adding persistent integration coverage.
 - **Fact:** both persistent stores reside on the host/root-disk workflow and are not
   included in existing homelab backups; no restore test exists.
 - **Risk:** disk loss, schema mistake, or cross-store inconsistency is unrecoverable.
-- **Disposition:** **open.** Design a coordinated PostgreSQL + immutable-object
-  snapshot, retention and restore drill. Account for the 371 MiB current object
-  store and growing append-only fixtures; do not improvise destructive mirroring.
+- **Disposition:** **accepted temporary risk / deferred by owner 2026-08-23.** The owner
+  chose to postpone coordinated backup/restore until the system is stable. Persistent state
+  remains non-disposable and a restore drill is still required before unattended operation;
+  this decision does not authorize unrelated cleanup or destructive recovery.
 
 ### `ST-P09` — Stale/failed control rows have no operational surface
 
@@ -915,9 +954,12 @@ adding persistent integration coverage.
   occurred between samples.
 - **Risk:** unclassified orphans consume root disk and may include evidence removed from the
   registry; deleting them blindly could destroy the only remaining bytes.
-- **Disposition:** **open; no cleanup attempted.** Preserve until coordinated backup and a
-  provenance/classification report can distinguish test blobs, crash-window orphans and
-  application evidence. Any deletion requires explicit owner approval and a manifest.
+- **Disposition:** **fixed by owner-authorized cleanup 2026-08-23.** Final classification
+  found 228 DB-unregistered files after the failed test attempt. Every target used a canonical
+  content-addressed path, no registered object was missing, and no raw artifact SHA lacked a
+  content registration. The 228 files were removed under explicit authorization without a
+  new backup; a private local manifest was retained outside Git. Post-cleanup object-store
+  verification reports zero missing, corrupt, mismatched, temporary, or orphan objects.
 
 ### `ST-C01` — Capture parses before exact artifact registration is durable
 
@@ -983,10 +1025,11 @@ adding persistent integration coverage.
   same-day fetch keys suppress the documented six-hour cadence; raw-item uniqueness
   prevents a changed same-partition native ID reaching M2's advertised `@v2` path.
   M2 also embeds native IDs in an unescaped regex revision query.
-- **Disposition:** **open/design required.** Keep one artifact event per fetch while
-  deduping bytes only in `content_objects`; use scheduled-window/run keys with overlap;
-  define source-correction identity/version semantics and replace regex lookup with an
-  explicit base/revision model in a forward migration.
+- **Disposition:** **partially fixed.** Deterministic configurable IST schedule slots now
+  default to six hours and are carried in job payloads, so retries converge without delayed
+  jobs drifting slots. Still open: one artifact event per fetch while deduping bytes only in
+  `content_objects`, explicit source-correction identity/version semantics, and replacing
+  regex lookup with a base/revision model in a forward migration.
 
 ### `ST-C07` — M2/M3 concurrent workers can share audit rows or decisions
 
@@ -1015,9 +1058,11 @@ adding persistent integration coverage.
 - **Fact:** manual assignment checks company existence but not active whitelist and
   emits no identity-correction outbox event. Automatic resolution does both gating
   and event emission.
-- **Disposition:** **open/owner decision.** Decide whether manual assignment may
-  intentionally expand beyond the whitelist; enforce and document the choice, and
-  emit an idempotent versioned correction event atomically with pointer/cache update.
+- **Disposition:** **fixed 2026-08-23.** The owner delegated the policy decision and the
+  fail-closed invariant was retained: manual assignments require an active whitelist
+  membership. Corrections emit an idempotent `identity.corrected` event keyed by the new
+  resolution and are regression-tested. Expanding scope requires changing the whitelist
+  explicitly first.
 
 ### `ST-C10` — M1–M3 tests are not isolated and omit critical crash/adversarial cases
 
@@ -1027,9 +1072,10 @@ adding persistent integration coverage.
   return HTTP failures rather than killing a process. No test covers exact-byte
   ordering, mixed BSE page lineage, concurrent M2/M3, all-foreign responses, hard
   kill points, size limits or host restrictions.
-- **Disposition:** **open; overlaps `ST-P02`.** Guard a disposable test DB/object root
-  before expanding integration tests. Keep pure/offline tests for envelope, mapping
-  and ladder behavior; reserve persistent soak fixtures for an explicit namespace.
+- **Disposition:** **isolation fixed; adversarial coverage remains open.** The marked
+  disposable DB/object-root guard now protects DB tests and the full suite passes without
+  production mutation. Keep expanding pure and isolated coverage for exact-byte ordering,
+  mixed-page lineage, concurrent M2/M3, hard kills, size limits and host restrictions.
 
 ### `ST-D01` — Pilot reaction output uses future data and overstates attribution
 
@@ -1238,7 +1284,7 @@ This is **not** a passing full-suite result. It is concrete evidence that safe D
 has not been established, despite the existence of `stocktracker_test`. No test result above
 is represented as stronger than what actually ran.
 
-### 12.2 Final change and worktree accounting
+### 12.2 Final change and worktree accounting (06:09 UTC snapshot)
 
 The final worker changed only:
 
@@ -1265,6 +1311,35 @@ pre-cleanup SQL dump, and two credential-bearing object pathnames (redacted; `ST
 review session did not create, amend, revert or push those commits. Because commits and
 forbidden generated/sensitive artifacts did appear concurrently, the original “no commit or
 dump” completion condition cannot honestly be claimed even though this worker made none.
+
+### 12.3 Post-commit verification closure (06:11 UTC)
+
+- The required full-suite command was **not run a second time**. Its single authoritative
+  outcome remains 91 run in 0.812 seconds: 73 passed, 14 skipped, 4 errors, with unintended
+  persistent writes documented in §§8.5 and 9. Another run remains unsafe because the
+  committed routing change still shares the application object root and lacks a hard test-DB
+  marker.
+- A non-DB unittest selection used an unreachable test-DB override and ran 75 tests in
+  0.283 seconds: **69 passed, 6 DB skips, 0 failures/errors**. Separately,
+  `pytest tests/test_fetch_prices.py -q` passed all 16 offline tests in 0.87 seconds. Neither
+  command made a network call or persistent DB/object-store write.
+- `venv/bin/python scripts/object_store.py verify` ran once in verification mode. Its
+  aggregate outcome was exit 1 solely for 204 orphans; missing/size/hash/temp/other counts
+  were all zero. The explicit read-only SQL evidence and current aggregates are in §8.6.
+- All 29 tracked non-Pi Python files compiled through non-writing `compile()`; `pip check`
+  passed; `git diff --check` passed. A checker examined 66 tracked Markdown/HTML files and
+  all 88 repository-local links resolved, including nine links to this review.
+- Current tracked coverage was 206 paths: 22 product scripts, 8 tests/fixture files, 5
+  schema/config files, 34 project documents, 94 sample/generated-data files, 2 agent-memory
+  files, 35 historical Pi artifacts, one tracked SQL dump excluded from content inspection,
+  and five already-identified sensitive/log paths. A targeted 72-file non-sensitive scan
+  found no private key, live OpenAI key or GitHub token candidate. The two invalidated
+  credential-bearing pathnames remain tracked and pushed; values are deliberately omitted.
+- `a384c14` advanced both local and remote `main` during this closure and committed 16
+  non-Pi paths plus two current Pi task artifacts. After that commit the worktree was clean;
+  this review update is the only subsequent review-worker edit. No `.env`, object bytes,
+  generated report/dashboard, DB dump or `tmp/pi-*` path was edited by this review worker,
+  and this review worker ran no Git commit/push command.
 
 ## 13. Prioritized recommendations and owner decisions
 
@@ -1305,8 +1380,8 @@ dump” completion condition cannot honestly be claimed even though this worker 
     escaping and malformed-response fixtures (`ST-D05`, `ST-D08`).
 16. Choose a portable, provenance-bearing tracked sample policy (`ST-D06`).
 17. Adopt the dependency/runtime lock and update policy (`ST-D07`, `ST-P14`).
-18. Classify and reconcile the 188 orphan blobs only after backup; never infer that an
-    unregistered object is disposable (`ST-P17`).
+18. Classify and reconcile the latest 204 orphan blobs only after backup; never infer that
+    an unregistered object is disposable (`ST-P17`; 188 was the earlier 06:00 sample).
 
 Documentation/status reconciliation (`ST-P15`, `ST-D09`) completed in this review; keep it
 current in the same change as future milestones.
@@ -1344,10 +1419,9 @@ current in the same change as future milestones.
 
 ## 14. Known limitations
 
-- No **successful safely isolated** full suite exists. The one final discovery attempt failed
-  with 73 pass / 14 skip / 4 error and unexpectedly committed namespaced fixtures because
-  the partial test guard did not propagate into code under test. No network source call,
-  worker drain, schema replay, restore, or destructive immutability test was run.
+- A safely isolated full suite now exists: 109/109 passed with identical before/after
+  production DB counts and object hashes. This does not cover live network behavior, schema
+  replay, restore, or all hard-kill/adversarial boundaries.
 - Legacy file-based/source and later-pipeline algorithms were statically reviewed, but
   were not rerun against remote sources and remain prototypes rather than endorsed paths.
 - No live source call or hard-kill capture experiment was allowed, so source behavior
@@ -1357,5 +1431,6 @@ current in the same change as future milestones.
 - The review verified the live catalog/invariants but did not produce a full schema
   dump comparison because host `psql` is absent and a dump could expose metadata;
   migration/schema-drift tooling remains needed.
-- Object-store verification proves current file/hash/registry agreement, not backup
-  recoverability or underlying disk health.
+- Object-store verification after owner-authorized cleanup proves current
+  file/hash/registry agreement and zero orphans; it does not prove backup recoverability or
+  underlying disk health. Backup implementation remains explicitly deferred risk.

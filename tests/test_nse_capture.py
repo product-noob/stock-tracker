@@ -7,8 +7,8 @@ Two layers:
 
 * Offline unit tests for the pure helpers (an_dt parsing, idempotency keys,
   stale-session sniffing, magic-byte validation, cursor window math).
-* A DB-backed end-to-end test against the live ``stocktracker_db`` with the
-  HTTP layer and clock INJECTED (canned announcement JSON + PDF bytes; no
+* A DB-backed end-to-end test against the positively marked disposable database/object
+  root with the HTTP layer and clock INJECTED (canned announcement JSON + PDF bytes; no
   network). It creates its own throwaway ``nse_api`` partition (symbol
   ``TEST<uuid>``) and drives the real ``run_partition`` across two simulated
   days, asserting:
@@ -20,11 +20,8 @@ Two layers:
   - day 2 run (overlap window): same payload re-seen → zero new items,
     PDF not re-downloaded, no duplicate sha256 registrations.
 
-Like ``tests/test_jobs.py``, these rows live in append-only tables (DB
-triggers reject UPDATE/DELETE on ``ingestion.raw_feed_items`` /
-``raw_artifacts`` / ``documents.content_objects``), so nothing is cleaned up:
-every artifact is namespaced under a per-test-uuid symbol
-(``symbol:TEST<uuid>``) and left behind as audit evidence.
+Like ``tests/test_jobs.py``, these rows live in append-only tables. Every artifact is
+namespaced under a per-test UUID symbol and remains only in the disposable test targets.
 """
 import hashlib
 import json
@@ -36,27 +33,10 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "scripts"))
+sys.path.insert(0, str(ROOT / "tests"))
 
 import nse_capture  # noqa: E402
-
-
-def _database_url() -> str | None:
-    """Isolated test-DB URL ONLY. Tests must never touch the live pipeline DB:
-    they create synthetic TEST*/identtest partitions and records. Requires
-    TEST_DATABASE_URL in .env (stocktracker_test); otherwise tests skip."""
-    import jobs
-    url = None
-    env_path = Path(__file__).resolve().parent.parent / ".env"
-    if env_path.exists():
-        for line in env_path.read_text(encoding="utf-8-sig").splitlines():
-            line = line.strip()
-            if line.startswith("TEST_DATABASE_URL="):
-                url = line.split("=", 1)[1].strip() or None
-                break
-    if not url:
-        import os
-        url = os.environ.get("TEST_DATABASE_URL") or None
-    return url
+from support import guarded_environment_or_skip  # noqa: E402
 
 
 # --------------------------------------------------------------------- #
@@ -179,28 +159,15 @@ class FakeHttp:
         return data, 200, ""
 
 
-def _db_up() -> bool:
-    url = _database_url()
-    if not url:
-        return False
-    try:
-        import psycopg
-        with psycopg.connect(url, connect_timeout=3) as conn:
-            conn.execute("SELECT 1")
-        return True
-    except Exception:
-        return False
-
-
-@unittest.skipUnless(_db_up(), "live stocktracker_db not reachable")
 class TestRunPartitionEndToEnd(unittest.TestCase):
-    """Full run_partition cycle against the real DB, fake HTTP + fixed clock."""
+    """Full run_partition cycle against a positively marked disposable DB."""
 
     def setUp(self):
-        import psycopg
         from object_store import ObjectStore
-        self.psycopg = psycopg
-        self.store = ObjectStore.from_env()
+        self.test_env = guarded_environment_or_skip()
+        self.store = ObjectStore(
+            root=self.test_env.object_root, db_url=self.test_env.database_url
+        )
         self.uid = uuid.uuid4().hex[:12]
         self.symbol = f"TEST{self.uid.upper()[:8]}"
         self.partition_id = self._make_partition()
@@ -210,7 +177,7 @@ class TestRunPartitionEndToEnd(unittest.TestCase):
         self.t_day2 = self.t_day1 + timedelta(days=1)
 
     def _make_partition(self) -> int:
-        with self.psycopg.connect(_database_url()) as conn:
+        with self.test_env.connect() as conn:
             pid = conn.execute(
                 """
                 INSERT INTO ingestion.source_partitions
@@ -246,7 +213,7 @@ class TestRunPartitionEndToEnd(unittest.TestCase):
         self.assertEqual(s1["http_status"], 200)
         api_calls_after_run1 = self.http.api_calls
 
-        with self.psycopg.connect(_database_url()) as conn:
+        with self.test_env.connect() as conn:
             # lineage shape: 2 raw items keyed per contract
             rows = conn.execute(
                 "SELECT idempotency_key, external_id, title, content_url, "
@@ -315,7 +282,7 @@ class TestRunPartitionEndToEnd(unittest.TestCase):
                          "already-captured PDF must not be re-downloaded")
         self.assertEqual(len(self.http.pdf_calls), 1)
 
-        with self.psycopg.connect(_database_url()) as conn:
+        with self.test_env.connect() as conn:
             # still exactly 2 raw items — no duplicates
             n_items = conn.execute(
                 "SELECT count(*) FROM ingestion.raw_feed_items "
@@ -353,7 +320,7 @@ class TestRunPartitionEndToEnd(unittest.TestCase):
         self.assertEqual(s1["status"], "ok")
         self.assertEqual(s1["pdfs"]["failed"], 1,
                          "initial attempt + re-warm retry both fail → 1 failure")
-        with self.psycopg.connect(_database_url()) as conn:
+        with self.test_env.connect() as conn:
             n_pdf = conn.execute(
                 "SELECT count(*) FROM ingestion.raw_artifacts "
                 "WHERE fetch_run_id=%s AND artifact_kind='filing_pdf'",
@@ -376,7 +343,7 @@ class TestRunPartitionEndToEnd(unittest.TestCase):
         self.assertEqual(self.http.api_calls, api_calls)
         self.assertEqual(len(self.http.pdf_calls), pdf_calls)
 
-        with self.psycopg.connect(_database_url()) as conn:
+        with self.test_env.connect() as conn:
             rows = conn.execute(
                 "SELECT sha256, count(*) FROM ingestion.raw_artifacts "
                 "WHERE fetch_run_id=%s AND artifact_kind LIKE 'filing_pdf%%' "

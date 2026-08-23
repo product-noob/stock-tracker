@@ -31,7 +31,7 @@ NSE/BSE filings collapse downstream by SHA-256), extraction (M5).
 |---|---|---|
 | `(bse_rss, announcements.xml)` | 300 s | ≥ 2× interval |
 | `(bse_rss, <Category>Feed.xml)` × ~8 | 900 s | same |
-| `(bse_api, scrip:{SCRIP})` | **required:** 6 h rolling; **implemented:** at most once per IST day | 24 h overlap |
+| `(bse_api, scrip:{SCRIP})` | 6 h rolling by default; configurable positive divisor of 24 via `EXCHANGE_CAPTURE_INTERVAL_HOURS` | 24 h overlap |
 | `(bse_api, ...)/backfill` | manual / reconciliation | explicit range |
 
 Cursor rules identical to NSE (advance only after artifact + items commit).
@@ -59,8 +59,8 @@ Cursor rules identical to NSE (advance only after artifact + items commit).
   values previously shown here remain a dated first-ingestion snapshot in the evidence log,
   not current production totals.
 - **Contract gaps:** responses are collected/parsed before artifact persistence; multi-page
-  rows can point at the wrong page/run; the once-per-day key contradicts six-hour cadence;
-  invalid-only URLs now retry every run but have no bounded attempt/backoff model;
+  rows can point at the wrong page/run; deterministic configurable IST slots now implement
+  the six-hour default cadence; invalid-only URLs retry every run but have no bounded attempt/backoff model;
   all-foreign results can pass the empty gate; downloads are unbounded; canonical
   fetch-attempt and record-content rows are absent. This is partial C1 plus content
   artifacts, not complete C3/M4 lineage.

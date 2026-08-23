@@ -4,13 +4,11 @@
 Run with:
     venv/bin/python -m unittest tests.test_jobs -v
 
-These tests exercise the REAL ``platform.processing_jobs`` and
-``platform.outbox_events`` tables in the live ``stocktracker_db`` (start it
-with ``docker compose up -d``). Both tables are append-only by design (DB
-triggers forbid DELETE), so tests cannot clean up after themselves: every
-test namespaces its rows under unique job_kind prefixes / idempotency keys
-(UUIDs) so runs never collide, and leaves its rows behind as audit evidence.
-They are skipped automatically if DATABASE_URL is missing or the DB is down.
+These tests exercise real ``platform.processing_jobs`` and
+``platform.outbox_events`` tables only in the positively marked disposable target from
+``TEST_DATABASE_URL``. Both tables are append-only by design, so fixtures remain in that
+test target. Missing integration configuration skips the DB classes; partial or unsafe
+configuration fails closed before a write.
 
 Covered:
 * enqueue idempotency-key dedup (same key twice -> one row)
@@ -34,62 +32,28 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "scripts"))
+sys.path.insert(0, str(ROOT / "tests"))
 
 import jobs  # noqa: E402
 import job_handlers  # noqa: E402,F401  (registers demo/selftest handlers)
+from support import guarded_environment_or_skip  # noqa: E402
 
 WORKER = [sys.executable, str(ROOT / "scripts" / "job_worker.py")]
-
-
-_TEST_URL_ENV: str | None = None
-
-def _database_url() -> str | None:
-    """Isolated test-DB URL ONLY (TEST_DATABASE_URL in .env). Tests create
-    synthetic TEST*/identtest data and must never touch the live pipeline DB
-    (2026-08-23 cleanup: they did, twice). Skips if not configured."""
-    url = os.environ.get("TEST_DATABASE_URL")
-    if not url:
-        env_file = ROOT / ".env"
-        if env_file.exists():
-            for line in env_file.read_text(encoding="utf-8-sig").splitlines():
-                line = line.strip()
-                if line.startswith("TEST_DATABASE_URL="):
-                    url = line.split("=", 1)[1].strip() or None
-                    break
-    if url and "stocktracker_test" not in url:
-        return None  # refuse anything that is not the isolated test DB
-    if url:
-        global _TEST_URL_ENV
-        _TEST_URL_ENV = url
-        os.environ.setdefault("TEST_DATABASE_URL", url)
-    return url
-
-
-
-
-def _db_available(url: str) -> bool:
-    try:
-        with jobs.connect(url):
-            return True
-    except Exception:
-        return False
-
-
-_DB_URL = _database_url()
-_DB_UP = bool(_DB_URL) and _db_available(_DB_URL)
 
 
 def _uid() -> str:
     return uuid.uuid4().hex[:12]
 
 
-@unittest.skipUnless(_DB_UP, "live stocktracker_db not reachable")
 class JobsIntegrationTestCase(unittest.TestCase):
-    """Base: live-DB helpers."""
+    """Base: positively marked disposable-DB helpers."""
+
+    @classmethod
+    def setUpClass(cls):
+        cls.test_env = guarded_environment_or_skip()
 
     def url(self) -> str:
-        assert _DB_URL is not None
-        return _DB_URL
+        return self.test_env.database_url
 
     def q1(self, sql: str, params=None):
         with jobs.connect(self.url()) as conn:
@@ -279,7 +243,7 @@ class TestCrashRecovery(JobsIntegrationTestCase):
         # Real worker subprocess that claims the job and os._exit(9)s mid-job.
         proc = subprocess.run(WORKER + ["--queue", kind, "--drain", "--quiet"],
                               capture_output=True, text=True, timeout=120,
-                              env={**os.environ, "STOCKTRACKER_USE_TEST_DB": "1"})
+                              env=self.test_env.subprocess_env())
         self.assertEqual(proc.returncode, 9,
                          f"worker must die via os._exit(9); stderr="
                          f"{proc.stderr[-2000:]}")
@@ -302,7 +266,7 @@ class TestCrashRecovery(JobsIntegrationTestCase):
         # A healthy retry now succeeds.
         proc = subprocess.run(WORKER + ["--queue", kind, "--drain", "--quiet"],
                               capture_output=True, text=True, timeout=120,
-                              env={**os.environ, "STOCKTRACKER_USE_TEST_DB": "1"})
+                              env=self.test_env.subprocess_env())
         self.assertEqual(proc.returncode, 0,
                          f"retry worker must exit cleanly; stderr="
                          f"{proc.stderr[-2000:]}")
@@ -435,7 +399,7 @@ class TestGracefulShutdown(JobsIntegrationTestCase):
         proc = subprocess.Popen(
             WORKER + ["--queue", kind, "--quiet", "--poll-interval", "0.2"],
             stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True,
-            env={**os.environ, "STOCKTRACKER_USE_TEST_DB": "1"},
+            env=self.test_env.subprocess_env(),
         )
         try:
             row = None

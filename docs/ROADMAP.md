@@ -36,7 +36,8 @@ Implemented and present in the persistent application environment:
 - a DB-integrated yfinance daily-bar adapter with 30 listing series and one-year bars;
 - file-based Google News feed/resolver and Screener fundamentals pilots;
 - file-based extraction, ranking, reaction, report, and DB dashboard utilities, which are
-  prototypes/debugging views rather than HLD M4–M10 completion.
+  prototypes/debugging views rather than HLD M4–M10 completion; generated live dashboard
+  output is deliberately gitignored.
 
 Important boundaries:
 
@@ -45,10 +46,12 @@ Important boundaries:
   intelligence/event/insight tables, and delivery tables were empty at the review sample.
 - The outbox is written but has no dispatcher; all sampled events were pending. A
   “transactional outbox” is therefore durable storage only, not a working hand-off.
-- Current exchange adapters do not yet satisfy bytes-before-parse, per-fetch provenance,
-  attachment retry/linkage, six-hour cadence, or all fail-closed validation requirements.
-- The database/object store are persistent and unbacked. DB integration tests are unsafe to
-  run against this environment because they commit fixtures and can process global work.
+- Exchange scheduling now uses configurable IST slots with a six-hour default. The adapters
+  still do not satisfy bytes-before-parse, per-fetch provenance, attachment retry/linkage,
+  or all fail-closed validation requirements.
+- The database/object store are persistent and unbacked; the owner deferred backup work
+  until system stability and accepts the temporary risk. DB integration tests must use the
+  positively marked disposable DB and separate object root documented in `testing.md`.
 - No seven-day unattended soak, official-source reconciliation gate, plain Telegram digest,
   scheduler/service supervision, or restore drill has completed.
 
@@ -59,11 +62,11 @@ read-only queries for current operations.
 
 ## Next actions (ordered by safety and Phase 0 dependency)
 
-1. **Protect persistent state:** coordinated PostgreSQL + object-store backup and
-   non-destructive restore drill; freeze `db/schema.sql` and choose forward migrations
-   (`ST-P01`, `ST-P08`).
-2. **Isolate integration tests:** dedicated guarded test database/object root before any
-   full-suite run or new DB integration tests (`ST-P02`, `ST-C10`).
+1. **Control persistent state:** freeze `db/schema.sql` and choose forward migrations.
+   Coordinated backup/restore remains accepted deferred risk until the owner declares the
+   system stable (`ST-P01`, `ST-P08`).
+2. **Preserve test isolation:** keep the verified full suite behind the hard-marked disposable
+   database and separate object root; never fall back to application state (`ST-P02`, `ST-C10`).
 3. **Repair capture correctness:** exact bytes durably registered before parsing, correct
    BSE per-page/run provenance, fail-closed source identity/envelopes, bounded/allowlisted
    downloads, and explicit correction/run semantics (`ST-C01`, `ST-C03`–`ST-C07`).
@@ -82,6 +85,10 @@ is not a Phase 0 gate dependency.
 
 | Date | Decision | Rationale / supersedes |
 |---|---|---|
+| 2026-08-23 | **Six-hour configurable NSE/BSE capture cadence**; `EXCHANGE_CAPTURE_INTERVAL_HOURS=6` default | Replaces once-per-IST-day keys with deterministic IST schedule slots while preserving retry convergence. |
+| 2026-08-23 | **Backups temporarily deferred until system stability** | Owner accepts the temporary data-loss risk; persistent data remains non-disposable and backup/restore stays required before unattended operation. |
+| 2026-08-23 | **Repository/runtime policy:** generated dashboards, dumps, private logs and volatile snapshots are untracked; only small portable provenance-labelled fixtures may be committed | Prevents secrets and stale live-state output from entering history. |
+| 2026-08-23 | **Manual identity corrections remain whitelist-bound** | Preserve the global fail-closed invariant; expand the whitelist explicitly before assigning a new company. |
 | 2026-08-23 | **Screener.in full-scope capture approved by owner** — “don't worry about any TOS violation, you go full on and scrape/crawl” | Owner directive supersedes the 2026-08-22 conditional risk acceptance (R-SC-1..5 weekly-cadence constraints no longer binding). Rate limiting retained as ban-avoidance engineering, not compliance. |
 | 2026-08-22 | Screener.in automated capture approved with mandatory constraints | Historical decision, superseded 2026-08-23. |
 | 2026-08-22 | **yfinance = primary daily-price provider**; NSE bhavcopy deferred to Phase 2+ as reconciliation cross-check | Resolves PRD §14 open question; `.NS` symbols proven in both pilots. |

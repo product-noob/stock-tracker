@@ -468,6 +468,22 @@ def apply_manual_resolution(conn: psycopg.Connection, record_id: int,
     The previous decision row stays untouched (append-only history); the new
     row references it via ``supersedes_resolution_id``.
     """
+    allowed = conn.execute(
+        """
+        SELECT 1
+          FROM core.companies c
+          JOIN core.whitelist_memberships w ON w.company_id = c.company_id
+         WHERE c.company_id = %s
+           AND c.status = 'active'
+           AND w.removed_at IS NULL
+        """,
+        (company_id,),
+    ).fetchone()
+    if allowed is None:
+        raise ValueError(
+            f"company {company_id} is not an active whitelisted company"
+        )
+
     latest = conn.execute(
         """
         SELECT r.resolution_id, r.outcome, r.company_id
@@ -515,6 +531,20 @@ def apply_manual_resolution(conn: psycopg.Connection, record_id: int,
             "UPDATE ingestion.normalized_records SET company_id = %s "
             "WHERE record_id = %s",
             (company_id, record_id),
+        )
+        jobs.emit_outbox(
+            conn,
+            event_type="identity.corrected",
+            aggregate_type="normalized_record",
+            aggregate_id=str(record_id),
+            event_key=f"identity.corrected:{record_id}:{resolution_id}",
+            payload={"record_id": record_id,
+                     "resolution_id": resolution_id,
+                     "supersedes_resolution_id": prev_resolution_id,
+                     "company_id": company_id,
+                     "tier": "F_manual",
+                     "decided_by": decided_by,
+                     "code_version": IDENT_VERSION},
         )
     return resolution_id
 
@@ -761,12 +791,6 @@ def _cmd_review(args) -> int:
 
 def _cmd_assign(args) -> int:
     with jobs.connect() as conn:
-        exists = conn.execute(
-            "SELECT 1 FROM core.companies WHERE company_id=%s",
-            (args.company,)).fetchone()
-        if not exists:
-            print(f"company {args.company} does not exist")
-            return 2
         resolution_id = apply_manual_resolution(
             conn, args.record, args.company, decided_by=args.by)
         conn.commit()

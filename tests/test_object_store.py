@@ -3,10 +3,10 @@
 Run with:
     venv/bin/python -m unittest tests.test_object_store -v
 
-Filesystem tests use temporary directories and always run. Registry tests
-exercise the real `documents.content_objects` table inside a transaction that
-is rolled back, so they leave no rows behind; they are skipped automatically
-if DATABASE_URL is unavailable or the database is unreachable.
+Filesystem tests use temporary directories and always run. Registry tests exercise the
+positively marked disposable database and a temporary object root inside a transaction that
+is rolled back, so they leave no rows behind. Missing integration configuration skips those
+cases; partial or unsafe configuration fails closed.
 """
 import hashlib
 import os
@@ -18,6 +18,7 @@ from unittest import mock
 
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "scripts"))
+sys.path.insert(0, str(ROOT / "tests"))
 
 import object_store  # noqa: E402
 from object_store import (  # noqa: E402
@@ -25,45 +26,15 @@ from object_store import (  # noqa: E402
     ObjectStore,
     ObjectStoreError,
 )
-
-
-def _database_url() -> str | None:
-    """Isolated test-DB URL ONLY (TEST_DATABASE_URL in .env). Tests create
-    synthetic TEST*/identtest data and must never touch the live pipeline DB
-    (2026-08-23 cleanup: they did, twice). Skips if not configured."""
-    url = os.environ.get("TEST_DATABASE_URL")
-    if not url:
-        env_file = ROOT / ".env"
-        if env_file.exists():
-            for line in env_file.read_text(encoding="utf-8-sig").splitlines():
-                line = line.strip()
-                if line.startswith("TEST_DATABASE_URL="):
-                    url = line.split("=", 1)[1].strip() or None
-                    break
-    if url and "stocktracker_test" not in url:
-        return None  # refuse anything that is not the isolated test DB
-    return url
-
-
-
-
-def _db_available(url: str) -> bool:
-    import psycopg
-
-    try:
-        with psycopg.connect(url, connect_timeout=5):
-            return True
-    except Exception:
-        return False
+from support import guarded_environment_or_skip  # noqa: E402
 
 
 class ObjectStoreTestCase(unittest.TestCase):
     """Base: fresh store rooted in a temp dir.
 
-    The registry insert is patched to a no-op so filesystem-only tests never
-    write rows to the dev database (``put_bytes`` without ``conn`` would
-    otherwise commit for real). :class:`TestRegistryIntegration` re-enables
-    the real registry and wraps every test in a rolled-back transaction.
+    The registry insert is patched to a no-op so filesystem-only tests never write rows.
+    :class:`TestRegistryIntegration` re-enables the real disposable registry and wraps every
+    test in a rolled-back transaction.
     """
 
     def setUp(self):
@@ -118,15 +89,11 @@ class TestIdempotency(ObjectStoreTestCase):
     def test_metadata_change_on_reput_does_not_duplicate_row(self):
         """Registry insert uses ON CONFLICT DO NOTHING; re-put with different
         metadata must not create a second row."""
-        url = _database_url()
-        if not url or not _db_available(url):
-            self.skipTest("DATABASE_URL unavailable; skipping registry test")
-        import psycopg
-
+        environment = guarded_environment_or_skip()
         self._reg_patcher.stop()  # this test exercises the real registry
 
         data = b"metadata idempotency"
-        with psycopg.connect(url) as conn:
+        with environment.connect() as conn:
             try:
                 self.store.put_bytes(data, source="test_a", conn=conn)
                 again = self.store.put_bytes(
@@ -170,17 +137,13 @@ class TestAtomicity(ObjectStoreTestCase):
 
     def test_failed_put_registers_nothing(self):
         """A put that fails mid-write leaves no committed registry row."""
-        url = _database_url()
-        if not url or not _db_available(url):
-            self.skipTest("DATABASE_URL unavailable; skipping registry test")
-        import psycopg
-
+        environment = guarded_environment_or_skip()
         data = b"never lands"
 
         def boom(*a, **k):
             raise OSError("simulated failure")
 
-        with psycopg.connect(url) as conn:
+        with environment.connect() as conn:
             try:
                 with mock.patch.object(
                     object_store.ObjectStore, "_atomic_write", boom
@@ -273,17 +236,13 @@ class TestCorruptionDetection(ObjectStoreTestCase):
 
 
 class TestRegistryIntegration(ObjectStoreTestCase):
-    """DB-backed tests; rolled back so the dev database stays untouched."""
+    """DB-backed tests; guarded and rolled back in the disposable target."""
 
     def setUp(self):
         super().setUp()
         self._reg_patcher.stop()  # real registry inserts, rolled back below
-        url = _database_url()
-        if not url or not _db_available(url):
-            self.skipTest("DATABASE_URL unavailable; skipping DB tests")
-        import psycopg
-
-        self.conn = psycopg.connect(url)
+        self.test_env = guarded_environment_or_skip()
+        self.conn = self.test_env.connect()
         self.addCleanup(self.conn.close)
 
     def test_put_registers_row_with_expected_columns(self):

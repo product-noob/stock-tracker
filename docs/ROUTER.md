@@ -74,10 +74,12 @@ caveats still apply) · `gated` (passing its acceptance gate). No module is gate
 | Yahoo market data | [`modules/yahoo-market-data/OVERVIEW.md`](modules/yahoo-market-data/OVERVIEW.md) | db-integrated | yfinance daily bars for 30 listing series; validation/provenance/calendar gates open |
 
 Shared capture-domain rules (parallel execution, convergence points, terminology,
-cross-source corrections ledger): [`modules/README.md`](modules/README.md). Current shared
-platform/pipeline status: object storage, processing-job worker, M2, M3 and yfinance bars
-exist; outbox dispatch, scheduler/supervision, canonical content links/attempts, M4–M7,
-the M8 reaction engine, and M9–M10 do not.
+cross-source corrections ledger): [`modules/README.md`](modules/README.md). The fail-closed
+disposable database/object-root contract for integration tests is documented in
+[`testing.md`](testing.md). Current shared platform/pipeline status: object storage,
+processing-job worker, M2, M3 and yfinance bars exist; outbox dispatch,
+scheduler/supervision, canonical content links/attempts, M4–M7, the M8 reaction engine,
+and M9–M10 do not.
 
 Downstream pipeline stages (normalize M2, resolve M3, extract M5, cluster/rank M6–M7,
 reaction M8, digest/deliver M9–M10) are specified as capability cards in

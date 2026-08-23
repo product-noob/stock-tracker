@@ -18,47 +18,28 @@ Two layers:
     company can never be mis-linked through a lookalike);
   - NO fuzzy matching: prefix/substring names cannot publish an assignment.
 
-* A DB-backed end-to-end test against the live ``stocktracker_db`` seeding
+* A DB-backed end-to-end test against a positively marked disposable target, seeding
   fixture companies/aliases plus namespaced ``normalized_records`` rows, then
   asserting on ``identity_resolutions``, ``identity_assignments``, the
   ``normalized_records.company_id`` cache, and outbox events — including the
   one-transaction agreement invariant and re-run idempotency.
 
-Like the other stage tests, fixture rows live in append-only tables and are
-namespaced under a per-test uuid (``IDENTTST<uid>`` dedup scope) rather than
-cleaned up. The run also resolves real dev-DB records — that is the
-production path, and every assertion filters strictly on its own ids.
+Like the other stage tests, fixture rows live in append-only tables and remain in the
+disposable target. The production resolver path can process all pending test-target rows;
+every assertion filters strictly on its own IDs.
 """
 import sys
 import unittest
 import uuid
 from unittest import mock
-
-import os
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "scripts"))
+sys.path.insert(0, str(ROOT / "tests"))
 
 import resolve_identity as ri  # noqa: E402
-
-
-def _database_url() -> str | None:
-    """Isolated test-DB URL ONLY (TEST_DATABASE_URL in .env). Tests create
-    synthetic TEST*/identtest data and must never touch the live pipeline DB
-    (2026-08-23 cleanup: they did, twice). Skips if not configured."""
-    url = os.environ.get("TEST_DATABASE_URL")
-    if not url:
-        env_file = ROOT / ".env"
-        if env_file.exists():
-            for line in env_file.read_text(encoding="utf-8-sig").splitlines():
-                line = line.strip()
-                if line.startswith("TEST_DATABASE_URL="):
-                    url = line.split("=", 1)[1].strip() or None
-                    break
-    if url and "stocktracker_test" not in url:
-        return None  # refuse anything that is not the isolated test DB
-    return url
+from support import guarded_environment_or_skip  # noqa: E402
 
 
 
@@ -282,14 +263,14 @@ class TestResolutionLadder(unittest.TestCase):
 
 
 # --------------------------------------------------------------------- #
-# DB-backed end-to-end (live stocktracker_db)
+# DB-backed end-to-end (positively marked disposable target)
 # --------------------------------------------------------------------- #
 
-@unittest.skipUnless(_database_url(), "stocktracker_db not reachable")
 class TestDbBacked(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         import jobs
+        cls.test_env = guarded_environment_or_skip()
         cls.jobs = jobs
         cls.conn = jobs.connect()
         cls.uid = uuid.uuid4().hex[:10]
@@ -482,6 +463,23 @@ class TestDbBacked(unittest.TestCase):
         self.assertLessEqual(stats2["records_in"],
                              stats["records_in"] - len(rec))
 
+    def test_manual_assignment_rejects_non_whitelisted_company(self):
+        conn = self.conn
+        before = conn.execute(
+            "SELECT count(*) FROM ingestion.identity_resolutions WHERE record_id=%s",
+            (self.records["non_whitelisted"],),
+        ).fetchone()[0]
+        with self.assertRaisesRegex(ValueError, "not an active whitelisted"):
+            ri.apply_manual_resolution(
+                conn, self.records["non_whitelisted"], self.co_gamma,
+                decided_by="ident-test-operator")
+        conn.rollback()
+        after = conn.execute(
+            "SELECT count(*) FROM ingestion.identity_resolutions WHERE record_id=%s",
+            (self.records["non_whitelisted"],),
+        ).fetchone()[0]
+        self.assertEqual(before, after)
+
     def test_manual_supersede_repoints_assignment_and_cache(self):
         conn, record_id = self.conn, self.records["alias"]
 
@@ -519,6 +517,11 @@ class TestDbBacked(unittest.TestCase):
                              "SELECT max(resolution_id) FROM "
                              "ingestion.identity_resolutions WHERE "
                              "record_id=%s", (record_id,)).fetchone()[0])
+        event = self.conn.execute(
+            "SELECT event_type FROM platform.outbox_events WHERE event_key=%s",
+            (f"identity.corrected:{record_id}:{new_resolution}",),
+        ).fetchone()
+        self.assertEqual(event, ("identity.corrected",))
 
     def test_retry_review_appends_superseding_decisions(self):
         """Re-checking the review queue appends superseding rows: a verdict

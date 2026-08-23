@@ -13,3 +13,12 @@ cookies.txt
 
 # Persistent content-addressed object store blobs (immutable; back up separately)
 data/objects/
+
+# Volatile/private operational output must never enter Git history
+data/dashboard.html
+backups/
+tmp/
+
+# Disposable integration-test object roots and local deletion manifests
+.stocktracker-test-object-root
+*deletion-manifest*.json
