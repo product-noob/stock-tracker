@@ -1,0 +1,170 @@
+[
+  {
+    "sha": "13ea5ee6c6c4aeba44af890ab2d3b072982a2cf6c6fc90499e53b0ddd6e78327",
+    "published": "2026-08-01 17:38",
+    "subject": "Radisys Cayman Limited, a step-down subsidiary of the Company, incorporated under the laws of Cayman Islands, has been merged with its holding company",
+    "llm": {
+      "doc_kind": "governance",
+      "one_line_summary": "RIL disclosed that its step-down subsidiary Radisys Cayman Limited has been merged with its holding company Radisys International LLC effective July 31, 2026.",
+      "key_facts": [
+        "Radisys Cayman Limited (Cayman Islands) merged with holding company Radisys International LLC (Delaware)",
+        "Merger effective from July 31, 2026",
+        "Intimation received by RIL on August 1, 2026 at 10:41 a.m. IST",
+        "Disclosure made under Regulation 30 of SEBI LODR Regulations, 2015"
+      ],
+      "market_materiality": 1,
+      "rationale": "This is an internal group restructuring of a relatively small step-down subsidiary with no financial terms or impact on RIL disclosed, making it administrative rather than market-moving."
+    }
+  },
+  {
+    "sha": "1def1e40cb71452cf7022240727a4a5d92b3b6e5fa9c47876437408836fc2df6",
+    "published": "2026-08-21 11:12",
+    "subject": "Reliance Industries Limited has informed the Exchange regarding the Amendment to AOA/MOA of the company.",
+    "llm": {
+      "error": "no json",
+      "raw": "{\"doc_kind\":\"governance\",\"one_line_summary\":\"Shareholders approved via postal ballot (e-voting closed Aug 20, 2026) three resolutions: material related-party transaction approvals for the company and "
+    }
+  },
+  {
+    "sha": "29ec1761fad2411af2d03cbfcc9cf9f70bb63f8099f6f5dbd01b4e8654f0e174",
+    "published": "2026-08-18 12:13",
+    "subject": "The Exchange has sought clarification from Reliance Industries Limited with respect to recent news item captioned SC slaps Rs 10 lakh fine on Reliance",
+    "llm": {
+      "doc_kind": "governance",
+      "one_line_summary": "RIL clarified to BSE/NSE that the Supreme Court's August 14, 2026 order dismissing its appeal in the NTPC gas supply suit imposed Rs 10 lakh in litigation costs payable to the Supreme Court Advocates on Record Association, not a fine or penalty on the company.",
+      "key_facts": [
+        "Supreme Court order dated August 14, 2026 dismissed RIL's appeal 'with costs quantified at Rs.10 lakhs'",
+        "Costs are payable to the Supreme Court Advocates on Record Association within five weeks",
+        "Company asserts no fine or penalty was levied by the Supreme Court",
+        "Company states no disclosure was required under Regulation 30 of SEBI LODR Regulations 2015",
+        "Filing responds to exchange clarification requests dated August 17, 2026"
+      ],
+      "market_materiality": 1,
+      "rationale": "The disputed amount (Rs 10 lakh) is financially trivial for RIL and the clarification reframes it as routine litigation costs rather than a regulatory penalty, so material price impact is unlikely."
+    }
+  },
+  {
+    "sha": "33066b2b830d5849f984512de9a4fa6469942011076431fe76469f4c89dfe551",
+    "published": "2026-08-07 11:27",
+    "subject": "Please note that the Company executives will be participating in the Institutional Investors' Meeting - Emkay Confluence 2026, scheduled to be held on",
+    "llm": {
+      "doc_kind": "routine_notice",
+      "one_line_summary": "Reliance Industries executives will participate in one-on-one meetings with institutional investors at the Emkay Confluence 2026 on August 12, 2026 in Mumbai, with no unpublished price sensitive information to be shared.",
+      "key_facts": [
+        "Meeting date: August 12, 2026",
+        "Event: Emkay Confluence 2026",
+        "Location: Mumbai",
+        "Format: One-on-one meetings with investors",
+        "Company states no unpublished price sensitive information will be discussed"
+      ],
+      "market_materiality": 1,
+      "rationale": "This is a routine Regulation 30 intimation of a standard investor meeting that explicitly states no price-sensitive information will be disclosed, implying negligible expected price impact."
+    }
+  },
+  {
+    "sha": "3674cb3e7e3301dd4217d0a98afe109bd60feba5c69a313730a47b2a782839de",
+    "published": "2026-08-14 12:18",
+    "subject": "Please find attached a media release by the Company, titled  Reliance Industries and Rolls-Royce announce strategic intent to partner and develop Indi",
+    "llm": {
+      "doc_kind": "media_release",
+      "one_line_summary": "Reliance Industries and Rolls-Royce announced strategic intent to partner on developing an indigenous combat engine for India's AMCA fighter programme, including exploring a dedicated Aerospace Gas Turbine Complex in India.",
+      "key_facts": [
+        "Partnership announced 14 August 2026 between Reliance Industries and Rolls-Royce (LSE: RR.) for design, development, manufacturing and delivery of a sovereign indigenous combat engine for the AMCA programme",
+        "Companies will explore formation of a dedicated Aerospace Gas Turbine Complex as a centre of excellence for power and propulsion technology in India",
+        "Partnership supports India's Atmanirbhar Bharat defence indigenisation vision and may extend to wider collaborations across defence, civil aerospace and new propulsion systems",
+        "Announcement is strategic intent only; no financial terms, investment amounts, or binding commitments disclosed"
+      ],
+      "market_materiality": 2,
+      "rationale": "Strategic defence partnership announcement is notable long-term news but involves no disclosed financial terms or near-term earnings impact, so likely modest price reaction."
+    }
+  },
+  {
+    "sha": "72ab4ca84c27de7ecd0201943325f5a853b5dd6100521b0b06433f72080cadb3",
+    "published": "2026-08-12 14:15",
+    "subject": "This is further to the disclosure dated August 7, 2026 made by the Company. We wish to inform you that the Company executives participated in the Inst",
+    "llm": {
+      "doc_kind": "routine_notice",
+      "one_line_summary": "Reliance Industries executives participated in the Emkay Confluence 2026 institutional investors' meeting in Mumbai on August 12, 2026, and confirmed that no unpublished price sensitive information was shared.",
+      "key_facts": [
+        "Meeting: Emkay Confluence 2026 institutional investors' meeting",
+        "Date of meeting: August 12, 2026",
+        "Location: Mumbai",
+        "Company stated no unpublished price sensitive information (UPSI) was shared/discussed",
+        "Follow-up to prior disclosure dated August 7, 2026"
+      ],
+      "market_materiality": 1,
+      "rationale": "This is a boilerplate compliance disclosure confirming participation in a routine investor meeting with explicit confirmation that no price-sensitive information was disclosed, so it carries no incremental news for the market."
+    }
+  },
+  {
+    "sha": "b99e8f501938fdc6507ffcba980f08e12f44f4adc18d3260290a9e5d617f8389",
+    "published": "2026-07-25 09:07",
+    "subject": "Presentation on the resolutions proposed for shareholders  approval vide Postal Ballot Notice dated July 17, 2026 is attached.",
+    "llm": {
+      "doc_kind": "governance",
+      "one_line_summary": "Reliance Industries informed exchanges that a presentation on the resolutions proposed for shareholders' approval via its Postal Ballot Notice dated July 17, 2026 has been made available; the substance of the resolutions is not stated in this filing.",
+      "key_facts": [
+        "Postal Ballot Notice dated July 17, 2026",
+        "Presentation on proposed shareholder resolutions published July 25, 2026",
+        "Filed with BSE (Scrip Code: 500325) and NSE (Symbol: RELIANCE)",
+        "Signed by Savithri Parekh, Company Secretary & Compliance Officer",
+        "Copied to Luxembourg Stock Exchange and Singapore Exchange"
+      ],
+      "market_materiality": 2,
+      "rationale": "This is a procedural disclosure merely announcing a presentation on postal ballot resolutions without revealing their content, so price impact is limited until the resolutions' substance is known."
+    }
+  },
+  {
+    "sha": "c9109f2dd23f866c783ff17ac1101ac41ac807561e3308113a37306d5e436601",
+    "published": "2026-08-13 14:11",
+    "subject": "Please note that the Company executives will be participating in the Institutional Investors' Meeting - Motilal Oswal's 22nd Annual Global Investor Co",
+    "llm": {
+      "doc_kind": "routine_notice",
+      "one_line_summary": "Reliance Industries executives will participate in one-on-one meetings with institutional investors at Motilal Oswal's 22nd Annual Global Investor Conference on August 18, 2026 in Mumbai, with no unpublished price-sensitive information to be shared.",
+      "key_facts": [
+        "Meeting date: August 18, 2026",
+        "Event: Motilal Oswal's 22nd Annual Global Investor Conference",
+        "Location: Mumbai",
+        "Format: expected one-on-one basis",
+        "Company states no unpublished price sensitive information will be discussed"
+      ],
+      "market_materiality": 1,
+      "rationale": "This is a standard Regulation 30 compliance disclosure of investor-meeting participation that explicitly confirms no price-sensitive information will be shared."
+    }
+  },
+  {
+    "sha": "dcce74daad8d869f3014f2c3f6ce2bfa939ba32efd1dddd3f293defe8ba5c91f",
+    "published": "2026-08-07 11:37",
+    "subject": "Newspaper clippings   Special Window for transfer and dematerialisation (demat) of physical sharesThe newspaper clippings of the advertisement on the ",
+    "llm": {
+      "doc_kind": "routine_notice",
+      "one_line_summary": "RIL filed newspaper clippings of its August 7, 2026 advertisement informing shareholders about the special window for transfer and dematerialisation (demat) of physical shares.",
+      "key_facts": [
+        "Advertisement published August 7, 2026 in The Indian Express, Financial Express (English), Loksatta (Marathi) and Jansatta (Hindi)",
+        "Subject: special window for transfer and dematerialisation of physical shares",
+        "Filed with BSE (Scrip Code: 500325) and NSE (Symbol: RELIANCE)",
+        "Signed by Savithri Parekh, Company Secretary and Compliance Officer",
+        "Copies also sent to Luxembourg Stock Exchange and Singapore Exchange"
+      ],
+      "market_materiality": 1,
+      "rationale": "This is a routine shareholder-service compliance advertisement about dematerialising physical shares with no new financial, operational, or strategic information."
+    }
+  },
+  {
+    "sha": "f80d3e3850830233fc6c1c68096e2eb21ca37024631273ae1c3c9d112eabc00b",
+    "published": "2026-08-18 14:34",
+    "subject": "This is further to the disclosure dated August 13, 2026 made by the Company. We wish to inform you that the Company executives participated in the Ins",
+    "llm": {
+      "doc_kind": "routine_notice",
+      "one_line_summary": "Reliance Industries confirmed its executives participated in Motilal Oswal's 22nd Annual Global Investor Conference in Mumbai on August 18, 2026, and that no unpublished price sensitive information was shared.",
+      "key_facts": [
+        "Meeting held August 18, 2026 at Motilal Oswal's 22nd Annual Global Investor Conference, Mumbai",
+        "Filing follows up on earlier disclosure dated August 13, 2026",
+        "Company stated no unpublished price sensitive information was shared/discussed",
+        "Signed by Savithri Parekh, Company Secretary and Compliance Officer"
+      ],
+      "market_materiality": 1,
+      "rationale": "This is a boilerplate compliance intimation confirming participation in a third-party investor conference with no new financial, operational, or strategic information disclosed."
+    }
+  }
+]

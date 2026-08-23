@@ -1,0 +1,105 @@
+{
+ "themes": [
+  {
+   "theme": "Defence & aerospace - Rolls-Royce AMCA combat engine partnership",
+   "count": 10
+  },
+  {
+   "theme": "Stock performance & market activity",
+   "count": 6
+  },
+  {
+   "theme": "Energy expansion - Rs 2.73 lakh crore coal gasification complex & US refining tie-up",
+   "count": 5
+  },
+  {
+   "theme": "Jio telecom tariffs, plans & digital/AI services",
+   "count": 5
+  },
+  {
+   "theme": "New business lines & vendor orders",
+   "count": 5
+  },
+  {
+   "theme": "Retail brands, leadership & CSR updates",
+   "count": 5
+  },
+  {
+   "theme": "Stock price movements",
+   "count": 4
+  },
+  {
+   "theme": "Jio telecom & consumer strategy",
+   "count": 4
+  },
+  {
+   "theme": "Defense & aerospace JV with Rolls-Royce (AMCA engine)",
+   "count": 4
+  },
+  {
+   "theme": "Retail & luxury brands expansion",
+   "count": 4
+  },
+  {
+   "theme": "Reliance Foundation CSR & philanthropy",
+   "count": 2
+  },
+  {
+   "theme": "Legal & regulatory matters",
+   "count": 1
+  }
+ ],
+ "notable": [
+  {
+   "date": "2026-08-14",
+   "title": "India's Reliance to partner with Rolls-Royce on combat engine for fighter jets (Reuters)",
+   "why_relevant_to_RIL_shareholders": "Formal entry into defence/aerospace manufacturing, opening a potential long-term high-value revenue stream"
+  },
+  {
+   "date": "2026-08-19",
+   "title": "RIL proposes Rs 2.73 lakh crore investment for India's first coal gasification complex in Andhra (Economic Times)",
+   "why_relevant_to_RIL_shareholders": "Massive multi-year capex commitment that could reshape the energy portfolio and feedstock independence"
+  },
+  {
+   "date": "2026-08-21",
+   "title": "Reliance Industries shareholders approve new explosives, ammonium nitrate, fertiliser business (CNBC TV18)",
+   "why_relevant_to_RIL_shareholders": "Shareholder-approved diversification into new industrial verticals expands the addressable market"
+  },
+  {
+   "date": "2026-08-21",
+   "title": "Reliance and Jio to invest Rs 10 lakh crore over seven years for India's AI transformation (DD News)",
+   "why_relevant_to_RIL_shareholders": "Signals very large planned capital allocation toward AI infrastructure, a key future growth engine"
+  },
+  {
+   "date": "2026-08-20",
+   "title": "Reliance Jio has more or less confirmed upcoming tariff hike (TelecomTalk)",
+   "why_relevant_to_RIL_shareholders": "Direct ARPU uplift expected in telecom, one of RIL's core earnings drivers"
+  },
+  {
+   "date": "2026-08-18",
+   "title": "Reliance Jio re-launches 'Jio Prime' programme to offer price lock for 1-year, enhances ₹299 plan",
+   "why_relevant_to_RIL_shareholders": "Tariff price-lock through Sep 2027 aims to curb churn after recent hikes, protecting Jio ARPU and revenue visibility"
+  },
+  {
+   "date": "2026-08-14",
+   "title": "Reliance, Rolls-Royce join hands to develop indigenous AMCA fighter jet engine in India",
+   "why_relevant_to_RIL_shareholders": "Entry into defense/aerospace manufacturing offers long-term diversification beyond energy-retail core"
+  },
+  {
+   "date": "2026-08-05",
+   "title": "Reliance's luxury unit brings Kim Kardashian's SKIMS to India",
+   "why_relevant_to_RIL_shareholders": "Continued premium-brand expansion at Reliance Retail, a key growth driver"
+  },
+  {
+   "date": "2026-08-14",
+   "title": "Supreme Court slams Reliance for obstructing 20-year-old case; slaps ₹10 lakh costs",
+   "why_relevant_to_RIL_shareholders": "Judicial rebuke flags litigation/governance risk despite modest financial impact"
+  },
+  {
+   "date": "2026-08-17",
+   "title": "Reliance shares briefly slip below ₹1,300 amid volatility: Buy the dip or wait?",
+   "why_relevant_to_RIL_shareholders": "Breach of key psychological price level; sentiment and valuation watchpoint"
+  }
+ ],
+ "noise_count": 37
+}

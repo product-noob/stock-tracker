@@ -146,3 +146,21 @@ reactions |z|<1; biggest theme buckets Jio/telecom (10), O2C/energy (10).
    back, run once with fresh day-key; window derives from watermark − overlap.
 6. **Normalize/resolver must be re-run after any manual backfill** — raw items
    without canonical records silently produce null-title joins downstream.
+
+## 2026-08-23 (cont.) — LLM pass on RELIANCE month via OpenRouter
+
+- Owner provided OPENROUTER_API_KEY (.env); model `stealth/ox-alpha`, reasoning mandatory.
+- Per-filing extraction: 9/10 parsed — doc kinds, one-line summaries, key facts,
+  materiality scores (all low this month; notable: Radisys Cayman merger, SC dismissal
+  of clarification appeal, Rolls-Royce AMCA partnership intent).
+- News analysis: endpoint requires reasoning + large completion budget (8k tokens;
+  single 96-headline call overflowed → split into 2 batches + merge). Themes:
+  defence/aerospace partnership dominant (~14), energy expansion, Jio tariffs, retail.
+  Noise ≈ 37/96 (name-collision headlines).
+- Report enriched: data/reliance/analysis_1mo.md now includes LLM filing extraction
+  + news analysis sections. Raw JSON: llm_filings.json / llm_news.json / llm_news_batches.json.
+
+### Endpoint learnings for the future M5 extractor
+1. reasoning cannot be disabled; budget max_tokens generously or content comes back None
+2. long inputs must be batched (~50 headlines or ~9k chars per call)
+3. robust JSON recovery needed (balanced-brace scan; code-fence stripping)
