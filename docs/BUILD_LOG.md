@@ -118,3 +118,31 @@ Started 2026-08-23 (IST). Maintained during interactive build/testing sessions.
 
 partitions=122 · fetch_runs=92 · raw_items=178 · normalized≈176 · PDFs stored for
 25+ companies · price_bars=7529 (30 series × ~251) · junk=0
+
+## 2026-08-23 (cont.) — One-month deep dive: RELIANCE (throwaway learning exercise)
+
+**Collated** (24 Jul – 23 Aug): NSE 12 + BSE 12 announcements (7 unique events after
+cross-exchange dedup), 11 filing PDFs archived, Google News 96 articles (100% redirects
+resolved), fresh Screener snapshot, 251 daily bars.
+
+**Analysis output**: `data/reliance/analysis_1mo.md` — filing×price-reaction table,
+news theme buckets, top publishers. Finding: quiet month (no results filing); all
+reactions |z|<1; biggest theme buckets Jio/telecom (10), O2C/energy (10).
+
+### Learnings (→ systems design)
+
+1. **pdfplumber extracts LETTER-SPACED text** from exchange PDFs ("A u g u s t 7").
+   Any keyword classifier must match space-squashed haystacks or it silently fails.
+   → future text_versions extractor must include whitespace-normalization.
+2. **NSE normalized title = company name only; subject lives in `description`.**
+   Coalesce order matters (description-first).
+3. **Google News query hygiene**: bare/quoted exchange symbol matches the common
+   English word ("reliance", "self-reliance") → ~50% noise even quoted. Need
+   post-fetch relevance filter or name+disambiguator queries (R-GN-1 refinement).
+4. **`ObjectStore(url)` positional-arg trap**: first ctor param is `root`, not
+   `db_url` — my backfill wrote blobs under a directory named after the connection
+   URL. Recovered 11 files by sha-verified move; add keyword-only args later.
+5. **Cursor rewind = clean lever for historical backfill**: set high_watermark_at
+   back, run once with fresh day-key; window derives from watermark − overlap.
+6. **Normalize/resolver must be re-run after any manual backfill** — raw items
+   without canonical records silently produce null-title joins downstream.
