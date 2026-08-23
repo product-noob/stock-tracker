@@ -14,8 +14,6 @@ cookies.txt
 # Persistent content-addressed object store blobs (immutable; back up separately)
 data/objects/
 
-# Volatile/private operational output must never enter Git history
-data/dashboard.html
 backups/
 tmp/
 
