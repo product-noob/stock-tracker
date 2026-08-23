@@ -3,7 +3,7 @@ tier: L2
 module: nse-capture
 doc: source-mechanics
 parent: OVERVIEW.md
-updated: 2026-08-22
+updated: 2026-08-23
 ---
 
 # NSE Capture — Source Mechanics
@@ -101,5 +101,12 @@ Downstream-used item fields: `seq_id`, `symbol`, `sm_isin`, `sm_name`, `desc`,
 | Clock-skewed `an_dt` | sanity range check | keep raw value; flag item |
 | Symbol delisted/renamed | empty API result for known-active stock | alert ops; never mark partition complete |
 
-Restart safety: any worker killed mid-run leaves either a completed transaction or nothing;
-the durable job redelivers and idempotency keys absorb it (HLD §9).
+### Implementation status (2026-08-23)
+
+These remain binding requirements, but current API code is not fully restart-safe at the
+stated boundaries: it parses JSON before durable artifact registration, often operates
+inside an outer transaction/savepoints, collapses some fetch-event artifacts, permits some
+malformed/foreign items, and does not bound/allowlist attachment downloads. Invalid bytes
+are retained as raw artifacts, but no-byte failures are not canonical
+`content_fetch_attempts`. See review `ST-C01`, `ST-C04`–`ST-C06`; do not infer compliance
+from the existence of `nse.fetch` jobs.

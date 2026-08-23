@@ -3,7 +3,7 @@ tier: L2
 module: screener-fundamentals
 doc: source-mechanics
 parent: OVERVIEW.md
-updated: 2026-08-22
+updated: 2026-08-23
 ---
 
 # Screener Fundamentals — Source Mechanics
@@ -23,7 +23,7 @@ and canary reflect that.
 | Req | Rule |
 |---|---|
 | R-SC-6 | URL mapping per company from `core.listings` (NSE symbol) plus curated `screener_url_slug` partition config — slugs occasionally differ from NSE symbols (suffixes like `-RESD`); never auto-construct blindly; verify first-fetch title matches the company. |
-| R-SC-7 | Browser-TLS-impersonating client (same family as NSE/BSE modules) with browser UA; on 403/anti-bot interstitial back off and mark partition degraded — **no evasion escalation**; the risk acceptance does not cover active-protection circumvention. |
+| R-SC-7 | Browser-capable client with browser UA; on 403/interstitial, back off and mark degraded. The owner's 2026-08-23 full-scope directive supersedes the old ToS limitation on protection handling, but aggressive escalation that causes a ban remains operationally self-defeating. |
 
 ## 2. Page regions captured
 
@@ -49,3 +49,10 @@ becomes `{row_label: {col_key: value}}` keyed by `data-date-key`.
 | Slug mismatch / wrong company page | first-fetch title-vs-company check (R-SC-6) | hard-fail partition provisioning |
 | Unit/scale ambiguity | unit-label presence check | null the value rather than guess |
 | Silent history revision by Screener | artifact-hash diff across snapshots | append new version; surface "revised" flag on comparison |
+
+### Implementation status (2026-08-23)
+
+The current file utility uses `curl_cffi`, not the target partition/snapshot pipeline. It
+has a bounded request but no spacing/backoff loop, title/company/interstitial canary,
+versioned atomic output, schema validation or unit-null policy. Duplicate section/row labels
+can overwrite. The table above remains target behavior.

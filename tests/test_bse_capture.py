@@ -496,11 +496,15 @@ class TestRunPartitionEndToEnd(unittest.TestCase):
         self.assertEqual(s3["items_seen"], 3)
         self.assertEqual(s3["items_new"], 0)
         self.assertEqual(s3["pdfs"]["downloaded"], 0)
-        self.assertEqual(s3["pdfs"]["skipped"], 2,
-                         "already-captured attachments must not re-download")
-        self.assertEqual(len(self.http.pdf_calls), 3,
-                         "day1: good URL hits valid His (1 attempt); garbage "
-                         "URL tries His then Live (2 attempts)")
+        self.assertEqual(s3["pdfs"]["skipped"], 1,
+                         "valid-captured attachments must not re-download")
+        self.assertEqual(s3["pdfs"]["invalid"], 1,
+                         "invalid-only captures must be RETRIED (2026-08-23 fix: "
+                         "treating them as handled stranded GUID filings whose "
+                         "AttachHis 404-garbage predated the AttachLive copy)")
+        # day1: good URL 1 attempt + garbage 2 attempts = 3;
+        # day2: garbage retried (His+Live again) = 2 more
+        self.assertEqual(len(self.http.pdf_calls), 5)
 
         with self.psycopg.connect(_database_url()) as conn:
             # still exactly 3 raw items — no duplicates
@@ -595,3 +599,35 @@ class TestRunPartitionEndToEnd(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class TestAttachmentUrlOrdering(unittest.TestCase):
+    """2026-08-23 owner finding: GUID-named filings live only under AttachLive
+    (AttachHis serves HTTP 404 HTML). Order variants by filename shape."""
+
+    def test_guid_name_tries_live_first(self):
+        urls = bse_capture.attachment_urls(
+            "6b000a79-c9db-4cfd-80d3-9edea86e1bdc.pdf")
+        self.assertTrue(urls[0].endswith("/AttachLive/6b000a79-c9db-4cfd-80d3-9edea86e1bdc.pdf"))
+        self.assertIn("/AttachHis/", urls[1])
+
+    def test_numeric_name_keeps_archive_first(self):
+        urls = bse_capture.attachment_urls("50040822082026.pdf")
+        self.assertIn("/AttachHis/50040822082026.pdf", urls[0])
+        self.assertIn("/AttachLive/50040822082026.pdf", urls[1])
+
+
+class TestInvalidCaptureRetryContract(unittest.TestCase):
+    """url_already_captured must only treat VALID pdfs as captured."""
+
+    def _row_count(self, conn, kind):
+        return conn.execute(
+            "SELECT count(*) FROM ingestion.raw_artifacts WHERE artifact_kind=%s",
+            (kind,)).fetchone()[0]
+
+    def test_source_semantics(self):
+        import inspect
+        src = inspect.getsource(bse_capture.url_already_captured)
+        self.assertIn("artifact_kind = 'filing_pdf'", src,
+                      "must match only valid filing_pdf, not filing_pdf_invalid")
+        self.assertNotIn("'filing_pdf_invalid'", src)

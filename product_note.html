@@ -39,12 +39,19 @@
 <p class="subtitle">An always-on personal research utility that captures company disclosures, groups evidence into real business events, and explains what matters.</p>
 
 <div class="meta">
-  <strong>Status:</strong> v0.4 — aligned to architecture/database v1.2 &nbsp;·&nbsp;
-  <strong>Date:</strong> 22 August 2026 &nbsp;·&nbsp;
+  <strong>Status:</strong> v0.4.1 — requirements baseline, not implementation status &nbsp;·&nbsp;
+  <strong>Original date:</strong> 22 August 2026 &nbsp;·&nbsp;
+  <strong>State reconciled:</strong> 23 August 2026 &nbsp;·&nbsp;
   <strong>Owner:</strong> Prince<br>
   <strong>Companions:</strong> <code>docs/architecture-hld.md</code> · <code>docs/database-schema.md</code> ·
   <code>docs/modules/</code> · <code>db/schema.sql</code> · <code>pilot_learnings.md</code> · <code>nse-bse-rss.md</code>
 </div>
+
+<blockquote><strong>How to read this document:</strong> this is the approved product/phase
+contract. It contains target behavior and historical product decisions, not a claim that the
+pipeline is complete. Current implementation status and audited gaps live in
+<code>PROJECT_STATUS.md</code>, <code>docs/ROADMAP.md</code>, and
+<code>docs/reviews/2026-08-23-comprehensive-review.md</code>.</blockquote>
 
 <div class="toc"><strong>Contents</strong>
 <ol>
@@ -93,7 +100,7 @@
 <tr><td>Telegram digest, red-flag/system notifications and bot commands</td><td><span class="badge in">IN SCOPE</span></td></tr>
 <tr><td>Embedding-based news paraphrase dedup</td><td><span class="badge defer">EXPERIMENT IN PHASE 2</span> — only after real news data exists</td></tr>
 <tr><td>OCR for image-only PDFs</td><td><span class="badge defer">DEFERRED</span> — gated on measured failure rate</td></tr>
-<tr><td>Fundamentals-derived ratios</td><td><span class="badge defer">DEFERRED</span> — requires a compliant and reliable base</td></tr>
+<tr><td>Screener fundamentals snapshots / derived ratios</td><td><span class="badge defer">SOURCE APPROVED; DB INTEGRATION DEFERRED</span> — owner lifted prior ToS limits on 2026-08-23; ratio claims still require a reliable, unit-safe versioned base</td></tr>
 <tr><td>Portfolio/P&amp;L, forecasting, backtesting and auto-trading</td><td><span class="badge out">OUT OF SCOPE</span></td></tr>
 <tr><td>Intraday streaming, derivatives, multi-user dashboard</td><td><span class="badge out">OUT OF SCOPE</span></td></tr>
 </table>
@@ -114,10 +121,10 @@
 <tr><td>Official/backfill</td><td>NSE/BSE announcement APIs</td><td>Per-symbol/scrip date-window reconciliation and gap filling. NSE session behavior can change; not the sole live path.</td></tr>
 <tr><td>Official content</td><td>Exchange PDFs and attachments</td><td>Primary evidence. Validate bytes/media, because HTTP 200 can contain an HTML error page.</td></tr>
 <tr><td>News</td><td>Google News RSS, Moneycontrol/curated RSS</td><td>Colour and developments that can lead filings. Google links require redirect resolution; Google RSS is not a historical completeness source.</td></tr>
-<tr><td>Market</td><td>NSE bhavcopy or yfinance</td><td>Daily listing-level OHLCV. Provider and adjustment method are explicit series metadata.</td></tr>
+<tr><td>Market</td><td>yfinance primary; NSE bhavcopy later</td><td>Daily listing-level OHLCV. Provider and adjustment method are explicit series metadata; bhavcopy is a Phase-2+ reconciliation source.</td></tr>
 </table>
 
-<p>The canonical feed inventory and observed source behavior remain in <code>nse-bse-rss.md</code> and <code>pilot_learnings.md</code>. Source terms, rate limits and access behavior must be rechecked at implementation time.</p>
+<p>The canonical feed inventory and observed source behavior remain in <code>nse-bse-rss.md</code> and <code>pilot_learnings.md</code>. Source terms, rate limits and access behavior must be rechecked before unattended operation and after provider changes.</p>
 
 <h2 id="flow">4. Product flow</h2>
 
@@ -300,7 +307,7 @@ Immutable object store
 <p>Every independently polled feed/symbol/query is a source partition with its own checkpoint. Polls overlap and writes are idempotent. Fetch/stage lineage and source-window telemetry diagnose gaps. Completeness is finally measured through exchange reconciliation samples; the product never equates an advanced cursor with proof of full coverage.</p>
 
 <h3>Migration policy</h3>
-<p>No database exists yet, so <code>db/schema.sql</code> is the single editable solution-design baseline and no migration folder/ledger is maintained. When the first persistent/shared database is created, its baseline will be frozen and migrations introduced from that point onward. Prompt, output schema, verifier, classifier, cluster, severity, adjustment and reaction behavior versions remain data lineage, not Git archaeology.</p>
+<p><strong>Superseded 2026-08-23:</strong> the PostgreSQL database and object store now hold persistent application and append-only test data. <code>db/schema.sql</code> is the frozen applied baseline, not a live upgrade/reset mechanism. A reviewed forward-migration process and coordinated backup/restore drill are required before the next DDL change. Prompt, output schema, verifier, classifier, cluster, severity, adjustment and reaction behavior versions remain data lineage, not Git archaeology.</p>
 
 <h2 id="nfr">10. Non-functional requirements</h2>
 
@@ -362,10 +369,10 @@ Immutable object store
 
 <table>
 <tr><th>Question</th><th>Resolution method</th></tr>
-<tr><td>NSE bhavcopy or yfinance as primary daily provider?</td><td>Compare availability, revision and corporate-action semantics in Phase 2; store either as an explicit series.</td></tr>
+<tr><td>Daily-price provider?</td><td><strong>Resolved 2026-08-22:</strong> yfinance primary; NSE bhavcopy Phase-2+ reconciliation. Open implementation decision: exact transport bytes versus deterministic returned-frame serialization.</td></tr>
 <tr><td>How many PDFs truly require OCR?</td><td>Measure at least 200 representative documents before Phase 4.</td></tr>
 <tr><td>Google News rate/redirect stability?</td><td>Ramp 25→100 staggered partitions and retain source telemetry.</td></tr>
-<tr><td>Compliant fundamentals base?</td><td>Prefer own extraction from official results; otherwise obtain a permitted source before ratio claims.</td></tr>
+<tr><td>Fundamentals base and quality contract?</td><td><strong>Source policy resolved 2026-08-23:</strong> owner approved full-scope Screener capture. Still open: unit-safe schema, validation, cadence/ban avoidance, revision provenance, and whether official-filing extraction remains the ratio-claim base.</td></tr>
 <tr><td>Monthly model budget?</td><td>Owner sets breaker after measuring cost per company during Phase 1.</td></tr>
 <tr><td>Permanent host?</td><td>Choose on uptime/backup reliability; no current phase requires a GPU.</td></tr>
 </table>
@@ -390,7 +397,8 @@ Immutable object store
 <h2 id="changes">16. Change log</h2>
 <table>
 <tr><th>Version</th><th>Changes</th></tr>
-<tr><td><strong>v0.4</strong></td><td>Aligned product requirements to architecture/schema v1.2: company/instrument/listing identity; exact raw artifacts; partition checkpoints and measured coverage; PostgreSQL jobs/outbox; generalized PDF/HTML/text content and fetch attempts; immutable text/extraction/event versions; separate document and event kinds; multi-mention extraction; deterministic verified evidence; no-look-ahead listing-level market reactions; auditable digest/notification attempts; embeddings deferred to a data-backed Phase-2 experiment.</td></tr>
+<tr><td><strong>v0.4.1</strong></td><td>Reconciled the requirements baseline with live state without converting target behavior into completion claims: persistent DB/object store and forward-migration requirement; yfinance decision; owner-approved Screener source policy; links to the durable review/current status. The old “no database” and unresolved-provider wording were unsafe/stale.</td></tr>
+<tr><td>v0.4</td><td>Aligned product requirements to architecture/schema v1.2: company/instrument/listing identity; exact raw artifacts; partition checkpoints and measured coverage; PostgreSQL jobs/outbox; generalized PDF/HTML/text content and fetch attempts; immutable text/extraction/event versions; separate document and event kinds; multi-mention extraction; deterministic verified evidence; no-look-ahead listing-level market reactions; auditable digest/notification attempts; embeddings deferred to a data-backed Phase-2 experiment.</td></tr>
 <tr><td>v0.3</td><td>Added end-to-end source dry runs, collision evidence, PDF extraction findings, Google News redirect limitation and API backfill observations.</td></tr>
 <tr><td>v0.2</td><td>Changed from market-universe enrichment to whitelist-first; made cadence continuous; introduced deterministic severity, identity resolution, one PostgreSQL database and phased delivery.</td></tr>
 <tr><td>v0.1</td><td>Initial product framing.</td></tr>

@@ -25,3 +25,14 @@ Empirical findings. Cite as `(SC evidence-log, YYYY-MM-DD)`.
 
 - Sustained weekly polling untested — cadence deliberately unproven until Phase 0 core is done.
 - Bank-specific standalone-vs-consolidated question untested (needs HDFC Bank comparison).
+
+## 2026-08-23 — Owner policy supersession and review
+
+- Owner approved full-scope crawling and explicitly lifted the 2026-08-22 ToS-conditioned
+  R-SC-1..5 limits. That historical acceptance remains above as evidence; it no longer
+  constrains cadence. Sequential spacing/backoff remains required to avoid an IP ban.
+- Offline replay of tracked HDFC raw HTML reproduced its JSON exactly. This validates the
+  historical sample parser only, not current source access or the target snapshot contract.
+- The file utility has no title/company or interstitial canary, pacing/backoff, atomic
+  versioned write, explicit unit/provenance representation, or duplicate-label protection.
+  No DB snapshot adapter/schema or scheduled fleet crawl exists.

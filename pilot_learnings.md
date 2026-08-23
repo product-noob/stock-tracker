@@ -5,6 +5,15 @@
 
 Scripts: `scripts/normalize.py`, `scripts/download_pdfs.py`. Data: `data/tataelxsi/`.
 
+> **Historical evidence notice (2026-08-23):** this is an append-only pilot journal. “Working,”
+> “open,” counts, script defaults and suggested next steps describe the dated file-based
+> pilots, not current DB-integrated status. Several conclusions were superseded later in this
+> file and by the tiered module docs. Current state and safety findings live in
+> [`PROJECT_STATUS.md`](PROJECT_STATUS.md) and the
+> [comprehensive review](docs/reviews/2026-08-23-comprehensive-review.md). In particular,
+> tracked sample paths are non-portable, Tata Elxsi is no longer in the 30-company registry,
+> M4–M9 scripts remain prototypes, and DB integration tests are unsafe on the application DB.
+
 ---
 
 ## 1. Source access — what worked, mechanism by mechanism

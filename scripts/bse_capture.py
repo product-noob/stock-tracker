@@ -74,6 +74,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import re
 import sys
 import time
 import urllib.parse
@@ -294,11 +295,20 @@ def api_url(scrip: str, frm_yyyymmdd: str, to_yyyymmdd: str,
 
 
 def attachment_urls(filename: str) -> list[str]:
-    """Download-path candidates, archive-first (R-BSE-10: AttachLive returns
-    HTTP 200 with an HTML error page when absent, so His-first minimizes
-    garbage downloads)."""
+    """Download-path candidates ordered by where the file most likely lives.
+
+    R-BSE-10 archive-first (AttachHis) applies to legacy NUMERIC attachment
+    names. 2026-08-23 owner finding: newer GUID-named filings exist ONLY under
+    AttachLive — His returns HTTP 404 + HTML error page for them — so detect
+    the GUID shape and try Live first instead.
+    """
     filename = filename.strip()
-    return [ATTACH_HIS_BASE + filename, ATTACH_LIVE_BASE + filename]
+    guid_like = bool(re.fullmatch(
+        r"[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}\.pdf",
+        filename))
+    bases = ([ATTACH_LIVE_BASE, ATTACH_HIS_BASE] if guid_like
+             else [ATTACH_HIS_BASE, ATTACH_LIVE_BASE])
+    return [b + filename for b in bases]
 
 
 def looks_like_pdf(data: bytes) -> bool:
@@ -366,18 +376,24 @@ def get_cursor(conn: psycopg.Connection, partition_id: int) -> Optional[dict[str
 
 
 def url_already_captured(conn: psycopg.Connection, partition_id: int, url: str) -> bool:
-    """True if a prior successful run of this partition already stored bytes
-    for this content URL — either a valid ``filing_pdf`` OR retained
-    ``filing_pdf_invalid`` evidence (re-fetching known-garbage daily adds
-    nothing; convergence means "handled", not "valid"). Keeps re-runs from
-    re-downloading."""
+    """True if a prior run of this partition already stored VALID bytes for
+    this content URL.
+
+    2026-08-23 fix (owner-reported): invalid captures must NOT count as
+    "handled". GUID-named BSE filings exist only under AttachLive; AttachHis
+    serves them an HTTP-404 HTML error page, so an interrupted run could leave
+    an invalid-only capture that blocked the valid Live download forever.
+    Re-attempting invalid-only URLs converges: identical garbage re-registers
+    to the same content-addressed row (no dup lineage), and the Live variant
+    finally gets its chance.
+    """
     row = conn.execute(
         """
         SELECT 1
         FROM ingestion.raw_artifacts a
         JOIN ingestion.fetch_runs r USING (fetch_run_id)
         WHERE r.partition_id = %s
-          AND a.artifact_kind IN ('filing_pdf', 'filing_pdf_invalid')
+          AND a.artifact_kind = 'filing_pdf'
           AND a.metadata->>'url' = %s
         LIMIT 1
         """,

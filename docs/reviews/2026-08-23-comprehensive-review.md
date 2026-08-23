@@ -1,20 +1,32 @@
 ---
 tier: L1
 role: durable-review
-status: in-progress
+status: complete
 review-date: 2026-08-23
 baseline-revision: cc445b03b94a7ab78aaed93e7ca97590d15f588f
 ---
 
 # Comprehensive Review — 2026-08-23
 
-## 1. Purpose and review state
+## 1. Executive summary and review state
 
-This is the durable record for the repository-wide correctness, reliability,
+This is the durable record for the completed repository-wide correctness, reliability,
 security, data-quality, operations, test, and documentation review requested on
-2026-08-23. This first pass establishes the non-destructive baseline and deeply
-reviews the persistence/control plane. Later review passes should append evidence
-and dispositions here rather than creating competing review records.
+2026-08-23. It covers every tracked implementation, test, schema/configuration file,
+project/module document, tracked sample class, and relevant agent guidance, plus
+explicitly read-only PostgreSQL and full object-store reconciliation. Future audits
+should append evidence/dispositions here or create a clearly dated successor linked from
+the router rather than creating an unconnected finding ledger.
+
+**Executive conclusion:** the project has progressed well beyond docs/pilots—persistent
+PostgreSQL/object storage, a robust processing-job core, NSE/BSE API paths, M2/M3 and
+30 yfinance series exist—but it is not an unattended Phase 0 service. The gate has not
+started. Backups/migrations, test isolation, exact-byte crash boundaries, BSE page
+provenance, canonical content attempts/links, source trust bounds, outbox dispatch,
+least-privilege roles, supervision and health reporting are P0 prerequisites. The M4–M7,
+M8 reaction, and M9–M10 paths remain non-shipping file prototypes. Three confirmed Critical
+defects were fixed; no
+nice-to-have refactor was undertaken.
 
 **Baseline time:** 2026-08-23 05:10 UTC
 
@@ -23,9 +35,9 @@ and dispositions here rather than creating competing review records.
 **Baseline revision:** `cc445b03b94a7ab78aaed93e7ca97590d15f588f`
 (`docs(policy): yahoo daily-bar fetcher`)
 
-**Review status:** persistence/control-plane, DB-integrated M1–M3, and the remaining
-pilot/source-integration, dependency, market-data, reporting, and tracked-sample passes
-are complete; documentation/operations reconciliation remains for later passes.
+**Review status:** complete, including persistence/control-plane, DB-integrated M1–M3,
+remaining source/pilot/dependency/market/reporting/sample passes, and comprehensive
+project/module/architecture/product/status documentation reconciliation.
 
 ### Scope in this pass
 
@@ -104,7 +116,10 @@ were preserved untouched:
 
 No `tmp/pi-*` file was edited by this review. At baseline Git tracked 182 files:
 161 outside `tmp/pi-*` and 21 historical Pi artifacts. The review file did not
-exist at baseline.
+exist at baseline. Additional untracked `backups/pre_cleanup_20260823_0541.sql` and
+`tmp/full_ingest.log` appeared during the documentation pass, consistent with concurrent
+owner/worker activity; they were not opened, edited, staged, summarized, or folded into
+review evidence.
 
 ## 5. Runtime and service baseline
 
@@ -213,8 +228,25 @@ contract. This matrix assigns every tracked implementation area so omission is v
 | Pilot extraction/ranking/reaction: `extract_text.py`, `extract_facts.py`, `price_reaction.py`, `rank_insights.py`; HLD M4–M9 and pilot learnings | **Deep complete**: parser bounds, evidence/quote gate, determinism, event semantics, no-look-ahead and causal wording | These are prototypes, not the DB-integrated M4–M9 pipeline |
 | Reporting: `make_report.py`, `make_dashboard.py`, and tracked `data/dashboard.html` | **Deep complete**: escaping, query validity, privacy, read behavior and status claims | Dashboard files were committed concurrently by another task and preserved untouched by this pass |
 | Root config/dependencies | **Deep complete** for compose exposure, direct/transitive pins, imports, runtime versions, env handling and secret metadata | Dependency lock/hash/update policy and service unit review |
-| System and module docs | Persistence/source contracts read; implementation/status contradictions recorded | **Assigned later:** comprehensive ROUTER/ROADMAP/PROJECT_STATUS/module-status reconciliation |
+| System and module docs | **Complete:** every tracked project/module Markdown/HTML document and relevant `.claude` guidance reviewed; current-state claims reconciled while historical evidence logs/build/pilot records were preserved and labelled | Re-audit status whenever a milestone or live gate changes |
 | Tracked pilot/sample data and agent metadata | **Deep complete structurally and in aggregate**; provenance, relationships, staleness, path portability, secret patterns and causal/status claims checked without emitting source bodies | Owner decision on tracked public-source bodies and portable sample-fixture policy |
+
+### 7.1 Documentation fact table (authoritative for this reconciliation)
+
+| Topic | Verified fact used across current-state docs | Evidence boundary |
+|---|---|---|
+| Phase | Phase 0 is partially implemented; no seven-day soak/reconciliation gate has started | HLD gate + missing digest/RSS/reconciliation/supervision |
+| Persistence | PostgreSQL and `data/objects/` contain durable application and append-only test state; baseline is frozen | live read-only/catalog/object audit; `ST-P01` |
+| Control plane | processing-job claim/lease/retry/dead-letter exists; outbox dispatch and supervision do not | code review + 2,330/2,330 sampled events pending |
+| NSE/BSE | per-company API adapters are DB-integrated for all 30 registry companies; RSS is not | code/registry/live reconciliation |
+| M2/M3 | normalizer and resolver are DB-integrated; 258 adapter-shaped rows reconciled cleanly at sample | explicitly read-only scoped query |
+| Content | adapter artifacts/content registrations exist; canonical attempts, record links and text versions were empty | live counts + code review |
+| Prices | yfinance adapter is DB-integrated; 30 series / 7,529 current bars at sample | read-only market audit; acceptance/provenance gaps remain |
+| Google News/Screener | historical file pilots only; no canonical DB adapter | code/file inventory |
+| M4–M10 | extraction/ranking/reaction/report paths are file prototypes/debugging views, not HLD stage completion | code/schema/live empty downstream tables |
+| Tests | full DB suite is unsafe on the application DB; only offline/rollback-safe subsets were run | static test DB-selection/persistence audit |
+| Counts | all numeric live values in this review are timestamped 2026-08-23 evidence, never evergreen status | explicitly read-only transactions, rolled back |
+| Historical docs | pilot/build/evidence counts remain unchanged as dated history and carry supersession/status labels | documentation reconciliation |
 
 ## 8. Live PostgreSQL and object-store baseline
 
@@ -305,10 +337,10 @@ read-only transaction:
   not be misreported as production adapter loss. The earlier full object-store
   reconciliation remains clean for registered content objects.
 
-These current counts materially contradict the prose totals in `PROJECT_STATUS.md`
-(192 NSE / 138 BSE raw items, 177 / 109 valid PDFs and 28 BSE invalid artifacts).
-That drift is recorded for the documentation pass; this pass did not rewrite status
-or architecture/module requirements.
+These sampled counts materially contradicted the then-current prose totals in
+`PROJECT_STATUS.md` (192 NSE / 138 BSE raw items, 177 / 109 valid PDFs and 28 BSE invalid
+artifacts). The documentation pass removed those values as evergreen status while preserving
+them in dated evidence logs and kept the architecture requirements explicit.
 
 ## 9. Integration-test safety assessment
 
@@ -787,16 +819,16 @@ adding persistent integration coverage.
 - **Disposition:** **open.** Add a reviewed lock/hash workflow and fail-fast required
   variable syntax after testing compose behavior; do not commit generated secrets.
 
-### `ST-P15` — Documentation status is materially stale beyond the corrected safety text
+### `ST-P15` — Documentation status was materially stale
 
 - **Severity / priority:** Medium / P1
-- **Fact:** `ROADMAP.md` still says object store, jobs/outbox and DB-writing fetchers
-  are not started, while `PROJECT_STATUS.md` claims several are complete; module and
-  next-step wording also conflict. The schema companion had claimed no DB existed.
-  Current M1–M3 reconciliation also disproves the capture totals in status prose.
-- **Disposition:** **partially fixed/deferred to documentation pass.** This pass
-  corrected only destructive operational guidance and recorded contradictions. The
-  comprehensive status/router/module reconciliation remains assigned in §7.
+- **Fact:** `ROADMAP.md` said object store, jobs/outbox and DB-writing fetchers were not
+  started while other status prose claimed completion; Yahoo, persistent-state, module,
+  cadence, phase, counts and next-action statements conflicted.
+- **Disposition:** **fixed 2026-08-23.** `AGENTS.md`, `PROJECT_STATUS.md`, ROUTER/ROADMAP,
+  the human hub, all module L1/L2 docs, architecture/schema explainers, product note, and
+  historical pilot/build/source records were reconciled from the fact table in §7.1.
+  Dated evidence counts remain append-only and are explicitly non-evergreen.
 
 ### `ST-C01` — Capture parses before exact artifact registration is durable
 
@@ -1013,17 +1045,16 @@ adding persistent integration coverage.
   paths from portable products, add malformed-input tests, and stabilize/test or discard
   the dashboard after owner alignment; this review did not alter the dashboard files.
 
-### `ST-D09` — Source/dependency documentation materially overstates or understates status
+### `ST-D09` — Source/dependency documentation overstated or understated status
 
 - **Severity / priority:** Medium / P1
-- **Fact:** Yahoo L1/L2 says no fetcher exists and uses `yahoo` while live code/data use
-  `yfinance`; PROJECT_STATUS says prices remain pending; the product note says no database
-  exists; filing recovery claims a nonexistent test and incompatible invalid retry behavior;
-  Screener prose still mixes superseded policy with manual-only status. Pilot scripts can
-  be mistaken for HLD M4–M9 implementation.
-- **Disposition:** **open; extends `ST-P15`.** The documentation pass must reconcile status,
-  source names, exact-byte claims, phase position and pilot/DB-integrated boundaries without
-  converting these findings into false completion claims.
+- **Fact:** Yahoo L1/L2 said no fetcher existed and used `yahoo` while live code/data use
+  `yfinance`; project/product prose said prices or the database did not exist; Screener
+  mixed superseded policy with status; pilot scripts could be mistaken for HLD completion.
+- **Disposition:** **fixed 2026-08-23.** Module and root docs now distinguish requirement,
+  DB-integrated, pilot-only, and gated status; use `yfinance` for canonical source/series;
+  preserve the owner policy supersession; and label M4–M10/pilot products non-shipping.
+  Filing-recovery defects remain open code findings (`ST-D03`), not documentation claims.
 
 ## 12. Verification record
 
@@ -1073,6 +1104,14 @@ Commands were run from the repository root without displaying secrets:
 - secret-safe tracked-path scanner (locations/pattern names only, excluding `tmp/pi-*`)
   — two credentialed-URL pattern matches, manually confirmed as placeholders in
   `.env.example` and `seed_core.py`; no credential value match. No scan artifact written.
+- documentation stale-claim searches — every match for “not started,” “no database,” “no
+  fetcher,” old capture totals, six-hour cadence and superseded policy was adjudicated;
+  historical evidence was labelled/appended rather than blindly replaced.
+- non-writing project-document checker over 36 tracked root/`docs`/`.claude` Markdown/HTML
+  files — YAML front matter closed/basic-key-valid, HTML parsed, and all 88 local relative
+  links resolved. Raw captured third-party HTML under `data/` was intentionally excluded
+  because its root-relative links target the source websites, not repository files.
+- `git diff --check -- . ':(exclude)tmp/pi-*'` — passed after documentation reconciliation.
 
 The full suite was **not run by design** due `ST-P02`; this is a safety result, not
 an unverified claim that the full suite passes.
@@ -1112,8 +1151,10 @@ an unverified claim that the full suite passes.
 15. Replace or explicitly archive legacy source utilities; add bounded parser/URL,
     escaping and malformed-response fixtures (`ST-D05`, `ST-D08`).
 16. Choose a portable, provenance-bearing tracked sample policy (`ST-D06`).
-17. Reconcile the complete documentation/status map (`ST-P15`, `ST-D09`).
-18. Adopt the dependency/runtime lock and update policy (`ST-D07`, `ST-P14`).
+17. Adopt the dependency/runtime lock and update policy (`ST-D07`, `ST-P14`).
+
+Documentation/status reconciliation (`ST-P15`, `ST-D09`) completed in this review; keep it
+current in the same change as future milestones.
 
 ### Owner alignment required
 

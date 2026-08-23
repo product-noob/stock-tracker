@@ -2,6 +2,11 @@
 
 **Test date:** 22 August 2026
 
+> **Dated source snapshot:** endpoint availability/item counts below were observed on the
+> test date and were not re-fetched during the 2026-08-23 review. The ingestion model is the
+> approved requirement; no NSE/BSE RSS partition is currently DB-integrated. Current API
+> status and reliability gaps live in the module OVERVIEWs and comprehensive review.
+
 ## Conclusion
 
 Both NSE and BSE expose usable RSS/XML feeds for collating company announcements.

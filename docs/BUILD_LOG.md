@@ -76,3 +76,17 @@ Started 2026-08-23 (IST). Maintained during interactive build/testing sessions.
      `data/objects`, storage_path already starts with `objects/`).
 - Result: 📄 stored-pdf links on announcements, new "Stored filings" table
   (30 latest with size + origin URL), all blob hrefs verified to exist on disk.
+
+### 2026-08-23 (cont.) — Comprehensive review status reconciliation
+
+- This log remains append-only: earlier counts, “all passing,” cleanup, and completion claims
+  are historical session observations, not current acceptance status.
+- Review found DB-backed tests commit fixtures and can process global work; a full suite was
+  therefore withheld pending a guarded disposable DB/object root. Do not repeat live fixture
+  cleanup without owner approval, backup and a precise classification plan.
+- Phase 0 is partial, not gated. Durable review fixed final-attempt lease recovery,
+  same-size object corruption handling, and BSE envelope validation; open P0 items include
+  backups/migrations, test isolation, exact-bytes ordering, BSE page provenance, attachment
+  retries/links, source validation, concurrency, outbox dispatch and service supervision.
+- Canonical timestamped status is in `PROJECT_STATUS.md`, `docs/ROADMAP.md`, and
+  `docs/reviews/2026-08-23-comprehensive-review.md`; live totals must be queried read-only.

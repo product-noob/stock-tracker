@@ -3,7 +3,7 @@ tier: L2
 module: bse-capture
 doc: source-mechanics
 parent: OVERVIEW.md
-updated: 2026-08-22
+updated: 2026-08-23
 ---
 
 # BSE Capture — Source Mechanics
@@ -108,3 +108,12 @@ Critical: **AttachLive returns HTTP 200 with an HTML error page when the file is
 | beta hostname changes | DNS/TLS monitoring + canary | alert; config-driven host override for fast patch |
 | Feed item-count collapse | depth telemetry | widen overlap; hold cursor |
 | BOM/encoding parse errors | strict parse with fallback decode | normalize once, log variant |
+
+### Implementation status (2026-08-23)
+
+Envelope/`ROWCNT` validation now enforces R-BSE-2/7/8, including stable denominators and
+mandatory `NEWSID`. Other requirements remain incomplete: page-to-row artifact provenance
+is wrong in mixed reuse, parsing precedes durable registration, the empty canary occurs
+before foreign-scrip filtering, invalid HTML suppresses future retries, and downloads are
+unbounded. Invalid bytes are raw evidence but no canonical failed-attempt row exists. See
+review `ST-C01`–`ST-C05`.

@@ -3,48 +3,65 @@ tier: L2
 module: yahoo-market-data
 doc: source-mechanics
 parent: OVERVIEW.md
-updated: 2026-08-22
-note: partly placeholder — mechanics marked TBD harden during first implementation (ROADMAP action 4)
+updated: 2026-08-23
+note: implementation exists; audited gaps are explicit below
 ---
 
 # Yahoo Market Data — Source Mechanics
 
-## 1. Access method (decided)
+## 1. Implemented access method
 
-Primary: **`yfinance` Python library**, symbols `{NSE_SYMBOL}.NS` (BSE `.BO` fallback).
-Proven in both pilots for `.NS` daily bars; no session warm-up or TLS impersonation needed.
+Primary: pinned **`yfinance` Python library**, symbols `{NSE_SYMBOL}.NS`. The canonical
+source code/partition is `yfinance` (`listing:{listing_id}:daily`); “Yahoo market data” is
+the product/module name. `scripts/fetch_prices.py` uses
+`Ticker.history(period=..., interval="1d", auto_adjust=True)`, records library and adjustment
+versions in run config, and executes partitions sequentially with spacing.
 
-TBD at implementation time:
+The first implementation resolved the former transport TBD by serializing the returned
+DataFrame deterministically as CSV. This is useful replay input for the mapping layer but is
+**not exact provider HTTP transport**. The implementation must not claim R-YF-4's exact
+transport guarantee unless transport interception is added or the approved contract is
+explicitly changed.
 
-- [ ] pin `yfinance` version in `requirements.txt`; record version + adjustment flag in `fetch_runs.config`
-- [ ] decide raw transport for artifact retention: persist the library's underlying HTTP
-      response if accessible, else wrap the endpoint call ourselves for byte capture
-      (R-YF-4 requires exact bytes; the wrapper approach is likely necessary)
-- [ ] measure rate-limit behavior at ~30 then 100 symbols
+Still required:
 
-## 2. Fetch shape (planned)
+- [ ] explicit timeout/retry behavior around `Ticker.history`;
+- [ ] measured rate-limit behavior at ~30 then 100 symbols;
+- [ ] owner/design decision on returned-frame serialization versus transport bytes.
 
+## 2. Implemented fetch shape
+
+```text
+per listing partition (yfinance, listing:{id}:daily):
+  first load: history(period="1y", interval="1d", auto_adjust=True)
+  refresh:    the same overlapping one-year frame; unchanged observations deduplicate
 ```
-per listing partition (yahoo, listing:{id}:daily):
-  backfill:   history(period="1y", interval="1d", auto_adjust=<pinned>)
-  daily:      history(start={last_cursor-5td}, interval="1d")   # ≥5 trading days overlap
-```
 
-Session-mapping rule: bars are keyed by exchange trade date (Yahoo returns date-indexed
-rows in IST calendar for `.NS`); store as `DATE` trade dates, not timestamps.
+The adapter uses one deterministic run per partition/IST calendar day, stores the frame CSV
+artifact, inserts append-only observation hashes, and advances the cursor after the DB work.
+Bars are keyed by IST exchange trade date. A normal second invocation on the same day skips
+the network.
 
-## 3. Failure modes (planned handling)
+## 3. Validation and failure modes
 
-| Failure | Detection | Required behavior |
+| Failure | Current detection | Required disposition / gap |
 |---|---|---|
-| Empty frame for active listing | row-count sanity vs calendar | retry next cycle ×N; alert after threshold; hold cursor |
-| Delisted / symbol renamed | sustained empty + identity-correction signal | mark series closed; alert ops (links into M3 correction flow) |
-| Adjusted-history rewrite by provider | hash-diff of overlapping window vs prior fetch | append revised observations; do NOT overwrite; log revision event |
-| Bad bars (OHLC inversions, zero-volume on trade day) | R-YF-3 validation | reject bar loudly per run; retain raw bytes for diagnosis |
-| Library/API breakage (Yahoo changes internals) | pinned-version CI smoke test | fail visibly; upgrade deliberately with re-validation |
+| Empty frame for active listing | hard error | retry/backoff and source-silence alert not supervised yet |
+| Delisted / symbol renamed | no complete workflow | sustained-empty health + identity-correction signal, then explicit close/review |
+| Adjusted-history rewrite | changed observation hash appends a bar | isolated DB revision/crash fixture still required |
+| OHLC inversion / negative volume | rejected | finite-value and duplicate-date checks missing; NaN/Infinity can pass |
+| Still-forming current-day bar | helper can calculate expected sessions | fetched frame is not rejected before market close |
+| Library/API breakage | pinned direct version | no network smoke policy or transitive lock/update workflow |
+| DB/object split | content object registration uses a separate connection | prove/rework transaction and orphan reconciliation behavior |
 
-## 4. Trading calendar
+The read-only 2026-08-23 sample found 30 active series, 7,529 current bars, and no invalid
+OHLC, weekend/future, missing-lineage, duplicate-series, or cursor-failure rows. That is a
+timestamped data-quality observation, not evidence the missing validation paths are safe.
 
-Staleness and gap detection need an NSE/BSE trading-calendar source (weekends + exchange
-holidays). TBD: pick maintained holiday list (NSE website static file vs package) — required
-before R-YF-5 alerts can be trusted.
+## 4. Trading calendar and reaction boundary
+
+Current gap detection uses weekdays plus an 80%-of-series heuristic; no authoritative NSE
+holiday calendar is selected. This is insufficient for production staleness/coverage and can
+hide provider-wide loss. Benchmark/sector series and the no-look-ahead M8 reaction engine
+remain Phase 2 work. The file-based `price_reaction.py` prototype uses future data and must
+not be used for published attribution (review `ST-D01`).

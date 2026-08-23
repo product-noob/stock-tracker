@@ -3,13 +3,23 @@
 **Status:** v1.2 baseline · **DDL:** [`db/schema.sql`](../db/schema.sql)
 **Upstream:** [`architecture-hld.md`](architecture-hld.md) · [`product_note.html`](../product_note.html)
 
-Run a fresh database with:
+For a **new disposable database only**, apply the baseline with:
 
 ```bash
 psql -v ON_ERROR_STOP=1 -f db/schema.sql
 ```
 
-> **Live-state correction (2026-08-23):** the PostgreSQL database now contains persistent capture, market, pipeline, and append-only integration-test rows. `db/schema.sql` is the applied baseline; it must not be re-applied as a reset or treated as the live upgrade mechanism. Freeze it and introduce forward migrations before the next DDL change (review finding `ST-P01`).
+> **Live-state correction (2026-08-23):** the application PostgreSQL database contains
+> persistent capture, market, pipeline, and append-only integration-test rows.
+> `db/schema.sql` is the applied baseline; it must not be re-applied as a reset or treated
+> as the live upgrade mechanism. Freeze it and introduce reviewed forward migrations before
+> the next DDL change (review `ST-P01`). The structures below describe the schema contract,
+> not current pipeline completion.
+>
+> **Runtime sample:** all 44 tables exist, but at the review sample canonical content
+> attempts/links/text versions, intelligence outputs, and delivery tables were empty. The
+> outbox held only unpublished events because no dispatcher exists. See the comprehensive
+> review for timestamped counts; do not treat examples here as live rows.
 
 ---
 
@@ -212,7 +222,14 @@ Workers claim jobs with `FOR UPDATE SKIP LOCKED`. A failed job becomes claimable
 
 ### `platform.outbox_events`
 
-A producer inserts its canonical result and outbox event in the same transaction. The dispatcher publishes/enqueues pending events and marks them published. Consumers use their job or result idempotency key, so redelivery is safe.
+The schema supports a producer inserting its canonical result and outbox event in the same
+transaction. The target dispatcher publishes/enqueues pending events and marks them
+published; consumers use idempotency keys so redelivery is safe.
+
+**Implementation gap (2026-08-23):** no dispatcher/claim/publish/retry implementation is
+tracked, and all 2,330 events in the audit sample were pending. Some handlers also commit
+domain work before the worker's separate completion transaction, weaker than the literal
+single-transaction wording above (`ST-P03`, `ST-P12`).
 
 ### Stage observability
 
@@ -237,7 +254,10 @@ A content object may be PDF, XML, HTML, plain text or another media type. `recor
 - one record may contain a primary filing and attachments;
 - the same article/content may be observed through more than one source record.
 
-Failed HTTP attempts, BSE HTTP-200 HTML error pages and redirects survive in attempt history. A failed fetch never requires inventing a document hash.
+The target lifecycle requires failed HTTP attempts, BSE HTTP-200 HTML error pages and
+redirects to survive in attempt history. **Current capture only retains invalid response
+bytes as raw artifacts; no-byte failures and canonical attempt/link rows were absent at the
+review sample.** A failed fetch never requires inventing a document hash.
 
 `text_versions` records extractor/version/config, status, exact text hash, page metrics and error. Reprocessing appends a version; it never replaces evidence. Downstream extraction references `text_version_id`, making the input exact.
 
@@ -401,7 +421,11 @@ Corrections are represented by a new version/superseding row, not an evidence re
 | C6 market reaction | market service | `price_series`, `price_bars`, `reaction_signals`, `reaction_baseline_bars` |
 | C7 delivery | digest/notifier | `digests`, `digest_items`, `notifications`, `delivery_attempts` |
 
-Every producer transaction writes its canonical row(s) and one outbox event. Consumers receive IDs, then read the canonical contract from PostgreSQL; large text/bytes remain in object storage or their canonical table rather than being copied through queue payloads.
+Every producer is **required** to write canonical row(s) and one outbox event under the
+chosen transaction contract. Consumers receive IDs, then read the canonical contract from
+PostgreSQL; large text/bytes remain in object storage or their canonical table rather than
+being copied through queue payloads. Current handler boundaries and missing dispatcher are
+explicit implementation gaps, not exceptions to this design.
 
 ---
 

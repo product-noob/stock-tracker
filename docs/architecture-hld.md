@@ -3,6 +3,16 @@
 **Status:** v1.2 · **Architecture:** modular monolith with durable PostgreSQL work queue
 **Companions:** [`database-schema.md`](database-schema.md) · [`db/schema.sql`](../db/schema.sql) · [`product_note.html`](../product_note.html) · [`pilot_learnings.md`](../pilot_learnings.md)
 
+> **Implementation-status note (2026-08-23):** this is the approved target architecture,
+> not a declaration that every capability below exists. Current code implements the object
+> store, processing-job worker, per-company NSE/BSE API paths, M2/M3, and yfinance bars.
+> Outbox dispatch, RSS/news/Screener DB capture, canonical content attempts/links, M4–M7,
+> the M8 reaction engine, M9–M10, service supervision, backups, least-privilege roles, and
+> phase gates remain incomplete.
+> Current adapters also have documented invariant gaps. Use
+> [`PROJECT_STATUS.md`](../PROJECT_STATUS.md) and the
+> [comprehensive review](reviews/2026-08-23-comprehensive-review.md) for verified state.
+
 ---
 
 ## 1. Product boundary
@@ -45,7 +55,7 @@ flowchart LR
     NSE[NSE RSS/API/PDFs]
     BSE[BSE RSS/API/PDFs]
     NEWS[Google News and curated RSS]
-    PRICES[NSE bhavcopy or yfinance]
+    PRICES[yfinance primary; NSE bhavcopy reconciliation later]
     USER[Owner]
     TG[Telegram Bot]
 
@@ -119,11 +129,12 @@ The outbox dispatcher itself is restartable. Re-publishing is harmless because d
 
 ## 5. Module capability cards
 
-> **Module detail specs:** the four source-capture modules (NSE, BSE, Google News, Screener) now have
-> build-ready requirement specs in [`docs/modules/`](modules/README.md), including corrected source
-> mechanics observed in the Aug-2026 pilots (TLS-fingerprint impersonation for NSE, BSE API contract
-> change, AttachHis/AttachLive behavior, Screener risk acceptance). Where this section and those specs
-> disagree about *source access mechanics*, the module specs govern.
+> **Module detail specs:** the five source-capture modules (NSE, BSE, Google News,
+> Screener and Yahoo/yfinance) have requirement specs in
+> [`docs/modules/`](modules/README.md), including corrected source mechanics observed in
+> the Aug-2026 pilots. Where this section and those specs disagree about source access
+> mechanics, the module specs govern. Their status sections distinguish requirements from
+> current code.
 
 ### M1 · Source adapters
 
@@ -543,12 +554,15 @@ Operational alerts include two-hour source silence on expected market days, dead
 
 ## 12. Deployment
 
-### v1
+### v1 target
 
-- native PostgreSQL;
-- local filesystem/object directory with atomic writes and backups;
-- Python scheduler, dispatcher and worker processes under systemd/NSSM/Task Scheduler;
-- no containers required;
+- PostgreSQL (currently PostgreSQL 17 in loopback-bound Docker; containerization is an
+  operational choice, not an architecture boundary);
+- local filesystem/object directory with atomic writes and coordinated backups (backups are
+  required but not yet implemented);
+- Python scheduler, dispatcher and worker processes under systemd/NSSM/Task Scheduler
+  (only the worker code currently exists; no tracked supervision units);
+- no additional application containers required;
 - no Redis/RabbitMQ required;
 - one repository and one deployable release version.
 
@@ -625,4 +639,9 @@ A module may become a separate process/service only when operational evidence ju
 | Google News? | Phase 2, supported by generalized HTML/text content model. |
 | Embeddings? | Deferred until real cross-source news dedup data exists. |
 
-Open product/vendor questions remain price-provider preference, compliant fundamentals source, host choice and measured OCR/news rate limits. None changes the v1.2 database boundaries.
+The price-provider question is resolved: yfinance is primary and NSE bhavcopy is a later
+reconciliation source. The owner separately approved full-scope Screener capture on
+2026-08-23, superseding the prior ToS-conditioned cadence; this policy change does not alter
+the v1.2 boundaries or make fundamentals a Phase 0 gate. Open questions remain the
+per-company API cadence, returned-frame versus transport provenance, fundamentals schema/
+validation, host/supervision choice, and measured OCR/news rate limits.

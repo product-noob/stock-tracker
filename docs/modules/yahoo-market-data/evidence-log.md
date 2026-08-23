@@ -24,8 +24,23 @@ Empirical findings. Cite as `(YF evidence-log, YYYY-MM-DD)`.
   traced to anchor logic, not data quality.
 - No access friction observed (contrast NSE/BSE Akamai posture).
 
-## Open observations (to confirm at implementation)
+## Open observations (recorded before implementation)
 
 - Volume-zero semantics on some sessions unverified.
 - Provider silent-history-revision behavior not yet observed firsthand; fixture test planned.
 - Trading-calendar source for holiday handling not chosen yet.
+
+## 2026-08-23 — DB-integrated yfinance adapter and review
+
+- `scripts/fetch_prices.py` now writes `yfinance` partitions, 30 listing series, append-only
+  bars and deterministic returned-frame CSV artifacts. Read-only audit sample: 7,529 current
+  bars across 30 series, 2025-08-21..2026-08-21, with no observed invalid OHLC,
+  weekend/future bars, missing artifact lineage, revisions or cursor failures.
+- **Contract clarification:** retained CSV is an exact deterministic serialization of the
+  returned DataFrame, not exact Yahoo HTTP transport bytes. R-YF-4 remains unmet unless the
+  architecture accepts this weaker provenance contract.
+- Synthetic review proved `validate_frame()` accepts NaN/Infinity; duplicate dates and the
+  current still-forming pre-close frame are also insufficiently gated. These are prospective
+  corruption risks; no bad live bars were observed.
+- Trading-calendar, explicit history timeout/retry, provider-revision integration fixture,
+  benchmark series and no-look-ahead M8 remain open.

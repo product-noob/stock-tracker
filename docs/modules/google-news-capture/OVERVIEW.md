@@ -1,7 +1,7 @@
 ---
 tier: L1
 module: google-news-capture
-status: pilot-proven (partial: feed capture + redirect resolver proven; article fetch = Phase 2)
+status: pilot-proven (file-only; no DB adapter; article fetch = Phase 2)
 spec-version: v1.1 (tiered restructure of google-news-capture.md v1.0)
 master: ../README.md
 phase-note: PRD §11 places news breadth in Phase 2; feed capture mechanics are Phase-0-safe.
@@ -61,10 +61,15 @@ makes silent loss possible in a way other sources don't have).
 
 ## Status & next milestone
 
-- **pilot-proven (partial)**: feed capture ran in both pilots; `scripts/resolve_news.py`
-  resolves tokens at 100/100 (HDFC Bank). Article fetch not attempted.
-- **Next milestone:** DB-integrated feed capture can join ROADMAP action 2; resolution +
-  article fetch land in Phase 2 per plan.
+- **Pilot-proven, file-only:** feed capture ran in both pilots; the stored HDFC sample has
+  100/100 structurally valid resolved HTTP(S) URLs. No Google News partition has run on the
+  canonical DB path and article fetch was not attempted.
+- **Known mismatch:** `scripts/resolve_news.py` writes transient failures to the same final
+  token cache and excludes them forever, contrary to R-GN-8. It also logs full resolved
+  URLs and lacks the URL/private-address/size policy required before article fetching.
+- **Next milestone:** keep article resolution/fetch in Phase 2. A DB feed adapter may be
+  added earlier only after shared capture correctness/test-isolation gates; make resolver
+  failures retryable before promoting it to unattended use.
 
 ## Detail index (L2)
 

@@ -34,9 +34,11 @@ Every doc carries YAML front matter (`tier`, `module`, `loads:`) so you can walk
 1. Read this file + `ROADMAP.md` (both short).
 2. Identify the module(s) your task touches → load its `OVERVIEW.md`.
 3. From OVERVIEW's §"Detail index", load only the L2 files whose *load-when* matches your task.
-4. Authoritative design for anything not covered here: `docs/architecture-hld.md` (system),
-   `docs/database-schema.md` (storage), `product_note.html` (product requirements).
-   These three are heavy — consult sections, don't ingest whole.
+4. Authoritative **design** for anything not covered here: `docs/architecture-hld.md`
+   (system), `docs/database-schema.md` (storage), `product_note.html` (product
+   requirements). For **implemented/current state**, use `PROJECT_STATUS.md`, this
+   inventory, and the dated review; never infer completion from a design contract.
+   These three design docs are heavy — consult sections, don't ingest whole.
 
 ---
 
@@ -59,19 +61,23 @@ modular Python monolith with durable jobs.
 
 ## 3. Module inventory
 
-Status vocabulary: `planned` · `spec-complete` · `pilot-proven` (works as file-based scripts,
-DB integration not built) · `db-integrated` · `gated` (passing its acceptance gate).
+Status vocabulary: `planned` · `spec-complete` · `pilot-proven` (works as a file-based
+script, DB integration not built) · `db-integrated` (some canonical DB path exists; listed
+caveats still apply) · `gated` (passing its acceptance gate). No module is gated yet.
 
 | Module | L1 entry | Status | Owns |
 |---|---|---|---|
-| NSE capture | [`modules/nse-capture/OVERVIEW.md`](modules/nse-capture/OVERVIEW.md) | db-integrated (API) | NSE announcements: RSS + API + PDF download |
-| BSE capture | [`modules/bse-capture/OVERVIEW.md`](modules/bse-capture/OVERVIEW.md) | db-integrated (API) | BSE announcements: RSS + API + PDF download |
-| Google News capture | [`modules/google-news-capture/OVERVIEW.md`](modules/google-news-capture/OVERVIEW.md) | pilot-proven* | per-company news feeds + redirect resolution (*article fetch = Phase 2) |
-| Screener fundamentals | [`modules/screener-fundamentals/OVERVIEW.md`](modules/screener-fundamentals/OVERVIEW.md) | pilot-proven | weekly fundamentals snapshots (risk-accepted source) |
-| Yahoo market data | [`modules/yahoo-market-data/OVERVIEW.md`](modules/yahoo-market-data/OVERVIEW.md) | planned | listing-level daily OHLCV price series |
+| NSE capture | [`modules/nse-capture/OVERVIEW.md`](modules/nse-capture/OVERVIEW.md) | db-integrated (API only) | Per-company API/items/PDF artifacts; RSS and canonical M4 links/attempts absent; P0 reliability gaps open |
+| BSE capture | [`modules/bse-capture/OVERVIEW.md`](modules/bse-capture/OVERVIEW.md) | db-integrated (API only) | Per-company API/items/PDF artifacts; RSS and canonical M4 links/attempts absent; P0 reliability gaps open |
+| Google News capture | [`modules/google-news-capture/OVERVIEW.md`](modules/google-news-capture/OVERVIEW.md) | pilot-proven | File feed/resolver only; no DB adapter; article fetch remains Phase 2 |
+| Screener fundamentals | [`modules/screener-fundamentals/OVERVIEW.md`](modules/screener-fundamentals/OVERVIEW.md) | pilot-proven | Manual file snapshot/parser only; owner-approved source policy, no DB adapter |
+| Yahoo market data | [`modules/yahoo-market-data/OVERVIEW.md`](modules/yahoo-market-data/OVERVIEW.md) | db-integrated | yfinance daily bars for 30 listing series; validation/provenance/calendar gates open |
 
 Shared capture-domain rules (parallel execution, convergence points, terminology,
-cross-source corrections ledger): [`modules/README.md`](modules/README.md).
+cross-source corrections ledger): [`modules/README.md`](modules/README.md). Current shared
+platform/pipeline status: object storage, processing-job worker, M2, M3 and yfinance bars
+exist; outbox dispatch, scheduler/supervision, canonical content links/attempts, M4–M7,
+the M8 reaction engine, and M9–M10 do not.
 
 Downstream pipeline stages (normalize M2, resolve M3, extract M5, cluster/rank M6–M7,
 reaction M8, digest/deliver M9–M10) are specified as capability cards in
@@ -82,6 +88,8 @@ as implementation begins, following the same template.
 
 1. **Exact bytes before parsing.** Every response is persisted to immutable storage +
    SHA-256-registered before any parser sees it. JSONB is a query aid, never truth.
+   **Implementation gap:** current NSE/BSE/Yahoo paths do not fully enforce this ordering;
+   see review `ST-C01`/`ST-D04`. The invariant remains binding, not waived.
 2. **Idempotent writes at every stage**, keyed per documented rules — at-least-once
    delivery must not duplicate logical results.
 3. **Append-only evidence.** Text versions, extractions, event snapshots, reactions:

@@ -4,7 +4,7 @@ module: screener-fundamentals
 status: pilot-proven (manual utility; DB integration + scheduled cadence not built)
 spec-version: v1.1 (tiered restructure of screener-fundamentals.md v1.0)
 master: ../README.md
-policy: ⚠ risk-accepted source — constraints in §2 below are mandatory conditions of that acceptance
+policy: owner-approved full scope since 2026-08-23; historical 2026-08-22 constraints retained below as superseded evidence
 loads:
   - source-mechanics.md   # implementing/debugging fetch behavior, page regions, failure handling
   - data-contract.md      # writing parser/writer code, snapshot semantics, unit-safety rules
@@ -38,8 +38,12 @@ conditions under which the risk acceptance holds:
 | R-SC-4 | **Kill-switch.** `screener.enabled=false` halts all Screener partitions immediately without touching other modules; legal/ToS-change events pause the module pending owner review. |
 | R-SC-5 | **Fallback path.** Own extraction from official results filings remains the roadmap; this module is a convenience layer whose data must be replaceable without schema breakage. |
 
+</details>
+
 Fundamentals data is **context/enrichment only**: it never enters the severity/red-flag path
-and is never quoted as evidence.
+and is never quoted as evidence. The owner directive changes source policy, not the Phase 0
+gate or the requirement for versioned provenance, validation, bounded requests, and
+ban-avoidance pacing.
 
 ## Purpose & scope
 
@@ -91,10 +95,16 @@ Plus `core.ref_sources` row `screener` (`source_kind='fundamentals'`, interval 6
 
 ## Status & next milestone
 
-- **pilot-proven**: `scripts/fetch_fundamentals.py` fetches + parses all data tables
-  (stdlib-only HTMLParser) for both pilot companies; manual runs only.
-- **Next milestone:** DB-integrated snapshots land **after Phase 0** core capture works —
-  deliberately sequenced behind exchange/news modules given cadence constraints.
+- **Pilot-proven, file-only:** `scripts/fetch_fundamentals.py` fetched and parsed the two
+  historical pilot pages; an offline review reparsed the HDFC raw HTML identically to its
+  tracked JSON. There is no DB snapshot table/adapter, scheduler, kill switch, or current
+  full-fleet crawl.
+- **Known gaps:** the utility lacks request spacing/backoff, title/company and interstitial
+  canaries, atomic/versioned outputs, explicit units/provenance, and duplicate-label safety.
+  Its convenience JSON is not the specified `fundamentals_snapshots` contract.
+- **Next milestone:** remains outside the Phase 0 gate. Before any approved full-scope crawl,
+  implement the DB contract plus bounded sequential pacing and validation; rate limiting is
+  ban-avoidance engineering even though the historical ToS constraints are superseded.
 
 ## Detail index (L2)
 

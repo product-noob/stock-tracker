@@ -28,3 +28,13 @@ Empirical findings. Cite as `(GN evidence-log, YYYY-MM-DD)`.
 
 - Sustained hourly polling across many companies untested (rate-limit stability = PRD open question).
 - Article HTML/text fetch not yet attempted (Phase 2 scope).
+
+## 2026-08-23 — Static/sample review
+
+- The tracked 100-entry HDFC cache contained structurally valid HTTP(S) URLs with no URL
+  credentials, literal private IPs or non-HTTP schemes; no network refetch was performed.
+- `resolve_news.py` caches failure results under the token and excludes every cached token
+  from future work. A transient resolution failure is therefore permanent, contrary to
+  R-GN-8's retry requirement. Full URLs/errors are also logged and the future article-fetch
+  trust boundary (private-address denial, canonicalization and size limits) is unspecified.
+- Keep the utility pilot-only until retryable state and safe URL/content handling exist.

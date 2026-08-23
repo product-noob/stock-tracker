@@ -3,7 +3,7 @@ tier: L2
 module: nse-capture
 doc: data-contract
 parent: OVERVIEW.md
-updated: 2026-08-22
+updated: 2026-08-23
 ---
 
 # NSE Capture — Data Contract & Identity Rules
@@ -40,3 +40,11 @@ Raw item fields → `ingestion.raw_feed_items` / `normalized_records`:
 | Req | Rule |
 |---|---|
 | R-NSE-20 | The adapter MAY pre-fill `company_id` when the API partition was provisioned per-symbol (partition key IS the listing); it MUST still emit resolution input fields so M3 can confirm or correct. Pre-fill and resolver agree in one transaction. |
+
+## 4. Implementation reconciliation (2026-08-23)
+
+The adapter writes raw fields and M2/M3 later resolve them; it does not establish complete
+C3. Canonical `record_contents` and `content_fetch_attempts` were empty at audit time.
+Same-partition source corrections with an existing native ID are dropped by raw-item
+uniqueness before M2's advertised revision path, so correction semantics require an explicit
+forward design (`ST-C06`).

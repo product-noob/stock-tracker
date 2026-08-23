@@ -3,7 +3,7 @@ tier: L2
 module: google-news-capture
 doc: source-mechanics
 parent: OVERVIEW.md
-updated: 2026-08-22
+updated: 2026-08-23
 ---
 
 # Google News Capture — Source Mechanics
@@ -66,3 +66,10 @@ Resolver behavior requirements:
 | Redirect resolution failures | per-item retry state | backoff; visible dead-letter; never silent drop |
 | Publisher-name ambiguity in titles | parse fallback to `<source>` element | prefer structured field; log title-parse misses |
 | Query alias drift (company renames) | periodic alias-review reminder | owner-curated fix, not automatic |
+
+### Implementation status (2026-08-23)
+
+The two resolution algorithms and file cache are pilot-proven only. Current cache semantics
+violate R-GN-8: a transient failure is cached and never retried. There is no DB feed/stage,
+dead-letter state, publisher article fetch, private-address/credential URL policy, or size
+bound. Do not use the utility as an unattended article-fetch boundary.

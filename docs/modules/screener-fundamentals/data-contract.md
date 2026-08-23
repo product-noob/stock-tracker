@@ -3,7 +3,7 @@ tier: L2
 module: screener-fundamentals
 doc: data-contract
 parent: OVERVIEW.md
-updated: 2026-08-22
+updated: 2026-08-23
 ---
 
 # Screener Fundamentals — Data Contract
@@ -37,3 +37,9 @@ addition listed in [OVERVIEW](OVERVIEW.md) §Schema impact.
 | Req | Rule |
 |---|---|
 | R-SC-13 | Fields map to a `fundamentals_snapshots`-style extension (see OVERVIEW) rather than being forced into `normalized_records`, which models announcements/news. Partition/fetch/artifact lineage rows are shared infrastructure. |
+
+## 5. Implementation reconciliation (2026-08-23)
+
+This is an unapplied design contract. No fundamentals table/migration or DB adapter exists;
+the file JSON does not preserve explicit unit, consolidated, period-end and source-revision
+fields at this granularity. Do not load the convenience JSON directly into canonical tables.

@@ -46,16 +46,17 @@
 <div class="meta">
   <strong>Purpose:</strong> human-friendly map of the tiered documentation (L0/L1/L2) — read this when resuming after a break.
   The machine-facing source of truth is <a href="ROUTER.md"><code>docs/ROUTER.md</code></a>; if they disagree, fix one of them.
-  · <strong>Updated:</strong> 2026-08-22 · Links point to the markdown sources (rendered on GitHub).
+  · <strong>Updated:</strong> 2026-08-23 · <a href="reviews/2026-08-23-comprehensive-review.md"><strong>Comprehensive review</strong></a>
+  · Links point to tracked sources.
 </div>
 
 <!-- ================================================================ -->
 <h2 id="resume">🟢 Resuming work? Start here</h2>
 <ol class="steps">
-  <li><strong>Where are we?</strong> Phase <span class="badge phase">0 — reliable capture</span>, early build.
-      Schema live &amp; seeded; all five sources pilot-proven as file-based scripts; nothing writes to the DB yet.</li>
-  <li><strong>What's next?</strong> Pick the top item from <a href="#next">Next actions</a> below
-      (currently: ingestion skeleton — object store + jobs/outbox).</li>
+  <li><strong>Where are we?</strong> Phase <span class="badge phase">0 — reliable capture</span>, partially implemented; the gate has not started.
+      Persistent DB/object state exists. Jobs, NSE/BSE per-company APIs, M2/M3 and yfinance bars write to PostgreSQL; RSS, canonical content links/attempts, outbox dispatch, digest and M4–M10 remain incomplete.</li>
+  <li><strong>What's next?</strong> Follow the safety-first <a href="#next">Next actions</a> below.
+      Backups/migrations and test isolation precede further live DB work.</li>
   <li><strong>Load context:</strong> open the module's <code>OVERVIEW.md</code> from
       <a href="#modules">Module cards</a>; follow its “load when” hints into L2 detail only as needed.</li>
   <li><strong>Rules you must not break:</strong> skim <a href="#invariants">Global invariants</a> —
@@ -66,24 +67,24 @@
 <h2 id="next">🎯 Next actions (ordered)</h2>
 <table>
 <tr><th style="width:2em;">#</th><th>Action</th><th style="width:22%;">Docs to load</th></tr>
-<tr class="now"><td>1</td><td><strong>Ingestion skeleton</strong> — local immutable object store (atomic write + SHA-256 registry) + durable job/outbox worker pattern against <code>platform.processing_jobs</code>/<code>platform.outbox_events</code>. Everything downstream assumes this exists.</td><td>HLD §4–§5, §9; schema §5</td></tr>
-<tr><td>2</td><td><strong>NSE + BSE adapters → DB</strong> — reshape proven <code>fetch_announcements.py</code>/<code>download_pdfs.py</code> into partition-aware fetchers writing C1/C3 lineage</td><td><a href="modules/nse-capture/OVERVIEW.md">nse OVERVIEW</a> + L2, <a href="modules/bse-capture/OVERVIEW.md">bse OVERVIEW</a> + L2</td></tr>
-<tr><td>3</td><td><strong>Normalizer (M2) + identity resolver (M3)</strong> with fail-closed review queue</td><td>HLD M2/M3 cards; schema §3–§4</td></tr>
-<tr><td>4</td><td><strong>Yahoo adapter</strong> — daily bars into <code>market.price_series</code>/<code>price_bars</code></td><td><a href="modules/yahoo-market-data/OVERVIEW.md">yahoo OVERVIEW</a> + L2</td></tr>
-<tr><td>5</td><td><strong>Digest + reconciliation harness</strong> → start the Phase 0 soak clock (7 unattended days + worker-kill tests)</td><td>HLD §13 Phase 0 gate</td></tr>
+<tr class="now"><td>1</td><td><strong>Protect persistent state</strong> — coordinated PostgreSQL + object-store backup/restore drill; freeze baseline and choose forward migrations.</td><td><a href="reviews/2026-08-23-comprehensive-review.md">review ST-P01/P08</a></td></tr>
+<tr><td>2</td><td><strong>Isolate integration tests</strong> — guarded disposable DB/object root; never run the full DB suite against the application environment.</td><td><a href="reviews/2026-08-23-comprehensive-review.md">review ST-P02/C10</a></td></tr>
+<tr><td>3</td><td><strong>Repair capture P0 correctness</strong> — bytes-before-parse, BSE page/run provenance, bounded source validation, retries/links, cadence/correction semantics and M2/M3 claims.</td><td>NSE/BSE OVERVIEWs + review ST-C01/C03–C07</td></tr>
+<tr><td>4</td><td><strong>Complete control plane</strong> — outbox dispatcher, scheduler/supervision, least-privilege role and actionable health/alerts.</td><td>review ST-P03/P07/P09</td></tr>
+<tr><td>5</td><td><strong>Finish Phase 0 breadth/gate</strong> — NSE/BSE main RSS, canonical content lifecycle, plain resolved-filing digest and reconciliation harness; then seven-day soak.</td><td>HLD §13; <a href="ROADMAP.md">ROADMAP</a></td></tr>
 </table>
-<p class="muted">Screener snapshots &amp; Google News article-fetch deliberately trail (risk constraints / Phase 2 breadth).</p>
+<p class="muted">Google News article fetch remains Phase 2. Screener source scope is owner-approved, but DB integration is not a Phase 0 dependency. Yahoo bars exist early; reactions remain Phase 2.</p>
 
 <!-- ================================================================ -->
 <h2 id="modules">🧩 Module cards</h2>
-<p class="muted">Status vocabulary: <span class="badge pilot">pilot-proven</span> works as file-based script, DB integration not built ·
-<span class="badge partial">partial</span> some capability proven · <span class="badge planned">planned</span> spec-complete, no code.
-Each card's title links to its L1 overview; bullets are the L2 details.</p>
+<p class="muted">Status vocabulary: <span class="badge pilot">pilot-proven</span> file-only ·
+<span class="badge partial">db-integrated/partial</span> canonical DB path exists but gates remain · <span class="badge planned">planned</span> no implementation.
+No module is gated. Each card's title links to its L1 overview.</p>
 
 <div class="grid">
   <div class="card">
-    <h3><a href="modules/nse-capture/OVERVIEW.md">NSE capture</a> <span class="badge pilot">pilot-proven</span></h3>
-    NSE announcements: RSS + API + PDF download. Akamai TLS-impersonation required.
+    <h3><a href="modules/nse-capture/OVERVIEW.md">NSE capture</a> <span class="badge partial">DB: API only</span></h3>
+    Per-company API/items/PDF artifacts for 30 registry companies. RSS, canonical M4 links and P0 reliability gates remain open.
     <ul>
       <li><a href="modules/nse-capture/source-mechanics.md">source-mechanics</a> — endpoints, warm-up rules R-NSE-1…15, failure modes</li>
       <li><a href="modules/nse-capture/data-contract.md">data-contract</a> — field maps, keys R-NSE-16…22</li>
@@ -91,8 +92,8 @@ Each card's title links to its L1 overview; bullets are the L2 details.</p>
     </ul>
   </div>
   <div class="card">
-    <h3><a href="modules/bse-capture/OVERVIEW.md">BSE capture</a> <span class="badge pilot">pilot-proven</span></h3>
-    BSE announcements: RSS + API + PDFs. Contract drift risk; AttachHis/AttachLive trap.
+    <h3><a href="modules/bse-capture/OVERVIEW.md">BSE capture</a> <span class="badge partial">DB: API only</span></h3>
+    Per-company API/items/PDF artifacts for 30 registry companies. RSS, page provenance, retry/link and other P0 gates remain open.
     <ul>
       <li><a href="modules/bse-capture/source-mechanics.md">source-mechanics</a> — Table envelope, archive-first downloads, R-BSE-1…12</li>
       <li><a href="modules/bse-capture/data-contract.md">data-contract</a> — NEWSID keys, scrip identity R-BSE-13…17</li>
@@ -100,7 +101,7 @@ Each card's title links to its L1 overview; bullets are the L2 details.</p>
     </ul>
   </div>
   <div class="card">
-    <h3><a href="modules/google-news-capture/OVERVIEW.md">Google News capture</a> <span class="badge partial">partial</span></h3>
+    <h3><a href="modules/google-news-capture/OVERVIEW.md">Google News capture</a> <span class="badge pilot">file pilot</span></h3>
     Per-company news feeds; resolver proven 100/100; article fetch = Phase 2.
     <ul>
       <li><a href="modules/google-news-capture/source-mechanics.md">source-mechanics</a> — query construction, redirect resolution flow</li>
@@ -110,7 +111,7 @@ Each card's title links to its L1 overview; bullets are the L2 details.</p>
   </div>
   <div class="card">
     <h3><a href="modules/screener-fundamentals/OVERVIEW.md">Screener fundamentals</a> <span class="badge pilot">pilot-proven</span></h3>
-    Weekly page snapshots. ⚠ Risk-accepted source — mandatory constraints R-SC-1…5.
+    File-only manual parser. Owner approved full-scope capture on 2026-08-23; DB snapshots and ban-safe scheduling remain unbuilt.
     <ul>
       <li><a href="modules/screener-fundamentals/source-mechanics.md">source-mechanics</a> — slug mapping, page regions, no-evasion rule</li>
       <li><a href="modules/screener-fundamentals/data-contract.md">data-contract</a> — unit-safety, snapshot append semantics R-SC-8…13</li>
@@ -118,10 +119,10 @@ Each card's title links to its L1 overview; bullets are the L2 details.</p>
     </ul>
   </div>
   <div class="card">
-    <h3><a href="modules/yahoo-market-data/OVERVIEW.md">Yahoo market data</a> <span class="badge planned">planned</span></h3>
-    Daily OHLCV via yfinance (<code>.NS</code>) — chosen primary provider; bhavcopy = later reconciliation.
+    <h3><a href="modules/yahoo-market-data/OVERVIEW.md">Yahoo market data</a> <span class="badge partial">DB-integrated</span></h3>
+    Daily OHLCV via yfinance for 30 listing series at audit sample; provenance, finite/current-session, calendar, revision and benchmark gates remain.
     <ul>
-      <li><a href="modules/yahoo-market-data/source-mechanics.md">source-mechanics</a> — TBD checklist for implementation</li>
+      <li><a href="modules/yahoo-market-data/source-mechanics.md">source-mechanics</a> — implemented path and audited gaps</li>
       <li><a href="modules/yahoo-market-data/data-contract.md">data-contract</a> — series/bar mapping, revision model R-YF-1…8</li>
       <li><a href="modules/yahoo-market-data/evidence-log.md">evidence-log</a> — pilot bar-quality observations</li>
     </ul>
@@ -175,7 +176,8 @@ Each card's title links to its L1 overview; bullets are the L2 details.</p>
 <h2 id="decisions">📌 Decision log (durable)</h2>
 <table>
 <tr><th>Date</th><th>Decision</th><th>Note</th></tr>
-<tr><td>2026-08-22</td><td>Screener.in automated capture approved under mandatory constraints</td><td>owner risk acceptance; amends PRD §2 scope table</td></tr>
+<tr><td>2026-08-23</td><td>Screener.in full-scope capture approved</td><td>supersedes 2026-08-22 ToS-conditioned constraints; ban-avoidance pacing retained</td></tr>
+<tr><td>2026-08-22</td><td>Screener.in automated capture approved under mandatory constraints</td><td>historical; superseded 2026-08-23</td></tr>
 <tr><td>2026-08-22</td><td><strong>yfinance = primary daily-price provider</strong>; bhavcopy deferred to Phase 2+ reconciliation</td><td>resolves PRD §14 open question; zero access friction vs exchanges</td></tr>
 <tr><td>2026-08-22</td><td>Docs restructured into L0/L1/L2 tiers; this hub added</td><td>agent/human context efficiency</td></tr>
 </table>
@@ -201,6 +203,8 @@ docs/
 │   └── yahoo-market-data/      └── (same 4-file shape)
 │
 ├── schema-explained.html ← plain-English DB walkthrough
+├── reviews/
+│   └── 2026-08-23-comprehensive-review.md ← durable audit/finding ledger
 │
 ├── ../product_note.html  ← PRD v0.4 (product requirements)
 ├── ../pilot_learnings.md ← empirical findings Parts 1–5 (cite Part N §M)

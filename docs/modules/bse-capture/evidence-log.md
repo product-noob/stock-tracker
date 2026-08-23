@@ -46,3 +46,34 @@ Empirical findings from live runs. Cite as `(BSE evidence-log, YYYY-MM-DD)`.
 - Per-scrip API + attachment downloads for all 30 companies completed in under
   ~2 minutes of wall clock with 0.4 s download spacing — no rate limiting
   observed at this cadence (single pass; sustained polling still unmeasured).
+
+## 2026-08-23 — Comprehensive review supersession note
+
+- The first-ingestion totals (including the 138/109/28 values formerly repeated in the L1
+  status) are dated evidence, not evergreen live counts. A later registry-scoped read-only
+  audit found 90 adapter-shaped BSE items, all normalized and assigned consistently.
+- BSE envelope validation was hardened during the review: `ROWCNT` is now mandatory,
+  non-negative, at least the page length and stable across pages; rows without `NEWSID` fail
+  the run. Offline pagination/helper regressions pass (`ST-C02`, fixed).
+- Remaining P0 gaps supersede broad “full lineage/crash convergence” claims: rows can point
+  at the wrong page/run in multi-page mixed-reuse cases; parsing precedes durable artifact
+  registration; invalid HTML is treated as final; all-foreign results can bypass the canary;
+  canonical content attempts/links and download bounds are absent.
+- The IST-day key fetches at most daily, not every six hours. See review `ST-C01`,
+  `ST-C03`–`ST-C07`.
+
+## 2026-08-23 — GUID filings live only under AttachLive (owner-reported, verified)
+
+- Sample: `6b000a79-c9db-4cfd-80d3-9edea86e1bdc.pdf`
+  - AttachHis → **HTTP 404** + 8.4 KB HTML error page
+  - AttachLive → **HTTP 200** + 300 KB valid PDF
+- Newer BSE filings use GUID attachment names; the archive path does not hold
+  them (at least within the observed window). Legacy numeric names remain
+  His-first.
+- **Related stranded-capture bug fixed**: `url_already_captured` treated an
+  invalid (HTML) capture as "handled", so any attachment whose His attempt
+  stored garbage before a run died never retried the Live variant. Fix: only
+  VALID `filing_pdf` counts as captured; invalid-only URLs are retried each
+  run (content-addressed dedup absorbs the repeated garbage bytes).
+- Tests: ordering unit tests + retry-contract test; end-to-end fixture updated
+  to the corrected semantics (91/91 pass).

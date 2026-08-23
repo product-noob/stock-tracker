@@ -3,7 +3,7 @@ tier: L2
 module: bse-capture
 doc: data-contract
 parent: OVERVIEW.md
-updated: 2026-08-22
+updated: 2026-08-23
 ---
 
 # BSE Capture — Data Contract & Identity Rules
@@ -32,3 +32,11 @@ Schema context: [`../../database-schema.md`](../../database-schema.md) §4.
 | R-BSE-15 | Scrip-code partition pre-fill follows the agree-in-transaction rule (cf. R-NSE-20). |
 | R-BSE-16 | Cross-exchange dedup is downstream-only; this module never sees NSE data. |
 | R-BSE-17 | One attachment shared by several securities produces several *records* but one *content object* — the M:N `record_contents` model absorbs this. |
+
+## 3. Implementation reconciliation (2026-08-23)
+
+The API adapter preserves raw identity fields and the resolver handles production rows
+consistently, but current attachment lineage stops at raw artifacts/content registrations.
+No canonical `record_contents` or `content_fetch_attempts` rows existed at audit time, so
+R-BSE-17 is a target schema contract, not a working M:N path. Multi-page rows can also carry
+the wrong page/run artifact (`ST-C03`).

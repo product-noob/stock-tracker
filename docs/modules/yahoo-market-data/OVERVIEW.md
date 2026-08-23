@@ -1,7 +1,7 @@
 ---
 tier: L1
 module: yahoo-market-data
-status: planned (spec-complete; no fetcher code yet — prices were fetched ad hoc in pilots)
+status: db-integrated (daily yfinance adapter; acceptance/reliability gate open)
 spec-version: v1.0
 master: ../README.md
 loads:
@@ -47,8 +47,8 @@ fundamentals, index/benchmark series beyond what attribution needs (Phase 2 deci
 
 | Partition key | Interval |
 |---|---|
-| `(yahoo, listing:{listing_id}:daily)` | once per day, after market close IST (+ jitter) |
-| `(yahoo, listing:{id}:daily)/backfill` | at partition provisioning; explicit date range |
+| `(yfinance, listing:{listing_id}:daily)` | once per day, after market close IST (+ jitter) |
+| `(yfinance, listing:{id}:daily)/backfill` | at partition provisioning; explicit date range |
 
 Standard rules apply: exact response bytes persisted before parsing; cursor advances only
 after artifact + parsed bars commit; overlap ≥ 5 trading days on the rolling window.
@@ -57,7 +57,7 @@ after artifact + parsed bars commit; overlap ≥ 5 trading days on the rolling w
 
 | Req | Rule |
 |---|---|
-| R-YF-1 | Each `(listing, interval=1d)` combination maps to exactly one `market.price_series` row fixing provider=`yahoo`, provider symbol, adjustment mode and methodology version — never mix adjusted/unadjusted bars in one series. |
+| R-YF-1 | Each `(listing, interval=1d)` combination maps to exactly one `market.price_series` row fixing provider=`yfinance`, provider symbol, adjustment mode and methodology version — never mix adjusted/unadjusted bars in one series. |
 | R-YF-2 | Provider revisions append new bar *observations* (schema's append model via `current_price_bars`); old calculations keep referencing their original bar IDs. Never update/delete bars. |
 | R-YF-3 | Validate bars before insert: OHLC relationships sane, volume ≥ 0, dates are expected trading sessions; violations fail loudly per-run, not silently per-bar. |
 | R-YF-4 | Store the raw provider payload (exact bytes) as artifact even though it is derived data — provider backfills/corrections are silent, so retained responses are the audit trail. |
@@ -79,9 +79,20 @@ after artifact + parsed bars commit; overlap ≥ 5 trading days on the rolling w
 
 ## Status & next milestone
 
-- **planned**: no fetcher script exists (pilot CSVs were produced ad hoc); schema tables ready.
-- **Next milestone:** implement after the ingestion skeleton exists — sequenced as ROADMAP
-  action 4, behind NSE/BSE adapters because reactions depend on events existing first.
+- **DB-integrated, not gated:** `scripts/fetch_prices.py` provisions yfinance partitions and
+  listing-level `market.price_series`/append-only `price_bars`, stores a deterministic CSV
+  artifact, advances a cursor, and registers durable `yfinance.fetch` jobs. The read-only
+  audit sample had 30 active series and 7,529 current bars spanning 2025-08-21..2026-08-21,
+  with no observed invalid OHLC/weekend/future rows or revisions.
+- **Contract gaps:** the frame is parsed before artifact persistence; the artifact is pandas
+  CSV serialization rather than exact transport bytes; content registration uses a separate
+  transaction; history calls lack an explicit timeout/retry contract; NaN/Infinity,
+  duplicate trade dates and still-forming pre-close bars can pass; holiday/benchmark and
+  provider-revision integration gates are absent. Clean sampled data is not proof these
+  prospective corruption paths are closed.
+- **Next milestone:** finite/duplicate/session-close validation and offline fixtures, then
+  prove append-only revisions and transaction/crash behavior in a guarded test DB. The M8
+  reaction engine remains Phase 2 and the file prototype must not ship.
 
 ## Detail index (L2)
 

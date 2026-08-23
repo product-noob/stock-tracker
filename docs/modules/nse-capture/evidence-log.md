@@ -59,3 +59,19 @@ Empirical findings from live runs. Cite as `(NSE evidence-log, YYYY-MM-DD)`.
   192 raw items, 61 API-response artifacts, 177 filing-PDF artifacts, all PDFs magic-valid;
   incremental re-runs produced `items_new=0` everywhere with zero duplicate sha256
   registrations.
+
+## 2026-08-23 — Comprehensive review supersession note
+
+- The first-fleet counts above are an honest dated ingestion snapshot, **not current totals**.
+  A later registry-scoped read-only audit isolated 169 NSE rows in company partitions; one
+  was a synthetic `corr:*` fixture in a real partition. Excluding it, all 168 adapter-shaped
+  rows were normalized and assigned consistently.
+- Static and transaction review disproved the adapter's earlier “full C1/C3 lineage” wording:
+  JSON parsing occurs before artifact registration is durable; identical responses can
+  collapse fetch-event lineage; no canonical `content_fetch_attempts`/`record_contents`
+  exist; malformed/foreign rows, hosts and response sizes are not fully fail-closed.
+- The deterministic IST-day key enforces at most daily API retrieval, not OVERVIEW's six-hour
+  rolling cadence. The requirement remains open pending an owner cadence decision and a
+  scheduled-window key.
+- These gaps supersede completion claims, not the empirical source findings. See review
+  `ST-C01`, `ST-C04`–`ST-C07`.

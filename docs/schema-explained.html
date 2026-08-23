@@ -164,6 +164,17 @@
 
 <main>
 
+<div class="callout warn">
+    <h4>⚠️ Schema tour, not current pipeline status (updated 2026-08-23)</h4>
+    <p style="margin:0">All 44 tables and the guards described here exist, but most later
+    stages below are fictional target examples. Current DB-integrated paths cover jobs,
+    NSE/BSE API capture, normalization/identity and yfinance bars. Canonical content
+    attempts/links/text, intelligence/reactions and delivery were empty at the review
+    sample; no outbox dispatcher exists. The database/object store are persistent and not
+    backed up. See <a href="reviews/2026-08-23-comprehensive-review.md">the comprehensive
+    review</a> and <a href="../PROJECT_STATUS.md">PROJECT_STATUS</a>.</p>
+</div>
+
 <nav class="toc">
     <b>On this page</b>
     <ol>
@@ -179,8 +190,9 @@
 <p class="lede">
     Every day, Indian stock exchanges (NSE &amp; BSE) publish hundreds of company announcements.
     Some are boring; a few matter a lot — a big order win, a dividend, a regulatory probe, a fundraising.
-    This system <b>automatically collects those announcements, understands them with AI,
-    checks how the stock price reacted, and sends you a short daily digest</b> of only the important stuff.
+    The target system <b>collects those announcements, understands them with AI,
+    checks how the stock price reacted, and sends a short daily digest</b> of only the important stuff.
+    Only the early capture/identity/price portion is implemented today.
 </p>
 
 <div class="pipeline">
@@ -332,10 +344,10 @@ are hidden for readability). Follow the numbers!
             <tr><th class="t-ingestion">record_id</th><th>dedup_key</th><th>title</th><th>exchange</th><th>content_url</th><th>company_name_raw</th></tr>
             <tr><td><code>777</code></td><td><code>nse:ann:8842</code></td><td>Board approves preferential issue of shares</td><td>NSE</td><td><code>https://nsearchives…/SUNRISE_8842.pdf</code></td><td>"SUNRISE TEXTILES LTD."</td></tr>
         </table>
-        <p>Now the resolver asks: <i>which of our companies is "SUNRISE TEXTILES LTD."?</i> It matches the NSE scrip code — the highest-confidence tier:</p>
+        <p>Now the resolver asks: <i>which of our companies is "SUNRISE TEXTILES LTD."?</i> In this fictional example it matches an exact document/listing identifier:</p>
         <table class="data">
             <tr><th class="t-ingestion">resolution_id</th><th>tier</th><th>outcome</th><th>confidence</th><th>reason</th></tr>
-            <tr><td><code>1500</code></td><td><code>A_scripcode</code></td><td>resolved ✅</td><td>0.990</td><td>NSE scrip code matched master</td></tr>
+            <tr><td><code>1500</code></td><td><code>C_document_identifier</code></td><td>resolved ✅</td><td>0.990</td><td>Exact NSE symbol matched master</td></tr>
         </table>
         <table class="data">
             <tr><th class="t-ingestion">record_id</th><th>resolution_id (current pointer)</th><th>company_id</th></tr>
@@ -510,8 +522,8 @@ are hidden for readability). Follow the numbers!
             and pointers to the exact text they were computed from.</li>
         <li>🏢 <b>Company ≠ instrument ≠ listing.</b> Prices belong to listings; events belong to companies; aliases
             may be ambiguous and the resolver fails closed rather than guessing.</li>
-        <li>🗃️ <b>Bytes live in object storage; the DB registers them.</b> SHA-256 + storage path make every fetched
-            document replayable forever.</li>
+        <li>🗃️ <b>Bytes live in object storage; the DB registers them.</b> SHA-256 + storage path make fetched
+            content verifiable/replayable while both stores survive. Coordinated backups and restore testing are still required and currently absent.</li>
     </ul>
 </div>
 

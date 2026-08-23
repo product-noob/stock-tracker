@@ -1,7 +1,7 @@
 ---
 tier: L1
 module: nse-capture
-status: pilot-proven
+status: db-integrated (API family only; acceptance/reliability gate open)
 spec-version: v1.1 (tiered restructure of nse-capture.md v1.0)
 master: ../README.md
 loads:
@@ -37,7 +37,7 @@ Both families are required and complementary:
 |---|---|---|
 | `(nse_rss, Online_announcements.xml)` | 300 s | ≥ 2× poll interval worth of items |
 | `(nse_rss, <Category>.xml)` × ~20 | 900 s | same rule |
-| `(nse_api, symbol:{SYMBOL})` | 6 h rolling window | 24 h overlap |
+| `(nse_api, symbol:{SYMBOL})` | **required:** 6 h rolling; **implemented:** at most once per IST day | 24 h overlap |
 | `(nse_api, ...)/backfill` | manual / reconciliation-triggered | explicit date range |
 
 Cursor advances only after artifact + raw items commit. The API partition doubles as the
@@ -59,13 +59,20 @@ Cursor advances only after artifact + raw items commit. The API partition double
 
 ## Status & next milestone
 
-- **db-integrated (API family)**: `scripts/nse_capture.py` writes the full C1/C3 lineage
-  (`fetch_runs` → `raw_artifacts` → `raw_feed_items` + `ingestion_cursors`, PDFs into the
-  content store) for all 30 whitelist companies as durable `nse.fetch` jobs; incremental,
-  idempotent re-runs proven live 2026-08-23 (see evidence log). The RSS family (`nse_rss`
-  market-wide partitions) is still pilot-proven-only — not yet reshaped onto the DB path.
-- **Next milestone:** RSS partitions on the same adapter skeleton; then sampled-week
-  reconciliation ≥95% vs this API denominator (Phase 0 gate input).
+- **DB-integrated (API family), not gated:** `scripts/nse_capture.py` writes fetch runs,
+  response/PDF artifacts, raw items, cursors, and content-object registrations for all 30
+  registry companies as durable `nse.fetch` jobs. A read-only audit found all 168
+  adapter-shaped production NSE items normalized/assigned consistently; the larger totals
+  in the 2026-08-23 evidence entry are a historical first-fleet snapshot, not current counts.
+- **Contract gaps:** API JSON is parsed before artifact registration is durable; artifact
+  keys can collapse fetch events; the once-per-day key contradicts this module's six-hour
+  cadence; malformed/foreign rows and attachment hosts/sizes are insufficiently guarded;
+  no-byte attempts and canonical `record_contents` links are absent. The API path therefore
+  implements part of C1 plus content artifacts, not complete C3/M4 lineage.
+- `nse_rss` is not DB-integrated. No seven-day soak or reconciliation acceptance gate has
+  run.
+- **Next milestone:** close review `ST-C01`, `ST-C04`–`ST-C07` and test isolation before
+  adding RSS and beginning sampled-week reconciliation.
 
 ## Detail index (L2)
 

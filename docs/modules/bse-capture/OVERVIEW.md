@@ -1,7 +1,7 @@
 ---
 tier: L1
 module: bse-capture
-status: pilot-proven
+status: db-integrated (API family only; acceptance/reliability gate open)
 spec-version: v1.1 (tiered restructure of bse-capture.md v1.0)
 master: ../README.md
 loads:
@@ -31,7 +31,7 @@ NSE/BSE filings collapse downstream by SHA-256), extraction (M5).
 |---|---|---|
 | `(bse_rss, announcements.xml)` | 300 s | ≥ 2× interval |
 | `(bse_rss, <Category>Feed.xml)` × ~8 | 900 s | same |
-| `(bse_api, scrip:{SCRIP})` | 6 h rolling | 24 h overlap |
+| `(bse_api, scrip:{SCRIP})` | **required:** 6 h rolling; **implemented:** at most once per IST day | 24 h overlap |
 | `(bse_api, ...)/backfill` | manual / reconciliation | explicit range |
 
 Cursor rules identical to NSE (advance only after artifact + items commit).
@@ -52,13 +52,20 @@ Cursor rules identical to NSE (advance only after artifact + items commit).
 
 ## Status & next milestone
 
-- **db-integrated (API)**: partition-aware `bse_api` adapter live on the DB path
-  (`scripts/bse_capture.py`, durable `bse.fetch` jobs). 2026-08-23: all 30 SENSEX
-  partitions ingested (138 raw items, 109 valid filing PDFs + 28 invalid-content
-  evidence artifacts), same-day re-runs skip network entirely, crash-recovery
-  convergence proven. `bse_rss` feed partitions not yet on the DB path.
-- **Next milestone:** Phase 0 soak — 7 unattended days, worker-kill tests,
-  reconciliation.
+- **DB-integrated (API family), not gated:** `scripts/bse_capture.py` writes fetch runs,
+  page/PDF artifacts, raw items, cursors, and content-object registrations as durable
+  `bse.fetch` jobs for all 30 registry companies. A read-only audit found all 90
+  adapter-shaped production BSE items normalized/assigned consistently. The 138/109/28
+  values previously shown here remain a dated first-ingestion snapshot in the evidence log,
+  not current production totals.
+- **Contract gaps:** responses are collected/parsed before artifact persistence; multi-page
+  rows can point at the wrong page/run; the once-per-day key contradicts six-hour cadence;
+  invalid HTML evidence suppresses future valid retries; all-foreign results can pass the
+  empty gate; downloads are unbounded; canonical fetch-attempt and record-content rows are
+  absent. This is partial C1 plus content artifacts, not complete C3/M4 lineage.
+- `bse_rss` is not DB-integrated. No seven-day soak/reconciliation gate has run.
+- **Next milestone:** close review `ST-C01`, `ST-C03`–`ST-C07`, with guarded test
+  isolation, before RSS integration and the Phase 0 soak.
 
 ## Detail index (L2)
 
