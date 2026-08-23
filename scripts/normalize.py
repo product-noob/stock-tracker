@@ -28,7 +28,9 @@ Behaviour (per HLD + ``db/schema.sql``):
 * **fail closed:** unknown/invalid shapes raise :class:`NormalizationError`
   and are recorded in ``ingestion.stage_errors`` under a ``normalize``
   ``stage_run`` — quarantined and audit-visible, never silently dropped.
-  Ambiguous input never becomes a guessed record;
+  Ambiguous input never becomes a guessed record. Quarantine is terminal:
+  errored items are excluded from later batches instead of being re-errored
+  forever;
 * every created record emits an outbox event ``normalized_record.created``
   keyed by the record id (HLD job/outbox contract C2).
 
@@ -232,14 +234,20 @@ def fingerprint(norm: dict[str, Any]) -> str:
 # DB plumbing
 # --------------------------------------------------------------------- #
 
-_PENDING_SQL = """
+_PENDING_SQL_BASE = """
 SELECT i.item_id, i.external_id, i.idempotency_key, p.source AS part_source
 FROM ingestion.raw_feed_items i
 JOIN ingestion.source_partitions p USING (partition_id)
 WHERE NOT EXISTS (
     SELECT 1 FROM ingestion.record_raw_items rri
     WHERE rri.item_id = i.item_id)
-ORDER BY i.item_id
+  -- quarantine is terminal: an already-errored item must not be re-selected
+  -- (and re-error) on every subsequent batch
+  AND NOT EXISTS (
+    SELECT 1 FROM ingestion.stage_errors se
+    WHERE se.entity_type = 'raw_feed_item'
+      AND se.error_code = 'UNNORMALIZABLE_SHAPE'
+      AND se.entity_id = i.item_id::text)
 """
 
 
@@ -247,11 +255,12 @@ def fetch_pending(conn: psycopg.Connection, *,
                   limit: Optional[int] = None,
                   source: Optional[str] = None) -> list[dict[str, Any]]:
     """Raw items with no canonical linkage yet (oldest first)."""
-    sql, params = _PENDING_SQL, []
+    sql = _PENDING_SQL_BASE
+    params: list[Any] = []
     if source:
-        sql += " WHERE p.source = %s"
+        sql += " AND p.source = %s"
         params.append(source)
-    sql += " LIMIT %s"
+    sql += " ORDER BY i.item_id LIMIT %s"
     params.append(limit if limit is not None else 1000000)
     rows = conn.execute(sql, params).fetchall()
     keys = ["item_id", "external_id", "idempotency_key", "part_source"]

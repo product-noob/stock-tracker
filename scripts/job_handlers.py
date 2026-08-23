@@ -31,6 +31,10 @@ import nse_capture  # noqa: F401
 # BSE capture adapter: importing registers the ``bse.fetch`` handler family.
 import bse_capture  # noqa: F401
 
+# Normalizer (M2): importing registers the ``normalize.run`` handler family
+# (kind ``normalize.run`` + prefix ``normalize.run:``).
+import normalize  # noqa: F401
+
 
 @jobs.register_handler("demo")
 def handle_demo(ctx: JobContext) -> None:
