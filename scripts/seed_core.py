@@ -121,15 +121,17 @@ def seed(conn):
             (co.nse_symbol,))
         if row:
             print(f"{skipped_prefix} NSE listing {co.nse_symbol}")
+            nse_listing_id = row[0]
         else:
             cur.execute(
                 """INSERT INTO core.listings
                        (instrument_id, company_id, exchange, exchange_symbol, currency, provider_symbols)
-                   VALUES (%s, %s, 'NSE', %s, 'INR', %s)""",
+                   VALUES (%s, %s, 'NSE', %s, 'INR', %s) RETURNING listing_id""",
                 (instrument_id, company_id, co.nse_symbol,
                  json.dumps({"yfinance": co.yahoo_symbol})))
+            nse_listing_id = cur.fetchone()[0]
             stats["listings"] += 1
-            print(f"+ NSE listing {co.nse_symbol}")
+            print(f"+ NSE listing {co.nse_symbol} (id={nse_listing_id})")
 
         row = fetch_one(
             cur,
@@ -184,8 +186,15 @@ def seed(conn):
             ("nse_api", f"symbol:{co.nse_symbol}", f"NSE announcements API: {co.nse_symbol}"),
             ("bse_api", f"scrip:{co.bse_scrip}", f"BSE announcements API scrip {co.bse_scrip} ({slug})"),
             ("google_news", f"company:{company_id}", f"Google News RSS query for company id {company_id} ({slug})"),
+            ("yfinance", f"listing:{nse_listing_id}:daily",
+             f"Yahoo daily OHLCV ({co.yahoo_symbol}), NSE listing {nse_listing_id}"),
         ]
-        for source, key, desc in parts:
+        part_configs = [
+            {}, {}, {},
+            {"listing_id": nse_listing_id, "interval": "1d",
+             "yahoo_symbol": co.yahoo_symbol},
+        ]
+        for (source, key, desc), cfg in zip(parts, part_configs):
             row = fetch_one(
                 cur,
                 "SELECT 1 FROM ingestion.source_partitions WHERE source=%s AND partition_key=%s",
@@ -193,9 +202,11 @@ def seed(conn):
             if row:
                 continue
             cur.execute(
-                """INSERT INTO ingestion.source_partitions (source, partition_key, description, company_id)
-                   VALUES (%s, %s, %s, %s) ON CONFLICT DO NOTHING""",
-                (source, key, desc, company_id))
+                """INSERT INTO ingestion.source_partitions
+                       (source, partition_key, description, company_id, config)
+                   VALUES (%s, %s, %s, %s, %s::jsonb) ON CONFLICT DO NOTHING""",
+                (source, key, desc, company_id,
+                 json.dumps(cfg) if cfg else "{}"))
             stats["partitions"] += 1
 
     return stats

@@ -39,6 +39,11 @@ import normalize  # noqa: F401
 # family (kind ``resolve.run`` + prefix ``resolve.run:``).
 import resolve_identity  # noqa: F401
 
+# Yahoo market data (M1 prices family): importing registers the
+# ``yahoo.fetch`` handler family (kind ``yahoo.fetch`` + prefix
+# ``yahoo.fetch:<slug>``).
+import fetch_prices  # noqa: F401
+
 
 @jobs.register_handler("demo")
 def handle_demo(ctx: JobContext) -> None:
