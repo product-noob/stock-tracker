@@ -20,3 +20,7 @@ tmp/
 # Disposable integration-test object roots and local deletion manifests
 .stocktracker-test-object-root
 *deletion-manifest*.json
+
+# Credential-bearing debris from mis-rooted object stores must never be tracked
+postgresql:*
+*stocktracker:*@*
