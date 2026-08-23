@@ -35,6 +35,10 @@ import bse_capture  # noqa: F401
 # (kind ``normalize.run`` + prefix ``normalize.run:``).
 import normalize  # noqa: F401
 
+# Identity resolver (M3): importing registers the ``resolve.run`` handler
+# family (kind ``resolve.run`` + prefix ``resolve.run:``).
+import resolve_identity  # noqa: F401
+
 
 @jobs.register_handler("demo")
 def handle_demo(ctx: JobContext) -> None:
