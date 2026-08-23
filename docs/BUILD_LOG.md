@@ -48,6 +48,11 @@ Started 2026-08-23 (IST). Maintained during interactive build/testing sessions.
   (204 PDF, 111 JSON, 30 CSV, 3 octet-stream, 2 HTML invalid-content evidence).
 - H: prices refresh → 30/30 partitions ok (idempotent skips; bars current to 2026-08-21
   Friday close; weekend).
+- VIZ: built `scripts/make_dashboard.py` → `data/dashboard.html` (51 KB, self-contained):
+  totals cards, capture health by source, per-stock coverage + 90-day SVG sparklines
+  (30/30), identity review queue, latest 25 announcements with evidence links.
+  Schema fixes while building: record_contents lives in `documents`, not `ingestion`;
+  title/description coalesce; datetime formatting.
 
 ### Session totals (after refresh)
 
