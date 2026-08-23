@@ -2,7 +2,7 @@
 
 **Last updated:** 2026-08-23
 
-**Durable audit:** [`docs/reviews/2026-08-23-comprehensive-review.md`](docs/reviews/2026-08-23-comprehensive-review.md)
+**Durable audit / session-restart point:** [`docs/reviews/2026-08-23-comprehensive-review.md`](docs/reviews/2026-08-23-comprehensive-review.md) — start there in any new session (§1 summary, §13 prioritized recommendations, §14 limitations). `AGENTS.md` §"Session restart context" carries the same pointer.
 
 ## Current phase
 

@@ -2,6 +2,16 @@
 
 Entry point for coding agents working in this repository. Read this before making changes.
 
+## Session restart context (read first, every session)
+
+The **durable audit record is [`docs/reviews/2026-08-23-comprehensive-review.md`](docs/reviews/2026-08-23-comprehensive-review.md)** — a full-repository review with a stable finding ledger (`ST-*` IDs), evidence, dispositions, and prioritized recommendations. Restart from there:
+
+1. Read the review's §1 (executive summary), §13 (prioritized recommendations + owner decisions), and §14 (limitations).
+2. Then read `PROJECT_STATUS.md` (current phase + verified boundary table) and `docs/ROADMAP.md` (phase plan + decision log) — both stay current with the review.
+3. Check the finding ledger before re-investigating anything: if an `ST-*` ID says *fixed*, confirm via its listed verification rather than redoing the analysis; if *open*, it is real known work.
+
+State of play after the 2026-08-23 remediation: capture bytes-before-parse, BSE page provenance, fail-closed source validation, bounded/allowlisted downloads, and the content attempt/link lifecycle are implemented; test isolation is enforced via a marked disposable DB/object root (`docs/testing.md`); history was scrubbed of credential-bearing paths twice after concurrent-session incidents. Remaining P0s live in review §13 items 0–8 (fetch-event keys `ST-C06`, M2/M3 concurrency `ST-C07`, outbox dispatch `ST-P03`, migrations/roles `ST-P01`/`ST-P07`).
+
 ## What this is
 
 A personal research tool for Indian listed companies (NSE/BSE): fetch official filings and curated news, extract evidence with an LLM, cluster documents into business events, rank explainable insights, join daily market reactions, and deliver a short Telegram briefing. No trading; association language only.
