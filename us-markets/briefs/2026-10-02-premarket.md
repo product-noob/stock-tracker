@@ -1,30 +1,31 @@
 # US Equity Pre-Market Brief — Friday, Oct 2, 2026
 
-*As of ~9:00 AM ET / 6:30 PM IST, ~30 min before the open. Prices via Finnhub (may be delayed ~15 min); futures per Goodreturns/ET Now ~8:30 AM ET.*
+*As of ~9:00 AM ET / 6:30 PM IST, ~30 min before the open. Market data may be delayed ~15 min. Prices vs Thursday (Oct 1) close.*
 
 ## Market setup
 
-- **Futures:** S&P 500 futures ~7,727 (+0.2%), Nasdaq-100 futures ~30,817 (+0.2–0.4%), Dow futures ~51,200–51,290 (flat to +0.2%). Thursday close: S&P 500 7,666.45 (+0.19%), Nasdaq Composite 26,871.60 (+0.04%), Dow 50,926.56 (+0.04%).
-- **The day's macro event:** September jobs report (nonfarm payrolls) — the main driver today; it will shape expectations for the Fed's Oct 28 meeting (a rate hike is reportedly ~70% priced).
-- **Overhangs:** 10Y Treasury ~5.3% (highest since 2002), 30Y ~5.7% (24-yr high), oil above $102/bbl on Middle East tensions, Asian markets mostly lower (Hang Seng −2.5%).
+- **Jobs report beats the market, not the forecasts:** September nonfarm payrolls +29k (Reuters/CNN consensus ~84–90k), unemployment 4.2% (vs 4.1% expected), August revised down to +133k (from +162k), July revised to −10k. Reuters: "soft September jobs report sends markets higher" — stocks and bonds bounced, and traders walked back expectations for a Fed rate increase at the Oct 27–28 meeting (October hike odds now ~24–28%; expectations shifting toward December).
+- **Futures:** Dow and S&P 500 futures +0.5%, Nasdaq-100 futures +0.6% after the report (Investopedia, ~8 AM ET). All three indexes still on track for a losing week: S&P −1.2%, Dow −1.8%, Nasdaq −0.8%.
+- **Cross-asset:** WTI crude ~$89 (−4%) and Brent back below $100 after reports of EU diesel/crude stock releases; 10Y Treasury ~5.22% after touching a 24-year high of 5.35% yesterday; gold ~$4,215; bitcoin ~$86,500.
+- **Today:** Dallas Fed's Lorie Logan speaks at a migration-macro workshop; Nike −10% premarket on a weak annual revenue forecast (China softness) is the notable drag outside tech.
 
 ## Holdings
 
-- **NVDA $230.86 (+1.1%)** — Micron's blowout guide (~$61.5B vs ~$57B est) confirms AI infrastructure demand is still strong; semis lifted broadly. Barclays sees hyperscaler revenue upside. Watch: 52-wk high $236.54; 50-day ~$218.
-- **GOOGL $338.24 (−1.7%)** — Cooling after this week's Gemini 4 Argon pop (rose ~1.3% on launch; Citi says the launch removes a "key overhang"). Aggressive pricing: $2/$10 per 1M tokens vs rival frontier models. Watch: recent $336–$353 range; 5-day −3.7%.
-- **AAPL $330.32 (−0.8%)** — Quiet tape, no fresh company news; 5-day −2.8%. Watch: 50-day ~$322; 52-wk high $345.34.
-- **MSFT $512.8 (flat)** — Steady; reports ~Oct 28; expects ~$175B in calendar-2026 capex; Azure guided to 45% growth for the Sept quarter. Watch: 52-wk high $553.72.
+- **NVDA ~$232.80 (+0.8%)** — Morgan Stanley reinstated it as its "Top Pick" in semis (Overweight, $300 PT) after meetings with Jensen Huang and Colette Kress, saying AI land/power/financing trends "all play to their strengths"; also riding Micron's blowout guide (memory tight through FY27/28 per D.A. Davidson). Watch: all-time closing high ~$235.74; 50-day ~$218.
+- **GOOGL ~+0.5% (~$340)** — Bouncing after Thursday's −1.7%; Google's TPU went to orbit for the first time aboard a SpaceX rideshare mission. The Gemini 4 Argon launch ($2/$10 per 1M tokens) is the near-term narrative. Watch: recent $336–$353 range.
+- **AAPL ~$331 (roughly flat)** — Quiet tape; Morgan Stanley trimmed its target $360→$355 but kept Overweight, signaling the post-iPhone-cycle easy money is priced. 50-day ~$322–324. Watch: earnings ~Oct 29; resistance ~$335–$345.
+- **MSFT ~+1.0% (~$518)** — Steady bid with megacaps; reports ~Oct 28; Azure guided to 45% growth for the Sept quarter; calendar-2026 capex ~$175B. Watch: 52-wk high $553.72.
 
 ## Watchlist
 
-- **META $725.93 (+0.1%)** — Consolidating after the volatile New Mexico jury-verdict week (stock hit $779.82 record last week). Muse app tops 3M downloads; earnings ~Oct 27 (consensus rev midpoint $62.5B — watch ad pricing and 2027 capex guide). Watch: 52-wk high $779.82; support ~$715.
-- **TSM $459.20 (+0.7%)** — Plans for a multibillion-dollar Texas chip campus (multiple $20B+ fabs) to diversify its US footprint; 1-mo +10.6%. Watch: 52-wk high $479.
-- **AMZN $248.23 (−0.4%)** — Soft tape this week (−4.4% 1-mo); signed a 20-yr nuclear power deal with Constellation (690 MW) plus a $1B custom-silicon deal with Synopsys for AI data centers. Watch: 50-day ~$256; 52-wk high $287.20.
-- **ASML $1,808.49 (−0.2%)** — Flat, riding semis demand; after-market ticked up ~$1.50 yesterday. YTD +55–69%. Watch: recent highs ~$1,822.
+- **META ~+0.4% (~$729)** — Legal overhang: New Mexico reportedly seeking up to $40B in data-privacy penalties tied to Cambridge Analytica. Consolidating below the $779.82 record. Earnings ~Oct 28; consensus rev midpoint ~$62.5B — watch ad pricing and 2027 capex guide.
+- **TSM ~$459 (flat)** — Texas chip-campus plans (multiple $20B+ fabs) remain exploratory, per Oct 1 reports, but signal deeper US diversification. 1-mo +10.6%. Earnings Oct 15. Watch: 52-wk high $479.
+- **AMZN ~+0.6% (~$250)** — Reports say Amazon is exploring moving ~$8B of Nvidia Grace Blackwell chips into a special-purpose vehicle and leasing them back. 50-day ~$256; 52-wk high $287.20. Earnings ~Oct 29.
+- **ASML ~flat (~$1,810)** — Quiet; riding the Micron read-through with the rest of semis. Earnings Oct 14. Watch: recent highs ~$1,822.
 
 ## Earnings check (next 2 trading days)
 
-None of the 8 names report Mon Oct 5 / Tue Oct 6. Next window: META ~Oct 27, MSFT ~Oct 28. No pre-earnings brief needed today.
+None of the 8 names report Mon Oct 5 / Tue Oct 6. Next windows: ASML Oct 14, TSM Oct 15. No pre-earnings brief needed today.
 
 ---
-*Analysis only, not financial advice. US markets only in this phase.*
+*Sources: Reuters, CNN, USA Today, Investopedia, TradingView, Stocktwits/TipRanks, Public.com, Morningstar/WSJ. Analysis only, not financial advice. US markets only in this phase.*

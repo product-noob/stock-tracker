@@ -1,69 +1,186 @@
 {
-  "earnings": {
-    "META": "~2026-10-27 (day before Oct 28 Fed meeting)",
-    "MSFT": "~2026-10-28"
+ "earnings": {
+  "AAPL": {
+   "date": "2026-10-29",
+   "status": "estimate"
   },
+  "AMZN": {
+   "date": "2026-10-29",
+   "status": "confirmed-per-tipranks"
+  },
+  "ASML": {
+   "date": "2026-10-14",
+   "status": "confirmed"
+  },
+  "GOOGL": {
+   "date": "2026-11-04",
+   "status": "estimate"
+  },
+  "META": {
+   "date": "2026-10-28",
+   "status": "estimate"
+  },
+  "MSFT": {
+   "date": "2026-10-28",
+   "status": "estimate"
+  },
+  "NVDA": {
+   "date": "2026-11-19~26",
+   "status": "estimate"
+  },
+  "TSM": {
+   "date": "2026-10-15",
+   "status": "confirmed"
+  }
+ },
+ "holdings": [
+  "GOOGL",
+  "NVDA",
+  "AAPL",
+  "MSFT"
+ ],
+ "last_prices": {
+  "AAPL": 333.04,
+  "AMZN": 251.3,
+  "ASML": 1868.51,
+  "GOOGL": 343.31,
+  "META": 727.57,
+  "MSFT": 516.56,
+  "NVDA": 236.36,
+  "TSM": 474.13
+ },
+ "names": {
+  "AAPL": "Apple Inc.",
+  "AMZN": "Amazon.com Inc.",
+  "ASML": "ASML Holding N.V.",
+  "GOOGL": "Alphabet Inc. (Class A)",
+  "META": "Meta Platforms Inc.",
+  "MSFT": "Microsoft Corp.",
+  "NVDA": "NVIDIA Corp.",
+  "TSM": "Taiwan Semiconductor Mfg."
+ },
+ "notes": "US markets only in this phase. Indian market coverage to be added later.",
+ "premarket": {
+  "as_of": "2026-10-02T13:00:00Z",
+  "session": "pre-market Oct 2 (~9:00 AM ET, after Sept jobs report)",
   "futures": {
-    "as_of_et": "~8:30 AM ET",
-    "dow": "~51200-51290 (flat to +0.2%)",
-    "nasdaq_100": "~30817 (+0.2-0.4%)",
-    "sp500": "~7727 (+0.2%)"
+   "sp500": "+0.5%",
+   "nasdaq100": "+0.6%",
+   "dow": "+0.5%"
   },
-  "holdings": [
-    "GOOGL",
-    "NVDA",
-    "AAPL",
-    "MSFT"
-  ],
-  "last_prices": {
-    "AAPL": 330.32,
-    "AMZN": 248.23,
-    "ASML": 1808.49,
-    "GOOGL": 338.24,
-    "META": 725.93,
-    "MSFT": 512.8,
-    "NVDA": 230.86,
-    "TSM": 459.2
+  "moves_vs_prev_close": {
+   "NVDA": {
+    "indicative_price": 232.8,
+    "pct": "+0.84%",
+    "source": "Public.com 5:00 AM ET"
+   },
+   "GOOGL": {
+    "pct": "+0.5%",
+    "source": "TradingView premarket ~4 AM ET"
+   },
+   "AAPL": {
+    "indicative_price": 331.15,
+    "note": "roughly flat; tokenized quote 12:06 UTC",
+    "source": "blockchain.news"
+   },
+   "MSFT": {
+    "pct": "+1.0%",
+    "source": "TradingView premarket ~4 AM ET"
+   },
+   "META": {
+    "pct": "+0.4%",
+    "source": "TradingView premarket ~4 AM ET"
+   },
+   "TSM": {
+    "indicative_price": 459.2,
+    "note": "no fresh premarket quote; ~flat vs close"
+   },
+   "AMZN": {
+    "pct": "+0.6%",
+    "source": "TradingView premarket ~4 AM ET"
+   },
+   "ASML": {
+    "indicative_price": 1810,
+    "note": "no reliable premarket quote; ~flat vs close 1808.49"
+   }
+  }
+ },
+ "macro_2026_10_02": {
+  "sept_payrolls": 29000,
+  "sept_unemployment": 4.2,
+  "oct_fed_hike_odds": "~24-28%",
+  "us10y": 5.22,
+  "wti": 89
+ },
+ "updated": "2026-10-02T20:00:00Z",
+ "watchlist": [
+  "AAPL",
+  "META",
+  "TSM",
+  "ASML",
+  "AMZN"
+ ],
+ "week_of": "2026-W40",
+ "weekly_letter": "weekly/2026-W40-weekly-letter.md",
+ "close": {
+  "as_of": "2026-10-02T20:00:00Z",
+  "session": "Friday 2026-10-02 US close (~1:30 AM IST Oct 3)",
+  "benchmarks": {
+   "sp500": "+0.7%",
+   "nasdaq_composite": "+1.1% (record close)",
+   "dow": "+0.4%",
+   "nasdaq100": "in line with Composite"
   },
-  "macro_note": "Sept jobs report due today; Fed Oct 28 meeting ~70% hike priced; 10Y ~5.3%, 30Y ~5.7%, oil >$102/bbl",
-  "names": {
-    "AAPL": "Apple Inc.",
-    "AMZN": "Amazon.com Inc.",
-    "ASML": "ASML Holding N.V.",
-    "GOOGL": "Alphabet Inc. (Class A)",
-    "META": "Meta Platforms Inc.",
-    "MSFT": "Microsoft Corp.",
-    "NVDA": "NVIDIA Corp.",
-    "TSM": "Taiwan Semiconductor Mfg."
+  "moves_vs_prev_close": {
+   "NVDA": {
+    "close": 236.36,
+    "pct": "+2.4%",
+    "range": "233.60-237.88",
+    "note": "new all-time closing high (prev 235.74 May 14)"
+   },
+   "GOOGL": {
+    "close": 343.31,
+    "pct": "+1.50%",
+    "range": "341.16-345.77"
+   },
+   "AAPL": {
+    "close": 333.04,
+    "pct": "+0.82%",
+    "range": "330.61-334.54"
+   },
+   "MSFT": {
+    "close": 516.56,
+    "pct": "+0.73%",
+    "range": "513.66-522.50"
+   },
+   "META": {
+    "close": 727.57,
+    "pct": "+0.23%",
+    "range": "726.20-741.58",
+    "note": "faded from 741.58 intraday high"
+   },
+   "TSM": {
+    "close": 474.13,
+    "pct": "+3.25%",
+    "range": "464.10-474.79"
+   },
+   "ASML": {
+    "close": 1868.51,
+    "pct": "+3.32%",
+    "range": "1842.45-1873.50"
+   },
+   "AMZN": {
+    "close": 251.3,
+    "pct": "+1.24%",
+    "range": "250.02-253.56"
+   }
   },
-  "notes": "US markets only in this phase. Indian market coverage to be added later.",
-  "prev_close": {
-    "AAPL": 333.02,
-    "AMZN": 249.15,
-    "ASML": 1811.67,
-    "GOOGL": 344.08,
-    "META": 725.18,
-    "MSFT": 512.9,
-    "NVDA": 228.38,
-    "TSM": 456.19
-  },
-  "prev_close_pct": {
-    "AAPL": -0.81,
-    "AMZN": -0.37,
-    "ASML": -0.18,
-    "GOOGL": -1.7,
-    "META": 0.1,
-    "MSFT": -0.02,
-    "NVDA": 1.09,
-    "TSM": 0.66
-  },
-  "updated": "2026-10-02T13:50:00+05:30",
-  "watchlist": [
-    "AAPL",
-    "META",
-    "TSM",
-    "ASML",
-    "AMZN"
-  ],
-  "last_session": "2026-10-01"
+  "macro_2026_10_02_close": {
+   "sept_payrolls": 29000,
+   "sept_unemployment": 4.2,
+   "oct_fed_hike_odds": "~21-24%",
+   "us10y": 5.28,
+   "wti": 91
+  }
+ }
 }
