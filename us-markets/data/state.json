@@ -61,14 +61,21 @@
  },
  "notes": "US markets only in this phase. Indian market coverage to be added later.",
  "premarket": {
-  "as_of": "2026-10-02T13:00:00Z",
-  "session": "pre-market Oct 2 (~9:00 AM ET, after Sept jobs report)",
-  "futures": {
-   "sp500": "+0.5%",
-   "nasdaq100": "+0.6%",
-   "dow": "+0.5%"
+  "as_of": "2026-10-03T13:00:00Z",
+  "session": "weekend note ahead of Monday Oct 5 — markets closed Saturday Oct 3; futures reopen 6 PM ET Sunday",
+  "note": "No premarket quotes available (markets closed). Friday Oct 2 closes recorded in close.moves_vs_prev_close. Next session: Monday Oct 5.",
+  "week_ahead": {
+   "mon": "ISM Services PMI (Sept)",
+   "wed": "FOMC minutes (Sept meeting)",
+   "thu": "weekly jobless claims",
+   "fri": "U. Michigan consumer sentiment (prelim)"
   },
-  "moves_vs_prev_close": {
+  "futures": {
+   "sp500": "closed — reopen Sunday 6 PM ET",
+   "nasdaq100": "closed — reopen Sunday 6 PM ET",
+   "dow": "closed — reopen Sunday 6 PM ET"
+  },
+  "prior_premarket_friday_oct2": {
    "NVDA": {
     "indicative_price": 232.8,
     "pct": "+0.84%",
@@ -103,16 +110,16 @@
     "indicative_price": 1810,
     "note": "no reliable premarket quote; ~flat vs close 1808.49"
    }
+  },
+  "macro_friday_oct2_premarket": {
+   "sept_payrolls": 29000,
+   "sept_unemployment": 4.2,
+   "oct_fed_hike_odds": "~24-28%",
+   "us10y": 5.22,
+   "wti": 89
   }
  },
- "macro_2026_10_02": {
-  "sept_payrolls": 29000,
-  "sept_unemployment": 4.2,
-  "oct_fed_hike_odds": "~24-28%",
-  "us10y": 5.22,
-  "wti": 89
- },
- "updated": "2026-10-02T20:00:00Z",
+ "updated": "2026-10-03T13:00:00Z",
  "watchlist": [
   "AAPL",
   "META",
