@@ -1,24 +1,27 @@
 {
  "close": {
-  "as_of": "2026-10-07T20:15:00Z",
+  "as_of": "2026-10-09T20:00:00Z",
   "benchmarks": {
-   "dow": "modestly lower (WSJ late-session; ~-0.6%/-325 pts at open per Reuters)",
-   "nasdaq_comp": "-0.8% (IBD)",
-   "sp500": "-0.2% (~7,803; IBD, six-day streak ended)",
-   "t10y": "~5.27% after 1 PM ET auction (spiked to 5.368%, highest since 2002)"
+   "brent": "~$102.91-103.53 (-0.7% to -1.3%, Reuters); still >$100, weekly gain after Thu +4%",
+   "nasdaq100_proxy": "QQQ +0.49% to $751.27 (Finnhub; FinanceCharts $751.25)",
+   "nasdaq_comp": "+0.6% (Barron's/Investopedia); Dow +0.8% (+423 pts, Barron's)",
+   "sp500": "+0.6% (Barron's/Investopedia close wrap); SPY ~$778.54 (FinanceCharts 10/09), SPX500 CFD 7,820.2 +0.53% (Finnhub/OANDA) \u2014 final index level not yet in US press at bell",
+   "t10y": "~5.24-5.26%, below Wed 24-yr high 5.364%",
+   "umich": "Prelim Oct 46.3 vs 47.8 fcst (Sep 48.1); current cond. 44.7 record low; 1-yr infl exp 4.7%, 5-yr 3.5% (Reuters/UMich)",
+   "wti": "~$90.40-90.97 (Reuters)"
   },
   "day_ranges": {
-   "AAPL": "332.78-338.67",
-   "AMZN": "253.17-260.07",
-   "ASML": "1785.74-1811.71",
-   "GOOGL": "343.07-350.80",
-   "META": "720.15-738.29",
-   "MSFT": "524.69-531.73",
-   "NVDA": "236.38-239.08",
-   "TSM": "471.35-475.80"
+   "AAPL": "330.70-338.61",
+   "AMZN": "256.00-262.80",
+   "ASML": "1778.00-1825.57",
+   "GOOGL": "350.31-354.70",
+   "META": "716.20-728.07",
+   "MSFT": "526.24-537.22",
+   "NVDA": "229.11-233.92",
+   "TSM": "449.75-464.83"
   },
-  "note": "Official 4 PM ET closes: Finnhub quotes for all 8 (TSM regular close confirmed via Public.com AH page). % vs Tuesday closes in state.json. Volumes not verifiable; omitted.",
-  "session": "Wednesday Oct 7, 4:00 PM ET close (1:30 AM IST Oct 8)"
+  "note": "Official 4 PM ET closes Fri Oct 9: Finnhub quotes for all 8. Benchmark % from Barron's/Investopedia; levels via SPY/QQQ proxies + SPX CFD (final index levels pending at bell). Volumes near-close only: AAPL 29.7M vs 45.4M avg (0.65x), NVDA 58.9M vs 122.3M (0.48x) \u2014 FinancialContent snapshots; others omitted, not guessed.",
+  "session": "Friday Oct 9, 4:00 PM ET close (1:30 AM IST Oct 10)"
  },
  "earnings": {
   "AAPL": {
@@ -61,14 +64,14 @@
   "MSFT"
  ],
  "last_prices": {
-  "AAPL": 336.42,
-  "AMZN": 259.86,
-  "ASML": 1802.24,
-  "GOOGL": 350.73,
-  "META": 721.82,
-  "MSFT": 530.27,
-  "NVDA": 237.835,
-  "TSM": 473.62
+  "AAPL": 336.681,
+  "AMZN": 262.43,
+  "ASML": 1780.34,
+  "GOOGL": 351.66,
+  "META": 718.67,
+  "MSFT": 535.07,
+  "NVDA": 229.28,
+  "TSM": 453.31
  },
  "names": {
   "AAPL": "Apple Inc.",
@@ -82,60 +85,60 @@
  },
  "notes": "US markets only in this phase. Indian market coverage to be added later.",
  "premarket": {
-  "as_of": "2026-10-07T13:00:00Z",
-  "session": "Wednesday Oct 7, 9:00 AM ET \u2014 ~30 min before the open",
+  "as_of": "2026-10-09T13:00:00Z",
+  "cross_asset": "10Y ~5.24-5.25% (steady, below Wed 24-yr high 5.364%); Brent ~$102-103 (-1.2% to -1.5%); WTI ~$90.40-90.67 (-~1%); gold ~$4,210 (+1%); bitcoin ~$82,500-83,200",
   "futures": {
-   "dow": "-0.6% to -0.8% (~-400 pts)",
-   "sp500": "-0.3% to -0.4%",
-   "nasdaq100": "-0.7%"
+   "dow": "+0.1% to +0.2%",
+   "nasdaq100": "+0.8%",
+   "sp500": "+0.4%"
   },
-  "cross_asset": "10Y ~5.34% (near Mon's ~25-yr high 5.35%); Brent ~$102 (> $100, Houthi attacks on Saudi airports); WTI ~$90.25; gold ~$4,105-4,145 (-1 to -2%); bitcoin ~$83,600 (down from ~$87k)",
   "levels": {
-   "GOOGL": {
-    "price": null,
-    "pct": null,
-    "note": "no verified US premarket quote; ~flat to slightly lower in soft Mag-7 tape (MAGS -0.5%) vs Tue close $347.77"
-   },
-   "NVDA": {
-    "price": 236.7,
-    "pct": -1.1,
-    "note": "Barron's premarket quote; vs Tue close $240.51"
-   },
    "AAPL": {
-    "price": null,
-    "pct": null,
-    "note": "no verified US premarket quote; mixed to slightly lower vs Tue close $333.33"
-   },
-   "MSFT": {
-    "price": null,
-    "pct": null,
-    "note": "no verified US premarket quote; ~flat to slightly lower vs Tue close $529.42"
-   },
-   "META": {
-    "price": null,
-    "pct": null,
-    "note": "no verified US premarket quote; ~flat to slightly lower vs Tue close $739.32"
-   },
-   "TSM": {
-    "price": null,
-    "pct": null,
-    "note": "no verified US premarket quote; ~flat in softer semis tape (SOXX -2%) vs Tue record close $482.16"
-   },
-   "ASML": {
-    "price": null,
-    "pct": null,
-    "note": "no verified US premarket quote; softer with semis vs Tue close $1,834.24"
+    "note": "MarketWatch premarket $333.30 (-~2%) vs Thu close $340.47; Nikkei: iPhone 18 Pro/Max Oct component orders cut 15-20% on soft demand; below Thu low $335.90",
+    "pct": -2.1,
+    "price": 333.3
    },
    "AMZN": {
-    "price": null,
+    "note": "Implied range $255.6-256.6 from +0.6% to +1.0% premarket vs Thu close $254.06; no fresh company news",
+    "pct": 0.6,
+    "price": 255.6
+   },
+   "ASML": {
+    "note": "No verified US premarket quote vs Thu close $1,770.59; reports Oct 14 pre-market, cons EPS ~$12.06-12.07, rev ~$13.16B",
     "pct": null,
-    "note": "no verified US premarket quote; ~flat vs Tue close $256.31"
+    "price": null
+   },
+   "GOOGL": {
+    "note": "Implied from +0.6% premarket vs Thu close $348.23; watch $350 and Thu high $356.83",
+    "pct": 0.6,
+    "price": 350.32
+   },
+   "META": {
+    "note": "Implied from +0.3% premarket vs Thu close $720.84; lagging Mag-7 rebound; watch Thu high $724.95",
+    "pct": 0.3,
+    "price": 723.0
+   },
+   "MSFT": {
+    "note": "Implied from +1% premarket vs Thu close $522.61; higher with hyperscalers; watch Thu high $533.51",
+    "pct": 1.0,
+    "price": 527.84
+   },
+   "NVDA": {
+    "note": "Implied from +1.6% premarket (WSJ, Reuters) vs Thu close $230.48; AI relief rebound after FT OpenAI revenue scare faded; watch Thu high $237.07",
+    "pct": 1.6,
+    "price": 234.17
+   },
+   "TSM": {
+    "note": "No verified US premarket quote; US press roundups had semis incl. TSM up >1% early premarket vs Thu close $458.05; Sep sales +54.6% YoY (Oct 8); reports Oct 15, cons EPS ~$4.42-4.45, rev ~$45.4-45.5B",
+    "pct": null,
+    "price": null
    }
   },
-  "note": "% changes vs verified Tuesday Oct 6 closes in last_prices (state.json). NVDA has a verified premarket quote; other individual quotes were not verifiable from US sources at briefing time and are described qualitatively \u2014 nothing invented.",
-  "watch": "FOMC minutes (Sept meeting) 2 PM ET today + 10Y Treasury auction 1 PM ET; CME FedWatch ~22% odds of Oct hike, Dec hike priced in; earnings season kicks off next week (banks Tuesday); ASML earnings Oct 14, TSM Oct 15; MSFT Windows/Surface event 1 PM ET today with NVDA's Jensen Huang"
+  "note": "Implied prices calculated from reported premarket % moves vs state.json Thu Oct 8 Finnhub closes where no direct quote was published. AAPL is a direct MarketWatch quote. TSM/ASML had no verifiable US premarket quote \u2014 described qualitatively, nothing invented.",
+  "session": "Friday Oct 9, 9:00 AM ET \u2014 ~30 min before the open",
+  "watch": "UMich prelim Oct sentiment 10 AM ET (cons ~47.7-48.0 vs Sep final 48.1; 5-10y infl exp 3.4%); Sep CPI Wed Oct 14 (Reuters poll +3.6% YoY, core +2.5%); Q3 bank earnings next week; telecoms -5% to -8% on SpaceX spectrum deal; Humana +15% Medicare Advantage ratings; Delta cut FY guide; Waller Oct 8: further hikes if data evolve as expected"
  },
- "updated": "2026-10-07T20:15:00Z",
+ "updated": "2026-10-09T20:00:00Z",
  "watchlist": [
   "AAPL",
   "META",

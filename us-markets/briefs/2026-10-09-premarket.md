@@ -1,0 +1,28 @@
+# Pre-market brief — Fri Oct 9, 2026 (~9:00 AM ET / 6:30 PM IST)
+
+**Session backdrop:** Higher open expected — a relief rebound after Thursday's tech-led selloff. Dow futures +0.1% to +0.2%, S&P 500 +0.4%, Nasdaq-100 +0.8% (WSJ, Reuters, Barron's, Investopedia). Thursday's drop was sparked by a Financial Times report that OpenAI's annualized revenue was running ~$20B below the widely cited ~$70B figure; OpenAI pushed back overnight, saying it still expects to reach or exceed $70B annualized by year-end, and analysts questioned whether an accounting difference rather than a demand slowdown explains the gap. Chip makers and hyperscalers are recovering in the premarket. 10Y Treasury ~5.24–5.25%, steady but still near Wednesday's 24-year high of 5.364%. Brent ~$102–103 (−1.2% to −1.5%), WTI ~$90.40–90.67 (−~1%) after President Trump said the US will not attack Iran before the midterm elections. Gold ~$4,210 (+1%). Bitcoin ~$82,500–83,200. Through Thursday's close: S&P 500 +~0.6% on the week, Dow +~0.1%, Nasdaq flat.
+
+**Macro due today:** Preliminary University of Michigan consumer sentiment for October at 10:00 AM ET (consensus ~47.7–48.0 vs September final 48.1; 5–10-year inflation expectations last at 3.4%). No CPI today — September CPI lands Wednesday Oct 14 next week (Reuters poll: +3.6% YoY headline, +2.5% core), alongside producer prices and retail sales. Q3 earnings season accelerates next week with the big banks.
+
+**Sector tone:** Telecoms are the weak spot — T-Mobile, AT&T and Verizon down ~5–8% premarket after SpaceX struck a deal to acquire a nationwide low-band spectrum portfolio, a direct orbital challenge to the legacy carriers; tower names (Crown Castle, SBA) are up. Humana +~15% on improved Medicare Advantage star ratings. Delta −~2–3% after a slight EPS miss and a cut to full-year guidance. Optical names (Lumentum et al.) are bid after Lumentum said its components are effectively sold out through early 2029 on AI data-center demand. Fed backdrop stays hawkish: Gov. Waller said Oct 8 he anticipates further rate increases if data evolve as expected, with flexible timing and size.
+
+| Name | Pre-market | vs Thu close | Driver / watch |
+|---|---|---|---|
+| **NVDA** | ~$234.17 implied, **+1.6%** | vs $230.48 | Leading the AI relief rebound (SOXX +~1.9% premarket); the OpenAI revenue scare is being re-read as an accounting question, not a demand break. Watch Thu high $237.07 as resistance; $230 (Thu close) as first support. |
+| **MSFT** | ~$527.84 implied, **+1.0%** | vs $522.61 | Higher with the hyperscalers on the AI sentiment repair. Watch Thu high $533.51; reports Oct 28 (estimate). |
+| **AMZN** | ~$255.6–256.6 implied, **+0.6% to +1.0%** | vs $254.06 | Up with megacaps; no fresh company news overnight. Watch Thu high $259.86; reports Oct 29 (confirmed). |
+| **GOOGL** | ~$350.32 implied, **+0.6%** | vs $348.23 | Modest bid with the tape. Watch $350 round number and Thu high $356.83; reports Nov 4 (estimate). |
+| **META** | ~$723.00 implied, **+0.3%** | vs $720.84 | Smallest Mag-7 gain premarket — lagging the rebound after a soft week. Watch Thu high $724.95, then $711.68 support. Reports Oct 28 (estimate). |
+| **AAPL** | $333.30, **−~2%** | vs $340.47 (MarketWatch) | The Mag-7 laggard. Nikkei Asia reported Apple told suppliers to cut October component orders for the iPhone 18 Pro and Pro Max by 15–20% from initial plans on softer-than-expected demand and higher price points. Premarket print is below Thursday's $335.90 low — watch $330 next; any Apple comment (none so far) would matter. Reports Oct 29 (estimate). |
+| **TSM** | Up **>1%** premarket, no verified US quote | vs $458.05 | Recovering with chips after Thursday's −3% slide. September sales (reported Oct 8) were +54.6% YoY — hard shipped-and-billed revenue, landing just before earnings. Reports **Thu Oct 15** pre-market (see below). Watch Thu range $452.88–471.19. |
+| **ASML** | No verified US premarket quote | vs $1,770.59 | Quiet ahead of earnings **Wed Oct 14** pre-market (see below). Watch Thu range $1,763.23–1,842.53. |
+
+**Earnings check (next 2 trading days):** none. ASML (Oct 14) and TSM (Oct 15) are 3 and 4 trading days out — compact previews below since they anchor next week.
+
+**On deck next week — ASML, Wed Oct 14 (pre-market):** Consensus EPS ~$12.06–12.07, revenue ~$13.16B (MarketBeat). What to watch: net bookings and EUV order intake (the market's AI-capex tell), China revenue mix, gross margin, and any FY guidance tweak. ASML is the first read on whether hyperscaler orders are converting into equipment demand.
+
+**On deck next week — TSM, Thu Oct 15 (pre-market; call 2:00 AM ET):** Consensus EPS ~$4.42–4.45, revenue ~$45.4–45.5B (MarketBeat). Management previously guided Q3 revenue to $44.6–45.8B, and monthly sales (Jul + Aug + Sep, with September +54.6% YoY to NT$511.86B) put the quarter on track. What to watch: 2nm ramp commentary, gross margin vs the high-50s guide, capex (FY plan was lifted to $60–64B), and AI/HPC mix.
+
+**What would flip the day:** a weak Michigan sentiment print (10 AM ET) or a hot inflation-expectations number could re-ignite the yield story and fade the rebound; conversely, a soft print plus calm yields lets the AI repair run. AAPL is the idiosyncratic risk — a second supplier headline or an Apple response could widen its underperformance.
+
+*Pre-market prices may be delayed ~15 minutes and are thin; implied levels are calculated from reported % moves vs Thursday's closes where no direct quote was published. TSM and ASML had no verified US premarket quote at briefing time and are described qualitatively — nothing invented. This is analysis, not financial advice.*
