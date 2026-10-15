@@ -1,59 +1,53 @@
 {
   "close": {
-    "as_of": "2026-10-13T20:30:00Z",
-    "session": "Tuesday Oct 13, 4:00 PM ET close (1:30 AM IST Oct 14)",
+    "as_of": "2026-10-15T01:30:00+05:30",
+    "session": "Wednesday Oct 14, 4:00 PM ET close (1:30 AM IST Oct 15)",
     "day_pct": {
-      "GOOGL": 0.39,
-      "NVDA": 1.26,
-      "AAPL": -0.03,
-      "MSFT": 0.42,
-      "META": 2.63,
-      "TSM": 0.17,
-      "ASML": -1.86,
-      "AMZN": -0.37
+      "GOOGL": -1.79,
+      "NVDA": -3.28,
+      "AAPL": 0.76,
+      "MSFT": -1.89,
+      "META": -3.25,
+      "TSM": -2.97,
+      "ASML": -3.18,
+      "AMZN": -1.88
     },
     "closes": {
-      "GOOGL": 354.1,
-      "NVDA": 229.18,
-      "AAPL": 340.85,
-      "MSFT": 543.43,
-      "META": 762.5,
-      "TSM": 445.12,
-      "ASML": 1717.76,
-      "AMZN": 258.58
+      "GOOGL": 347.46,
+      "NVDA": 221.03,
+      "AAPL": 343.85,
+      "MSFT": 533.16,
+      "META": 737.74,
+      "TSM": 431.9,
+      "ASML": 1663.22,
+      "AMZN": 253.73
     },
     "day_ranges": {
-      "AMZN": "258.42-262.84",
-      "ASML": "1682.02-1725.27",
-      "META": "734.84-771.27",
-      "TSM": "437.40-445.50",
-      "AAPL": "intraday high 348.15 (new 52-wk high)",
-      "GOOGL": "n/a",
-      "NVDA": "n/a",
-      "MSFT": "n/a"
+      "GOOGL": "346.34-359.40 (open 355.57)",
+      "NVDA": "219.64-226.00 (open 225.53)",
+      "AAPL": "341.72-347.09 (open 344.61)",
+      "MSFT": "532.54-545.75 (open 545.27)",
+      "META": "734.29-761.50 (open 760.75)",
+      "TSM": "428.06-440.39 (open 436.25)",
+      "ASML": "1662.91-1734.50 (open 1676.80)",
+      "AMZN": "252.66-259.65 (open 258.01)"
     },
     "volumes_fullday": {
-      "META": "22.67M vs 17.52M avg (above avg)",
-      "AMZN": "25.19M vs 46.39M avg",
-      "GOOGL": "22.28M vs 30.60M avg",
-      "MSFT": "23.80M vs 34.22M avg",
-      "NVDA": "83.73M vs 151.78M avg",
-      "ASML": "n/a",
-      "TSM": "n/a",
-      "AAPL": "n/a",
-      "note": "MarketBeat full-day post-close"
+      "META": "8.44M (light; itiger; vs Tue 22.67M)",
+      "NVDA": "113.8M (~0.94x avg; Kalkine)",
+      "note": "Partial; MarketBeat full-day not yet available at run time"
     },
     "benchmarks": {
-      "dow": "-0.35% (51,670.10)",
-      "sp500": "-0.02% (7,805.45)",
-      "nasdaq_comp": "-0.15% (27,204.38)",
-      "nasdaq100": "-0.31% (~30,569, barchart/IBD)",
-      "t10y": "5.21% (-3bp; Waller dovish favors hold at Oct 28 FOMC)",
-      "oil": "Brent +1.8% $106.65, WTI +2.1% $93.74",
-      "drivers": "Mixed big-bank earnings (JPM rare miss, GS 2nd-best rev quarter ever; all four banks closed lower); memory-chip selloff day 2 (CXMT claims; KOSPI -5.5%, SK Hynix -8.8%; SOXX recovered to -0.2%); Fed split (Waller dovish, Williams 1 more hike possible, Goolsbee hawkish); Sep CPI Wed 8:30 AM ET"
+      "dow": "-0.5% (~51,427)",
+      "sp500": "-1.3% (~7,702)",
+      "nasdaq_comp": "-2.0% (~26,656)",
+      "nasdaq100": "-2.08% (29,924.53; sigmanomics close)",
+      "t10y": "5.18% (-3bp, reversed lower late; IBD)",
+      "oil": "WTI +1.5% ~$95.55, Brent +0.7% $106.40 (Saudi-Houthi escalation; Investopedia)",
+      "drivers": "Hot Sep CPI: headline 3.7% y/y (cons 3.6%, Aug 3.4%), m/m +0.6%; core 0.3% m/m (cons 0.2%), 2.6% y/y (cons 2.5%). Oct 28 hike odds ~42-44% (Barron's/IBD; CME FedWatch) vs 22% Tue; Dec hike ~89%. Beige Book: price pressures intensifying, low-hire low-fire labor. Chip selloff day 3 (CXMT): SOXX -4%, DRAM ETF -4%, CoreWeave -16%, Nebius -11%, Lam -5%+, Dell -10%. Banks: BAC -6-7% (miss + $1.2B Treasury fine), MS -1.5%, STT ~-9%, BLK +4% (beat). Healthcare (UNH/MRK/AMGN +~3%) and energy (XOM breakout, CVX new highs) led; home builders fell."
     },
-    "notable": "META +2.63% close ($762.50) on analyst target raises (Truist $1,000, Pivotal $930, Barclays MSFT $512->$600); intraday $771.27, ~$18 off 52-wk high. ASML -1.86% close recovered from -2.78% mid-session; earnings Wed pre-market. NVDA +1.26% recovered from -0.8% premarket. AAPL -0.03% flat after new 52-wk intraday high $348.15 at 'Welcome Home' event, faded. No earnings among the 8 names today.",
-    "note": "Official 4 PM ET closes Tue Oct 13: Finnhub quotes (AMZN/ASML/META/TSM), financecharts Tuesday daily snapshots (GOOGL/NVDA/AAPL/MSFT). Benchmark % from TradingKey/FutuBull close wrap, IBD, Barchart. Nothing invented."
+    "notable": "AAPL +0.76% ($343.85) lone gainer — post-event relative strength; 52-wk high $348.15 Oct 13. ASML Q3 REPORTED: record EUR 11.66B sales (+55% y/y, ~in line), net income EUR 4.96B (beat ~4.13B cons), EPS EUR 12.95, GM 57.5% beat; FY26 raised 3rd time to EUR 44-45B; Q4 guide EUR 14.2-15.2B GM ~57%; CEO: 2027-28 planned supply won't fully meet demand, exploring beyond 30% 2028 capacity increase; interim div EUR 1.88 (Nov 4), EUR 4.1B buyback, cash EUR 12.7B. ADR round-tripped: +1.6% premarket ($1,744.67) -> intraday high $1,734.50 -> closed $1,663.22 (-3.18%) on hot CPI + sell-the-news; Amsterdam +~2%. META -3.25% ($737.74) on Goldman PT cut $860->$762 (2027 opex; UBS $884/Guggenheim $850 the other way, all Buys) + CPI duration + pre-earnings de-risk; earnings Oct 21. NVDA -3.28% ($221.03, held ~$219-220 support zone): chip selloff + data-center debt yield concerns + OpenAI revenue questions + MSFT Maia 300. TSM -2.97% ($431.90) pre-earnings de-risk; Q3 Thu Oct 15 pre-open.",
+    "note": "Official 4 PM ET closes Wed Oct 14: stockscan.io daily histories (AAPL/META/TSM), Finnhub at-the-bell quotes (GOOGL/NVDA/MSFT/ASML/AMZN); day % vs Oct 13 official closes per same sources. Prior briefs' Oct 13 base used financecharts ~3:59 PM snapshots, which sat a few cents above official closes (NVDA 228.52 vs 229.18, GOOGL 353.78 vs 354.10, AAPL 341.27 vs 340.85); this brief uses official closes throughout. Nothing invented."
   },
   "earnings": {
     "AAPL": {
@@ -66,7 +60,20 @@
     },
     "ASML": {
       "date": "2026-10-14",
-      "status": "confirmed"
+      "status": "reported",
+      "q3_sales_eur": 11.66,
+      "q3_sales_vs": "~in line",
+      "q3_net_income_eur": 4.96,
+      "q3_net_income_vs": "beat ~4.13 cons",
+      "q3_eps_eur": 12.95,
+      "q3_gm": 57.5,
+      "fy26_guide_eur": "44-45 (raised, 3rd time)",
+      "q4_guide_eur": "14.2-15.2, GM ~57%",
+      "div_eur": 1.88,
+      "div_payable": "2026-11-04",
+      "buyback_q3_eur": 4.1,
+      "cash_eur": 12.7,
+      "ceo": "2027-28 planned supply will not fully meet demand; exploring beyond 30% 2028 capacity increase; 2029-2030 order interest"
     },
     "GOOGL": {
       "date": "2026-11-04",
@@ -96,14 +103,14 @@
     "MSFT"
   ],
   "last_prices": {
-    "AAPL": 344.19,
-    "AMZN": 258.4,
-    "ASML": 1686.0,
-    "GOOGL": 356.21,
-    "META": 757.04,
-    "MSFT": 544.69,
-    "NVDA": 225.8,
-    "TSM": 438.85
+    "AAPL": 343.85,
+    "AMZN": 253.73,
+    "ASML": 1663.22,
+    "GOOGL": 347.46,
+    "META": 737.74,
+    "MSFT": 533.16,
+    "NVDA": 221.03,
+    "TSM": 431.9
   },
   "names": {
     "AAPL": "Apple Inc.",
@@ -115,7 +122,7 @@
     "NVDA": "NVIDIA Corp.",
     "TSM": "Taiwan Semiconductor Mfg."
   },
-  "notes": "US markets only in this phase. Indian market coverage to be added later. last_prices = Wed Oct 14 pre-market quotes ~9:02 AM ET (MarketWatch, live; may lag ~15 min).",
+  "notes": "US markets only in this phase. Indian market coverage to be added later. last_prices = Wed Oct 14 official 4 PM ET closes (stockscan.io daily histories: AAPL/META/TSM; Finnhub at-the-bell quotes: rest).",
   "premarket": {
     "as_of": "2026-10-14T13:02:00Z",
     "session": "Wednesday Oct 14, 9:00 AM ET \u2014 30 min before open. Quotes live via MarketWatch ~9:01-9:03 AM ET; may lag ~15 min; nothing invented.",
@@ -124,7 +131,7 @@
       "sp500": "-0.30% (7,832.25)",
       "nasdaq100": "-0.60% (30,605.25)",
       "yields_oil": "10Y 5.325% (+10bp vs 5.222% Tue close; was 5.19% pre-CPI); 2Y ~4.92% (+13bp). CME FedWatch: 39% odds of Oct 28 hike vs 22% pre-CPI.",
-      "drivers": "HOT Sep CPI 8:30 AM ET: headline 3.7% y/y (cons 3.6%; Aug 3.4%), core 2.6% (cons 2.5%; prior 2.4%) — futures flipped green to red after print (Investopedia/Barron's/IBD). ASML Q3 reported: record EUR 11.66B sales (+55% y/y, slight miss vs ~11.72B cons), net income EUR 4.96B, GM 57.5% beat, FY26 raised 3rd time to EUR 44-45B, warned 2027-28 planned supply will fall short of demand; ADR -1.85% premarket. Bank earnings: BAC -4% (miss + $1.2B Treasury fine), BLK +5%, STT lower. Memory stocks extending declines. Today: Barkin remarks, Fed Beige Book. Thu: Sep PPI 8:30 AM ET + retail sales + Warsh IMF fireside + TSM earnings. Fri: Warsh-Georgieva fireside."
+      "drivers": "HOT Sep CPI 8:30 AM ET: headline 3.7% y/y (cons 3.6%; Aug 3.4%), core 2.6% (cons 2.5%; prior 2.4%) \u2014 futures flipped green to red after print (Investopedia/Barron's/IBD). ASML Q3 reported: record EUR 11.66B sales (+55% y/y, slight miss vs ~11.72B cons), net income EUR 4.96B, GM 57.5% beat, FY26 raised 3rd time to EUR 44-45B, warned 2027-28 planned supply will fall short of demand; ADR -1.85% premarket. Bank earnings: BAC -4% (miss + $1.2B Treasury fine), BLK +5%, STT lower. Memory stocks extending declines. Today: Barkin remarks, Fed Beige Book. Thu: Sep PPI 8:30 AM ET + retail sales + Warsh IMF fireside + TSM earnings. Fri: Warsh-Georgieva fireside."
     },
     "levels": {
       "GOOGL": {
@@ -179,53 +186,54 @@
     "watch": "Thu Oct 15: TSM earnings before open + Sep PPI 8:30 AM ET + retail sales + Warsh IMF fireside chat. Fri: Warsh-Georgieva fireside chat. ASML reported Oct 14."
   },
   "midsession": {
-    "as_of": "2026-10-13T17:30:00Z",
-    "session": "Tuesday Oct 13, 1:00 PM ET \u2014 ~15-min-delayed Finnhub intraday vs Mon Oct 12 closes.",
+    "as_of": "2026-10-14T17:30:00Z",
+    "session": "Wednesday Oct 14, 1:00 PM ET \u2014 ~15-min-delayed Finnhub intraday vs Tue Oct 13 closes.",
     "intraday": {
-      "AAPL": {
-        "price": 343.89,
-        "pct": 0.86,
-        "note": "New 52-wk high $348.15 intraday on 'Welcome Home' smart-home event"
-      },
-      "AMZN": {
-        "price": 260.34,
-        "pct": 0.31
-      },
-      "ASML": {
-        "price": 1701.51,
-        "pct": -2.78,
-        "note": "ALERT: sector-wide chip selloff (CXMT memory scare, Hock Tan remarks); earnings Wed Oct 14 pre-market"
-      },
       "GOOGL": {
-        "price": 355.27,
-        "pct": 0.72
-      },
-      "META": {
-        "price": 761.7,
-        "pct": 2.52,
-        "note": "ALERT: Truist raised PT to $1,000 from $763 (Muse $28.5B rev by 2030); Pivotal raised to $930; earnings Oct 21"
-      },
-      "MSFT": {
-        "price": 545.96,
-        "pct": 0.89
+        "price": 350.92,
+        "pct": -0.81
       },
       "NVDA": {
-        "price": 226.86,
-        "pct": 0.24
+        "price": 222.15,
+        "pct": -2.79,
+        "note": "ALERT: day 3 of chip selloff (CXMT), hot CPI rate pressure; no company-specific news"
+      },
+      "AAPL": {
+        "price": 344.38,
+        "pct": 0.91
+      },
+      "MSFT": {
+        "price": 536.75,
+        "pct": -1.23
+      },
+      "META": {
+        "price": 737.59,
+        "pct": -3.27,
+        "note": "ALERT: Goldman PT cut $860->$762 on 2027 opex concerns (UBS up to $884, Guggenheim to $850); hot CPI; earnings Oct 21"
       },
       "TSM": {
-        "price": 443.71,
-        "pct": -0.15,
-        "note": "Earnings Thu Oct 15"
+        "price": 432.34,
+        "pct": -2.87,
+        "note": "ALERT: chip-sector washout + pre-earnings de-risk; earnings Thu Oct 15 pre-open"
+      },
+      "ASML": {
+        "price": 1696.12,
+        "pct": -1.26,
+        "note": "Recovered from -1.85% premarket; Q3 print landed OK (GM beat, FY26 raised, 2027-28 supply short warning)"
+      },
+      "AMZN": {
+        "price": 254.51,
+        "pct": -1.57
       }
     },
     "alerts": [
-      "META +2.52% (news: Truist/Pivotal PT hikes, Muse Wonder launch; read: hold/don't chase into earnings Oct 21)",
-      "ASML -2.78% (news: sector selloff, pre-earnings de-risk; read: wait for Wed Oct 14 print, overdone on fundamentals)"
+      "META -3.27% (news: Goldman PT cut on 2027 opex, hot CPI; read: hold/don't chase entry before Oct 21 earnings)",
+      "NVDA -2.79% (news: sector-wide chip selloff, rate pressure; read: hold; watch $219-220 support)",
+      "TSM -2.87% (news: chip selloff + pre-earnings de-risk; read: wait for Thu Oct 15 print)"
     ],
-    "sources": "Finnhub intraday quotes; Barron's (Truist); Stocktwits/TheFly (Pivotal); AP/Morningstar/Reuters (chip selloff). US sources only."
+    "sources": "Finnhub intraday quotes; Stocktwits/TheFly (analyst calls); Seeking Alpha/MoneyShow (chip selloff). US sources only."
   },
-  "updated": "2026-10-14T18:35:00+05:30",
+  "updated": "2026-10-15T01:30:00+05:30",
   "watchlist": [
     "AAPL",
     "META",
