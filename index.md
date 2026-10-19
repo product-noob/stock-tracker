@@ -1,1 +1,38 @@
-LS0tCmxheW91dDogZGVmYXVsdAp0aXRsZTogVVMgTWFya2V0cyBCcmllZnMKLS0tCgojIFVTIE1hcmtldHMgQnJpZWZzCgpEYWlseSBwcmUtbWFya2V0LCBtaWQtc2Vzc2lvbiBhbmQgY2xvc2UgcmVjYXBzIGZvciB0aGUgVVMgZXF1aXR5IHBvcnRmb2xpbwooR09PR0wsIE5WREEsIEFBUEwsIE1TRlQpIGFuZCB3YXRjaGxpc3QgKE1FVEEsIFRTTSwgQVNNTCwgQU1aTikuCk5ldyBicmllZnMgYXBwZWFyIGhlcmUgYXV0b21hdGljYWxseSBhZnRlciBlYWNoIGRhaWx5IHN5bmMuCgojIyBXZWVrbHkgbGV0dGVycwoKeyUgYXNzaWduIGxldHRlcnMgPSBzaXRlLnBhZ2VzIHwgd2hlcmVfZXhwOiAicCIsICJwLnBhdGggY29udGFpbnMgJ3VzLW1hcmtldHMvd2Vla2x5LyciIHwgc29ydDogInBhdGgiIHwgcmV2ZXJzZSAlfQp7JSBmb3IgbCBpbiBsZXR0ZXJzICV9Ci0gW3t7IGwubmFtZSB8IHJlbW92ZTogIi5tZCIgfX1dKHt7IGwudXJsIHwgcmVsYXRpdmVfdXJsIH19KQp7JSBlbmRmb3IgJX0KCiMjIERhaWx5IGJyaWVmcwoKeyUgYXNzaWduIGJyaWVmcyA9IHNpdGUucGFnZXMgfCB3aGVyZV9leHA6ICJwIiwgInAucGF0aCBjb250YWlucyAndXMtbWFya2V0cy9icmllZnMvJyIgfCBzb3J0OiAicGF0aCIgfCByZXZlcnNlICV9CnslIGFzc2lnbiBsYXN0X2RhdGUgPSAiIiAlfQp7JSBmb3IgYiBpbiBicmllZnMgJX0KeyUgYXNzaWduIGQgPSBiLm5hbWUgfCBzbGljZTogMCwgMTAgJX0KeyUgYXNzaWduIGtpbmQgPSBiLm5hbWUgfCBzbGljZTogMTEsIDk5IHwgcmVtb3ZlOiAiLm1kIiAlfQp7JSBpZiBkICE9IGxhc3RfZGF0ZSAlfQp7JSB1bmxlc3MgZm9ybG9vcC5maXJzdCAlfQoKeyUgZW5kdW5sZXNzICV9CiMjIyB7eyBkIH19CnslIGFzc2lnbiBsYXN0X2RhdGUgPSBkICV9CnslIGVuZGlmICV9Ci0gW3t7IGtpbmQgfX1dKHt7IGIudXJsIHwgcmVsYXRpdmVfdXJsIH19KQp7JSBlbmRmb3IgJX0KCi0tLQoKKkFuYWx5c2lzIG9ubHksIG5vdCBmaW5hbmNpYWwgYWR2aWNlLiBQcmljZXMgbWF5IGJlIGRlbGF5ZWQgfjE1IG1pbnV0ZXMuKgo=
+---
+layout: default
+title: US Markets Briefs
+---
+
+# US Markets Briefs
+
+Daily pre-market, mid-session and close recaps for the US equity portfolio
+(GOOGL, NVDA, AAPL, MSFT) and watchlist (META, TSM, ASML, AMZN).
+New briefs appear here automatically after each daily sync.
+
+## Weekly letters
+
+{% assign letters = site.pages | where_exp: "p", "p.path contains 'us-markets/weekly/'" | sort: "path" | reverse %}
+{% for l in letters %}
+- [{{ l.name | remove: ".md" }}]({{ l.url | relative_url }})
+{% endfor %}
+
+## Daily briefs
+
+{% assign briefs = site.pages | where_exp: "p", "p.path contains 'us-markets/briefs/'" | sort: "path" | reverse %}
+{% assign last_date = "" %}
+{% for b in briefs %}
+{% assign d = b.name | slice: 0, 10 %}
+{% assign kind = b.name | slice: 11, 99 | remove: ".md" %}
+{% if d != last_date %}
+{% unless forloop.first %}
+
+{% endunless %}
+### {{ d }}
+{% assign last_date = d %}
+{% endif %}
+- [{{ kind }}]({{ b.url | relative_url }})
+{% endfor %}
+
+---
+
+*Analysis only, not financial advice. Prices may be delayed ~15 minutes.*

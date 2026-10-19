@@ -1,1 +1,17 @@
-IyBHaXRIdWIgUGFnZXMgc2l0ZSBmb3IgdGhlIFVTIGVxdWl0eSBicmllZnMgYXJjaGl2ZS4KdGl0bGU6IFVTIE1hcmtldHMgQnJpZWZzCmRlc2NyaXB0aW9uOiBEYWlseSBwcmUtbWFya2V0LCBtaWQtc2Vzc2lvbiBhbmQgY2xvc2UgYnJpZWZzIOKAlCBVUyBlcXVpdHkgcG9ydGZvbGlvICYgd2F0Y2hsaXN0LgpiYXNldXJsOiAiL3N0b2NrLXRyYWNrZXIiCnRoZW1lOiBqZWt5bGwtdGhlbWUtY2F5bWFuCgojIEdpdmUgZXZlcnkgbWFya2Rvd24gcGFnZSB1bmRlciB1cy1tYXJrZXRzLyBhIGxheW91dCwgc28gYnJpZWZzIGFuZAojIHdlZWtseSBsZXR0ZXJzIHJlbmRlciBhcyBIVE1MIHdpdGhvdXQgbmVlZGluZyBmcm9udCBtYXR0ZXIgaW4gZWFjaCBmaWxlLgpkZWZhdWx0czoKICAtIHNjb3BlOgogICAgICBwYXRoOiAidXMtbWFya2V0cyIKICAgIHZhbHVlczoKICAgICAgbGF5b3V0OiBkZWZhdWx0CgojIEtlZXAgdGhlIHJhdyBKU09OIHN0YXRlIGZpbGUgb3V0IG9mIHRoZSBzaXRlbWFwIG5vaXNlIGJ1dCBzdGlsbCBwdWJsaXNoZWQuCmV4Y2x1ZGU6CiAgLSAiKi5nZW1zcGVjIgo=
+# GitHub Pages site for the US equity briefs archive.
+title: US Markets Briefs
+description: Daily pre-market, mid-session and close briefs — US equity portfolio & watchlist.
+baseurl: "/stock-tracker"
+theme: jekyll-theme-cayman
+
+# Give every markdown page under us-markets/ a layout, so briefs and
+# weekly letters render as HTML without needing front matter in each file.
+defaults:
+  - scope:
+      path: "us-markets"
+    values:
+      layout: default
+
+# Keep the raw JSON state file out of the sitemap noise but still published.
+exclude:
+  - "*.gemspec"
