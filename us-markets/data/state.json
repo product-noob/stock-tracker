@@ -1,48 +1,46 @@
 {
   "close": {
-    "as_of": "2026-10-27T01:30:00+05:30",
+    "as_of": "2026-10-28T01:30:00+05:30",
     "benchmarks": {
-      "dow": "+0.2% (IBD live close coverage)",
-      "nasdaq100": "~+1.0% (Finnhub NAS100 CFD +0.97%; QQQ proxy $712.18, +1.10%)",
-      "nasdaq_comp": "+1.0% (IBD)",
-      "oil_wti": "~$102.35 (-~1%)",
-      "semis": "Chip-led day: NVDA +2.48%, INTC +5.8%, ARM +7%+, MU +4.3%, AVGO +3.0%",
-      "sp500": "+0.7% (IBD; Finnhub SPX CFD +0.57%)",
-      "t10y": "~4.99% (nearly flat)"
+      "dow": "~flat at midday (+0.2% per AP midday read); final close not captured in sources used",
+      "nasdaq100": "~+1.2% (Finnhub NAS100 CFD +1.24%)",
+      "nasdaq_comp": "+~1.1% (26,447.40 vs Mon 26,169.38)",
+      "sp500": "+~0.6% (7,722.05 vs Mon 7,676.77)",
+      "t10y": "~5.00%"
     },
     "closes": {
-      "AAPL": 343.88,
-      "AMZN": 248.93,
-      "ASML": 1589.47,
-      "GOOGL": 316.94,
-      "META": 628.79,
-      "MSFT": 532.35,
-      "NVDA": 216.19,
-      "TSM": 424.51
+      "AAPL": 347.03,
+      "AMZN": 253.36,
+      "ASML": 1634.89,
+      "GOOGL": 321.51,
+      "META": 620.49,
+      "MSFT": 531.31,
+      "NVDA": 217.85,
+      "TSM": 436.64
     },
     "day_pct": {
-      "AAPL": -1.11,
-      "AMZN": 0.38,
-      "ASML": 1.12,
-      "GOOGL": -1.02,
-      "META": -2.15,
-      "MSFT": 1.49,
-      "NVDA": 2.48,
-      "TSM": 1.43
+      "AAPL": 0.91,
+      "AMZN": 1.71,
+      "ASML": 2.77,
+      "GOOGL": 1.49,
+      "META": -1.6,
+      "MSFT": -0.24,
+      "NVDA": 0.86,
+      "TSM": 2.89
     },
     "day_ranges": {
-      "AAPL": "341.03-347.09 (open 343.92)",
-      "AMZN": "247.23-250.79 (open 249.47)",
-      "ASML": "1582.88-1612.00 (open 1588.02)",
-      "GOOGL": "316.60-321.48 (open 320.89)",
-      "META": "627.80-647.69 (open 638.355)",
-      "MSFT": "521.69-533.25 (open 527.40)",
-      "NVDA": "212.61-217.75 (open 213.105)",
-      "TSM": "417.72-428.85 (open 418.07)"
+      "AAPL": "342.39-347.78 (open 343.17)",
+      "AMZN": "248.71-254.68 (open 250.43)",
+      "ASML": "1598.66-1643.67 (open 1617.74)",
+      "GOOGL": "316.86-323.88 (open 317.00)",
+      "META": "619.21-628.46 (open 627.07)",
+      "MSFT": "528.33-534.70 (open 532.35)",
+      "NVDA": "215.53-219.19 (open 218.31)",
+      "TSM": "426.00-438.58 (open 427.16)"
     },
-    "notable": "Chip-led rebound, comm services lagged: S&P +0.7%, Nasdaq +1.0%, Dow +0.2%. NVDA +2.48% ($216.19): cleared $215 on Anthropic S-1 + Meta fundraising sentiment; no NVDA-specific news. MSFT +1.49% ($532.35): best mega-cap into Wed earnings. TSM +1.43% ($424.51): above $410-418 range, sector beta. ASML +1.12% ($1,589.47): chip bounce; ex-div Tue Oct 27 EUR 1.88. AMZN +0.38% ($248.93): drifting under $250 into Thu earnings. GOOGL -1.02% ($316.94): 7th straight down day, broke $320 floor; earnings Wed (FOMC day). AAPL -1.11% ($343.88): pre-event drift, no news; Oct 28 event + Nov 2 earnings. META -2.15% ($628.79): dilution debate won over AI-funding certainty; day low $627.80. Day % on Finnhub's own Oct 23 close base (differs slightly from repo recap closes on TSM/ASML/META/GOOGL/NVDA). Volumes vs avg unavailable in bell snapshots, omitted.",
-    "session": "Monday Oct 26, 9:30 AM-4:00 PM ET. Closes: Finnhub at-the-bell snapshots; day % vs Finnhub Oct 23 closes. Benchmarks: IBD live close coverage; Finnhub CFD proxies. Ahead: FOMC + GOOGL/MSFT Wed Oct 28, AMZN Thu Oct 29.",
-    "sources": "Finnhub (prices); IBD live close coverage (indexes, sectors, oil, yields); Motley Fool (AMZN); repo 2026-10-26-midsession.md (Anthropic S-1, Meta fundraising). US/international only; no Indian sites."
+    "notable": "Chip-led day 2: S&P +~0.6%, Nasdaq +~1.1%, narrow advance led by Broadcom (+~4%) on $63B Anthropic financing package (BofA/Blackstone/Citi/MS). TSM +2.89% ($436.64), ASML +2.77% ($1,634.89) \u2014 both flagged at mid-session, no company news, ex-div resilience for ASML. AMZN +1.71% ($253.36) into Thu earnings; UBS PT $348. GOOGL +1.49% ($321.51): first green day after 7 down days, back above $320 into Wed earnings (FOMC day). AAPL +0.91% ($347.03) into Wed event. NVDA +0.86% ($217.85): held $215. MSFT -0.24% ($531.31): flat into Wed earnings. META -1.60% ($620.49): dilution debate still winning over NVDA cornerstone news. Consumer confidence 91.7 (exp ~81). AMZN regular-close print discrepancy: Public $254.53 vs Finnhub snapshot $253.36. Volumes vs avg unavailable in bell snapshots, omitted.",
+    "session": "Tuesday Oct 27, 9:30 AM-4:00 PM ET. Closes: Finnhub at-the-bell snapshots; day % vs Finnhub Oct 26 close base. Benchmarks: S&P/Nasdaq closes via EL7/AP roundup; Nasdaq-100 via Finnhub CFD proxy. Ahead: FOMC + GOOGL/MSFT Wed Oct 28, Apple event Wed, AMZN Thu Oct 29.",
+    "sources": "Finnhub (prices); AP via market roundups (Broadcom/Anthropic financing, index closes); Marketscale/Investing.com (financing terms); Morningstar (consumer confidence); Focus Taiwan/CNA (TSMC overnight); Business Insider (AMZN devices); UBS (AMZN PT); Public.com (AMZN close print, flagged); repo 2026-10-27-midsession.md. US/international only; no Indian sites."
   },
   "earnings": {
     "AAPL": {
@@ -771,9 +769,9 @@
     "sources": "Finnhub premarket panels (Oct 23); Reuters futures story (Oct 23); Investopedia 5-things (Oct 23); TipRanks futures (Oct 23); CAMS Morning Market Brief (Oct 23); Webull (UBS META PT, Wood buy); stockanalysis.com; TradingKey (iPhone Duo/IDC); CoinCentral (META 2026 open); Public.com. US/international only.",
     "watch": "Today: American Express (raised profit forecast), SLB earnings; Western Digital + Deckers. SpaceX-carrier story hits telecoms/towers. Next week: FOMC decision + GOOGL/MSFT earnings Wed Oct 28, AMZN Thu Oct 29."
   },
-  "updated": "2026-10-27T01:30:00+05:30",
+  "updated": "2026-10-28T01:30:00+05:30",
   "updated_midsession": "2026-10-23T22:30:00+05:30",
-  "updated_premarket": "2026-10-26T18:30:00+05:30",
+  "updated_premarket": "2026-10-27T18:30:00+05:30",
   "watchlist": [
     "AAPL",
     "META",
@@ -937,5 +935,70 @@
     "session": "Monday Oct 26, 9:00 AM ET - 30 min before open. Premarket quotes from Finnhub panels (8:56-8:57 AM ET); % vs Finnhub regular-session close base (differs slightly from repo Fri closes, e.g. TSM $418.51 vs $416.71); may lag ~15 min; nothing invented.",
     "sources": "Finnhub premarket panels; Investopedia 5-things Oct 26; TipRanks market-today Oct 26; Reuters via Devdiscourse; Meta PR via Morningstar; Stocktwits. US/international only.",
     "watch": "Tue Oct 27: durable goods, consumer confidence, new home sales, ADP; ASML ex-div. Wed Oct 28: FOMC 2 PM ET (~90% hold priced) + GOOGL/MSFT AMC + Apple event. Thu Oct 29: Q3 GDP + Sep PCE 8:30 AM ET + AMZN AMC. Today AMC: CDNS earnings."
+  },
+  "premarket_oct27": {
+    "as_of": "2026-10-27T18:30:00+05:30",
+    "futures": {
+      "dow": "+0.32% (+169 pts; Reuters via Kitco ~6:56 AM ET)",
+      "nasdaq100": "+0.27% (+79 pts)",
+      "sp500": "+0.19% (+15 pts)",
+      "oil": "Brent ~$114.90, WTI ~$101 (-0.7-0.8%, Iran de-escalation)",
+      "gold_vix": "Gold ~$4,023 (-0.36%); VIX ~17.87 (-2.8%); DXY ~102.23",
+      "t10y": "~4.99% (Mon close)"
+    },
+    "levels": {
+      "GOOGL": {
+        "note": "Mild bounce after 7 straight down days, near-3-month low ~$317; earnings Wed Oct 28 AMC (call 4:30 PM ET, FOMC day). Watch $320 / $317.",
+        "premarket_pct": 0.47,
+        "premarket_price": 318.296,
+        "prev_close": 316.8
+      },
+      "NVDA": {
+        "note": "Leads chips; FRESH: $3B investment in META offering + deeper Muse partnership (Vera Rubin, Vera CPUs, networking). Watch $220 / $215; earnings ~Nov 17.",
+        "premarket_pct": 1.07,
+        "premarket_price": 218.3172,
+        "prev_close": 216.0
+      },
+      "AAPL": {
+        "note": "Lone laggard; iPhone Duo display faults, replacements offered. Oct 28 'Pro and tell' event (touch-screen MacBook Pro expected). Watch $341.03 / $347.09; earnings Nov 2 AMC.",
+        "premarket_pct": -0.34,
+        "premarket_price": 342.7517,
+        "prev_close": 343.91
+      },
+      "MSFT": {
+        "note": "Pullback after Mon +1.54%; Copilot Cowork w/ Anthropic Claude unveiled Mon. Earnings Wed Oct 28 AMC (call 5:30 PM ET, FOMC day). Watch $533.25 / $521.69.",
+        "premarket_pct": -0.59,
+        "premarket_price": 529.4509,
+        "prev_close": 532.6
+      },
+      "META": {
+        "note": "$37.5B offering priced Mon AMC: $25B common at $625 + $12.5B converts; NVDA/AMD/AVGO cornerstone investors (up to $5B agg); $60B Class C ATM from early 2027. Watch $625 / $627.80.",
+        "premarket_pct": -0.62,
+        "premarket_price": 626.631,
+        "prev_close": 630.56
+      },
+      "TSM": {
+        "note": "Rides chip bounce; nothing TSMC-specific. Watch $428.85 / $417.72.",
+        "premarket_pct": 0.76,
+        "premarket_price": 427.601,
+        "prev_close": 424.37
+      },
+      "ASML": {
+        "note": "Strongest name; EX-DIV TODAY (EUR 1.88 payable Nov 4). Watch $1,612 / $1,583.",
+        "premarket_pct": 1.96,
+        "premarket_price": 1622.022,
+        "prev_close": 1590.9
+      },
+      "AMZN": {
+        "note": "Back above $250; MS Top Pick $350, UBS $348. Earnings Thu Oct 29 AMC (call 5 PM ET). Watch $250.79 / $247.23.",
+        "premarket_pct": 0.72,
+        "premarket_price": 250.872,
+        "prev_close": 249.09
+      }
+    },
+    "note": "GOOGL + MSFT report Wed Oct 28 (1 trading day) and AMZN Thu Oct 29 (2 trading days) - full pre-earnings briefs included. Next: AAPL Nov 2, NVDA ~Nov 17.",
+    "session": "Tuesday Oct 27, 9:00 AM ET - 30 min before open. Premarket quotes from Finnhub panels (~8:56 AM ET); % vs Finnhub's own Mon closes (differ slightly from repo close recap on META/ASML/GOOGL); may lag ~15 min; nothing invented.",
+    "sources": "Finnhub premarket panels; Reuters via Kitco (futures, FOMC); Schwab Network; TipRanks (chip movers); TradingKey (META-NVDA, GOOGL preview); aistockwire (META pricing); Invezz (AAPL Duo); ad-hoc-news (earnings dates). US/international only.",
+    "watch": "Today: durable goods 8:30 AM ET, consumer confidence + new home sales 10 AM ET; FOMC starts (decision Wed). Earnings today: KO/BA/PYPL/UPS pre-open, V/HOOD/STX/NXPI AMC. Wed: FOMC + GOOGL/MSFT AMC + AAPL event. Thu: AMZN AMC."
   }
 }
