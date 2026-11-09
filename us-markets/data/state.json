@@ -89,6 +89,12 @@
    "note": "Close-recap run Sun Nov 8 01:30 IST (Sat Nov 7 15:00 ET): US market CLOSED (Saturday) \u2014 no trading, no new closes. last_prices unchanged from official Fri Nov 6 4 PM ET closes (see official_correction). Brief: briefs/2026-11-08-close.md.",
    "weekend_read": "Bloomberg (via Moneyweb) Nov 7: AI-trade reassessment after Tue midterms (Democrats took Senate+House); UBS ~1/3 of projected 2028 US compute at risk; NVDA ~13x fwd earnings vs 32x a year ago. MSFT-Oracle AI-compute wind-down confirmed in Fri wrap. Next catalysts: CPI Tue Nov 10; NVDA earnings Tue Nov 17.",
    "sources": "Finnhub official Nov 6 closes/candles (NVDA/MSFT/AAPL/GOOGL); AP/Yahoo Finance closing tallies; Bloomberg via Moneyweb. US/international only."
+  },
+  "weekend_run_2026_11_08": {
+   "note": "Close-recap run Mon Nov 9 01:30 IST (Sun Nov 8 15:00 ET): US market CLOSED (Sunday) \u2014 no trading, no new closes. last_prices unchanged from official Fri Nov 6 4 PM ET closes. Brief: briefs/2026-11-09-close.md.",
+   "weekend_read": "FT Nov 7: US intelligence memo alleges Jensen Huang had a romantic relationship with Alice Huang, a Megaspeed exec believed recruited by China's MSS; no charges, no public finding of wrongdoing; Nvidia denies sensitive data shared, internal probe found no wrongdoing; House chairs want closed-door briefing Nov 18, Nvidia to answer by Wed Nov 11 (CNBC). NYT Nov 7: New Matrix, authorised handler of Nvidia H200 chips, shows little sign of being a real business. TSM spokesperson Nov 7 firmer denial of 3D DRAM move ('always focuses on its core business, semiconductor foundry') \u2014 corrects Nov 8 brief's non-denial framing. GOOGL: $17bn Wyoming data centre confirmed Nov 5 (Google blog, Reuters) \u2014 702 MW Bloom Energy fuel cells w/ CCS, AEP ~$4bn, 20-yr PPA, full operation end-2028; site acquired from Crusoe. Trump Nov 8 Truth Social: midterms a 'giant step back', blamed for $3T one-day stock loss (ABC/AFP). Miller starts as chief of staff Mon Nov 9. Barron's Nov 8: volatility expected at futures reopen.",
+   "watch": "Futures reopen Sun 6 PM ET. Mon Nov 9 evening: Senate permitting-bill vote. Tue Nov 10: Oct CPI 8:30 AM ET + CoreWeave after close. NVDA earnings Tue Nov 17. Levels: NVDA $195-200 / $181-185; TSM $378-380; ASML ~$1,450; META $600.",
+   "sources": "Finnhub (market status closed, all 8 names; prices as of 2026-11-06 close); Financial Times Nov 7 via TechCrunch/NYT summaries; Tom's Hardware/Bloomberg via ChosunBiz (TSMC denial); Google blog Nov 5 + Reuters (Wyoming); Barron's Nov 8; ABC/AFP (Trump post). US/international only; no Indian sites."
   }
  },
  "earnings": {
@@ -577,6 +583,50 @@
   "session": "Wednesday Nov 4, 8:00 AM ET (EST) - 90 min before open. Finnhub premarket panels ~7:58 AM ET; may lag ~15 min; nothing invented. Close-base note: % vs Finnhub Tue closes, which differ slightly from repo Nov 3 close recap for some names (NVDA, ASML, META).",
   "sources": "Finnhub premarket panels; Reuters via Kitco; Stocktwits; Longbridge; Earnings Whispers. US/international only.",
   "watch": "10 AM ET: Oct ADP + ISM services PMI (54.8 exp). Earnings: CAT/UBER/MCD/CVS pre-open; QCOM/Arm AMC. Fri: Oct jobs report. NVDA Nov 17."
+ },
+ "premarket_nov08": {
+  "as_of": "2026-11-08T18:30:00+05:30",
+  "futures": {
+   "note": "Not quoted \u2014 US cash market closed Sunday; index futures resume Sunday 6 PM ET (4:30 AM IST Monday). No Sunday pre-market prices exist; nothing invented."
+  },
+  "levels_into_monday": {
+   "AAPL": {
+    "note": "Slipped red Fri despite tape; Dec-q guide (rev +7-10%, GM 45-46%) + memory costs still the overhang. OKX-ICE: AAPL objected to tokenization (Nov 5 notice); all Mag 7 now opted out. Watch $338 / $345.",
+    "price": 342.38
+   },
+   "AMZN": {
+    "note": "Best week in universe (+7.88%) but faded Fri; 2027 capex debate hangs over it. Watch $250 / $260.",
+    "price": 259.3
+   },
+   "ASML": {
+    "note": "Pure sector bounce Fri, no company news; 2027-28 supply-shortage thesis unchanged. Stabilisation above ~$1,450 is the test.",
+    "price": 1424.75
+   },
+   "GOOGL": {
+    "note": "Steadiest mega-cap; $280 now support, $290 resistance.",
+    "price": 284.77
+   },
+   "META": {
+    "note": "$600 is the line; debt-funded buildout overhang persists. OKX-ICE: META objected to tokenization (Nov 5 notice). Watch $638 above.",
+    "price": 610.16
+   },
+   "MSFT": {
+    "note": "Lagged Fri bounce; Oracle AI-compute wind-down confirmed in Fri wrap. Support $517.75, watch $530.",
+    "price": 530.61
+   },
+   "NVDA": {
+    "note": "Bounce tape-driven, no catalyst; ~13x fwd earnings vs 32x a year ago (Bloomberg). Watch $195-200 resistance / $181-185 floor. Earnings Tue Nov 17.",
+    "price": 186.64
+   },
+   "TSM": {
+    "note": "Biggest Fri gainer; 3D DRAM plans at Nvidia's request (The Information via Reuters) \u2014 real but early. Resistance $378-380.",
+    "price": 375.44
+   }
+  },
+  "note": "No universe name reports within next 2 trading days (Mon Nov 9 / Tue Nov 10). Next: NVDA Tue Nov 17.",
+  "session": "Sunday Nov 8, 6:30 PM IST = 8:00 AM EST. US cash market closed (weekend); futures shut until Sunday 6 PM ET. Prices = official Fri Nov 6 4 PM ET closes. Nothing invented.",
+  "sources": "Repo Nov 6 close recap (Finnhub official closes, AP/Yahoo tallies); Bloomberg via Moneyweb Nov 7 (AI-trade reassessment, UBS 2028 compute at risk); Seeking Alpha week ahead; Binance/TradFi News + KuCoin (LSEG Dec hike odds ~80%, CPI/PPI consensus, Fed speakers, CoreWeave); Kaimark (permitting bill vote); TalkMarkets CoT (10Y 4.86%); Blockchain Posts/Decrypt (OKX-ICE objections). US/international only.",
+  "watch": "Mon Nov 9: Senate permitting-bill vote (evening). Tue Nov 10: Oct CPI 8:30 AM ET (cons +0.3% m/m headline, +0.2-0.3% core) + CoreWeave AMC. Wed Nov 11: Veterans Day (equities open, Treasuries closed). Thu Nov 12: Cisco/AMAT/Nebius/Cerebras AMC. Fri Nov 13: Oct PPI. Tue Nov 17: NVDA earnings."
  },
  "premarket_oct15": {
   "as_of": "2026-10-15T18:45:00+05:30",
@@ -1556,7 +1606,7 @@
   "sources": "Repo Oct 30 close recap; Reuters Oct 30 close report; Zacks/MarketBeat/Pip Theory AAPL previews. US/international only.",
   "watch": "Mon Nov 2: ISM manufacturing + AAPL earnings AMC (Palantir also reports). Tue Nov 3: AMD earnings. Nov 17: NVDA earnings."
  },
- "updated": "2026-11-08T01:30:00+05:30",
+ "updated": "2026-11-09T01:30:00+05:30",
  "updated_midsession": "2026-10-23T22:30:00+05:30",
  "updated_premarket": "2026-11-04T18:30:00+05:30",
  "watchlist": [
@@ -1762,5 +1812,121 @@
   "note": "No universe name reports within next 2 trading days (Mon Nov 9 / Tue Nov 10). Next: NVDA Tue Nov 17.",
   "watch": "Mon Nov 9: China Oct CPI overnight; NY Fed consumer inflation expectations 11 AM ET; Goolsbee Q&A; Bowman speaks; Rocket Lab AMC. Tue Nov 10: Oct CPI 8:30 AM ET (last before Dec 8-9 FOMC; core fcst +0.2% m/m, ~2.5% y/y; Sep headline 3.7% y/y) + Waller/Logan/Barkin/Schmid. Wed Nov 11: Veterans Day (stocks open, bonds closed); US-Russia-Ukraine Abu Dhabi meeting; Cisco expected (unconfirmed). Thu Nov 12: UK Q3 GDP; Applied Materials AMC; Hammack speaks. Fri Nov 13: Oct PPI 8:30 AM ET; Goolsbee/Daly/Williams. NVDA Nov 17; FOMC Dec 9.",
   "sources": "Finnhub official closes (NVDA/TSM/ASML); AP/Yahoo Finance closing tallies; Reuters (Bloomberg MSFT-Oracle report, Nov 6); BLS/Fed calendars (week ahead); Capp Notes/Investing.com (VIX, Nasdaq-100). US/international only."
+ },
+ "midsession_nov08": {
+  "as_of": "2026-11-08T22:30:00+05:30",
+  "session": "Sunday Nov 8, 1:00 PM ET - US market CLOSED (weekend). No intraday session; zero movement in all 8 names. Prices unchanged from official Fri Nov 6 4 PM ET closes.",
+  "alerts": [],
+  "intraday": {
+   "AAPL": {
+    "price": 342.38,
+    "pct": null,
+    "note": "market closed"
+   },
+   "AMZN": {
+    "price": 259.3,
+    "pct": null,
+    "note": "market closed"
+   },
+   "ASML": {
+    "price": 1424.75,
+    "pct": null,
+    "note": "market closed"
+   },
+   "GOOGL": {
+    "price": 284.77,
+    "pct": null,
+    "note": "market closed"
+   },
+   "META": {
+    "price": 610.16,
+    "pct": null,
+    "note": "market closed"
+   },
+   "MSFT": {
+    "price": 530.61,
+    "pct": null,
+    "note": "market closed"
+   },
+   "NVDA": {
+    "price": 186.64,
+    "pct": null,
+    "note": "market closed"
+   },
+   "TSM": {
+    "price": 375.44,
+    "pct": null,
+    "note": "market closed"
+   }
+  },
+  "weekend_notes": "TSM 3D DRAM still the weekend story (The Information via Reuters; Parekh AI-RTZ recap Sun Nov 8; TSMC non-denial; SK Hynix sold out thru 2029, Samsung thru 2027). Weekend newsletter tally of drawdowns from 2026 highs: GOOGL -29.18%, META -22.45%, NVDA -21.99% (bear-market territory), AAPL -2.04%, MSFT -4.53%, AMZN -8.70%. No new company news for any of the 8 names on Sunday.",
+  "watch": "Futures resume Sun 6 PM ET. Mon Nov 9 evening: Senate permitting-bill vote. Tue Nov 10: Oct CPI 8:30 AM ET. NVDA earnings Tue Nov 17. Levels: NVDA $195-200 / $181-185; TSM $378-380; ASML ~$1,450; META $600; MSFT $517.75.",
+  "sources": "Finnhub (market status closed, all 8 names; prices as of 2026-11-06 close); repo Nov 6 close recap; The Information via Reuters (TSM 3D DRAM); NASDUCK weekly (drawdown tally). US/international only; no Indian sites."
+ },
+ "premarket_nov09": {
+  "as_of": "2026-11-09T18:30:00+05:30",
+  "futures": {
+   "dow": "+0.95% (Swingfolio/Yahoo ~7:20 AM ET; Reuters 5:10 AM ET +0.73%)",
+   "nasdaq100": "+0.47% (Swingfolio/Yahoo ~7:20 AM ET; Reuters 5:10 AM ET +0.21%)",
+   "sp500": "+0.59% (Swingfolio/Yahoo ~7:20 AM ET; Reuters 5:10 AM ET +0.40%)",
+   "t10y": "~4.86%",
+   "oil": "WTI -~2.9% to ~$88.17 (Trump: further Iran strikes unlikely)",
+   "btc": "-1.46% to ~$74,759",
+   "drivers": "Broad rebound after S&P's worst week since April 2025 (-2.68%); Nasdaq -3.4% week, 4th straight weekly decline. NVDA the exception: board probe of CEO Jensen Huang. AMD +4.67% on Oppenheimer upgrade; chips ex-NVDA up."
+  },
+  "levels": {
+   "AAPL": {
+    "note": "Quiet; drifts with tape. Watch $338 / $345.",
+    "premarket_pct": 0.75,
+    "premarket_price": 344.922,
+    "prev_close": 342.38
+   },
+   "AMZN": {
+    "note": "Leading mega-cap rebound; no company news. Watch $260 / $250.",
+    "premarket_pct": 3.09,
+    "premarket_price": 267.3123,
+    "prev_close": 259.3
+   },
+   "ASML": {
+    "note": "Strongest chip name; Amsterdam firm. Stabilisation above ~$1,450 is the test.",
+    "premarket_pct": 3.68,
+    "premarket_price": 1477.222,
+    "prev_close": 1424.75
+   },
+   "GOOGL": {
+    "note": "Strongest mega-cap; back above $290. Watch $290 / $280.",
+    "premarket_pct": 2.87,
+    "premarket_price": 292.946,
+    "prev_close": 284.77
+   },
+   "META": {
+    "note": "Rebounding with tape; $600 line held Fri. Watch $638 above. Price ~$626.3 via Swingfolio/Yahoo ~7:32 AM ET (+2.64%); Finnhub panel had no pre-market print.",
+    "premarket_pct": 2.64,
+    "premarket_price": 626.27,
+    "prev_close": 610.16
+   },
+   "MSFT": {
+    "note": "Bouncing with tape after lagging Fri. Watch $530 / $517.75.",
+    "premarket_pct": 2.58,
+    "premarket_price": 544.281,
+    "prev_close": 530.61
+   },
+   "NVDA": {
+    "note": "BOARD PROBE: Sun Nov 8 Nvidia board opened independent investigation into CEO Jensen Huang (committee of independent directors + outside counsel) after NYT/FT reports US intel believes Alice Huang (ex-Megaspeed exec) was recruited by China's MSS. Huang admitted affair in Sun memo, remains CEO, cooperating. Board: no reason to believe secrets/national security compromised; inquiry examines all available info. No charges, no finding of wrongdoing. House chairs want closed-door briefing Nov 18; Nvidia to answer by Wed Nov 11. Bernstein maintained Outperform $400 PT. Premarket low ~$175.89, near-7-month low. Watch $175-180 / $181-185 floor / $195-200 resistance. Earnings Tue Nov 17.",
+    "premarket_pct": -5.0,
+    "premarket_price": 177.311,
+    "prev_close": 186.64
+   },
+   "TSM": {
+    "note": "Chip rebound; Taiwan shares +4.68% overnight. Resistance $378-380.",
+    "premarket_pct": 1.67,
+    "premarket_price": 381.711,
+    "prev_close": 375.44
+   }
+  },
+  "note": "No universe name reports within next 2 trading days. Next: NVDA Tue Nov 17.",
+  "session": "Monday Nov 9, 8:00 AM ET (EST) - 90 min before open. Premarket quotes from Finnhub panels ~7:57 AM ET (META via Swingfolio/Yahoo ~7:32 AM ET); may lag ~15 min; nothing invented.",
+  "sources": "Finnhub premarket panels; Reuters via SRN News; Swingfolio US pre-market; CNBC (board statement, House briefing Nov 18); Bloomberg via market updates. US/international only.",
+  "watch": "Today: wholesale trade 10 AM ET + NY Fed consumer expectations 11 AM ET + Senate permitting-bill vote (evening). Tue Nov 10: Oct CPI 8:30 AM ET + CoreWeave AMC. Wed Nov 11: Veterans Day (equities open, Treasuries closed). Thu Nov 12: Cisco/AMAT/Nebius AMC. Fri Nov 13: Oct PPI. Tue Nov 17: NVDA earnings. Dec Fed hike odds ~76-77% after hot Oct jobs report."
  }
 }
