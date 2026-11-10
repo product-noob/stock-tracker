@@ -1,101 +1,45 @@
 {
  "close": {
-  "as_of": "2026-11-06T15:00:00-05:00",
-  "session": "Friday Nov 6, 2026, 9:30 AM-4:00 PM ET (LATE-SESSION ~3 PM ET snapshots - NOT official closes; run fires 1:30 AM IST, close is 2:30 AM IST under EST)",
-  "caveat": "Late-session Finnhub panels ~3 PM ET; final hour can still move these numbers. Correct with official 4 PM ET closes at the next premarket run, as was done for Nov 5.",
+  "as_of": "2026-11-09T15:00:00-05:00",
+  "session": "Monday Nov 9, 2026, 9:30 AM-4:00 PM ET (LATE-SESSION ~2-3 PM ET snapshots - NOT official closes; run fires 1:30 AM IST, close is 2:30 AM IST under EST)",
+  "caveat": "Late-session snapshots ~2-3 PM ET; final hour can still move these numbers. Correct with official 4 PM ET closes at the next premarket run, as was done for Nov 5.",
   "closes": {
-   "AAPL": 343.32,
-   "AMZN": 261.39,
-   "ASML": 1417.81,
-   "GOOGL": 285.16,
-   "META": 614.44,
-   "MSFT": 531.98,
-   "NVDA": 187.76,
-   "TSM": 374.7
+   "AAPL": 348.79,
+   "AMZN": 268.32,
+   "ASML": 1510.27,
+   "GOOGL": 288.95,
+   "META": 641.46,
+   "MSFT": 541.47,
+   "NVDA": 176.74,
+   "TSM": 390.02
   },
   "day_pct": {
-   "AAPL": -0.25,
-   "AMZN": 0.45,
-   "ASML": 4.51,
-   "GOOGL": 0.92,
-   "META": 1.55,
-   "MSFT": -0.74,
-   "NVDA": 3.39,
-   "TSM": 6.12
+   "AAPL": 1.87,
+   "AMZN": 3.48,
+   "ASML": 6.0,
+   "GOOGL": 1.47,
+   "META": 5.13,
+   "MSFT": 2.05,
+   "NVDA": -5.3,
+   "TSM": 3.88
   },
   "day_ranges": {
-   "AAPL": "338.30-345.79",
-   "AMZN": "258.53-264.18",
-   "ASML": "1409.21-1447.49",
-   "GOOGL": "284.61-290.49",
-   "META": "606.66-625.60",
-   "MSFT": "524.47-538.33",
-   "NVDA": "185.22-194.90",
-   "TSM": "367.95-380.72"
+   "AAPL": "high ~350.28; low n/c",
+   "AMZN": "n/c (high ~268.78)",
+   "ASML": "1468.02-1518.80",
+   "GOOGL": "288.75-296.33",
+   "META": "630.00-644.54",
+   "MSFT": "538.70-547.48",
+   "NVDA": "170.24-179.91",
+   "TSM": "380.33-394.39"
   },
   "benchmarks": {
-   "dow": "~+0.1% to ~51,555-51,580",
-   "nasdaq_comp": "+1.71% to 24,730.30",
-   "nasdaq100": "+1.99% to 27,159.56",
-   "sp500": "~+0.9% to ~7,422",
-   "sox": "+~4.2% after Thu -12.25%"
+   "dow": "~+1.9% (11:53 AM ET)",
+   "nasdaq100": "+~3.4% to ~27,927 (Finnhub)",
+   "sp500": "+~2.4% to ~7,565 (Finnhub)"
   },
-  "notable": "Relief bounce after Thu washout; chips led (TSM +6.12%, NVDA +3.39%, ASML +4.51%) on blowout Oct jobs report (+165k vs ~65k exp, unemp 4.1%); bounce faded in afternoon, MSFT -0.74% and AAPL -0.25% slipped red. TSM 3D DRAM report (The Information via Reuters) at NVDA's request. Dec Fed hike odds ~76-77%. Michigan sentiment prelim 51 vs 48 Oct (up, not down - corrects midsession framing); 1-yr inflation exp eased to 4.3% from 4.7%. No universe name reported today; NVDA earnings Nov 17.",
-  "sources": "Finnhub live panels (~3 PM ET, all 8 names); TradingView/Benzinga market-today wrap; XTB daily summary; SKN Finance; StockMarketWatch most-active (volumes). US/international only; no Indian sites.",
-  "official_correction": {
-   "note": "Official Fri Nov 6 4 PM ET closes, correcting the ~3 PM ET snapshots in this section (TSM and ASML official prints are HIGHER than snapshots; the rest lower).",
-   "closes": {
-    "AAPL": 342.38,
-    "AMZN": 259.3,
-    "ASML": 1424.75,
-    "GOOGL": 284.77,
-    "META": 610.16,
-    "MSFT": 530.61,
-    "NVDA": 186.64,
-    "TSM": 375.44
-   },
-   "day_pct": {
-    "AAPL": -0.52,
-    "AMZN": -0.35,
-    "ASML": 5.02,
-    "GOOGL": 0.78,
-    "META": 0.84,
-    "MSFT": -0.99,
-    "NVDA": 2.78,
-    "TSM": 6.33
-   },
-   "week_pct_vs_fri_oct30": {
-    "AAPL": -0.65,
-    "AMZN": 7.88,
-    "ASML": -9.01,
-    "GOOGL": 1.76,
-    "META": -0.79,
-    "MSFT": 1.67,
-    "NVDA": -8.79,
-    "TSM": -7.56
-   },
-   "benchmarks_official": {
-    "sp500": "7,376.86 (+0.31%, week -2.7%)",
-    "nasdaq_comp": "24,579.42 (+1.09%, week -3.4%)",
-    "nasdaq100": "26,989.99 (+1.35%)",
-    "dow": "51,285.73 (-0.46%, week -0.9%)",
-    "russell2000": "2,754.11 (+0.89%)",
-    "sox": "+4.21%",
-    "vix": "~24.14-25.64 (two closing accounts differ)"
-   },
-   "sources": "Finnhub official closes (NVDA/TSM/ASML); AP/Yahoo Finance closing tallies; Binance/Sina close summary (MSFT/GOOGL/META/AMZN/AAPL % moves); 2ndOcean (MSFT $530.61 cross-check)."
-  },
-  "weekend_run_2026_11_07": {
-   "note": "Close-recap run Sun Nov 8 01:30 IST (Sat Nov 7 15:00 ET): US market CLOSED (Saturday) \u2014 no trading, no new closes. last_prices unchanged from official Fri Nov 6 4 PM ET closes (see official_correction). Brief: briefs/2026-11-08-close.md.",
-   "weekend_read": "Bloomberg (via Moneyweb) Nov 7: AI-trade reassessment after Tue midterms (Democrats took Senate+House); UBS ~1/3 of projected 2028 US compute at risk; NVDA ~13x fwd earnings vs 32x a year ago. MSFT-Oracle AI-compute wind-down confirmed in Fri wrap. Next catalysts: CPI Tue Nov 10; NVDA earnings Tue Nov 17.",
-   "sources": "Finnhub official Nov 6 closes/candles (NVDA/MSFT/AAPL/GOOGL); AP/Yahoo Finance closing tallies; Bloomberg via Moneyweb. US/international only."
-  },
-  "weekend_run_2026_11_08": {
-   "note": "Close-recap run Mon Nov 9 01:30 IST (Sun Nov 8 15:00 ET): US market CLOSED (Sunday) \u2014 no trading, no new closes. last_prices unchanged from official Fri Nov 6 4 PM ET closes. Brief: briefs/2026-11-09-close.md.",
-   "weekend_read": "FT Nov 7: US intelligence memo alleges Jensen Huang had a romantic relationship with Alice Huang, a Megaspeed exec believed recruited by China's MSS; no charges, no public finding of wrongdoing; Nvidia denies sensitive data shared, internal probe found no wrongdoing; House chairs want closed-door briefing Nov 18, Nvidia to answer by Wed Nov 11 (CNBC). NYT Nov 7: New Matrix, authorised handler of Nvidia H200 chips, shows little sign of being a real business. TSM spokesperson Nov 7 firmer denial of 3D DRAM move ('always focuses on its core business, semiconductor foundry') \u2014 corrects Nov 8 brief's non-denial framing. GOOGL: $17bn Wyoming data centre confirmed Nov 5 (Google blog, Reuters) \u2014 702 MW Bloom Energy fuel cells w/ CCS, AEP ~$4bn, 20-yr PPA, full operation end-2028; site acquired from Crusoe. Trump Nov 8 Truth Social: midterms a 'giant step back', blamed for $3T one-day stock loss (ABC/AFP). Miller starts as chief of staff Mon Nov 9. Barron's Nov 8: volatility expected at futures reopen.",
-   "watch": "Futures reopen Sun 6 PM ET. Mon Nov 9 evening: Senate permitting-bill vote. Tue Nov 10: Oct CPI 8:30 AM ET + CoreWeave after close. NVDA earnings Tue Nov 17. Levels: NVDA $195-200 / $181-185; TSM $378-380; ASML ~$1,450; META $600.",
-   "sources": "Finnhub (market status closed, all 8 names; prices as of 2026-11-06 close); Financial Times Nov 7 via TechCrunch/NYT summaries; Tom's Hardware/Bloomberg via ChosunBiz (TSMC denial); Google blog Nov 5 + Reuters (Wyoming); Barron's Nov 8; ABC/AFP (Trump post). US/international only; no Indian sites."
-  }
+  "notable": "Broad relief rally after last week's rout (S&P -2.7%, NDX -5.0% w/w); chips led again. NVDA -5.30% the only big chip name down, on the Huang board probe, volume ~332M (~2.4x avg). META +5.13% and AMZN +3.48% on JPMorgan Analyst Focus List adds (META replaces GOOGL); GOOGL +1.47% on 8th-gen TPU launch but faded from $296.33 high; ASML +6.00% chip beta + buyback update (repurchases Nov 2-6). AAPL +1.87% on tape + Gurman Siri-agent report. Oct CPI Tue Nov 10 8:30 AM ET. No universe name reported today; NVDA earnings Nov 17.",
+  "sources": "Finnhub live panels (GOOGL, SPX500, NAS100 ~3 PM ET); AAII (NVDA/ASML/TSM/GOOGL); FI Handbook (AAPL/MSFT/META); Nexqual (NVDA); Motley Fool; StockStory/CNBC (JPMorgan); aistockwire/Bloomberg (AAPL); GlobeNewswire (ASML). US/international only; no Indian sites."
  },
  "earnings": {
   "AAPL": {
@@ -219,62 +163,67 @@
   "TSM": 375.44
  },
  "midsession": {
-  "as_of": "2026-11-06T22:30:00+05:30",
-  "session": "Friday Nov 6, ~1:00 PM ET - Finnhub live intraday panels vs Thu Nov 5 official closes in state; may lag ~15 min; nothing invented. Tape: sharp bounce after Thu rout (Nasdaq +1-2%, S&P +0.9%, Dow -0.3 to -0.9%, SOX +5.3-5.5% after -12.25%); Oct jobs +165k vs ~65-70k exp, unemp 4.1% vs 4.2% exp, Sep revised 29k->60k; Dec hike odds ~76-77% (CME FedWatch); 10Y ~4.88-4.89%. Michigan sentiment prelim 51, inflation exp 4.3%. SOX still ~8% below Wed close; Nasdaq in correction (-11.9% off Oct 6 record).",
+  "as_of": "2026-11-09T22:30:00+05:30",
+  "session": "Monday Nov 9, ~12:00 PM ET - Finnhub live intraday panels vs Fri Nov 6 official closes in state; may lag ~15 min; NVDA cross-checked (Morningstar/Motley Fool/Nexqual $174-179 through morning). Nothing invented. Tape: relief rally after last week's rout (Nasdaq +2%+, S&P ~+1.7%, SOXX +5.7%); CPI Tue Nov 10 8:30 AM ET.",
   "intraday": {
    "AAPL": {
-    "pct": 0.03,
-    "price": 344.28,
-    "note": "Flat; M6 MacBook Pro/iMac + first touchscreen MacBook Pro on sale today; $355 resistance, $343-344 bull-bear line"
+    "pct": 2.04,
+    "price": 349.36,
+    "note": "Tape move, no company news; not flagged"
    },
    "AMZN": {
-    "pct": 1.09,
-    "price": 263.06,
-    "note": "Quiet; bouncing with tape; no company news"
+    "pct": 3.59,
+    "price": 268.6,
+    "note": "ALERT: JPMorgan Analyst Focus List add (w/ META); AWS growth forecast >40% in 2027-28"
    },
    "ASML": {
-    "pct": 5.26,
-    "price": 1428.03,
-    "note": "ALERT: no ASML-specific news; pure sector bounce, equipment worst corner Thu; Amsterdam +3.6%; 2027-28 supply-shortage thesis unchanged"
+    "pct": 6.13,
+    "price": 1512.11,
+    "note": "ALERT: no ASML-specific news; pure chip-rally beta, 2nd leg of Fri +5.02% bounce; Amsterdam +2.6%"
    },
    "GOOGL": {
-    "pct": 1.68,
-    "price": 287.33,
-    "note": "Bouncing with tape; no fresh news"
+    "pct": 2.28,
+    "price": 291.26,
+    "note": "ALERT: 8th-gen TPU launch (TPU 8tx/8i Max, ~100 customers) + AMD EPYC host deal; JPMorgan dropped Alphabet from Focus List same day yet stock rose"
    },
    "META": {
-    "pct": 2.77,
-    "price": 621.86,
-    "note": "Near-alert, no company news (pure tape); debt-funded buildout overhang persists; watch $600 / $638"
+    "pct": 5.01,
+    "price": 640.72,
+    "note": "ALERT: JPMorgan Analyst Focus List add (replacing Alphabet), $940 PT; Q3 ad rev +26% to $63.1B, ~2x Google Search's new ad dollars; JPM expects Meta ad rev to pass Google Search from Q4"
    },
    "MSFT": {
-    "pct": 0.07,
-    "price": 536.28,
-    "note": "Lagging the bounce (QQQ +~2%); neocloud-oversight story still the overhang; support $517.75"
+    "pct": 2.29,
+    "price": 542.78,
+    "note": "Tape move, no company news; not flagged; support $517.75"
    },
    "NVDA": {
-    "pct": 3.68,
-    "price": 188.29,
-    "note": "ALERT: no NVDA-specific catalyst; dip-buying after Thu -9.26%; day high $194.90; earnings Nov 17"
+    "pct": -6.04,
+    "price": 175.37,
+    "note": "ALERT: board opened independent investigation into CEO Jensen Huang after FT Nov 7 report (alleged relationship w/ Alice Huang, Megaspeed exec believed recruited by China's MSS); no charges, no finding of wrongdoing; Nvidia denies data shared; House briefing Nov 18, Nvidia to answer by Nov 11; only big chip name down (AMD +11%, AVGO +7.7%, SOXX +5.7%); Goldman reiterated Buy $300 today; earnings Nov 17"
    },
    "TSM": {
-    "pct": 6.34,
-    "price": 375.48,
-    "note": "ALERT: sector dip-buy + The Information (via Reuters): TSMC drawing up 3D DRAM plans at Nvidia's request (VP Hsu Kuo-chin); no timeline/capex; memory stocks fell on report"
+    "pct": 3.99,
+    "price": 390.43,
+    "note": "ALERT: chip rally + 3D DRAM reports (The Information via Reuters: TSMC drawing up plans at Nvidia's request); TSMC firmer denial Nov 7; no timeline/capex"
    }
   },
   "alerts": [
-   "TSM",
+   "NVDA",
    "ASML",
-   "NVDA"
+   "META",
+   "TSM",
+   "AMZN",
+   "GOOGL"
   ],
   "watch": [
-   "TSM +6.34% ($375.48): bounce + real-but-early 3D DRAM optionality; hold off adding, $350-360 entry zone gone; watch for TSMC/NVDA confirmation",
-   "ASML +5.26% ($1,428.03): no company news, pure bounce; watch, no buy into slide; stabilization above ~$1,450",
-   "NVDA +3.68% ($188.29): tape-driven bounce, no catalyst; hold; watch $195-200 resistance / $181-185 floor; earnings Nov 17",
-   "META +2.77% ($621.86): just under alert line, no news; $600 level matters"
+   "NVDA -6.04% (~$175.37): governance-risk discount, not a business event; hold, don't add into headlines; $172-175 test, $164 below; earnings Nov 17; House briefing Nov 18",
+   "ASML +6.13% ($1,512.11): pure sector beta, no news; watch, no chase; ~$1,450 stabilisation cleared",
+   "META +5.01% ($640.72): JPMorgan Focus List, real Q3 ad catalyst; watchlist, no chase; $600 support, $650 next",
+   "TSM +3.99% ($390.43): tape + unconfirmed 3D DRAM optionality; watchlist, no chase; $378-380 resistance cleared",
+   "AMZN +3.59% ($268.60): JPMorgan Focus List, AWS >40% growth forecast 2027-28; watchlist constructive; $260 support",
+   "GOOGL +2.28% ($291.26): TPU 8th-gen launch is real product news; hold; $290-300 zone, close above $296 confirms breakout"
   ],
-  "sources": "Finnhub intraday quotes (all 8); Bloomberg markets wrap via swissinfo.ch; MarketOne midday tape; CoinDesk live markets; Invezz; Reuters via 985theriver.com (TSMC 3D DRAM); TradingKey (Apple M6 launch). US/international only; no Indian sites."
+  "sources": "Finnhub intraday quotes (all 8); Morningstar/Dow Jones (NVDA); Motley Fool (NVDA); StockStory (META, AMD); Tikr/Stocktwits via TheFly (JPMorgan note); Seeking Alpha/Morningstar (AMD-Google Cloud); aistockwire (chip tape 10:15 AM ET). US/international only; no Indian sites."
  },
  "names": {
   "AAPL": "Apple Inc.",
@@ -1606,7 +1555,7 @@
   "sources": "Repo Oct 30 close recap; Reuters Oct 30 close report; Zacks/MarketBeat/Pip Theory AAPL previews. US/international only.",
   "watch": "Mon Nov 2: ISM manufacturing + AAPL earnings AMC (Palantir also reports). Tue Nov 3: AMD earnings. Nov 17: NVDA earnings."
  },
- "updated": "2026-11-09T01:30:00+05:30",
+ "updated": "2026-11-10T01:30:00+05:30",
  "updated_midsession": "2026-10-23T22:30:00+05:30",
  "updated_premarket": "2026-11-04T18:30:00+05:30",
  "watchlist": [
