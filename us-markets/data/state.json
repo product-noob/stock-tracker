@@ -1,37 +1,37 @@
 {
  "close": {
-  "as_of": "2026-11-11T16:00:00-05:00",
-  "session": "Wednesday Nov 11, 2026, 9:30 AM-4:00 PM ET (Finnhub 16:00 EST official closing prints)",
-  "caveat": "Closing prints as of 16:00 EST - official closes; written after the bell (this run fires 1:30 AM IST = 3 PM ET, so the recap waited for the 4 PM ET close). Volumes are regular-session sums of Finnhub 1-minute candles vs 30-day average daily volume; they can miss part of the closing auction.",
+  "as_of": "2026-11-12T16:00:00-05:00",
+  "session": "Thursday Nov 12, 2026, 9:30 AM-4:00 PM ET (Finnhub 16:00 EST official closing prints; this run fires 1:30 AM IST = 3 PM ET, so the recap waited for the 4 PM ET close)",
+  "caveat": "Closing prints as of 16:00 EST - official closes. Volumes are daily totals (ChartExchange NVDA; WeeklyTrader GOOGL; MarketBeat snapshots AAPL/MSFT/AMZN/TSM/ASML) vs 30-day average daily volume from Finnhub daily candles; approximate - the prior 1-min-candle method could not be replicated this run. META volume not captured. TSM close per TwelveData ($406.93; MarketBeat ~$406.0-406.5 agrees). GOOGL closing-cross print on other feeds ~$299.49 (+2.06%) vs Finnhub 16:00 print $298.70.",
   "closes": {
-   "NVDA": 173.73,
-   "GOOGL": 293.45,
-   "AAPL": 355.63,
-   "MSFT": 521.13,
-   "META": 628.77,
-   "AMZN": 266.17,
-   "TSM": 413.35,
-   "ASML": 1534.42
+   "NVDA": 166.19,
+   "GOOGL": 298.7,
+   "AAPL": 354.84,
+   "MSFT": 523.0,
+   "META": 623.61,
+   "AMZN": 267.44,
+   "TSM": 406.93,
+   "ASML": 1497.12
   },
   "day_pct": {
-   "NVDA": 2.87,
-   "GOOGL": 2.11,
-   "AAPL": 2.04,
-   "MSFT": -2.26,
-   "META": -1.97,
-   "AMZN": -1.74,
-   "TSM": 4.25,
-   "ASML": 1.76
+   "NVDA": -4.34,
+   "GOOGL": 1.79,
+   "AAPL": -0.22,
+   "MSFT": 0.36,
+   "META": -0.82,
+   "AMZN": 0.48,
+   "TSM": -1.55,
+   "ASML": -2.43
   },
   "benchmarks": {
-   "dow": "+0.20% to 52,337.86",
-   "nasdaq": "+2.06% to 25,583.42 (Composite)",
-   "sp500": "+1.40% to 7,626.55 (SPY $759.84, +1.32%)",
-   "nasdaq100": "+2.31% (QQQ $690.38 vs $674.76)",
-   "russell2000": "+0.81% to 2,844.20"
+   "dow": "about flat (+0.02% per DeepStox close recap)",
+   "nasdaq": "~-0.4% (late-session wires: IBD/Investopedia -0.5 to -0.6%; DeepStox -0.19%)",
+   "sp500": "~-0.3% (SPY ~$757.11, -0.36% vs $759.84)",
+   "nasdaq100": "-0.32% (QQQ $688.17 vs $690.38, Finnhub)",
+   "russell2000": "-1.2% (IBD, afternoon)"
   },
-  "notable": "CoreWeave Q3 beat (rev $3.66B +168% y/y, backlog $132.5B, FY26 guide raised to $13.0-13.3B) revived the AI trade: S&P +1.40%, Nasdaq +2.06%, semis ~+3%. Split tape: chips/AAPL surged (TSM +4.25% on board approving up to $500M each in Anthropic + OpenAI, $40.9B capex, NT$9 dividend; NVDA +2.87% relief bounce on 2x volume, Raymond James to Strong Buy vs Baird to Neutral $500->$200, House deadline expired with no Huang response, subpoena being prepared; AAPL +2.04% new 52-wk high close on China Renaissance upgrade to Buy $425; GOOGL +2.11% on $10B Anthropic top-up at IPO; ASML +1.76% semis beta) while MSFT -2.26% (Anthropic Claude Sheets vs Office + Reuters optical-transceiver ban lobbying), META -1.97% (infra chief Janardhan to leave early 2027, Dave Brown succeeds; faded from $646.74 open to near low), AMZN -1.74% (no catalyst, capex/FCF overhang). Veterans Day: Treasuries closed, no US data. Thu Nov 12: PPI + jobless claims, Nebius pre-market, Cisco AMC, AAPL ex-div $0.27. NVDA earnings Nov 17; House briefing + Anthropic IPO pricing Nov 18; FOMC Dec 8-9.",
-  "sources": "Finnhub closing prints (all 8 names, SPY, QQQ, 16:00 EST) + 1-min candle volumes; Stock Preachers/PR Newswire (index closes); Briefing.com (CoreWeave); MarketBeat (NVDA/AAPL analyst actions); TechCrunch/Bloomberg (House subpoena); Morningstar/Dow Jones (TSMC board); Motley Fool (Anthropic S-1/Google $10B); Reuters (META departure, MSFT transceivers). US/international only; no Indian sites."
+  "notable": "Huang resigned as Nvidia CEO effective immediately; Kress interim CEO, Harvey C. Jones first-ever chair; board searching for permanent successor. NVDA opened -13% at $151.01, new 52-wk low $148.80, recovered $17 to close -4.34% at $166.19 on ~4.4x volume (~642M vs 144.4M avg); after hours $167.03. Seven downgrades in 24h (Baird, Oppenheimer, Bernstein, Evercore, William Blair, KeyBanc, Melius); targets roughly halved (Bernstein $400->$200, Baird $500->$200, Evercore $465->$186, Melius $315->$185, Needham $300->$200, Cantor $350->$250); Goldman to $220 (kept Buy); dissenters Raymond James Strong Buy $515, MS Overweight $300, BofA Buy $350, Morningstar $310 FV, Wedbush Outperform $345. Trump floated Tim Cook as successor (Truth Social via IBD). GOOGL +1.79% rotation bid (TPU story; Arete cut to $370 Tue). AAPL -0.22% ex-div $0.27, new intraday ATH $359.37; KeyCorp reiterated Underweight. MSFT +0.36% stabilising above $520. META -0.82% quiet. AMZN +0.48% faded from $273.60 high. TSM -1.55% (opened -4.6% on NVDA contagion, recovered). ASML -2.43% broke below $1,500. AMD/Broadcom +~5% (NVDA rivals); SOX -1.3%; Intel/Marvell/Micron -2.8 to -4.2%. Nebius -16%+ despite Q3 revenue beat. MSCI to remove Strategy (MSTR) from indexes after Nov 30 close. Jobless claims 200k (+9k). 10Y +12bp to 5.11%. Cisco $102.01 +1.24% / AMAT $380.95 -3.58% into AMC prints (results pending at writing; calls 4:30 PM ET). Fri Nov 13: Oct PPI (cons +0.4% m/m). NVDA earnings Nov 17 (cons EPS ~$2.53, rev ~$111.4B); House briefing + Anthropic IPO pricing Nov 18; FOMC Dec 8-9.",
+  "sources": "Finnhub 16:00 EST closing prints (NVDA, GOOGL, AAPL, MSFT, META, AMZN, ASML, QQQ) + Finnhub daily candles (30d avg vols); TSM close TwelveData; NVDA vol ChartExchange; GOOGL vol WeeklyTrader; other vols MarketBeat; index moves IBD/Investopedia/DeepStox; NVDA resignation/analysts TheStreet/Stocktwits/MarketBeat/TIKR/NY Post; Trump/Cook IBD; claims TradingView/Invezz; 10Y IBD; AMD/Broadcom/SOX Reuters/CoinDesk; Nebius TradingView; MSCI CoinDesk; CSCO/AMAT expectations Investopedia/Pomegra/Tickeron. US/international only; no Indian sites."
  },
  "earnings": {
   "AAPL": {
@@ -148,73 +148,69 @@
   "MSFT"
  ],
  "last_prices": {
-  "NVDA": 173.73,
-  "GOOGL": 293.45,
-  "AAPL": 355.63,
-  "MSFT": 521.13,
-  "META": 628.77,
-  "AMZN": 266.17,
-  "TSM": 413.35,
-  "ASML": 1534.42
+  "NVDA": 166.19,
+  "GOOGL": 298.7,
+  "AAPL": 354.84,
+  "MSFT": 523.0,
+  "META": 623.61,
+  "AMZN": 267.44,
+  "TSM": 406.93,
+  "ASML": 1497.12
  },
  "midsession": {
-  "as_of": "2026-11-11T22:30:00+05:30",
-  "session": "Wednesday Nov 11, ~11:54 AM ET - Finnhub live intraday panels vs Tue Nov 10 official closes in state; may lag ~15 min; nothing invented. Veterans Day: equities open, Treasuries closed. Tape: Nasdaq ~+1.8-2.5%, S&P ~+0.9% on CoreWeave beat + raised FY guide.",
+  "as_of": "2026-11-12T22:30:00+05:30",
+  "session": "Thursday Nov 12, ~11:52 AM ET - Finnhub live intraday panels vs Wed Nov 11 official closes in state; TSM via TrendSpider ~11:26 AM ET; may lag ~15 min; nothing invented. US PPI out Fri Nov 13, not today.",
   "intraday": {
    "NVDA": {
-    "pct": 4.03,
-    "price": 175.755,
-    "note": "ALERT: dip-buying bounce after 2-day -9.5% rout (~$430B lost); Wachtell review ongoing (Joon H. Kim), Sen. Cramer told Politico Huang should resign; today is Huang's Congress-answer deadline; Morgan Stanley reiterated Overweight $300; Baird cut to Neutral PT $500->$200; earnings Nov 17; House briefing Nov 18; ~-28% from Oct 6 high $243.37"
+    "pct": -4.8,
+    "price": 165.38,
+    "note": "ALERT: Jensen Huang resigned as president/CEO/board member effective immediately (33-year run); CFO Colette Kress interim CEO, Harvey C. Jones first-ever chair; board searching for permanent successor. Opened -13% at $151.01, low $148.80 (lowest since late Jun 2025, below prior 52-wk low $164.27), recovered to ~$165 midday. Seven downgrades in 24h (Baird, Oppenheimer, Bernstein, Evercore, William Blair, KeyBanc, Melius); PTs roughly halved (Bernstein $400->$200, Baird $500->$200, Evercore $465->$186, Melius $315->$185; Cantor $350->$250 kept Overweight, removed from top picks). Raymond James kept Strong Buy $515; MS Overweight $300; Morningstar $310 FV. Earnings Nov 17 as scheduled; House briefing Nov 18. Mkt cap ~$4.07T, ~-$1.58T from Oct 6 $5.76T peak."
    },
    "GOOGL": {
-    "pct": 1.93,
-    "price": 292.93,
-    "note": "Just under 2% line; Gemini 4 Carbon rollout; not flagged"
+    "pct": 2.06,
+    "price": 299.49,
+    "note": "ALERT (>=2% with news): rotation bid as money leaves NVDA into traditional mega-cap tech; carryover from Mon TPU 8tx/8i Max launch; Arete cut PT $450->$370 Tue. No fresh company news today; hold, don't chase; $300 is the test."
    },
    "AAPL": {
-    "pct": 1.64,
-    "price": 354.28,
-    "note": "Near 52-wk high $355.38; China Renaissance upgraded Hold->Buy PT $425 today; not flagged"
+    "pct": 0.54,
+    "price": 357.56,
+    "note": "Firm at new all-time-high territory; $0.27 dividend ex-date today; not flagged"
    },
    "MSFT": {
-    "pct": -2.54,
-    "price": 519.36,
-    "note": "ALERT: -2.5% against +2% Nasdaq; Anthropic Claude Sheets software scare (Tue -2.2%, today follow-through); warned proposed US ban on Chinese optical transceivers could raise AI buildout costs; testing 100-hr MA $518.11, swing area $513.50-517.60; CFO Amy Hood sold 7,305 sh @ $544.95 Nov 10 (Form 4, routine-sized)"
+    "pct": 1.19,
+    "price": 527.33,
+    "note": "Recovering from Wed -2.26% Anthropic-scare slide; not flagged"
    },
    "META": {
-    "pct": 0.03,
-    "price": 641.27,
-    "note": "Flat; digesting Mon +5.12% JPMorgan Focus List move; not flagged"
+    "pct": -0.52,
+    "price": 625.49,
+    "note": "Quiet drift, no company news; not flagged"
    },
    "AMZN": {
-    "pct": -1.32,
-    "price": 267.245,
-    "note": "Drifting lower, no company news; not flagged"
+    "pct": 1.22,
+    "price": 269.41,
+    "note": "Steady with tape; Anthropic-filing dip fading; not flagged"
    },
    "TSM": {
-    "pct": 4.7,
-    "price": 415.17,
-    "note": "ALERT: board approved up to $500M each in Anthropic (IPO price) + OpenAI (preferred), $40.9B capex, record Q3 div NT$9 (from NT$7); Oct sales NT$586.89B +59.7% y/y, +14.7% m/m, new record; Taipei +4.81% to NT$2,395; foreign investors ended 23-session selling streak"
+    "pct": -0.58,
+    "price": 410.95,
+    "note": "Holding up well given NVDA shock; contagion limited to NVDA; not flagged"
    },
    "ASML": {
-    "pct": 3.6,
-    "price": 1561.97,
-    "note": "ALERT: broad chip rally on CoreWeave (WSJ: Amsterdam +3.2%); sounding out 2028 capacity beyond flagged 30% expansion vs 2027-28 supply shortfall; no fresh earnings catalyst"
+    "pct": -0.98,
+    "price": 1519.35,
+    "note": "Modestly lower with semis, no fresh news; not flagged"
    }
   },
   "alerts": [
    "NVDA",
-   "TSM",
-   "ASML",
-   "MSFT"
+   "GOOGL"
   ],
   "watch": [
-   "NVDA +4.03% (~$175.76): relief bounce, probe unresolved; hold, don't chase; $164.27 52-wk low is the line, reclaim of $180-186 signals stabilisation; earnings Nov 17; House briefing Nov 18",
-   "TSM +4.70% (~$415.17): justified by record Oct sales + div raise + $40.9B capex; entry-timing: don't chase, pullback toward ~$400 is cleaner",
-   "ASML +3.60% (~$1,561.97): tape-driven, no new fundamentals; entry-timing: hold off chasing, $1,600 next test",
-   "MSFT -2.54% (~$519.36): Anthropic software scare overdone on fundamentals (FCF $18.6B, Azure +48%); hold, don't sell into scare; break below $513.50 opens more downside"
+   "NVDA -4.80% (~$165.38): Huang resigned, Kress interim CEO; panic open -13% to $148.80 then recovery; hold, don't sell into panic or buy yet; $164.27 old 52-wk low is the line, reclaim of $180-186 signals stabilisation; earnings Nov 17; House briefing Nov 18",
+   "GOOGL +2.06% (~$299.49): rotation bid, no fresh catalyst; hold, don't chase; $300 test"
   ],
-  "sources": "Finnhub intraday quotes (all 8); WSJ (European chip stocks, CoreWeave); TipRanks/Stocktwits via TradingView (TSMC); Focus Taiwan/CNA (Taipei close, dividend, Oct sales); InvestingLive (MSFT technicals, tape); Inc.com (Anthropic Claude Sheets); MarketBeat (analyst actions); Benzinga via TradingView (Wachtell review). US/international only; no Indian sites."
+  "sources": "Finnhub intraday quotes (7 of 8; TSM TrendSpider/MarketBeat); Nvidia press release via USA Today, CNN, Nikkei Asia; Benzinga via Longbridge (Cantor note, downgrade roundup); MarketBeat (analyst actions); Seoul Economic Daily (target cuts); Motley Fool (TPU launch); Stocktwits (rotation); TradingKey (PPI preview). US/international only; no Indian sites."
  },
  "names": {
   "AAPL": "Apple Inc.",
@@ -1546,7 +1542,7 @@
   "sources": "Repo Oct 30 close recap; Reuters Oct 30 close report; Zacks/MarketBeat/Pip Theory AAPL previews. US/international only.",
   "watch": "Mon Nov 2: ISM manufacturing + AAPL earnings AMC (Palantir also reports). Tue Nov 3: AMD earnings. Nov 17: NVDA earnings."
  },
- "updated": "2026-11-12T02:45:00+05:30",
+ "updated": "2026-11-13T02:45:00+05:30",
  "updated_midsession": "2026-10-23T22:30:00+05:30",
  "updated_premarket": "2026-11-04T18:30:00+05:30",
  "watchlist": [
@@ -2000,5 +1996,69 @@
   "session": "Wednesday Nov 11, 8:00 AM ET (EST) - 90 min before open. Finnhub premarket panels ~7:56-7:58 AM ET; may lag ~15 min; nothing invented. Close-base note: Finnhub % vs its own 16:00 EST prints, a few cents off repo Tue closes.",
   "sources": "Finnhub premarket panels + official Tue Nov 10 closes; Reuters (futures, CoreWeave, NVDA) via WDSM 710 / TradingView-Benzinga; TipRanks market-today; Stocktwits via TradingView (Burry, chip movers); Menafn/Asianet (TSM board, dividend); MarketBeat (AAPL upgrade/cut/ex-div); stockanalysis.com cross-checks. US/international only.",
   "watch": "Today: Veterans Day - equities open, bonds closed, no data; Cisco/AMAT/Nebius/Cerebras AMC. Thu Nov 12: AAPL ex-div + jobless claims. Fri Nov 13: Oct PPI 8:30 AM ET. Tue Nov 17: NVDA earnings."
+ },
+ "premarket_nov12": {
+  "as_of": "2026-11-12T18:30:00+05:30",
+  "futures": {
+   "dow": "~flat (+0.06-0.07%)",
+   "nasdaq100": "-0.93% (E-mini 28,209; ~7:18 AM ET)",
+   "russell2000": "-0.13%",
+   "sp500": "-0.42% (E-mini 7,609; ~7:08-7:18 AM ET)",
+   "drivers": "NVDA governance crisis: board weighing removing CEO Jensen Huang after NYT report of second alleged affair (VP Kimberly Powell); fell ~8.6% after hours Wed, -7.6% premarket. Dow/small caps flat = rotation out of mega-cap tech, not broad risk-off. Europe green (DAX +0.82%, FTSE +0.35%, CAC +0.73%)."
+  },
+  "levels": {
+   "AAPL": {
+    "note": "Only green mega-cap besides AMZN; ex-div $0.27 today; new 52-wk high close Wed $355.63. Watch $355 / $349.",
+    "premarket_pct": 0.36,
+    "premarket_price": 356.912,
+    "prev_close": 355.63
+   },
+   "AMZN": {
+    "note": "Flat-to-up; no company news; 2027 capex/FCF debate overhang. Watch $260 / $270.",
+    "premarket_pct": 0.25,
+    "premarket_price": 266.842,
+    "prev_close": 266.17
+   },
+   "ASML": {
+    "note": "Chip-tape drag on NVDA shock; Amsterdam -3.2% premarket in euros; no company news. Watch $1,500 / $1,507.85.",
+    "premarket_pct": -1.39,
+    "premarket_price": 1513.022,
+    "prev_close": 1534.42
+   },
+   "GOOGL": {
+    "note": "Flat; holding Wed +2.11%; $10B Anthropic IPO top-up backdrop; no fresh news. Watch $290 / $280.",
+    "premarket_pct": -0.04,
+    "premarket_price": 293.346,
+    "prev_close": 293.45
+   },
+   "META": {
+    "note": "Drifting with tape; no fresh news; infra-chief departure + capex debate persist. Watch $610 / 20-day avg $646.10.",
+    "premarket_pct": -0.75,
+    "premarket_price": 624.041,
+    "prev_close": 628.77
+   },
+   "MSFT": {
+    "note": "Quiet after Wed -2.26% Anthropic scare; today's tape is NVDA, not MSFT. Watch $513.50-517.60 / $530.",
+    "premarket_pct": -0.14,
+    "premarket_price": 520.4157,
+    "prev_close": 521.13
+   },
+   "NVDA": {
+    "note": "BOARD CRISIS: NYT reported 2nd alleged affair (VP Kimberly Powell); board met late Wed, preparing to remove Huang, decision possibly today; no announcement yet. -8.6% after hours Wed. Downgrades: William Blair to Market Perform; Bernstein to Market Perform PT $400->$200; Baird Neutral PT $500->$200; Citi PT $225; Stifel $205; MS removed from top picks; Ives $225 w/o Huang vs $300 with; Morningstar held $310 FV. Polymarket ~75% odds Huang leaves in 2026. Below 52-wk low $164.27, lowest in over a year. Earnings Tue Nov 17 (cons EPS ~$2.53, rev ~$111.4B); House briefing Nov 18.",
+    "premarket_pct": -7.63,
+    "premarket_price": 160.4715,
+    "prev_close": 173.73
+   },
+   "TSM": {
+    "note": "Collateral from NVDA shock; no TSMC-specific news. $400 line tested again. Watch $400 / $396.48.",
+    "premarket_pct": -2.86,
+    "premarket_price": 401.511,
+    "prev_close": 413.35
+   }
+  },
+  "note": "No universe name reports within next 2 trading days (Fri Nov 13 / Mon Nov 16). NVDA reports Tue Nov 17 (3rd trading day) - earnings context included given board crisis. AAPL ex-div $0.27 today.",
+  "session": "Thursday Nov 12, 8:00 AM ET (EST) - 90 min before open. Finnhub premarket panels ~7:54-7:58 AM ET; may lag ~15 min; nothing invented.",
+  "sources": "Finnhub premarket panels; CNBC/Reuters via MLQ/The Retest; AP; NYT via KuCoin; Benzinga via KuCoin; XTB; Stocktwits; FXEmpire/Coil. US/international only.",
+  "watch": "Today: jobless claims 8:30 AM ET (cons ~194-195K) + existing home sales 10 AM ET; Harker speaks; 30Y auction; Nebius pre-open; Cisco + AMAT AMC. Fri Nov 13: Oct PPI 8:30 AM ET (cons +0.4% m/m). Tue Nov 17: NVDA earnings AMC. Wed Nov 18: House briefing + Anthropic IPO pricing."
  }
 }
