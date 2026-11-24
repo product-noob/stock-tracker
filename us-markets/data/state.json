@@ -1,8 +1,38 @@
 {
  "close": {
-  "as_of": "2026-11-20T16:00:00-05:00",
-  "session": "Friday Nov 20, 2026, 9:30 AM-4:00 PM ET - OFFICIAL CLOSES (confirmed in Nov 21 premarket brief; corrects the ~3:00 PM ET pre-close snapshot in the Nov 21 close file)",
+  "as_of": "2026-11-23T14:57:00-05:00",
+  "session": "Monday Nov 23, 2026, 9:30 AM-~2:57 PM ET - PRE-CLOSE SNAPSHOT (Finnhub ~2:56-2:57 PM ET panels; cron fires 1:30 AM IST = 3:00 PM ET, one hour before the bell). NOT official 4 PM ET closes - official closes must be confirmed in the Nov 24 premarket brief.",
   "closes": {
+   "AAPL": 349.94,
+   "AMZN": 256.01,
+   "ASML": 1378.77,
+   "GOOGL": 282.45,
+   "META": 597.79,
+   "MSFT": 495.99,
+   "NVDA": 164.9,
+   "TSM": 363.98
+  },
+  "day_pct": {
+   "AAPL": 2.05,
+   "AMZN": 3.72,
+   "ASML": 8.89,
+   "GOOGL": 6.47,
+   "META": 6.59,
+   "MSFT": 2.37,
+   "NVDA": 31.36,
+   "TSM": 14.2
+  },
+  "day_ranges": {
+   "AAPL": "345.44-352.60 (open 347.87)",
+   "AMZN": "251.25-262.48 (open 260.26)",
+   "ASML": "1372.71-1414.72 (open 1404.93)",
+   "GOOGL": "275.36-285.14 (open 284.28)",
+   "META": "579.78-600.18 (open 591.72)",
+   "MSFT": "494.50-509.15 (open 506.06)",
+   "NVDA": "156.93-171.50 (open 167.04)",
+   "TSM": "362.04-386.90 (open 385.49)"
+  },
+  "fri_nov20_official_closes": {
    "AAPL": 342.91,
    "AMZN": 246.82,
    "ASML": 1266.22,
@@ -12,7 +42,7 @@
    "NVDA": 125.53,
    "TSM": 318.71
   },
-  "day_pct": {
+  "fri_nov20_day_pct": {
    "AAPL": -1.81,
    "AMZN": -4.1,
    "ASML": -6.63,
@@ -22,36 +52,16 @@
    "NVDA": -14.01,
    "TSM": -9.48
   },
-  "after_hours_8pm": {
-   "AAPL": 344.9,
-   "AMZN": 251.0,
-   "ASML": 1292.99,
-   "GOOGL": 270.18,
-   "META": 567.5,
-   "NVDA": 130.01,
-   "TSM": 328.6
-  },
-  "thu_nov19_official_closes": {
-   "AAPL": 349.21,
-   "AMZN": 257.37,
-   "ASML": 1356.2,
-   "GOOGL": 272.66,
-   "META": 596.22,
-   "MSFT": 498.3,
-   "NVDA": 145.98,
-   "TSM": 352.09
-  },
   "benchmarks": {
-   "sp500": "6,910.39, -3.70% (AP); 7th straight down day, longest streak since 2020; correction confirmed; week -8.6%",
-   "nasdaq": "22,617.73, -5.28% (AP); negative for 2026; 2nd-largest one-day points drop in history (-1,261)",
-   "nasdaq100": "25,028.98, -5.6%; week -10.4%, worst week since 2020",
-   "dow": "48,147.33, -1.93% (AP); correction confirmed; week -8.0%",
-   "sox": "AMD -13.3%, MU -13.9%, AVGO -12.2% Fri",
-   "vix": "above 30 (TheStreet); highest since March; S&P/Nasdaq RSI oversold"
+   "sp500": "~7,255, +5.0% (Finabase/TradingView ~2:56 PM ET; day range 7,152.66-7,295.60) - above Thu Nov 19 close 7,175.83",
+   "nasdaq": "~24,169, +6.9% - above Thu Nov 19 close 23,879.20",
+   "nasdaq100": "~26,800, +7.1% (QQQ +6.7% at 2:56 PM ET); biggest one-day % gain since April 2025 (Reuters); >$2T one-day market-value gain",
+   "dow": "~49,700, +3.3%",
+   "vix": "~30.5, down ~15% on the day from Fri 35.89"
   },
-  "caveat": "OFFICIAL 4 PM ET closes (Finnhub, corroborated MarketBeat/stockanalysis). Corrects the Nov 21 close file's ~3 PM ET snapshot: every name closed below its snapshot print (NVDA -14.01% vs -11.8%, TSM -9.48% vs -8.6%, ASML -6.63% vs -6.0%, META -5.93% vs -4.9%, AMZN -4.10% vs -3.5%, MSFT -2.77% vs -2.1%, AAPL -1.81% vs -1.2%, GOOGL -2.70% vs -0.8%). Vendor spreads flagged: AMZN Finnhub $246.82 vs MarketBeat $247.13; META $560.84 vs $561.15; TSM $318.71 vs $319.44; ASML $1,266.22 vs $1,267.90; NVDA $125.53 vs $125.56. Finnhub used as primary.",
-  "notable": "OFFICIAL Fri Nov 20: S&P -3.70% to 6,910.39 (correction, 7th straight down day, week -8.6% - worst since Mar 2025); Nasdaq -5.28% to 22,617.73 (negative for 2026); Nasdaq-100 -5.6% (week -10.4%, worst since 2020); Dow -1.93% (correction, week -8.0%). NVDA $125.53 (-14.01%), new 52-wk low $124.50, vol 633M (~2.9x avg), 5-session -24.5%, 1-mo -43.5%; AH $130.01 (+3.57%). GOOGL $265.29 (-2.70%) new 52-wk low $264.22, most resilient; AH $270.18. TSM $318.71 (-9.48%) AH $328.60; ASML $1,266.22 (-6.63%) AH $1,292.99; META $560.84 (-5.93%) AH $567.50; AMZN $246.82 (-4.10%, Oppenheimer PT $285->$310 ignored) AH $251.00; MSFT $484.50 (-2.77%, RBC Outperform $640); AAPL $342.91 (-1.81%) most resilient, AH $344.90. ANT $88.91 (-8.5% day 2, barely above $83 IPO). Weekend: Trump Fri again backed Huang return (discussed with Xi in Shenzhen); board still rules out reinstatement; Heidrick & Struggles retained Nov 19; Reuters Nov 20 Huang correspondence scrutiny. INTU -12.77% Fri (Q1 beat, FY27 guide cut, Mailchimp sale $3.68B). Ross beat Q3 but trimmed Q4 guide, fell ~9-12% AH; Gap cut outlook. Week ahead (Thanksgiving week): Mon flash PMIs + Williams; Tue consumer confidence; Wed Oct PCE + Q3 GDP 2nd est + claims + Beige Book; Thu closed; Fri early close 1 PM ET. Dec FOMC Dec 8-9, 25bp hike ~95% priced.",
-  "sources": "Finnhub 4 PM ET close prints + after-hours (all 8 names); MarketBeat/stockanalysis corroboration; AP via New Indian Express / Reuters via Nikkei (index closes); Investopedia; TradingView/Stocktwits (week tallies); NY Post/News18 (Trump/Huang); USA Today/Fortune (board/search); Reuters via NRB (Huang correspondence); Fool/Morningstar (INTU); Zacks/SEC/QUE (Ross/Gap); Stockopedia/FXIFY/TheStreet/Fool (week ahead). US/international only; no Indian sites."
+  "caveat": "PRE-CLOSE SNAPSHOT, not official closes. AAPL % vs repo Fri close $342.91 (+2.05%); Finnhub's own AAPL base is $342.56 (+2.15% printed) - trivial vendor-base spread, flagged. Volumes are stockanalysis partial-day prints (~2:30-2:57 PM ET): GOOGL ~28.5M, MSFT ~16.6M, META ~12.3M, TSM ~23.8M, ASML ~1.35M, AMZN ~33.5M, AAPL ~21.7M (early afternoon); NVDA volume not captured in snapshot.",
+  "notable": "PRE-CLOSE Mon Nov 23: Huang reinstated as Nvidia CEO (unanimous board vote, US govt input, no national security risk per board; Trump 'correct and proper decision'); NVDA $164.90 (+31.36%), biggest one-day gain in 23 years, back near ~$4T mkt cap (No. 2 behind AAPL ~$5.1T). All 8 green. TSM $363.98 (+14.20%) faded ~$21 from $386.90 high; ASML $1,378.77 (+8.89%); GOOGL $282.45 (+6.47%); META $597.79 (+6.59%, Morgan Stanley PT $820->$720, touched $600.18 intraday, faded below); AMZN $256.01 (+3.72%, Oppenheimer PT $285->$310 Nov 20); MSFT $495.99 (+2.37%, faded from $509.15 high back under $500, Bernstein Outperform reiterated); AAPL $349.94 (+2.05%, reclaimed Thu close $349.21). S&P/Nasdaq snapshots above Thu Nov 19 closes - Friday's plunge more than erased. Flash PMIs slightly soft (composite 54.6 vs 55.9, 4-mo low), no dent. CrowdStrike $43.9B all-stock Zscaler deal (ZS +16%). Bernstein NVDA -> Outperform ($200), Melius NVDA -> Buy ($220), BofA Buy $280, Wedbush Buy $225. CORRECTION: Nov 23 mid-session brief said S&P 'still ~4% below Thursday's close' - wrong; Thu close 7,175.83, Fri 6,910.39, Mon snapshot ~7,255 is above Thu. Week ahead: Tue consumer confidence + Dell AMC (AI-demand read); Wed Oct PCE + Q3 GDP 2nd est + claims + Beige Book; Thu closed (Thanksgiving); Fri early close 1 PM ET. Dec FOMC Dec 8-9, 25bp hike ~90% priced.",
+  "sources": "Finnhub ~2:56-2:57 PM ET panels (all 8 names); stockanalysis partial-day volumes; Reuters (NDX +$2T, biggest one-day % gain since Apr 2025); Barchart; Investopedia; IBD; TradingView; Finabase (S&P OHLC); fxdailyreport; stocksetups (2:25 PM ET index prints); Yahoo Finance via stockmoo (NVDA biggest gain in 23 years); MarketBeat (analyst actions); repo Nov 23 mid-session brief. US/international only; no Indian sites."
  },
  "earnings": {
   "AAPL": {
@@ -180,14 +190,14 @@
   "MSFT"
  ],
  "last_prices": {
-  "AAPL": 342.91,
-  "AMZN": 246.82,
-  "ASML": 1266.22,
-  "GOOGL": 265.29,
-  "META": 560.84,
-  "MSFT": 484.5,
-  "NVDA": 125.53,
-  "TSM": 318.71
+  "AAPL": 349.94,
+  "AMZN": 256.01,
+  "ASML": 1378.77,
+  "GOOGL": 282.45,
+  "META": 597.79,
+  "MSFT": 495.99,
+  "NVDA": 164.9,
+  "TSM": 363.98
  },
  "midsession": {
   "as_of": "2026-11-20T22:30:00+05:30",
@@ -255,14 +265,46 @@
   "alerts": [],
   "as_of": "2026-11-21T22:30:00+05:30",
   "intraday": {
-   "AAPL": {"note": "market closed", "pct": null, "price": 342.91},
-   "AMZN": {"note": "market closed", "pct": null, "price": 246.82},
-   "ASML": {"note": "market closed", "pct": null, "price": 1266.22},
-   "GOOGL": {"note": "market closed", "pct": null, "price": 265.29},
-   "META": {"note": "market closed", "pct": null, "price": 560.84},
-   "MSFT": {"note": "market closed", "pct": null, "price": 484.5},
-   "NVDA": {"note": "market closed", "pct": null, "price": 125.53},
-   "TSM": {"note": "market closed", "pct": null, "price": 318.71}
+   "AAPL": {
+    "note": "market closed",
+    "pct": null,
+    "price": 342.91
+   },
+   "AMZN": {
+    "note": "market closed",
+    "pct": null,
+    "price": 246.82
+   },
+   "ASML": {
+    "note": "market closed",
+    "pct": null,
+    "price": 1266.22
+   },
+   "GOOGL": {
+    "note": "market closed",
+    "pct": null,
+    "price": 265.29
+   },
+   "META": {
+    "note": "market closed",
+    "pct": null,
+    "price": 560.84
+   },
+   "MSFT": {
+    "note": "market closed",
+    "pct": null,
+    "price": 484.5
+   },
+   "NVDA": {
+    "note": "market closed",
+    "pct": null,
+    "price": 125.53
+   },
+   "TSM": {
+    "note": "market closed",
+    "pct": null,
+    "price": 318.71
+   }
   },
   "session": "Saturday Nov 21, 12:00 PM EST - US market CLOSED (weekend). No intraday session; zero movement in all 8 names. Prices unchanged from official Fri Nov 20 4 PM ET closes.",
   "sources": "Repo Nov 21 premarket brief (Finnhub official closes + after-hours); Reuters via Nov 21 reporting (SEC enforcement staff examining Nvidia accounting issues); Motley Fool Nov 21; TradingView news roundup Nov 21 (California probe). US/international only; no Indian sites.",
@@ -329,12 +371,12 @@
   "NVDA": "NVIDIA Corp.",
   "TSM": "Taiwan Semiconductor Mfg."
  },
- "notes": "US markets only in this phase. Indian market coverage to be added later. last_prices = Tue Nov 17 4 PM ET closes (Finnhub 16:00 EST prints). DATA FLAG Nov 17: repo Nov 16 close recap index levels (S&P 7,499.76 / Nasdaq 24,804.42 / Dow 52,180.80) conflict with AP (7,416.59 / 24,509.76 / ~51,608) and SPY/QQQ closes; AP figures used in Nov 17 premarket brief - index closes in state need correcting. DATA FLAG Nov 18: Tue S&P close - AP 7,340.53 (-1.03%) vs Canadian Press 7,331.91 (-1.14%) used in Nov 17 close recap; AP figure used in Nov 18 premarket brief. DATA FLAG Nov 19: Nov 17 close recap Tue index closes (S&P 7,331.91 / Nasdaq 24,203.45 / Dow 50,855.46, Canadian Press) were WRONG; official Tue closes per AP/Reuters/WSJ are S&P 7,340.53 (-1.03%), Nasdaq 24,328.38 (-0.74%), Dow 50,759.42 (-1.64%). Nov 18 close recap uses AP bases. Rule reinforced: index closes only from AP/Reuters. DATA FLAG Nov 20: Nov 19 close recap is a PRE-CLOSE SNAPSHOT (Finnhub ~3:20 PM ET prints) because the cron fired at 1:30 AM IST = 3:00 PM ET after the Nov 1 EST switch; official Nov 19 closes NOT yet recorded - morning brief must confirm and correct closes/day_pct/last_prices. Cron must move to 2:30 AM IST for the EST close. DATA FLAG Nov 20 RESOLVED: official Nov 19 closes confirmed in premarket_nov20 brief (S&P 7,175.83 / Nasdaq 23,879.20 / Dow 49,097.06, AP; stock closes Finnhub/MarketBeat) — close section + last_prices now hold official closes, not the ~3:20 PM ET snapshot. Cron still needs moving to 2:30 AM IST for the EST close. DATA FLAG Nov 21 RESOLVED: official Fri Nov 20 closes confirmed in Nov 21 premarket brief (Finnhub 4 PM ET; S&P 6,910.39 / Nasdaq 22,617.73 / Dow 48,147.33, AP) — close section + last_prices now hold official closes, not the ~3:00 PM ET snapshot in the Nov 21 close file. Thu Nov 19 official closes also corrected (NVDA $145.98, GOOGL $272.66, META $596.22, AMZN $257.37, TSM $352.09, ASML $1,356.20, AAPL $349.21, MSFT $498.30). Cron still needs moving to 2:30 AM IST for the EST close.",
+ "notes": "US markets only in this phase. Indian market coverage to be added later. last_prices = Tue Nov 17 4 PM ET closes (Finnhub 16:00 EST prints). DATA FLAG Nov 17: repo Nov 16 close recap index levels (S&P 7,499.76 / Nasdaq 24,804.42 / Dow 52,180.80) conflict with AP (7,416.59 / 24,509.76 / ~51,608) and SPY/QQQ closes; AP figures used in Nov 17 premarket brief - index closes in state need correcting. DATA FLAG Nov 18: Tue S&P close - AP 7,340.53 (-1.03%) vs Canadian Press 7,331.91 (-1.14%) used in Nov 17 close recap; AP figure used in Nov 18 premarket brief. DATA FLAG Nov 19: Nov 17 close recap Tue index closes (S&P 7,331.91 / Nasdaq 24,203.45 / Dow 50,855.46, Canadian Press) were WRONG; official Tue closes per AP/Reuters/WSJ are S&P 7,340.53 (-1.03%), Nasdaq 24,328.38 (-0.74%), Dow 50,759.42 (-1.64%). Nov 18 close recap uses AP bases. Rule reinforced: index closes only from AP/Reuters. DATA FLAG Nov 20: Nov 19 close recap is a PRE-CLOSE SNAPSHOT (Finnhub ~3:20 PM ET prints) because the cron fired at 1:30 AM IST = 3:00 PM ET after the Nov 1 EST switch; official Nov 19 closes NOT yet recorded - morning brief must confirm and correct closes/day_pct/last_prices. Cron must move to 2:30 AM IST for the EST close. DATA FLAG Nov 20 RESOLVED: official Nov 19 closes confirmed in premarket_nov20 brief (S&P 7,175.83 / Nasdaq 23,879.20 / Dow 49,097.06, AP; stock closes Finnhub/MarketBeat) \u2014 close section + last_prices now hold official closes, not the ~3:20 PM ET snapshot. Cron still needs moving to 2:30 AM IST for the EST close. DATA FLAG Nov 21 RESOLVED: official Fri Nov 20 closes confirmed in Nov 21 premarket brief (Finnhub 4 PM ET; S&P 6,910.39 / Nasdaq 22,617.73 / Dow 48,147.33, AP) \u2014 close section + last_prices now hold official closes, not the ~3:00 PM ET snapshot in the Nov 21 close file. Thu Nov 19 official closes also corrected (NVDA $145.98, GOOGL $272.66, META $596.22, AMZN $257.37, TSM $352.09, ASML $1,356.20, AAPL $349.21, MSFT $498.30). Cron still needs moving to 2:30 AM IST for the EST close. DATA FLAG Nov 24: Nov 23 close recap (file 2026-11-24-close.md) is a PRE-CLOSE SNAPSHOT (Finnhub ~2:56 PM ET) because the cron still fires at 1:30 AM IST = 3:00 PM ET; official Nov 23 closes NOT yet recorded - Nov 24 premarket brief must confirm and correct closes/day_pct/last_prices. Cron still needs moving to 2:30 AM IST for the EST close.",
  "premarket": {
   "as_of": "2026-10-14T13:02:00Z",
   "futures": {
    "dow": "-0.25% (51,807; MarketWatch ~9:03 AM ET)",
-   "drivers": "HOT Sep CPI 8:30 AM ET: headline 3.7% y/y (cons 3.6%; Aug 3.4%), core 2.6% (cons 2.5%; prior 2.4%) — futures flipped green to red after print (Investopedia/Barron's/IBD). ASML Q3 reported: record EUR 11.66B sales (+55% y/y, slight miss vs ~11.72B cons), net income EUR 4.96B, GM 57.5% beat, FY26 raised 3rd time to EUR 44-45B, warned 2027-28 planned supply will fall short of demand; ADR -1.85% premarket. Bank earnings: BAC -4% (miss + $1.2B Treasury fine), BLK +5%, STT lower. Memory stocks extending declines. Today: Barkin remarks, Fed Beige Book. Thu: Sep PPI 8:30 AM ET + retail sales + Warsh IMF fireside + TSM earnings. Fri: Warsh-Georgieva fireside.",
+   "drivers": "HOT Sep CPI 8:30 AM ET: headline 3.7% y/y (cons 3.6%; Aug 3.4%), core 2.6% (cons 2.5%; prior 2.4%) \u2014 futures flipped green to red after print (Investopedia/Barron's/IBD). ASML Q3 reported: record EUR 11.66B sales (+55% y/y, slight miss vs ~11.72B cons), net income EUR 4.96B, GM 57.5% beat, FY26 raised 3rd time to EUR 44-45B, warned 2027-28 planned supply will fall short of demand; ADR -1.85% premarket. Bank earnings: BAC -4% (miss + $1.2B Treasury fine), BLK +5%, STT lower. Memory stocks extending declines. Today: Barkin remarks, Fed Beige Book. Thu: Sep PPI 8:30 AM ET + retail sales + Warsh IMF fireside + TSM earnings. Fri: Warsh-Georgieva fireside.",
    "nasdaq100": "-0.60% (30,605.25)",
    "sp500": "-0.30% (7,832.25)",
    "yields_oil": "10Y 5.325% (+10bp vs 5.222% Tue close; was 5.19% pre-CPI); 2Y ~4.92% (+13bp). CME FedWatch: 39% odds of Oct 28 hike vs 22% pre-CPI."
@@ -389,13 +431,13 @@
     "prev_close": 445.12
    }
   },
-  "session": "Wednesday Oct 14, 9:00 AM ET — 30 min before open. Quotes live via MarketWatch ~9:01-9:03 AM ET; may lag ~15 min; nothing invented.",
+  "session": "Wednesday Oct 14, 9:00 AM ET \u2014 30 min before open. Quotes live via MarketWatch ~9:01-9:03 AM ET; may lag ~15 min; nothing invented.",
   "watch": "Thu Oct 15: TSM earnings before open + Sep PPI 8:30 AM ET + retail sales + Warsh IMF fireside chat. Fri: Warsh-Georgieva fireside chat. ASML reported Oct 14."
  },
  "premarket_nov01": {
   "as_of": "2026-11-01T18:30:00+05:30",
   "futures": {
-   "note": "Not quoted — US cash market closed Sunday; regular index futures resume Sunday 6 PM ET (4:30 AM IST Monday). No Sunday pre-market prices exist; nothing invented."
+   "note": "Not quoted \u2014 US cash market closed Sunday; regular index futures resume Sunday 6 PM ET (4:30 AM IST Monday). No Sunday pre-market prices exist; nothing invented."
   },
   "levels_into_monday": {
    "AAPL": {
@@ -411,7 +453,7 @@
     "price": 1563.21
    },
    "GOOGL": {
-    "note": "$280 now resistance; RSI near ~18 (extremely oversold). Official Fri print $279.84 (-1.40%) vs repo Finnhub snapshot $278.80 — discrepancy flagged, snapshot base kept for consistency.",
+    "note": "$280 now resistance; RSI near ~18 (extremely oversold). Official Fri print $279.84 (-1.40%) vs repo Finnhub snapshot $278.80 \u2014 discrepancy flagged, snapshot base kept for consistency.",
     "price": 278.8
    },
    "META": {
@@ -427,11 +469,11 @@
     "price": 202.0
    },
    "TSM": {
-    "note": "Held $400 (day low $400.12) — the line for Monday. Watch $400 / $418.",
+    "note": "Held $400 (day low $400.12) \u2014 the line for Monday. Watch $400 / $418.",
     "price": 405.59
    }
   },
-  "note": "AAPL is the only name reporting within the next 2 trading days (Mon Nov 2, after close) — full pre-earnings brief included. Next: NVDA ~Nov 17.",
+  "note": "AAPL is the only name reporting within the next 2 trading days (Mon Nov 2, after close) \u2014 full pre-earnings brief included. Next: NVDA ~Nov 17.",
   "session": "Sunday Nov 1, 6:30 PM IST = 8:00 AM EST (US fell back to EST today). US cash market closed (weekend); futures shut until Sunday 6 PM ET. Prices = Friday Oct 30 closes from repo close recap. Nothing invented.",
   "sources": "Repo Oct 30 close recap; WSJ via AI Weekly (Oct 31 hyperscaler CDS); Bloomberg/Yahoo Finance via weekend wraps (AAPL ~$5.03T top spot); AP/Reuters via weekend wraps (official Fri closes); MarketBeat/Zacks/CMC/TradingKey (AAPL consensus, Dec-q expectations, week calendar). US/international only.",
   "watch": "Mon Nov 2: ISM manufacturing 10 AM ET + Goolsbee + AAPL AMC. Tue Nov 3: midterms + AMD AMC + JOLTS. Wed Nov 4: ISM services + QCOM/Arm. Fri Nov 6: Oct jobs report (~+55k cons). NVDA Nov 17."
@@ -447,7 +489,7 @@
   },
   "levels": {
    "AAPL": {
-    "note": "EARNINGS TODAY AMC (call 5 PM ET, first under CEO John Ternus): cons EPS ~$1.99, rev ~$113.4B, iPhone ~$56.5B, GM guide 47-48% incl ~1pt tariff refunds; options imply ~±4% move. Watch $334.35-349.19.",
+    "note": "EARNINGS TODAY AMC (call 5 PM ET, first under CEO John Ternus): cons EPS ~$1.99, rev ~$113.4B, iPhone ~$56.5B, GM guide 47-48% incl ~1pt tariff refunds; options imply ~\u00b14% move. Watch $334.35-349.19.",
     "premarket_pct": -0.09,
     "premarket_price": 344.312,
     "prev_close_finnhub": 344.63
@@ -511,7 +553,7 @@
   },
   "levels": {
    "AAPL": {
-    "note": "REPORTED MON NOV 2 AMC: rev $114.5B (+12%, beat ~$113.4B), EPS $2.10 (beat ~$1.99), iPhone $57.58B, Services record $31.6B, GM 47.9% incl ~1pt tariff refunds. Dec-q guide: rev +7-10%, Services +8-9%, GM 45-46% vs 46.9% exp — memory costs + Siri ramp; Ternus: memory pricing 'unprecedented'. Greater China $17.54B missed ~$18.75B. Watch $325 / $338.",
+    "note": "REPORTED MON NOV 2 AMC: rev $114.5B (+12%, beat ~$113.4B), EPS $2.10 (beat ~$1.99), iPhone $57.58B, Services record $31.6B, GM 47.9% incl ~1pt tariff refunds. Dec-q guide: rev +7-10%, Services +8-9%, GM 45-46% vs 46.9% exp \u2014 memory costs + Siri ramp; Ternus: memory pricing 'unprecedented'. Greater China $17.54B missed ~$18.75B. Watch $325 / $338.",
     "premarket_pct": -3.86,
     "premarket_price": 325.26,
     "prev_close": 338.32
@@ -559,10 +601,10 @@
     "prev_close": 398.63
    }
   },
-  "note": "AAPL reported Mon Nov 2 AMC — post-earnings recap in brief, not a pre-earnings brief. No universe name reports within next 2 trading days. Next: NVDA ~Nov 17.",
-  "session": "Tuesday Nov 3, 8:00 AM ET (EST) — 90 min before open. Finnhub premarket panels ~7:56-7:57 AM ET; may lag ~15 min; nothing invented.",
+  "note": "AAPL reported Mon Nov 2 AMC \u2014 post-earnings recap in brief, not a pre-earnings brief. No universe name reports within next 2 trading days. Next: NVDA ~Nov 17.",
+  "session": "Tuesday Nov 3, 8:00 AM ET (EST) \u2014 90 min before open. Finnhub premarket panels ~7:56-7:57 AM ET; may lag ~15 min; nothing invented.",
   "sources": "Finnhub premarket panels; Reuters; Investopedia; Barron's; TipRanks; Motley Fool. US/international only.",
-  "watch": "10 AM ET: Sep JOLTS (~7.1M exp) + factory orders (~+1.1% exp). AMC: AMD Q3 (cons ~$1.95 / ~$13.1B, options ~±9%). Midterms voting today; results overnight IST. Fri: Oct jobs report."
+  "watch": "10 AM ET: Sep JOLTS (~7.1M exp) + factory orders (~+1.1% exp). AMC: AMD Q3 (cons ~$1.95 / ~$13.1B, options ~\u00b19%). Midterms voting today; results overnight IST. Fri: Oct jobs report."
  },
  "premarket_nov04": {
   "as_of": "2026-11-04T18:30:00+05:30",
@@ -765,7 +807,7 @@
    "t10y": "~4.88-4.89%"
   },
   "futures": {
-   "note": "Not quoted — market closed Saturday; futures resume Sunday 6 PM ET."
+   "note": "Not quoted \u2014 market closed Saturday; futures resume Sunday 6 PM ET."
   },
   "levels_into_monday": {
    "AAPL": {
@@ -800,7 +842,7 @@
    },
    "MSFT": {
     "day_pct": -0.99,
-    "note": "FRESH: Bloomberg Nov 6 — winding down 2023 Oracle AI-compute rental (older Nvidia GPUs, Bing deal), part of wider review of $80B+ external cloud commitments (CoreWeave, Nscale, Nebius). Oracle -~3%. Watch $517.75 support / retake $530.",
+    "note": "FRESH: Bloomberg Nov 6 \u2014 winding down 2023 Oracle AI-compute rental (older Nvidia GPUs, Bing deal), part of wider review of $80B+ external cloud commitments (CoreWeave, Nscale, Nebius). Oracle -~3%. Watch $517.75 support / retake $530.",
     "price": 530.61,
     "week_pct": 1.67
    },
@@ -818,14 +860,14 @@
    }
   },
   "note": "No universe name reports within next 2 trading days (Mon Nov 9 / Tue Nov 10). Next: NVDA Tue Nov 17.",
-  "session": "Saturday Nov 7, 6:30 PM IST = 8:00 AM EST. US cash market closed (Saturday); futures shut until Sunday 6 PM ET. No pre-market prices, no futures — nothing invented. Prices = Friday Nov 6 official 4 PM ET closes, last traded levels into Monday Nov 9.",
+  "session": "Saturday Nov 7, 6:30 PM IST = 8:00 AM EST. US cash market closed (Saturday); futures shut until Sunday 6 PM ET. No pre-market prices, no futures \u2014 nothing invented. Prices = Friday Nov 6 official 4 PM ET closes, last traded levels into Monday Nov 9.",
   "sources": "Finnhub official closes (NVDA/TSM/ASML); AP/Yahoo Finance closing tallies; Reuters (Bloomberg MSFT-Oracle report, Nov 6); BLS/Fed calendars (week ahead); Capp Notes/Investing.com (VIX, Nasdaq-100). US/international only.",
   "watch": "Mon Nov 9: China Oct CPI overnight; NY Fed consumer inflation expectations 11 AM ET; Goolsbee Q&A; Bowman speaks; Rocket Lab AMC. Tue Nov 10: Oct CPI 8:30 AM ET (last before Dec 8-9 FOMC; core fcst +0.2% m/m, ~2.5% y/y; Sep headline 3.7% y/y) + Waller/Logan/Barkin/Schmid. Wed Nov 11: Veterans Day (stocks open, bonds closed); US-Russia-Ukraine Abu Dhabi meeting; Cisco expected (unconfirmed). Thu Nov 12: UK Q3 GDP; Applied Materials AMC; Hammack speaks. Fri Nov 13: Oct PPI 8:30 AM ET; Goolsbee/Daly/Williams. NVDA Nov 17; FOMC Dec 9."
  },
  "premarket_nov08": {
   "as_of": "2026-11-08T18:30:00+05:30",
   "futures": {
-   "note": "Not quoted — US cash market closed Sunday; index futures resume Sunday 6 PM ET (4:30 AM IST Monday). No Sunday pre-market prices exist; nothing invented."
+   "note": "Not quoted \u2014 US cash market closed Sunday; index futures resume Sunday 6 PM ET (4:30 AM IST Monday). No Sunday pre-market prices exist; nothing invented."
   },
   "levels_into_monday": {
    "AAPL": {
@@ -857,7 +899,7 @@
     "price": 186.64
    },
    "TSM": {
-    "note": "Biggest Fri gainer; 3D DRAM plans at Nvidia's request (The Information via Reuters) — real but early. Resistance $378-380.",
+    "note": "Biggest Fri gainer; 3D DRAM plans at Nvidia's request (The Information via Reuters) \u2014 real but early. Resistance $378-380.",
     "price": 375.44
    }
   },
@@ -1194,7 +1236,7 @@
  "premarket_nov14": {
   "as_of": "2026-11-14T18:30:00+05:30",
   "futures": {
-   "note": "Not quoted — US cash market closed Saturday; index futures resume Sunday 6 PM ET (4:30 AM IST Monday). No Saturday pre-market prices exist; nothing invented. E-mini Dow futures settled Fri 52,347 (-0.14%, FX Leaders)."
+   "note": "Not quoted \u2014 US cash market closed Saturday; index futures resume Sunday 6 PM ET (4:30 AM IST Monday). No Saturday pre-market prices exist; nothing invented. E-mini Dow futures settled Fri 52,347 (-0.14%, FX Leaders)."
   },
   "levels_into_monday": {
    "AAPL": {
@@ -1222,15 +1264,15 @@
     "price": 523.88
    },
    "NVDA": {
-    "note": "Reports TUE NOV 17 AMC (cons EPS ~$2.52, rev ~$111.2B Finnhub; LSEG rev ~$109B) — first under interim CEO Kress. Weekend: FT reported board approached Arm CEO Rene Haas as possible successor; board says premature, still selecting search firm, no candidate formally engaged. Gerstner (Altimeter) + Baker (Atreides) letter urges board not to rush, keep Huang return open; Musk backs reinstatement petition; employees pushing return. Worst week in >1yr (-10.3%). Watch $158.39 / $170; $148.80 line.",
+    "note": "Reports TUE NOV 17 AMC (cons EPS ~$2.52, rev ~$111.2B Finnhub; LSEG rev ~$109B) \u2014 first under interim CEO Kress. Weekend: FT reported board approached Arm CEO Rene Haas as possible successor; board says premature, still selecting search firm, no candidate formally engaged. Gerstner (Altimeter) + Baker (Atreides) letter urges board not to rush, keep Huang return open; Musk backs reinstatement petition; employees pushing return. Worst week in >1yr (-10.3%). Watch $158.39 / $170; $148.80 line.",
     "price": 162.85
    },
    "TSM": {
-    "note": "First close below $400 since sell-off began — contagion, not fundamentals (Oct rev +59.7% y/y, div raised). Reclaim $400 Mon repairs it. Watch $391.50 / $400.",
+    "note": "First close below $400 since sell-off began \u2014 contagion, not fundamentals (Oct rev +59.7% y/y, div raised). Reclaim $400 Mon repairs it. Watch $391.50 / $400.",
     "price": 398.73
    }
   },
-  "note": "NVDA is the only name reporting within the next 2 trading days (Tue Nov 17, after close) — full pre-earnings brief included. Next after NVDA: AAPL ~Jan 27, 2027.",
+  "note": "NVDA is the only name reporting within the next 2 trading days (Tue Nov 17, after close) \u2014 full pre-earnings brief included. Next after NVDA: AAPL ~Jan 27, 2027.",
   "session": "Saturday Nov 14, 6:30 PM IST = 8:00 AM EST. US cash market closed (weekend); futures shut until Sunday 6 PM ET. Prices = official Fri Nov 13 4 PM ET closes. Nothing invented.",
   "sources": "Repo Nov 13 close recap (Finnhub official closes); FT succession report via Business Times (Singapore); Gerstner post on X (Altimeter/Atreides letter); Microsoft 365 Status on X + Reuters (outage resolution); Friday market recap (META bond, AAPL mkt cap); CrossVol Research (Fed pricing, yields); TradingX30 week calendar; FX Leaders (E-mini Dow settle). US/international only.",
   "watch": "Mon Nov 16: Empire State 8:30 AM ET + NY Fed Williams 9:05 AM + Fed Chair Warsh noon. Tue Nov 17: retail sales 8:30 AM + NVDA AMC + HD/Disney pre-open. Wed Nov 18: housing starts/permits + FOMC minutes 2 PM + House Huang briefing + Anthropic IPO pricing. Thu Nov 19: MSFT ex-div ($0.98); Anthropic starts trading (ANT). Fri Nov 20: monthly options expiry. Tue Nov 25: Oct PCE. Dec 8-9: FOMC (25bp fully priced, 50bp ~10-12%)."
@@ -1238,7 +1280,7 @@
  "premarket_nov15": {
   "as_of": "2026-11-15T18:30:00+05:30",
   "futures": {
-   "note": "Not quoted — US cash market closed Sunday; index futures resume Sunday 6 PM ET (4:30 AM IST Monday). No Sunday pre-market prices exist; nothing invented."
+   "note": "Not quoted \u2014 US cash market closed Sunday; index futures resume Sunday 6 PM ET (4:30 AM IST Monday). No Sunday pre-market prices exist; nothing invented."
   },
   "levels_into_monday": {
    "AAPL": {
@@ -1274,7 +1316,7 @@
     "price": 398.73
    }
   },
-  "note": "NVDA is the only name reporting within the next 2 trading days (Tue Nov 17, after close) — full pre-earnings brief included. No other universe name reports this week.",
+  "note": "NVDA is the only name reporting within the next 2 trading days (Tue Nov 17, after close) \u2014 full pre-earnings brief included. No other universe name reports this week.",
   "session": "Sunday Nov 15, 6:30 PM IST = 8:00 AM EST. US cash market closed (weekend); futures shut until Sunday 6 PM ET. Prices = official Fri Nov 13 4 PM ET closes. Nothing invented.",
   "sources": "Repo Nov 13 close recap + Nov 15 (Sat) close brief; ABC/CBS via nacionale.com (Huang deadline); TradingKey/Mitrade, MoverTape, Seeking Alpha, TipRanks, TheStreet (NVDA earnings consensus + week ahead); eastasiabrief.com (TSM 2nm/subsidies); Motley Fool/Yahoo Finance (Ackman letter); Fiscal.ai via arvy (hyperscaler FCF/capex); FYNX/Yahoo Finance (Fed hike odds). US/international only.",
   "watch": "Mon Nov 16: Empire State mfg 8:30 AM ET + NY Fed Williams 9:05 AM + Fed Chair Warsh noon + 13F deadline. Tue Nov 17: Oct retail sales 8:30 AM ET + HD/DIS pre-open + NVDA AMC. Wed Nov 18: housing starts + FOMC minutes 2 PM ET + Anthropic IPO pricing + House Huang briefing. Thu Nov 19: MSFT ex-div ($0.98), Anthropic trading begins (ANT). Fri Nov 20: options expiry."
@@ -1533,7 +1575,7 @@
     "prev_close": 431.9
    }
   },
-  "session": "Thursday Oct 15, 9:00 AM ET — 30 min before open. Premarket % from Investopedia live blog, Reuters, WSJ, IBD, arincen (6:27 AM ET snapshot); prices derived vs Wed Oct 14 official closes; may lag ~15 min; nothing invented.",
+  "session": "Thursday Oct 15, 9:00 AM ET \u2014 30 min before open. Premarket % from Investopedia live blog, Reuters, WSJ, IBD, arincen (6:27 AM ET snapshot); prices derived vs Wed Oct 14 official closes; may lag ~15 min; nothing invented.",
   "watch": "Sep PPI 8:30 AM ET (exp +0.6% m/m; core +0.3%) + retail sales + jobless claims + Philly Fed; Warsh IMF fireside; banks (SCHW, BNY, PNC, USB) earnings. TSM reported Oct 15 AM."
  },
  "premarket_oct16": {
@@ -1595,7 +1637,7 @@
    }
   },
   "note": "No name reports within next 2 trading days. Next: META confirmed Oct 21.",
-  "session": "Friday Oct 16, 9:00 AM ET — 30 min before open. Premarket quotes from stockanalysis.com quote pages (9:00-9:03 AM EDT) vs Thu Oct 15 closes; futures from MarketWatch homepage ~9:00 AM ET; may lag ~15 min; nothing invented.",
+  "session": "Friday Oct 16, 9:00 AM ET \u2014 30 min before open. Premarket quotes from stockanalysis.com quote pages (9:00-9:03 AM EDT) vs Thu Oct 15 closes; futures from MarketWatch homepage ~9:00 AM ET; may lag ~15 min; nothing invented.",
   "sources": "stockanalysis.com premarket panels; MarketWatch futures; Reuters; Bloomberg via swissinfo.ch; ZeroHedge. US/international sources only.",
   "watch": "Tesla +3-4% on Roadster reveal (biggest premarket mega-cap swing); CoreWeave -4-5%, Micron -1.7%, Broadcom -0.4% (AI-chain pressure persists). Import prices 8:30 AM ET, industrial production 9:15 AM ET; Goolsbee 6 PM ET (last before blackout); bank earnings CFG/MTB/RF/TFC/TRV."
  },
@@ -1607,7 +1649,7 @@
    "gold": "retreated toward ~$4,150",
    "nasdaq_comp": "-2.1% Fri to 26,140.03 (AP); weekly -4.48% (worst since June, Reuters)",
    "oil": "WTI +3.8% to $101.71; Brent ~$110 on Middle East supply worries",
-   "soxx": "8th straight daily decline — longest streak since 2008, ~16% cumulatively over streak; all 30 names fell Friday (Micron -5.6%, AMD -6%, Broadcom -4.5%, Intel -5.8%, Arm -7%)",
+   "soxx": "8th straight daily decline \u2014 longest streak since 2008, ~16% cumulatively over streak; all 30 names fell Friday (Micron -5.6%, AMD -6%, Broadcom -4.5%, Intel -5.8%, Arm -7%)",
    "sp500": "-1.09% Fri to 7,659.44 (AP); weekly -~1.95 to -2% (steepest weekly loss since January, Reuters)",
    "t10y": "~5.10% (flat; no safe-haven bid)",
    "vix": "closed near 20, up ~21-30% Friday (was ~15.88 midday)"
@@ -1615,7 +1657,7 @@
   "drivers_weekend": "AI-debt fear (CoreWeave bonds >15% yield, -12% Fri); Morgan Stanley IM Caron: 'risk of a tech-led correction'; ARK bought the dip (CoreWeave, Cerebras); Anthropic IPO investors weighing lower valuation (Reuters); Mag-7 CEO voices: Huang (Nvidia+SpaceX space data centers, US-China AI safety call), Nadella (AI security risk warning), Zuckerberg (consumer AI push), Ternus (Apple design defense, open to Chinese chips), Pichai (promoting latest Google AI model), Musk (Roadster 2028 production, floated Amazon competitor after Grok Bot blocked).",
   "earnings": "No universe name reports Mon Oct 19 or Tue Oct 20. META Wed Oct 21 after close (call 4:30 PM ET): cons revenue $63.29-63.32B (Bloomberg median $63.29B) vs guide $61-64B; EPS cons cluster $6.59-6.85; watch Q4 guide (Street $73.56B), 2026 capex $130-145B vs actual, 2027 spend signal, Muse monetization. PTs: Truist $1,000, KeyBanc $900, Deutsche $820 (avg ~$830).",
   "futures": {
-   "note": "Not quoted — market closed Saturday; inventing a Monday indication would violate the no-invented-price rule."
+   "note": "Not quoted \u2014 market closed Saturday; inventing a Monday indication would violate the no-invented-price rule."
   },
   "session": "Saturday Oct 17, 6:30 PM IST = 9:00 AM ET. US cash market closed (Saturday); futures shut until Sunday 6 PM ET. Prices = Friday Oct 16 4 PM ET closes (last traded levels into Monday Oct 19). Nothing invented.",
   "sources": "AP closing report; Reuters via Straits Times; CNN; CBS News; Stocktwits/Benzinga via TradingView; infomaxai; MarketBeat; Reuters ASML analysis; TipRanks/Pepperstone/Fool/CMC (META consensus). US/international only.",
@@ -1625,7 +1667,7 @@
   "as_of": "2026-10-18T18:30:00+05:30",
   "drivers_weekend": "US-Iran tensions / Middle East supply fears: Brent ~$109.86-110, WTI $101.71 (+3.8% Fri). China Q3 GDP Mon 02:00 GMT: exp ~1.1% q/q (from 0.9%), ~4.4% y/y (Reuters poll; Longbridge). Fed blackout since Oct 17 ahead of Oct 27-28 FOMC; ~50% odds of Oct hike (Newsquawk) after Sep CPI 3.7% / PPI +1.3% m/m. VIX ~20, 10Y ~5.10% flat. Week: Netflix Tue; META + Tesla Wed; jobless claims/Philly Fed Thu; flash PMIs/U.Mich Fri; GOOGL/MSFT Oct 28; AMZN Oct 29.",
   "futures": {
-   "note": "Not quoted — market closed Sunday; inventing a Monday indication would violate the no-invented-price rule."
+   "note": "Not quoted \u2014 market closed Sunday; inventing a Monday indication would violate the no-invented-price rule."
   },
   "levels_into_monday": {
    "AAPL": {
@@ -1661,7 +1703,7 @@
     "price": 413.55
    }
   },
-  "note": "No name reports within next 2 trading days (Mon/Tue). Next: META confirmed Oct 21 (3rd trading day) — full preview included given it's the week's main event.",
+  "note": "No name reports within next 2 trading days (Mon/Tue). Next: META confirmed Oct 21 (3rd trading day) \u2014 full preview included given it's the week's main event.",
   "session": "Sunday Oct 18, 6:30 PM IST = 9:00 AM ET. US cash market closed (weekend); futures shut until Sunday 6 PM ET. Prices = Friday Oct 16 4 PM ET closes (last traded levels into Monday Oct 19). Nothing invented.",
   "sources": "AP (Fri official closes); Reuters (China GDP poll Oct 15); Longbridge (China GDP/NAHB expectations); Capital Street FX (week-ahead); TipRanks (week ahead incl. FOMC blackout, earnings calendar); TradingView/Benzinga (META bar, PTs, avg target $830.04); CapitalSnitch (META Fri $709.33 close, insider sales, levels); GeeseFinance (META/Tesla preview). US/international only. No new prices invented."
  },
@@ -1707,7 +1749,7 @@
     "prev_close": 708.635
    },
    "MSFT": {
-    "note": "Flat. Pulled out of UK Nscale data-center deal over power supply (WSJ/Bloomberg/Reuters, weekend) — neocloud caution flag, not MSFT-specific. Bernstein PT $660->$662 (Outperform) this AM; StoneX $525->$600. Watch $524 / $539; earnings Oct 28.",
+    "note": "Flat. Pulled out of UK Nscale data-center deal over power supply (WSJ/Bloomberg/Reuters, weekend) \u2014 neocloud caution flag, not MSFT-specific. Bernstein PT $660->$662 (Outperform) this AM; StoneX $525->$600. Watch $524 / $539; earnings Oct 28.",
     "premarket_pct": -0.08,
     "premarket_price": 528.9,
     "prev_close": 529.33
@@ -1725,8 +1767,8 @@
     "prev_close": 413.55
    }
   },
-  "note": "META is the only name reporting within the next 2 trading days (Oct 21, after close) — full pre-earnings brief included. Next after META: GOOGL + MSFT Oct 28, AMZN Oct 29.",
-  "session": "Monday Oct 19, 9:00 AM ET — 30 min before open. Premarket quotes from stockanalysis.com quote panels (~8:54-8:59 AM EDT), public.com premarket tables (TSM 5:30 AM ET, ASML 9:25 AM ET); % vs Fri Oct 16 official closes in state; may lag ~15 min; nothing invented.",
+  "note": "META is the only name reporting within the next 2 trading days (Oct 21, after close) \u2014 full pre-earnings brief included. Next after META: GOOGL + MSFT Oct 28, AMZN Oct 29.",
+  "session": "Monday Oct 19, 9:00 AM ET \u2014 30 min before open. Premarket quotes from stockanalysis.com quote panels (~8:54-8:59 AM EDT), public.com premarket tables (TSM 5:30 AM ET, ASML 9:25 AM ET); % vs Fri Oct 16 official closes in state; may lag ~15 min; nothing invented.",
   "sources": "Reuters (Oct 19 futures story); Investopedia 5-things; ZeroHedge premarket roundup; Stocktwits radar; TIKR; TipRanks/TheFly (PT changes, NVDA HBM-TSMC, Intel, CoreWeave); WSJ; Barron's; Bloomberg via TipRanks. US/international only.",
   "watch": "Today: NAHB housing 10 AM ET; Treasury $95B 13wk + $82B 26wk bill sales 11:30 AM ET; Fed blackout. This week: Netflix + SpaceX Tue; META + Tesla Wed after close; jobless claims/Philly Fed Thu; flash PMIs/U.Mich Fri."
  },
@@ -1749,13 +1791,13 @@
     "prev_close": 342.8675
    },
    "AMZN": {
-    "note": "Webull 7:45 AM: $262.10 -0.13%; flat after Mon +5% MS top-pick run. News: Amazon pledged EUR 16B+ Germany 2027 investment (data centers/AI/logistics — Dow Jones); 3M expanded Amazon data-center deal + 3.16M-share warrant tied to $6B purchases (3M 8-K). Watch $255 / $263.72; earnings Oct 29.",
+    "note": "Webull 7:45 AM: $262.10 -0.13%; flat after Mon +5% MS top-pick run. News: Amazon pledged EUR 16B+ Germany 2027 investment (data centers/AI/logistics \u2014 Dow Jones); 3M expanded Amazon data-center deal + 3.16M-share warrant tied to $6B purchases (3M 8-K). Watch $255 / $263.72; earnings Oct 29.",
     "premarket_pct": -0.13,
     "premarket_price": 262.1,
     "prev_close": 262.515
    },
    "ASML": {
-    "note": "stockanalysis 8:50 AM: $1,631.06 -0.98%. FRESH BEAR NOTE: JLPascual downgraded to Sell, $749 PT (Oct 17, via Markets Insider) — extreme outlier; Citi Buy EUR 2,300. Ex-div Oct 27 (EUR 1.88 payable Nov 4). Watch $1,630 / $1,686. NOTE: close-base discrepancy persists (state $1,670.40 Motley Fool print vs stockanalysis 1,647.12 4 PM print); flag unresolved.",
+    "note": "stockanalysis 8:50 AM: $1,631.06 -0.98%. FRESH BEAR NOTE: JLPascual downgraded to Sell, $749 PT (Oct 17, via Markets Insider) \u2014 extreme outlier; Citi Buy EUR 2,300. Ex-div Oct 27 (EUR 1.88 payable Nov 4). Watch $1,630 / $1,686. NOTE: close-base discrepancy persists (state $1,670.40 Motley Fool print vs stockanalysis 1,647.12 4 PM print); flag unresolved.",
     "premarket_pct": -0.98,
     "premarket_price": 1631.06,
     "prev_close": 1670.4
@@ -1791,8 +1833,8 @@
     "prev_close": 420.8
    }
   },
-  "note": "META is the only name reporting within the next 2 trading days (Wed Oct 21, after close) — full pre-earnings brief included. Next: GOOGL + MSFT Oct 28, AMZN Oct 29.",
-  "session": "Tuesday Oct 20, 9:00 AM ET — 30 min before open. Premarket quotes from Webull panels (META 8:36 AM ET, AMZN 7:45 AM ET), stockanalysis.com ASML panel (8:50 AM ET), Kraken premarket snapshot (TSM 3:48 AM ET, delayed), Reuters wire (NVDA/AAPL premarket via US wire reposts); % vs Mon Oct 19 official closes in state; may lag ~15 min; nothing invented.",
+  "note": "META is the only name reporting within the next 2 trading days (Wed Oct 21, after close) \u2014 full pre-earnings brief included. Next: GOOGL + MSFT Oct 28, AMZN Oct 29.",
+  "session": "Tuesday Oct 20, 9:00 AM ET \u2014 30 min before open. Premarket quotes from Webull panels (META 8:36 AM ET, AMZN 7:45 AM ET), stockanalysis.com ASML panel (8:50 AM ET), Kraken premarket snapshot (TSM 3:48 AM ET, delayed), Reuters wire (NVDA/AAPL premarket via US wire reposts); % vs Mon Oct 19 official closes in state; may lag ~15 min; nothing invented.",
   "sources": "TipRanks (futures, premarket chip weakness); Investopedia 5-things Oct 20; Reuters via US wire reposts (NVDA/AAPL premarket, futures); Webull (AMZN, META premarket panels); stockanalysis.com (ASML panel); Public.com (AMZN premarket); Kraken stocks (TSM); ad-hoc-news/Markets Insider (ASML downgrade); invezz (Asia selloff context); Dow Jones (Amazon Germany pledge, Rosenblatt META); Bloomberg via TipRanks (Australia/Meta). US/international sources only.",
   "watch": "Today: housing starts 8:30 AM ET; GM, 3M (+raised FY forecast, Amazon deal), RTX, GE Aerospace premarket; Netflix + SpaceX after close (NFLX cons EPS ~$0.82, rev ~$12.9B). Wed Oct 21: META + Tesla AMC (main event), Lam Research, TXN. Thu: jobless claims, Philly Fed. Fri: flash PMIs, U.Mich. FOMC Oct 28-29."
  },
@@ -1997,7 +2039,7 @@
  "premarket_oct24": {
   "as_of": "2026-10-24T18:30:00+05:30",
   "futures": {
-   "note": "Not quoted — US cash market closed Saturday; regular index futures resume Sunday 6 PM ET. No Saturday pre-market prices exist; nothing invented."
+   "note": "Not quoted \u2014 US cash market closed Saturday; regular index futures resume Sunday 6 PM ET. No Saturday pre-market prices exist; nothing invented."
   },
   "levels_into_monday": {
    "AAPL": {
@@ -2042,7 +2084,7 @@
   "as_of": "2026-10-25T18:30:00+05:30",
   "corrections": "Friday oil settlements corrected to Brent $116.72 (+3.14%, 6-mo high since Apr 29) and WTI $103.27 (+3.8%) per Bloomberg-cited weekend reports, superseding repo close recap's $116.27/~$102.02 (apparently earlier/intraday prints). Index-level discrepancy persists: weekend roundups print S&P 7,623.68 / Dow 52,215 vs repo recap 7,652.96 / 52,391.73; unresolved.",
   "futures": {
-   "note": "Not quoted — US cash market closed Sunday; regular index futures resume Sunday 6 PM ET. No Sunday pre-market prices exist; nothing invented."
+   "note": "Not quoted \u2014 US cash market closed Sunday; regular index futures resume Sunday 6 PM ET. No Sunday pre-market prices exist; nothing invented."
   },
   "levels_into_monday": {
    "AAPL": {
@@ -2412,7 +2454,7 @@
  "premarket_oct31": {
   "as_of": "2026-10-31T18:30:00+05:30",
   "futures": {
-   "note": "Not quoted — US cash market closed Saturday; regular index futures resume Sunday 6 PM ET. No Saturday pre-market prices exist; nothing invented."
+   "note": "Not quoted \u2014 US cash market closed Saturday; regular index futures resume Sunday 6 PM ET. No Saturday pre-market prices exist; nothing invented."
   },
   "levels_into_monday": {
    "AAPL": {
@@ -2448,7 +2490,7 @@
     "price": 405.59
    }
   },
-  "note": "AAPL is the only name reporting within the next 2 trading days (Mon Nov 2, after close) — full pre-earnings brief included. US falls back to EST Nov 1: from Monday, open 8:00 PM IST, close 2:30 AM IST.",
+  "note": "AAPL is the only name reporting within the next 2 trading days (Mon Nov 2, after close) \u2014 full pre-earnings brief included. US falls back to EST Nov 1: from Monday, open 8:00 PM IST, close 2:30 AM IST.",
   "session": "Saturday Oct 31, 6:30 PM IST = 9:00 AM ET. US cash market closed (Saturday); futures shut until Sunday 6 PM ET. Prices = Friday Oct 30 closes from repo close recap. Nothing invented.",
   "sources": "Repo Oct 30 close recap; Reuters Oct 30 close report; Zacks/MarketBeat/Pip Theory AAPL previews. US/international only.",
   "watch": "Mon Nov 2: ISM manufacturing + AAPL earnings AMC (Palantir also reports). Tue Nov 3: AMD earnings. Nov 17: NVDA earnings."
@@ -2545,7 +2587,7 @@
     "prev_close": 349.35
    },
    "AMZN": {
-    "note": "No company news; Anthropic stake (~14.7%, ~$190B at ~$100) marked lower as ANT fades. Watch $250 — break opens autumn lows.",
+    "note": "No company news; Anthropic stake (~14.7%, ~$190B at ~$100) marked lower as ANT fades. Watch $250 \u2014 break opens autumn lows.",
     "premarket_pct": -1.86,
     "premarket_price": 252.57,
     "prev_close": 257.37
@@ -2557,7 +2599,7 @@
     "prev_close": 1356.2
    },
    "GOOGL": {
-    "note": "Flattest this morning but sitting on its 52-wk low: closed $272.66, premarket $271.96 already below $272.11. Anthropic stake (~1.8B shares, ~$149B at $83 IPO) uncredited by market. Watch $272.11 — confirmed break = sentiment extreme, not a chase.",
+    "note": "Flattest this morning but sitting on its 52-wk low: closed $272.66, premarket $271.96 already below $272.11. Anthropic stake (~1.8B shares, ~$149B at $83 IPO) uncredited by market. Watch $272.11 \u2014 confirmed break = sentiment extreme, not a chase.",
     "premarket_pct": -0.26,
     "premarket_price": 271.96,
     "prev_close": 272.66
@@ -2575,13 +2617,13 @@
     "prev_close": 498.3
    },
    "NVDA": {
-    "note": "CA AG subpoena Thu (3rd live probe: SEC + board/FBI + CA AG) — whether chips/confidential info reached China, whether investors misled. Huang testifies House Dec 1, Senate Banking too; GC Teter Dec 2. Cathie Wood sold more; Damodaran $140 limit buy. Fresh 52-wk low Thu $145.71 intraday / $145.98 close; premarket ~$4 lower. 5-day -15.97%, 1M -32.56%. Watch $140, then $135; reclaim $145.98 = first stabilisation sign.",
+    "note": "CA AG subpoena Thu (3rd live probe: SEC + board/FBI + CA AG) \u2014 whether chips/confidential info reached China, whether investors misled. Huang testifies House Dec 1, Senate Banking too; GC Teter Dec 2. Cathie Wood sold more; Damodaran $140 limit buy. Fresh 52-wk low Thu $145.71 intraday / $145.98 close; premarket ~$4 lower. 5-day -15.97%, 1M -32.56%. Watch $140, then $135; reclaim $145.98 = first stabilisation sign.",
     "premarket_pct": -3.0,
     "premarket_price": 141.6054,
     "prev_close": 145.98
    },
    "TSM": {
-    "note": "Worst in universe; Asia rout + Nikkei Asia: TSMC suspended shipments to several chip developers pending export-control compliance review. Taipei -~5%. $350-360 scale-in zone BROKEN from above — $350 now resistance. Watch $330, then autumn lows. Fundamentals unchanged (record Oct rev, Q4 guide $52.3-54.3B).",
+    "note": "Worst in universe; Asia rout + Nikkei Asia: TSMC suspended shipments to several chip developers pending export-control compliance review. Taipei -~5%. $350-360 scale-in zone BROKEN from above \u2014 $350 now resistance. Watch $330, then autumn lows. Fundamentals unchanged (record Oct rev, Q4 guide $52.3-54.3B).",
     "premarket_pct": -5.01,
     "premarket_price": 334.44,
     "prev_close": 352.09
@@ -2595,7 +2637,7 @@
  "premarket_nov21": {
   "as_of": "2026-11-21T18:30:00+05:30",
   "futures": {
-   "note": "Not quoted — US cash market closed Saturday; index futures resume Sunday 6 PM ET. No pre-market prices exist; nothing invented."
+   "note": "Not quoted \u2014 US cash market closed Saturday; index futures resume Sunday 6 PM ET. No pre-market prices exist; nothing invented."
   },
   "levels_into_monday": {
    "NVDA": {
@@ -2631,9 +2673,246 @@
     "price": 1266.22
    }
   },
-  "note": "No universe name reports within next 2 trading days — all 8 have reported; next earnings season January. Week is macro + NVDA-headline driven.",
+  "note": "No universe name reports within next 2 trading days \u2014 all 8 have reported; next earnings season January. Week is macro + NVDA-headline driven.",
   "session": "Saturday Nov 21, 6:30 PM IST = 8:00 AM EST. US cash market closed (Saturday); futures shut until Sunday 6 PM ET. Prices = official Friday Nov 20 4 PM ET closes (Finnhub, corroborated MarketBeat/stockanalysis) + 8 PM ET after-hours. Nothing invented.",
   "sources": "Finnhub close + after-hours prints; MarketBeat/stockanalysis; AP/Reuters index closes; NY Post/News18; USA Today/Fortune; Reuters via NRB; Fool/Morningstar (INTU); Zacks/SEC/QUE (Ross/Gap); Stockopedia/FXIFY/TheStreet/Fool (week ahead). US/international only.",
-  "watch": "Mon Nov 23: flash PMIs 9:45 AM ET + NY Fed Williams; Agilent/HP/Zoom AMC. Tue Nov 24: consumer confidence; ADI pre-open, Dell/Autodesk/Workday AMC. Wed Nov 25: Oct PCE + Q3 GDP 2nd est + claims 8:30 AM ET + Beige Book 2 PM ET — hot core PCE (>=0.4% m/m) strengthens 50bp Dec-hike case. Thu Nov 26: Thanksgiving, markets closed. Fri Nov 27: early close 1 PM ET. Dec FOMC Dec 8-9 (25bp ~95% priced); Nov jobs Dec 4; Nov CPI Dec 10; AWS re:Invent Nov 30."
+  "watch": "Mon Nov 23: flash PMIs 9:45 AM ET + NY Fed Williams; Agilent/HP/Zoom AMC. Tue Nov 24: consumer confidence; ADI pre-open, Dell/Autodesk/Workday AMC. Wed Nov 25: Oct PCE + Q3 GDP 2nd est + claims 8:30 AM ET + Beige Book 2 PM ET \u2014 hot core PCE (>=0.4% m/m) strengthens 50bp Dec-hike case. Thu Nov 26: Thanksgiving, markets closed. Fri Nov 27: early close 1 PM ET. Dec FOMC Dec 8-9 (25bp ~95% priced); Nov jobs Dec 4; Nov CPI Dec 10; AWS re:Invent Nov 30."
+ },
+ "premarket_nov22": {
+  "as_of": "2026-11-22T18:30:00+05:30",
+  "benchmarks_fri": {
+   "dow": "48,147.33 (-1.93%; week -8.0%, correction confirmed)",
+   "nasdaq100": "25,028.98 (-5.6%; week -10.4%, worst since 2020)",
+   "nasdaq_comp": "22,617.73 (-5.28%; negative for 2026)",
+   "sox": "-17.13% week",
+   "sp500": "6,910.39 (-3.70%; week -8.6%, correction confirmed; 7th straight down day)",
+   "vix": "near 36 into weekend (Market Sunrise); briefly 40 during week; +86% week (IBD), highest since April 2025; S&P RSI <30 oversold"
+  },
+  "futures": {
+   "note": "Not quoted live \u2014 US cash market closed Sunday; index futures resume Sunday 6 PM ET (4:30 AM IST Monday). Last traded Friday close: S&P 500 futures -3.64% at 6,935; Nasdaq-100 futures -5.54% at 25,126.5. No Sunday pre-market prices exist; nothing invented.",
+   "btc": "~$59,876 Sunday morning (Market Sunrise) \u2014 weekend risk barometer, steadied"
+  },
+  "levels_into_monday": {
+   "AAPL": {
+    "note": "Most resilient name; $340-342 support, $349 (Thu close) first reclaim. Dec-q guide rev +7-10%, GM 45-46% overhang. Median PT $350 (+2%, KeyBanc).",
+    "price": 342.91,
+    "week_pct": -4.2
+   },
+   "AMZN": {
+    "note": "$245.31 day low held; $240 next. Black Friday week is the live consumer test. Median PT $333 (+35%, Oppenheimer).",
+    "price": 246.82,
+    "week_pct": -8.3
+   },
+   "ASML": {
+    "note": "$1,250-1,300 zone; 2027-28 supply-shortage thesis unchanged, tape owns price. Median PT $2,225 (+76%, JPMorgan).",
+    "price": 1266.22,
+    "week_pct": -14.7
+   },
+   "GOOGL": {
+    "note": "New 52-wk low but least-bad in rout for 2nd day; $264.22 line to hold, $272.11 now resistance. Median PT $400 (+51%, JPMorgan).",
+    "price": 265.29,
+    "week_pct": -12.3
+   },
+   "META": {
+    "note": "$560 is the line; 52-wk low $520.26 next air pocket. Debt-funded buildout + Class C pause (trial Apr 2027). Median PT $850 (+52%, UBS).",
+    "price": 560.84,
+    "week_pct": -10.5
+   },
+   "MSFT": {
+    "note": "Broke bottom of $488-517 chop; INTU guide cut puts software multiple under scrutiny. Watch $480 / retake $500. Median PT $630 (+30%, Guggenheim).",
+    "price": 484.5,
+    "week_pct": -6.7
+   },
+   "NVDA": {
+    "note": "CEO search unchanged: Kress interim, Jones chair, Heidrick & Struggles, Arm CEO Haas approached (Bloomberg Nov 18); board rules out Huang reinstatement; Bessent external-hire call (last Sun Fox interview); Reuters Nov 20 SEC accounting examination part of Fri tape. Dec 1 House testimony next fixed date. Reclaim $130 then $135; below $124.50 no floor.",
+    "price": 125.53,
+    "week_pct": -25.9
+   },
+   "TSM": {
+    "note": "$350-360 scale-in zone broken, ~$30 behind; needs NVDA to stop making new lows first. Median PT $557 (+75%, DA Davidson).",
+    "price": 318.71,
+    "week_pct": -21.4
+   }
+  },
+  "note": "No universe name reports within next 2 trading days (Mon Nov 23 / Tue Nov 24). All 8 have reported; next earnings season is January. Week is macro + NVDA-headline driven.",
+  "session": "Sunday Nov 22, 6:30 PM IST = 8:00 AM EST. US cash market closed (weekend); futures shut until Sunday 6 PM ET. Prices = official Fri Nov 20 4 PM ET closes. Nothing invented.",
+  "sources": "Finnhub official closes + after-hours (Nov 21 premarket brief); BPDATA weekly tally; Market Sunrise Nov 22 (VIX ~36, BTC ~$59,876, Dec hike ~90%, Dell cons $49.2B/$6.60, PCE cons 3.8% y/y); World Money Roadmap Nov 22 (futures Fri closes, SOX -17.13% week, RBC PCE 3.8%/core 3.3%, Tokyo closed Mon); Yonhap Infomax (PCE +0.3% m/m, Q3 GDP 3.5% cons); Seeking Alpha week ahead; TradingView News (VIX briefly 40); IBD (VIX +86% week); WSJ/Taipei Times + aistockwire (NVDA search status); Price Target screener Nov 20 (median PTs). US/international only; no Indian sites.",
+  "watch": "Mon Nov 23: flash PMIs 9:45 AM ET + NY Fed Williams; HPE/Zoom/Agilent AMC; Tokyo closed. Tue Nov 24: consumer confidence 10 AM ET; Best Buy/Dick's/Medtronic/ADI pre-open; Dell AMC (AI-server orders = first big AI-demand read since rout; cons ~$49.2B rev, ~$6.60 adj EPS) + HP/Workday/Autodesk. Wed Nov 25: Oct PCE (cons +0.3% m/m, 3.8% y/y headline, core 3.2-3.3% y/y) + Q3 GDP 2nd est (cons 3.5%) + claims + Beige Book 2 PM ET \u2014 hot core PCE (>=0.4% m/m) strengthens 50bp Dec-hike case. Thu Nov 26: Thanksgiving, markets closed. Fri Nov 27: early close 1 PM ET (Black Friday). Dec FOMC Dec 8-9 (25bp ~90% priced); Nov jobs Dec 4; Nov CPI Dec 10; AWS re:Invent Nov 30."
+ },
+ "midsession_nov22": {
+  "alerts": [],
+  "as_of": "2026-11-22T22:30:00+05:30",
+  "intraday": {
+   "AAPL": {
+    "note": "market closed",
+    "pct": null,
+    "price": 342.91
+   },
+   "AMZN": {
+    "note": "market closed",
+    "pct": null,
+    "price": 246.82
+   },
+   "ASML": {
+    "note": "market closed",
+    "pct": null,
+    "price": 1266.22
+   },
+   "GOOGL": {
+    "note": "market closed",
+    "pct": null,
+    "price": 265.29
+   },
+   "META": {
+    "note": "market closed",
+    "pct": null,
+    "price": 560.84
+   },
+   "MSFT": {
+    "note": "market closed",
+    "pct": null,
+    "price": 484.5
+   },
+   "NVDA": {
+    "note": "market closed",
+    "pct": null,
+    "price": 125.53
+   },
+   "TSM": {
+    "note": "market closed",
+    "pct": null,
+    "price": 318.71
+   }
+  },
+  "session": "Sunday Nov 22, 12:00 PM EST - US market CLOSED (weekend). No intraday session; zero movement in all 8 names. Prices unchanged from official Fri Nov 20 4 PM ET closes.",
+  "sources": "Repo Nov 22 premarket brief (Finnhub official closes + after-hours); MarketBeat compare pages (Fri closes corroborated, small vendor spread); WSJ via weekend roundup (Nov 21 Megaspeed/Alice Huang smuggling detail); NRB/FT (Nov 22 Heidrick & Struggles approach to Arm CEO Rene Haas, unconfirmed); BBN Times/CME (S&P E-mini Fri 6,966.75, -3.20%); Market Sunrise/TipRanks (VIX 35.89, 10Y 4.91%, week tallies). US/international only; no Indian sites.",
+  "watch": "Futures resume Sun 6 PM ET. Mon Nov 23: flash PMIs + Williams + HPE AMC. Tue Nov 24: consumer confidence + Dell/HP AMC (AI-server demand test). Wed Nov 25: Oct PCE + Q3 GDP 2nd est + Beige Book. Thu closed (Thanksgiving); Fri early close 1 PM ET. NVDA keys the tape: reclaim $130, then $135; below $124.50 no floor. All HOLD into Monday.",
+  "weekend_notes": "Two incremental NVDA items only: WSJ Nov 21 - Alice Huang was public face of Megaspeed, key operator a 52-year-old Chinese man (smuggling case); Nov 22 report Heidrick & Struggles approached Arm CEO Rene Haas (unconfirmed by Nvidia). No new CEO announcement, filing, or analyst action for any of the 8 names. No fresh company news for the other 7 names."
+ },
+ "premarket_nov23": {
+  "as_of": "2026-11-23T18:30:00+05:30",
+  "futures": {
+   "dow": "+1.8% (Investopedia ~8 AM ET; WSJ/Morningstar +1.65%; TipRanks 5:40 AM ET +1.88%)",
+   "drivers": "Broad relief bounce after Fri rout (S&P -3.70%, Nasdaq -5.28%, NQ-100 -5.6% week -10.4%). SOXX +5%+ premarket, DRAM ETF +8%. Trump Sun Nov 22 Truth Social: hopes NVDA board rehires Huang; board still rules out reinstatement. CRWD to acquire ZS ~$43.9B all-stock (1.135 CRWD/ZS); CRWD -8%+, ZS +17%+. ANT <1% higher into 3rd public day (~$89 Fri after $83 IPO, day 1 >$111). Bitcoin >$61,000; gold ~$3,600 (+~3%); oil -1%+. BCA: market 'failed to find a floor' last week even after NVDA earnings + ANT IPO.",
+   "nasdaq100": "+3.0% (Investopedia ~8 AM ET; WSJ +3.1%; TipRanks 5:40 AM ET +3.48%; Reuters 2:29 AM ET +3.02%)",
+   "sp500": "+2.4% (Investopedia ~8 AM ET; WSJ/Morningstar +2.4%; TipRanks 5:40 AM ET +2.70%; Reuters 2:29 AM ET +2.24%)"
+  },
+  "levels": {
+   "AAPL": {
+    "note": "Smallest bounce in universe; most resilient into rout. Watch $349 (Thu close) / $340-342 support. Dec-q guide rev +7-10%, GM 45-46% still the overhang.",
+    "premarket_pct": 1.24,
+    "premarket_price": 346.79,
+    "prev_close": 342.91
+   },
+   "AMZN": {
+    "note": "Watch $257.37 (Thu close) then $259.97 (Fri high). Black Friday week is the live consumer test.",
+    "premarket_pct": 2.78,
+    "premarket_price": 253.69,
+    "prev_close": 246.82
+   },
+   "ASML": {
+    "note": "Watch $1,356.20 (Thu close); $1,250-1,300 zone now below. 2027-28 supply-shortage thesis unchanged.",
+    "premarket_pct": 5.83,
+    "premarket_price": 1340.0,
+    "prev_close": 1266.22
+   },
+   "GOOGL": {
+    "note": "Back toward $280 after Fri new 52-wk low $264.22. Watch $280 / $283.15 (Fri high).",
+    "premarket_pct": 5.36,
+    "premarket_price": 279.51,
+    "prev_close": 265.29
+   },
+   "META": {
+    "note": "Watch $580-590 zone; $596.22 (Thu close) above. Debt-funded buildout + Class C pause (trial Apr 2027) still the overhang.",
+    "premarket_pct": 3.27,
+    "premarket_price": 579.21,
+    "prev_close": 560.84
+   },
+   "MSFT": {
+    "note": "Knocking on $500 again. Watch $500 / $503.80 (Fri high), then $517.75. Software multiple under scrutiny after Intuit guide cut.",
+    "premarket_pct": 3.0,
+    "premarket_price": 499.06,
+    "prev_close": 484.5
+   },
+   "NVDA": {
+    "note": "Bounce leader; 4:30 AM ET Nasdaq median was higher ($137.35, +9.4% - TECHi), faded into morning; premarket high ~$138 (TradingView). Driver is tape-wide dip-buying + Trump Truth Social post hoping board rehires Huang; no board movement. Watch $135 / $145.98 (Thu close); Fri low $124.50 is the floor. HOLD.",
+    "premarket_pct": 7.38,
+    "premarket_price": 134.79,
+    "prev_close": 125.53
+   },
+   "TSM": {
+    "note": "Second-strongest bounce. Watch $350-352 zone / $352.09 (Thu close). Needs NVDA to hold its bounce first.",
+    "premarket_pct": 6.65,
+    "premarket_price": 339.9,
+    "prev_close": 318.71
+   }
+  },
+  "note": "No universe name reports within next 2 trading days. All 8 reported; next earnings Jan. Base note: Finnhub premarket % vs its own close prints (AAPL $342.56 vs repo $342.91; MSFT $484.52 vs repo $484.50). Finnhub NVDA 52-wk-low field stale ($148.80 Nov 12); Fri actual low $124.50.",
+  "session": "Monday Nov 23, 8:00 AM ET (EST) - 90 min before open. Finnhub premarket panels ~7:33-7:34 AM ET; may lag ~15 min; nothing invented.",
+  "sources": "Finnhub premarket panels (all 8 names); Reuters/WSJ/Morningstar/TipRanks/Investopedia futures; TECHi (Nasdaq 4:30 AM ET medians); TradingView (NVDA premarket high ~$138); Crypto Briefing (NVDA +8.13% to $135.74); repo Nov 22 premarket + Nov 23 close briefs. US/international only.",
+  "watch": "Today 9:45 AM ET: S&P Global flash PMIs + Williams speaks. Tue Nov 24: consumer confidence 10 AM ET + Dell AMC (cons ~$49.2B rev, ~$6.48-6.60 adj EPS) - first big AI-demand read. Wed Nov 25: Oct PCE (cons +0.3% m/m, 3.8% y/y, core 3.2-3.3%) + Q3 GDP 2nd est (3.5%) + claims + Beige Book. Thu closed (Thanksgiving); Fri early close 1 PM ET. NVDA keys the tape: hold above $135, reclaim $145.98. All HOLD into the open."
+ },
+ "midsession_nov23": {
+  "as_of": "2026-11-23T22:30:00+05:30",
+  "session": "Monday Nov 23, ~11:53 AM EST - Finnhub live intraday panels vs Fri Nov 20 official closes; may lag ~15 min; nothing invented.",
+  "alerts": [
+   "NVDA",
+   "TSM",
+   "ASML",
+   "GOOGL",
+   "META",
+   "AMZN",
+   "MSFT"
+  ],
+  "intraday": {
+   "NVDA": {
+    "price": 164.46,
+    "pct": 31.01,
+    "note": "ALERT: board unanimously reinstated Jensen Huang as CEO/president/board member effective immediately (11 days after resignation), after senior US govt input, no national security risk; Trump welcomed. Day range $156.93-171.50. Still ~32% below Oct 6 record $243.37. Probes remain (SEC accounting, CA AG). HOLD - do not chase gap"
+   },
+   "TSM": {
+    "price": 367.13,
+    "pct": 15.19,
+    "note": "ALERT: no TSMC news; pure AI-chain reversal, worst-hit Fri (-9.48%). Q4 guide unchanged. HOLD on entry; $380-400 test"
+   },
+   "ASML": {
+    "price": 1381.61,
+    "pct": 9.11,
+    "note": "ALERT: no company news; equipment contagion reversing. 2027-28 supply-shortage thesis unchanged. HOLD on entry; $1,400-1,450 zone"
+   },
+   "GOOGL": {
+    "price": 282.0,
+    "pct": 6.3,
+    "note": "ALERT: no company news; AI tape beta, back above $280 after Fri 52-wk low $264.22. HOLD; $283.15 then $290"
+   },
+   "META": {
+    "price": 594.56,
+    "pct": 6.01,
+    "note": "ALERT: tape-driven despite Morgan Stanley PT cut $820->$720 (Overweight kept). Class C pause overhang (trial Apr 2027) unchanged. HOLD on entry; close above $600 needed"
+   },
+   "AMZN": {
+    "price": 255.91,
+    "pct": 3.68,
+    "note": "ALERT: tape + Oppenheimer PT raise $285->$310 (Nov 20). HOLD on entry; $257.37 Thu close first reclaim"
+   },
+   "MSFT": {
+    "price": 498.5,
+    "pct": 2.89,
+    "note": "ALERT (2%+ with news): tape-driven; Bernstein reiterated Outperform. Opened $506.06, high $509.15, faded under $500. HOLD; hold $500 into close"
+   },
+   "AAPL": {
+    "price": 348.05,
+    "pct": 1.5,
+    "note": "Most resilient again, smallest bounce; no company news. Not flagged. HOLD; $349.21 Thu close first reclaim"
+   }
+  },
+  "macro": "Nasdaq +6.8%, S&P +5.1%, Dow +3.3% (~1,600 pts) - best day since Apr 9 2025; Nasdaq-100 +6.6%, >$2T one-day value gain (Reuters); Nasdaq +7.3% opening jump biggest on record since 1991 (Dow Jones Market Data via MarketWatch). Bounce was forming premarket (futures +2.4-3.0% dip-buying); Huang announcement turbocharged it. Flash PMIs slightly soft (composite 54.6 vs 55.9, 4-mo low; services 54.7 vs 56.1; mfg 54.5 in line) - no dent. Bitcoin ~$62,600 after <$58k Fri. CRWD $43.9B all-stock ZS deal (ZS +16%).",
+  "watch": [
+   "NVDA ~$164: hold above $170 = turn confirmed; fade under $150 = relief only; Dec 1 House testimony + SEC/CA probes unresolved",
+   "TSM ~$367: $380-400 zone is the test; ASML ~$1,382: $1,400-1,450 zone; META ~$595: close above $600 needed; MSFT ~$499: hold $500 into close; GOOGL ~$282: $283-290; AMZN ~$256: $257.37; AAPL ~$348: $349.21",
+   "Breadth: whether Nasdaq holds most of +6.8% - every prior bounce this month sold; Fri loss not yet reclaimed",
+   "Tue AMC Dell (AI-demand read); Wed Oct PCE + Q3 GDP 2nd est + claims + Beige Book; Thu closed; Fri early close 1 PM ET"
+  ],
+  "sources": "Finnhub intraday panels ~11:53-11:54 AM ET Nov 23 (all 8 names); Reuters/WSJ/CNN/Investopedia/Barron's/MarketWatch (Huang reinstatement + rally); FX Empire/SRN News (flash PMIs); MarketBeat (META PT cut, Bernstein MSFT, Melius/Bernstein NVDA upgrades, Oppenheimer AMZN). US/international only; no Indian sites."
  }
 }
